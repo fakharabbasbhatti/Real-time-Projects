@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AP Pool & Spa Inc. — Nantucket</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-dark:  #0a2a4a;
+      --blue-mid:   #1565c0;
+      --blue-light: #1e88e5;
+      --blue-pale:  #e3f2fd;
+      --accent:     #0288d1;
+      --white:      #ffffff;
+      --off-white:  #f5faff;
+      --gray:       #546e7a;
+      --gray-light: #ecf4fb;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--blue-dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.1rem 5%;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #dbeafe;
+      box-shadow: 0 1px 20px rgba(10,42,74,0.06);
+    }
+    .nav-logo-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem; letter-spacing: .12em; color: var(--blue-dark);
+    }
+    .nav-logo-text span { color: var(--blue-light); }
+    .nav-logo-sub {
+      font-size: .62rem; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--gray); margin-top: .1rem;
+    }
+    nav ul { list-style: none; display: flex; gap: 2rem; }
+    nav a {
+      text-decoration: none; color: var(--gray);
+      font-size: .82rem; font-weight: 500;
+      letter-spacing: .06em; text-transform: uppercase;
+      transition: color .2s;
+    }
+    nav a:hover { color: var(--blue-light); }
+    .nav-cta {
+      background: var(--blue-light) !important;
+      color: var(--white) !important;
+      padding: .55rem 1.3rem;
+    }
+    .nav-cta:hover { background: var(--blue-dark) !important; color: white !important; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-mid) 60%, var(--blue-light) 100%);
+      position: relative; overflow: hidden;
+      display: flex; align-items: center;
+      padding: 9rem 5% 5rem;
+    }
+    .hero-circle {
+      position: absolute; right: -5%; top: 50%;
+      transform: translateY(-50%);
+      width: clamp(320px, 46vw, 680px);
+      height: clamp(320px, 46vw, 680px);
+      border-radius: 50%;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .hero-circle::before {
+      content: ''; position: absolute; inset: 12%;
+      border-radius: 50%;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .hero-circle::after {
+      content: ''; position: absolute; inset: 26%;
+      border-radius: 50%;
+      background: rgba(2,136,209,.25);
+      border: 1px solid rgba(255,255,255,.15);
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 620px; }
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: .7rem; letter-spacing: .25em; text-transform: uppercase;
+      color: #90caf9; margin-bottom: 1rem;
+      opacity: 0; animation: up .7s .2s forwards;
+    }
+    h1.hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.6rem, 8.5vw, 8rem);
+      line-height: .92; letter-spacing: .03em; color: var(--white);
+      opacity: 0; animation: up .7s .35s forwards;
+    }
+    h1.hero-title .hi { color: #64b5f6; }
+    .hero-tagline {
+      margin-top: 1rem;
+      font-size: 1rem; font-style: italic; font-weight: 300;
+      color: #90caf9; letter-spacing: .04em;
+      opacity: 0; animation: up .7s .5s forwards;
+    }
+    .hero-desc {
+      margin-top: 1.3rem; max-width: 460px;
+      font-size: .92rem; line-height: 1.78; color: #b3d4f5; font-weight: 300;
+      opacity: 0; animation: up .7s .62s forwards;
+    }
+    .hero-btns {
+      margin-top: 2.4rem; display: flex; gap: 1rem; flex-wrap: wrap;
+      opacity: 0; animation: up .7s .75s forwards;
+    }
+    .btn-white {
+      background: var(--white); color: var(--blue-dark);
+      padding: .9rem 2.2rem; font-weight: 600;
+      font-size: .85rem; letter-spacing: .06em; text-transform: uppercase;
+      border: none; cursor: pointer; text-decoration: none; display: inline-block;
+      transition: background .2s, transform .2s;
+    }
+    .btn-white:hover { background: #e3f2fd; transform: translateY(-2px); }
+    .btn-outline-white {
+      border: 1.5px solid rgba(255,255,255,.45); color: var(--white);
+      padding: .9rem 2.2rem; font-size: .85rem; font-weight: 500;
+      letter-spacing: .06em; text-transform: uppercase;
+      text-decoration: none; display: inline-block;
+      transition: border-color .2s, background .2s;
+    }
+    .btn-outline-white:hover { border-color: white; background: rgba(255,255,255,.08); }
+
+    /* wave */
+    .wave-divider { display: block; width: 100%; line-height: 0; background: var(--blue-dark); }
+    .wave-divider svg { display: block; width: 100%; }
+
+    @keyframes up {
+      from { opacity:0; transform:translateY(24px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* ── COMMONS ── */
+    .s-label {
+      font-size: .68rem; letter-spacing: .26em; text-transform: uppercase;
+      color: var(--blue-light); margin-bottom: .5rem; display: block;
+    }
+    .s-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      letter-spacing: .04em; line-height: 1; color: var(--blue-dark);
+    }
+
+    /* ── SERVICES ── */
+    #services { background: var(--white); padding: 7rem 5%; }
+    .services-header { margin-bottom: 3rem; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .s-card {
+      background: var(--off-white);
+      border: 1px solid #dbeafe;
+      padding: 2.2rem 1.8rem;
+      position: relative; overflow: hidden;
+      transition: box-shadow .3s, transform .3s, border-color .3s;
+    }
+    .s-card:hover {
+      box-shadow: 0 8px 32px rgba(21,101,192,.12);
+      transform: translateY(-4px);
+      border-color: var(--blue-light);
+    }
+    .s-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 4px; height: 0;
+      background: var(--blue-light); transition: height .35s;
+    }
+    .s-card:hover::before { height: 100%; }
+    .s-icon { font-size: 2.2rem; margin-bottom: 1rem; display: block; }
+    .s-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem; letter-spacing: .06em;
+      color: var(--blue-dark); margin-bottom: .6rem;
+    }
+    .s-desc { font-size: .875rem; line-height: 1.68; color: var(--gray); font-weight: 300; }
+
+    /* ── WHY ── */
+    #why {
+      background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-mid) 100%);
+      padding: 6rem 5%;
+    }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem; margin-top: 2.8rem;
+    }
+    .why-item {
+      display: flex; align-items: flex-start; gap: 1rem;
+      padding: 1.5rem 1.3rem;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
+      transition: background .25s, border-color .25s;
+    }
+    .why-item:hover { background: rgba(255,255,255,.13); border-color: rgba(255,255,255,.28); }
+    .why-check {
+      width: 28px; height: 28px; flex-shrink: 0;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.3);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: .82rem; font-weight: 600;
+    }
+    .why-text { font-size: .88rem; line-height: 1.55; color: #cfe8ff; }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--gray-light); padding: 7rem 5%; }
+    .contact-wrap {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; margin-top: 2.8rem;
+    }
+    .contact-intro {
+      font-size: .92rem; line-height: 1.78; color: var(--gray);
+      font-weight: 300; margin-bottom: 2rem;
+    }
+    .contact-items { display: flex; flex-direction: column; gap: 1.3rem; }
+    .c-item { display: flex; align-items: flex-start; gap: 1rem; }
+    .c-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      background: var(--blue-light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .c-label {
+      font-size: .66rem; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--blue-light); display: block; margin-bottom: .22rem;
+    }
+    .c-val { font-size: .9rem; color: var(--blue-dark); font-weight: 500; }
+    .c-val a { color: var(--blue-dark); text-decoration: none; }
+    .c-val a:hover { color: var(--blue-light); }
+
+    .contact-form {
+      background: var(--white); padding: 2.5rem;
+      border: 1px solid #dbeafe;
+      box-shadow: 0 4px 24px rgba(21,101,192,.08);
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .form-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem; letter-spacing: .06em; color: var(--blue-dark);
+    }
+    .fg { display: flex; flex-direction: column; gap: .35rem; }
+    .fg label {
+      font-size: .68rem; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--blue-light); font-weight: 500;
+    }
+    .fg input, .fg textarea, .fg select {
+      background: var(--off-white);
+      border: 1.5px solid #dbeafe;
+      color: var(--blue-dark);
+      padding: .75rem 1rem;
+      font-family: 'DM Sans', sans-serif; font-size: .88rem;
+      outline: none; transition: border-color .2s; resize: none;
+    }
+    .fg input:focus, .fg textarea:focus, .fg select:focus {
+      border-color: var(--blue-light); background: white;
+    }
+    .fg select option { background: white; }
+    .fg textarea { min-height: 90px; }
+    .form-note { font-size: .76rem; color: var(--gray); }
+    .btn-blue {
+      background: var(--blue-light); color: white;
+      padding: .9rem 2rem; width: 100%; text-align: center;
+      font-family: 'DM Sans', sans-serif; font-weight: 600;
+      font-size: .88rem; letter-spacing: .07em; text-transform: uppercase;
+      border: none; cursor: pointer;
+      transition: background .2s, transform .2s;
+    }
+    .btn-blue:hover { background: var(--blue-dark); transform: translateY(-2px); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--blue-dark); padding: 2.2rem 5%;
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 1rem;
+      border-top: 3px solid var(--blue-light);
+    }
+    .f-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem; letter-spacing: .13em; color: white;
+    }
+    .f-logo span { color: #64b5f6; }
+    footer p { font-size: .76rem; color: #7aaabf; }
+
+    @media (max-width: 700px) {
+      nav ul { display: none; }
+      .contact-wrap { grid-template-columns: 1fr; gap: 2rem; }
+      .contact-form { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div>
+    <div class="nav-logo-text">AP <span>Pool & Spa</span> Inc.</div>
+    <div class="nav-logo-sub">Nantucket, MA</div>
+  </div>
+  <ul>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-circle"></div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">Professional Pool Services · Nantucket, MA</span>
+    <h1 class="hero-title">Your Pool,<br><span class="hi">Our</span><br>Passion.</h1>
+    <p class="hero-tagline">"Your Pool, Our Passion"</p>
+    <p class="hero-desc">Nantucket's trusted partner for comprehensive pool care and maintenance. Our certified technicians keep your pool pristine — all season long.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-white">Schedule Servi...
+Collapse
+ This snippet was truncated for display; see it in full
+
+
+
+
