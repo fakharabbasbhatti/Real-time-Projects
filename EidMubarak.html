@@ -1,225 +1,639 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eid Gift</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Eid Mubarak | Celestial Gift</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
 <style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-body{
-margin:0;
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-font-family:Segoe UI;
-background:linear-gradient(270deg,#ff512f,#dd2476,#1fa2ff,#12d8fa,#a6ffcb);
-background-size:1000% 1000%;
-animation:bgMove 15s ease infinite;
-overflow-x:hidden;
-color:white;
-}
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', 'Poppins', 'Tahoma', sans-serif;
+    background: radial-gradient(circle at 10% 30%, #0a0f2a, #03050b);
+    overflow-x: hidden;
+    position: relative;
+    cursor: default;
+    padding: 20px;
+  }
 
-@keyframes bgMove{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
-}
+  /* animated starfield overlay */
+  .starfield {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
 
-.main-card{
-background:rgba(0,0,0,0.45);
-backdrop-filter:blur(10px);
-padding:30px;
-border-radius:25px;
-max-width:600px;
-width:90%;
-box-shadow:0 0 40px rgba(0,0,0,0.5);
-text-align:center;
-}
+  .star-particle {
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    box-shadow: 0 0 4px rgba(255,255,200,0.8);
+    opacity: 0;
+    animation: starGlow 3s infinite alternate;
+  }
 
-.title{
-font-size:48px;
-font-weight:bold;
-color:#ffd700;
-text-shadow:0 0 20px gold;
-margin-bottom:10px;
-}
+  @keyframes starGlow {
+    0% { opacity: 0.2; transform: scale(0.8);}
+    100% { opacity: 1; transform: scale(1.2);}
+  }
 
-.subtitle{
-opacity:.9;
-margin-bottom:20px;
-}
+  /* main card - glassmorphic with gradient borders */
+  .main-card {
+    position: relative;
+    z-index: 10;
+    background: rgba(15, 25, 45, 0.55);
+    backdrop-filter: blur(16px);
+    border-radius: 56px;
+    padding: 32px 28px;
+    max-width: 650px;
+    width: 100%;
+    box-shadow: 0 30px 50px rgba(0,0,0,0.5), 0 0 0 2px rgba(255,215,0,0.2) inset, 0 0 0 3px rgba(255,255,200,0.1);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 215, 0, 0.5);
+    text-align: center;
+  }
 
-input{
-text-align:center;
-border-radius:25px !important;
-}
+  .title {
+    font-size: 58px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #FFE6B0, #FFB347, #FFD966);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 20px rgba(255,200,0,0.6);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
 
-button{
-border-radius:25px !important;
-font-size:18px !important;
-padding:8px 25px !important;
-}
+  .title span {
+    font-size: 52px;
+    filter: drop-shadow(0 0 6px gold);
+  }
 
-#giftMessage{
-display:none;
-margin-top:20px;
-font-size:22px;
-background:rgba(255,255,255,0.15);
-padding:20px;
-border-radius:20px;
-animation:pop .6s;
-}
+  .subtitle {
+    font-size: 1.15rem;
+    font-weight: 400;
+    background: rgba(0,0,0,0.3);
+    display: inline-block;
+    padding: 6px 20px;
+    border-radius: 60px;
+    backdrop-filter: blur(4px);
+    margin-bottom: 30px;
+    color: #FFF5E0;
+    letter-spacing: 0.5px;
+  }
 
-@keyframes pop{
-from{transform:scale(.7);opacity:0;}
-to{transform:scale(1);opacity:1;}
-}
+  /* elegant input */
+  .elegant-input {
+    background: rgba(255,255,245,0.15);
+    border: 1.5px solid rgba(255,200,100,0.6);
+    color: #FFFAE6;
+    font-weight: 500;
+    padding: 12px 20px;
+    border-radius: 50px !important;
+    transition: all 0.3s;
+    font-size: 1.05rem;
+    text-align: center;
+    backdrop-filter: blur(5px);
+  }
 
-#scene{
-margin-top:20px;
-height:250px;
-width:100%;
-}
+  .elegant-input:focus {
+    background: rgba(0,0,0,0.4);
+    border-color: #ffd966;
+    box-shadow: 0 0 16px rgba(255,200,0,0.4);
+    color: white;
+  }
 
-.star{
-position:absolute;
-width:3px;
-height:3px;
-background:white;
-border-radius:50%;
-opacity:.7;
-animation:twinkle 2s infinite alternate;
-}
+  .elegant-input::placeholder {
+    color: rgba(255,245,210,0.7);
+    font-weight: 300;
+  }
 
-@keyframes twinkle{
-from{opacity:.2}
-to{opacity:1}
-}
+  .btn-gold {
+    background: linear-gradient(95deg, #F7B42C, #FC575E);
+    border: none;
+    color: white;
+    font-weight: bold;
+    padding: 10px 32px;
+    font-size: 1.2rem;
+    border-radius: 50px !important;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.3);
+    letter-spacing: 1px;
+  }
 
+  .btn-gold:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(95deg, #FFC857, #FF6A5C);
+    box-shadow: 0 16px 28px rgba(0,0,0,0.4);
+    color: #fff9e8;
+  }
+
+  .btn-gold:active {
+    transform: translateY(2px);
+  }
+
+  #giftMessage {
+    display: none;
+    margin-top: 30px;
+    background: linear-gradient(145deg, rgba(255,215,120,0.2), rgba(0,0,0,0.5));
+    backdrop-filter: blur(20px);
+    padding: 20px 20px;
+    border-radius: 48px;
+    border: 1px solid rgba(255, 220, 100, 0.7);
+    font-size: 1.5rem;
+    font-weight: 600;
+    animation: floatGlow 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    color: #FFF3C9;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    word-break: break-word;
+  }
+
+  @keyframes floatGlow {
+    0% {
+      opacity: 0;
+      transform: scale(0.8) translateY(20px);
+      filter: blur(4px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  /* 3d scene container */
+  #scene {
+    margin-top: 30px;
+    height: 220px;
+    width: 100%;
+    border-radius: 48px;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(4px);
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    transition: all 0.3s;
+  }
+
+  /* decorative crescent */
+  .ornament {
+    position: absolute;
+    top: -18px;
+    right: -18px;
+    font-size: 70px;
+    opacity: 0.7;
+    pointer-events: none;
+    filter: drop-shadow(0 0 12px gold);
+  }
+
+  .floating-lanterns {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    font-size: 35px;
+    opacity: 0.4;
+    pointer-events: none;
+    animation: floatSlow 5s infinite alternate;
+  }
+
+  @keyframes floatSlow {
+    0% { transform: translateY(0px) rotate(0deg);}
+    100% { transform: translateY(-8px) rotate(3deg);}
+  }
+
+  footer {
+    font-size: 0.7rem;
+    margin-top: 24px;
+    opacity: 0.7;
+    letter-spacing: 0.5px;
+  }
+
+  /* responsive */
+  @media (max-width: 550px) {
+    .main-card {
+      padding: 24px 18px;
+    }
+    .title {
+      font-size: 42px;
+    }
+    .title span {
+      font-size: 38px;
+    }
+    #giftMessage {
+      font-size: 1.2rem;
+    }
+    .btn-gold {
+      font-size: 1rem;
+    }
+  }
+
+  /* custom scroll & selection */
+  ::selection {
+    background: #ffc107;
+    color: #1e1a2f;
+  }
 </style>
 </head>
-
 <body>
 
+<div class="starfield" id="starfield"></div>
+<div class="floating-lanterns">🏮✨🌟</div>
+<div class="ornament">🌙⭐</div>
+
 <div class="main-card">
+  <div class="title">
+    <span>🌙</span> Eid Mubarak <span>✨</span>
+  </div>
+  <div class="subtitle">
+    💫 Send a celestial blessing to someone special 💫
+  </div>
 
-<div class="title">🌙 Eid Mubarak 🌙</div>
+  <input id="nameInput" class="form-control elegant-input" placeholder="Enter their beautiful name...">
+  <br>
+  <button onclick="createGift()" class="btn btn-gold" id="sendBtn">
+    🎁 Send Eid Gift 🎁
+  </button>
 
-<div class="subtitle">
-Type someone's name and send Eid gift 🎁
-</div>
-
-<input id="nameInput" class="form-control" placeholder="Enter Name">
-
-<br>
-
-<button onclick="createGift()" class="btn btn-warning">
-Send Eid Gift 🎁
-</button>
-
-<div id="giftMessage"></div>
-
-<div id="scene"></div>
-
+  <div id="giftMessage"></div>
+  <div id="scene"></div>
+  <footer>🌙 Divine blessings • Joy & Peace</footer>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
-
-/* Gift message */
-
-function createGift(){
-
-let name=document.getElementById("nameInput").value.trim();
-
-if(name===""){
-alert("Please enter a name");
-return;
-}
-
-let message=`✨ Eid Mubarak ${name}! ✨ <br><br>
-May Allah fill your life with happiness, success and blessings.`;
-
-let box=document.getElementById("giftMessage");
-
-box.style.display="block";
-box.innerHTML=message;
-
-}
-
-/* 3D moon */
-
-const scene=new THREE.Scene();
-
-const container=document.getElementById("scene");
-
-const camera=new THREE.PerspectiveCamera(
-75,
-container.clientWidth/container.clientHeight,
-0.1,
-1000
-);
-
-const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});
-
-renderer.setSize(container.clientWidth,container.clientHeight);
-
-container.appendChild(renderer.domElement);
-
-const geometry=new THREE.TorusGeometry(1.5,0.5,16,100);
-
-const material=new THREE.MeshStandardMaterial({
-color:0xffd700,
-metalness:1,
-roughness:0.3
-});
-
-const moon=new THREE.Mesh(geometry,material);
-
-scene.add(moon);
-
-const light=new THREE.PointLight(0xffffff,1.2);
-
-light.position.set(5,5,5);
-
-scene.add(light);
-
-camera.position.z=4;
-
-function animate(){
-
-requestAnimationFrame(animate);
-
-moon.rotation.x+=0.01;
-moon.rotation.y+=0.01;
-
-renderer.render(scene,camera);
-
-}
-
-animate();
-
-/* stars */
-
-for(let i=0;i<70;i++){
-
-let star=document.createElement("div");
-star.className="star";
-
-star.style.left=Math.random()*100+"%";
-star.style.top=Math.random()*100+"%";
-
-document.body.appendChild(star);
-
-}
-
+  /* ---------------------------------------------------------
+     1. Enhanced Eid Message with decorative animation
+  --------------------------------------------------------- */
+  function createGift() {
+    let nameInput = document.getElementById("nameInput");
+    let rawName = nameInput.value.trim();
+    
+    if (rawName === "") {
+      // gentle shake alert 
+      const btn = document.getElementById("sendBtn");
+      btn.style.transform = "translateX(6px)";
+      setTimeout(() => { btn.style.transform = ""; }, 200);
+      // custom styled alert via toast effect (simple)
+      let tempDiv = document.createElement("div");
+      tempDiv.innerText = "✨ Please enter a name ✨";
+      tempDiv.style.position = "fixed";
+      tempDiv.style.bottom = "20px";
+      tempDiv.style.left = "50%";
+      tempDiv.style.transform = "translateX(-50%)";
+      tempDiv.style.backgroundColor = "rgba(0,0,0,0.8)";
+      tempDiv.style.backdropFilter = "blur(12px)";
+      tempDiv.style.color = "#FFD966";
+      tempDiv.style.padding = "8px 24px";
+      tempDiv.style.borderRadius = "60px";
+      tempDiv.style.zIndex = "999";
+      tempDiv.style.fontWeight = "bold";
+      tempDiv.style.fontSize = "14px";
+      tempDiv.style.border = "1px solid gold";
+      document.body.appendChild(tempDiv);
+      setTimeout(() => { tempDiv.remove(); }, 1800);
+      return;
+    }
+    
+    // beautifully formatted name with honorific
+    let blessedName = rawName.charAt(0).toUpperCase() + rawName.slice(1).toLowerCase();
+    let messageHTML = `
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <div style="font-size:2rem;">🌟✨🌟</div>
+        <div>✨ <strong style="color:#FFE484;">Eid Mubarak, ${blessedName}!</strong> ✨</div>
+        <div style="font-size:1rem; font-weight:400; margin-top:4px;">🌙 May Allah's blessings shower upon you, <br> 
+        filling your home with joy, peace & endless prosperity. 🤲</div>
+        <div style="font-size:0.9rem; margin-top:6px;">💫 Taqabbalallahu minna wa minkum 💫</div>
+        <div>⭐🎈⭐</div>
+      </div>
+    `;
+    
+    let giftBox = document.getElementById("giftMessage");
+    giftBox.style.display = "block";
+    giftBox.innerHTML = messageHTML;
+    
+    // little confetti effect (simple canvas burst)
+    createConfettiBurst();
+    
+    // additional spark: add temporary shimmer to name input
+    const inputEl = document.getElementById("nameInput");
+    inputEl.style.borderColor = "#FFD966";
+    inputEl.style.boxShadow = "0 0 18px rgba(255,220,80,0.6)";
+    setTimeout(() => {
+      inputEl.style.borderColor = "rgba(255,200,100,0.6)";
+      inputEl.style.boxShadow = "";
+    }, 800);
+  }
+  
+  // simple but joyful confetti using canvas (no external libs)
+  function createConfettiBurst() {
+    const confettiCount = 80;
+    const container = document.body;
+    for (let i = 0; i < confettiCount; i++) {
+      let conf = document.createElement("div");
+      conf.style.position = "fixed";
+      conf.style.width = Math.random() * 8 + 4 + "px";
+      conf.style.height = Math.random() * 8 + 4 + "px";
+      conf.style.backgroundColor = `hsl(${Math.random() * 60 + 30}, 100%, 65%)`;
+      conf.style.borderRadius = Math.random() > 0.7 ? "50%" : "2px";
+      conf.style.left = Math.random() * window.innerWidth + "px";
+      conf.style.top = "-20px";
+      conf.style.zIndex = "9999";
+      conf.style.opacity = "0.9";
+      conf.style.pointerEvents = "none";
+      conf.style.boxShadow = "0 0 6px gold";
+      document.body.appendChild(conf);
+      
+      let duration = Math.random() * 1500 + 1000;
+      let endPos = window.innerHeight + 100;
+      let startTime = performance.now();
+      
+      function animateConfetti(now) {
+        let elapsed = now - startTime;
+        let progress = Math.min(1, elapsed / duration);
+        let yPos = -20 + (endPos * progress);
+        let xDrift = Math.sin(progress * Math.PI * 3) * (Math.random() * 30);
+        let currentX = parseFloat(conf.style.left);
+        conf.style.top = yPos + "px";
+        conf.style.left = currentX + xDrift * 0.8 + "px";
+        conf.style.transform = `rotate(${progress * 360 * (Math.random() > 0.5 ? 1 : -1)}deg)`;
+        if (progress < 1) {
+          requestAnimationFrame(animateConfetti);
+        } else {
+          conf.remove();
+        }
+      }
+      requestAnimationFrame(animateConfetti);
+    }
+  }
+  
+  /* ---------------------------------------------------------
+     2. Improved THREE.js scene - rotating Crescent Moon + Stars & Sparkles
+  --------------------------------------------------------- */
+  const sceneContainer = document.getElementById("scene");
+  if (sceneContainer) {
+    const width = sceneContainer.clientWidth;
+    const height = sceneContainer.clientHeight;
+    
+    const scene3D = new THREE.Scene();
+    scene3D.background = null; // transparent
+    
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.set(0, 1.2, 5);
+    camera.lookAt(0, 0, 0);
+    
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(width, height);
+    renderer.setClearColor(0x000000, 0);
+    sceneContainer.innerHTML = '';
+    sceneContainer.appendChild(renderer.domElement);
+    
+    // --- Main crescent moon (using torus + sphere subtraction style? -> better: custom shape: Group with torus + sphere to mimic crescent)
+    const moonGroup = new THREE.Group();
+    
+    // golden crescent: main torus + sphere blend
+    const crescentTorus = new THREE.Mesh(
+      new THREE.TorusGeometry(1.1, 0.28, 32, 100, Math.PI),
+      new THREE.MeshStandardMaterial({ color: 0xffdd99, emissive: 0x442200, roughness: 0.2, metalness: 0.85, emissiveIntensity: 0.5 })
+    );
+    crescentTorus.rotation.x = 0.3;
+    crescentTorus.rotation.z = 0.7;
+    crescentTorus.rotation.y = 0.2;
+    
+    const orbFill = new THREE.Mesh(
+      new THREE.SphereGeometry(0.9, 48, 48),
+      new THREE.MeshStandardMaterial({ color: 0xffcc88, emissive: 0x552200, emissiveIntensity: 0.3, metalness: 0.4, roughness: 0.3 })
+    );
+    orbFill.position.set(-0.25, 0.1, 0.2);
+    
+    const cutSphere = new THREE.Mesh(
+      new THREE.SphereGeometry(0.68, 32, 32),
+      new THREE.MeshStandardMaterial({ color: 0x332211, emissive: 0x111100, metalness: 0.2 })
+    );
+    cutSphere.position.set(0.3, -0.1, 0.35);
+    
+    moonGroup.add(orbFill);
+    moonGroup.add(crescentTorus);
+    moonGroup.add(cutSphere);
+    
+    // add glowing aura effect via point light inside
+    const innerGlow = new THREE.PointLight(0xffaa66, 0.9, 6);
+    innerGlow.position.set(0.2, 0.1, 0.5);
+    moonGroup.add(innerGlow);
+    
+    // tiny sparkle particles around moon
+    const sparkleCount = 180;
+    const sparkleGeometry = new THREE.BufferGeometry();
+    const sparklePositions = new Float32Array(sparkleCount * 3);
+    for (let i = 0; i < sparkleCount; i++) {
+      const radius = 1.45 + Math.random() * 0.9;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      sparklePositions[i*3] = radius * Math.sin(phi) * Math.cos(theta);
+      sparklePositions[i*3+1] = radius * Math.sin(phi) * Math.sin(theta) + 0.2;
+      sparklePositions[i*3+2] = radius * Math.cos(phi) - 0.2;
+    }
+    sparkleGeometry.setAttribute('position', new THREE.BufferAttribute(sparklePositions, 3));
+    const sparkleMaterial = new THREE.PointsMaterial({ color: 0xffdd99, size: 0.045, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending });
+    const starDust = new THREE.Points(sparkleGeometry, sparkleMaterial);
+    moonGroup.add(starDust);
+    
+    scene3D.add(moonGroup);
+    
+    // --- Ambient soft lighting
+    const ambientLight = new THREE.AmbientLight(0x332222);
+    scene3D.add(ambientLight);
+    
+    const mainLight = new THREE.DirectionalLight(0xffeebb, 1.2);
+    mainLight.position.set(2, 3, 4);
+    scene3D.add(mainLight);
+    
+    const backLight = new THREE.PointLight(0xccaaff, 0.5);
+    backLight.position.set(-1, 1, -2);
+    scene3D.add(backLight);
+    
+    const fillLight = new THREE.PointLight(0xffaa66, 0.6);
+    fillLight.position.set(1, 2, 2);
+    scene3D.add(fillLight);
+    
+    // floating glitter stars (small orbiting particles around scene)
+    const starFieldParticles = new THREE.BufferGeometry();
+    const starCount = 400;
+    const starPos = [];
+    for (let i = 0; i < starCount; i++) {
+      starPos.push((Math.random() - 0.5) * 35);
+      starPos.push((Math.random() - 0.5) * 18);
+      starPos.push((Math.random() - 0.5) * 12 - 4);
+    }
+    starFieldParticles.setAttribute('position', new THREE.BufferAttribute(new Float32Array(starPos), 3));
+    const starFieldMat = new THREE.PointsMaterial({ color: 0xffdd99, size: 0.04, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending });
+    const starFieldObj = new THREE.Points(starFieldParticles, starFieldMat);
+    scene3D.add(starFieldObj);
+    
+    // additional rotating ring of light
+    const glowRingGeo = new THREE.TorusGeometry(1.48, 0.035, 64, 400);
+    const ringMat = new THREE.MeshStandardMaterial({ color: 0xffaa77, emissive: 0xff8822, emissiveIntensity: 0.7 });
+    const ring = new THREE.Mesh(glowRingGeo, ringMat);
+    ring.rotation.x = Math.PI / 2;
+    ring.rotation.z = Date.now() * 0.002;
+    scene3D.add(ring);
+    
+    let time = 0;
+    function animateScene() {
+      requestAnimationFrame(animateScene);
+      time += 0.012;
+      
+      // rotate moonGroup gracefully
+      moonGroup.rotation.y = Math.sin(time * 0.2) * 0.2;
+      moonGroup.rotation.x = Math.sin(time * 0.3) * 0.1;
+      moonGroup.rotation.z = Math.cos(time * 0.25) * 0.05;
+      
+      // rotate ring
+      ring.rotation.z = time * 0.4;
+      ring.rotation.x = Math.sin(time * 0.5) * 0.3;
+      
+      // floating starfield particles gentle drift
+      starFieldObj.rotation.y += 0.002;
+      starFieldObj.rotation.x = Math.sin(time * 0.1) * 0.1;
+      
+      // animate inner glow intensity
+      const intensity = 0.65 + Math.sin(time * 5) * 0.2;
+      innerGlow.intensity = intensity;
+      
+      renderer.render(scene3D, camera);
+    }
+    
+    animateScene();
+    
+    // handle resize for 3d canvas
+    window.addEventListener('resize', () => {
+      const newWidth = sceneContainer.clientWidth;
+      const newHeight = sceneContainer.clientHeight;
+      renderer.setSize(newWidth, newHeight);
+      camera.aspect = newWidth / newHeight;
+      camera.updateProjectionMatrix();
+    });
+    
+    // fix initial after font load or small delay
+    setTimeout(() => {
+      renderer.setSize(sceneContainer.clientWidth, sceneContainer.clientHeight);
+      camera.aspect = sceneContainer.clientWidth / sceneContainer.clientHeight;
+      camera.updateProjectionMatrix();
+    }, 100);
+  }
+  
+  /* ---------------------------------------------------------
+     3. Enhanced dynamic twinkling stars background
+  --------------------------------------------------------- */
+  function generateStars() {
+    const starfieldDiv = document.getElementById("starfield");
+    if (!starfieldDiv) return;
+    starfieldDiv.innerHTML = '';
+    const starCountDynamic = 180;
+    for (let i = 0; i < starCountDynamic; i++) {
+      const star = document.createElement("div");
+      star.classList.add("star-particle");
+      const size = Math.random() * 3 + 1.5;
+      star.style.width = size + "px";
+      star.style.height = size + "px";
+      star.style.left = Math.random() * 100 + "%";
+      star.style.top = Math.random() * 100 + "%";
+      star.style.animationDelay = Math.random() * 5 + "s";
+      star.style.animationDuration = Math.random() * 2 + 2 + "s";
+      star.style.opacity = Math.random() * 0.6 + 0.3;
+      star.style.backgroundColor = `rgba(255, 240, 180, ${Math.random() * 0.7 + 0.3})`;
+      starfieldDiv.appendChild(star);
+    }
+    // also add some shooting-star-like elements
+    for (let i = 0; i < 12; i++) {
+      let meteor = document.createElement("div");
+      meteor.style.position = "absolute";
+      meteor.style.width = "2px";
+      meteor.style.height = "2px";
+      meteor.style.background = "linear-gradient(90deg, #ffddaa, transparent)";
+      meteor.style.borderRadius = "50%";
+      meteor.style.top = Math.random() * 80 + "%";
+      meteor.style.left = Math.random() * 90 + "%";
+      meteor.style.opacity = "0.7";
+      meteor.style.filter = "blur(1px)";
+      meteor.style.pointerEvents = "none";
+      meteor.style.animation = `shootingStar ${Math.random() * 8 + 6}s linear infinite`;
+      meteor.style.animationDelay = Math.random() * 10 + "s";
+      starfieldDiv.appendChild(meteor);
+    }
+  }
+  
+  // Add custom keyframe for shooting stars if not existing
+  const styleSheet = document.createElement("style");
+  styleSheet.textContent = `
+    @keyframes shootingStar {
+      0% {
+        transform: translateX(0px) translateY(0px);
+        opacity: 0.8;
+        width: 2px;
+        height: 2px;
+      }
+      20% {
+        opacity: 1;
+        width: 5px;
+        height: 5px;
+        box-shadow: 0 0 8px gold;
+      }
+      70% {
+        opacity: 0.9;
+      }
+      100% {
+        transform: translateX(-150px) translateY(80px);
+        opacity: 0;
+        width: 1px;
+        height: 1px;
+      }
+    }
+    .star-particle {
+      position: absolute;
+      background: radial-gradient(circle, #fffbc2, #ffd966);
+      border-radius: 50%;
+      box-shadow: 0 0 6px rgba(255,225,100,0.8);
+    }
+  `;
+  document.head.appendChild(styleSheet);
+  generateStars();
+  
+  // Optional: Refresh stars on resize for new positions (clean)
+  window.addEventListener('resize', () => {
+    generateStars();
+  });
+  
+  // slight movement to the floating lanterns text
+  const lanternEl = document.querySelector('.floating-lanterns');
+  if (lanternEl) {
+    setInterval(() => {
+      let xOff = (Math.sin(Date.now() / 1800) * 4);
+      lanternEl.style.transform = `translateX(${xOff}px) translateY(-3px)`;
+    }, 200);
+  }
+  
+  // initial hint gift message maybe hidden but we can preload effect
+  console.log("✨ Eid Gift Experience Enhanced ✨");
 </script>
-
 </body>
 </html>
