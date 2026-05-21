@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Police Management System</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- AOS Animation -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      scroll-behavior:smooth;
+      font-family:Arial, sans-serif;
+    }
+
+    body{
+      background:#07111f;
+      color:#fff;
+      overflow-x:hidden;
+    }
+
+    .navbar{
+      background:rgba(0,0,0,0.7);
+      backdrop-filter:blur(10px);
+    }
+
+    .navbar-brand{
+      font-size:28px;
+      font-weight:bold;
+      color:#00bfff !important;
+    }
+
+    .nav-link{
+      color:#fff !important;
+      margin:0 10px;
+      transition:0.3s;
+    }
+
+    .nav-link:hover{
+      color:#00bfff !important;
+    }
+
+    .hero{
+      height:100vh;
+      background:url('https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+    }
+
+    .hero::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.7);
+    }
+
+    .hero-content{
+      position:relative;
+      z-index:2;
+    }
+
+    .hero h1{
+      font-size:60px;
+      font-weight:bold;
+      text-shadow:0 0 20px #00bfff;
+    }
+
+    .hero p{
+      font-size:20px;
+      margin-top:20px;
+    }
+
+    .btn-custom{
+      background:#00bfff;
+      color:#fff;
+      border:none;
+      padding:12px 30px;
+      margin:10px;
+      border-radius:50px;
+      transition:0.4s;
+    }
+
+    .btn-custom:hover{
+      background:#ff003c;
+      transform:scale(1.05);
+    }
+
+    .section-title{
+      text-align:center;
+      margin-bottom:50px;
+      font-size:40px;
+      font-weight:bold;
+      color:#00bfff;
+    }
+
+    .glass-card{
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.1);
+      backdrop-filter:blur(10px);
+      border-radius:20px;
+      padding:30px;
+      transition:0.4s;
+      height:100%;
+    }
+
+    .glass-card:hover{
+      transform:translateY(-10px);
+      box-shadow:0 0 20px #00bfff;
+    }
+
+    .glass-card i{
+      font-size:50px;
+      color:#00bfff;
+      margin-bottom:20px;
+    }
+
+    .emergency{
+      background:#b30000;
+      padding:50px 20px;
+      text-align:center;
+    }
+
+    .counter{
+      font-size:50px;
+      font-weight:bold;
+      color:#00bfff;
+    }
+
+    .video iframe{
+      width:100%;
+      height:250px;
+      border-radius:15px;
+    }
+
+    .form-control,
+    .form-select{
+      background:#0d1b2a;
+      border:none;
+      color:#fff;
+    }
+
+    .form-control:focus,
+    .form-select:focus{
+      box-shadow:0 0 10px #00bfff;
+      background:#0d1b2a;
+      color:#fff;
+    }
+
+    footer{
+      background:#000;
+      padding:30px;
+      text-align:center;
+      margin-top:50px;
+    }
+
+    .social-icons a{
+      color:#fff;
+      font-size:24px;
+      margin:0 10px;
+      transition:0.3s;
+    }
+
+    .social-icons a:hover{
+      color:#00bfff;
+    }
+
+    #topBtn{
+      position:fixed;
+      bottom:20px;
+      right:20px;
+      background:#00bfff;
+      color:#fff;
+      border:none;
+      width:50px;
+      height:50px;
+      border-radius:50%;
+      display:none;
+      z-index:999;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#"><i class="fa-solid fa-shield-halved"></i> Smart Police</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#departments">Departments</a></li>
+        <li class="nav-item"><a class="nav-link" href="#fir">FIR</a></li>
+        <li class="nav-item"><a class="nav-link" href="#videos">Videos</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <h1>Smart Police Management System</h1>
+    <p>Police • FIA • Traffic Police • Motorway Police • Para Force</p>
+    <button class="btn btn-custom">Emergency 15</button>
+    <button class="btn btn-custom">Report Crime</button>
+  </div>
+</section>
+
+<!-- Departments -->
+<section class="container py-5" id="departments">
+  <h2 class="section-title" data-aos="fade-up">Departments</h2>
+
+  <div class="row g-4">
+
+    <div class="col-md-4" data-aos="zoom-in">
+      <div class="glass-card text-center">
+        <i class="fa-solid fa-building-shield"></i>
+        <h3>Police Station</h3>
+        <p>FIR registration, criminal records, investigations and citizen complaints.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4" data-aos="zoom-in">
+      <div class="glass-card text-center">
+        <i class="fa-solid fa-user-secret"></i>
+        <h3>FIA</h3>
+        <p>Cyber crime investigation, fraud detection and digital security.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4" data-aos="zoom-in">
+      <div class="glass-card text-center">
+        <i class="fa-solid fa-traffic-light"></i>
+        <h3>Traffic Police</h3>
+        <p>Traffic monitoring, challan verification and road safety system.</p>
+      </div>
+    </div>
+
+    <div class="col-md-6" data-aos="zoom-in">
+      <div class="glass-card text-center">
+        <i class="fa-solid fa-road"></i>
+        <h3>Motorway Police</h3>
+        <p>Highway patrol, vehicle tracking and emergency assistance.</p>
+      </div>
+    </div>
+
+    <div class="col-md-6" data-aos="zoom-in">
+      <div class="glass-card text-center">
+        <i class="fa-solid fa-person-rifle"></i>
+        <h3>Para Force</h3>
+        <p>Anti-terror operations, patrol management and rapid response force.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Emergency -->
+<section class="emergency">
+  <h2><i class="fa-solid fa-triangle-exclamation"></i> Emergency Helpline</h2>
+  <p>Call immediately in emergency situations</p>
+  <h1>15</h1>
+</section>
+
+<!-- FIR Form -->
+<section class="container py-5" id="fir">
+  <h2 class="section-title">Online FIR Registration</h2>
+
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="glass-card">
+
+        <form>
+          <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Full Name">
+          </div>
+
+          <div class="mb-3">
+            <input type="text" class="form-control" placeholder="CNIC Number">
+          </div>
+
+          <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Phone Number">
+          </div>
+
+          <div class="mb-3">
+            <select class="form-select">
+              <option>Select Incident Type</option>
+              <option>Theft</option>
+              <option>Cyber Crime</option>
+              <option>Accident</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <textarea class="form-control" rows="5" placeholder="Incident Details"></textarea>
+          </div>
+
+          <button class="btn btn-custom w-100">Submit FIR</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Statistics -->
+<section class="container py-5 text-center">
+  <h2 class="section-title">Crime Statistics</h2>
+
+  <div class="row">
+    <div class="col-md-3">
+      <div class="glass-card">
+        <div class="counter" data-target="4500">0</div>
+        <p>FIR Reports</p>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="glass-card">
+        <div class="counter" data-target="2100">0</div>
+        <p>Arrests</p>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="glass-card">
+        <div class="counter" data-target="1200">0</div>
+        <p>Traffic Cases</p>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="glass-card">
+        <div class="counter" data-target="950">0</div>
+        <p>Emergency Calls</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Videos -->
+<section class="container py-5" id="videos">
+  <h2 class="section-title">Awareness Videos</h2>
+
+  <div class="row g-4">
+
+    <div class="col-md-4 video">
+      <iframe src="https://www.youtube.com/embed/9No-FiEInLA" allowfullscreen></iframe>
+    </div>
+
+    <div class="col-md-4 video">
+      <iframe src="https://www.youtube.com/embed/2Vv-BfVoq4g" allowfullscreen></iframe>
+    </div>
+
+    <div class="col-md-4 video">
+      <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY" allowfullscreen></iframe>
+    </div>
+
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="container py-5" id="contact">
+  <h2 class="section-title">Contact Us</h2>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="glass-card">
+        <h3>Emergency Contacts</h3>
+        <p><i class="fa-solid fa-phone"></i> Police Helpline: 15</p>
+        <p><i class="fa-solid fa-truck-medical"></i> Ambulance: 1122</p>
+        <p><i class="fa-solid fa-fire"></i> Fire Brigade: 16</p>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="glass-card">
+        <form>
+          <input type="text" class="form-control mb-3" placeholder="Your Name">
+          <input type="email" class="form-control mb-3" placeholder="Email Address">
+          <textarea class="form-control mb-3" rows="5" placeholder="Message"></textarea>
+          <button class="btn btn-custom w-100">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <h3>Smart Police Management System</h3>
+
+  <div class="social-icons mt-3">
+    <a href="#"><i class="fab fa-facebook"></i></a>
+    <a href="#"><i class="fab fa-instagram"></i></a>
+    <a href="#"><i class="fab fa-youtube"></i></a>
+    <a href="#"><i class="fab fa-twitter"></i></a>
+  </div>
+
+  <p class="mt-3">© 2026 Smart Police System. All Rights Reserved.</p>
+</footer>
+
+<!-- Top Button -->
+<button id="topBtn"><i class="fa-solid fa-arrow-up"></i></button>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- AOS JS -->
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+<script>
+  AOS.init();
+
+  // Counter Animation
+  const counters = document.querySelectorAll('.counter');
+
+  counters.forEach(counter => {
+    counter.innerText = '0';
+
+    const updateCounter = () => {
+      const target = +counter.getAttribute('data-target');
+      const c = +counter.innerText;
+
+      const increment = target / 100;
+
+      if(c < target){
+        counter.innerText = `${Math.ceil(c + increment)}`;
+        setTimeout(updateCounter, 30);
+      } else {
+        counter.innerText = target;
+      }
+    };
+
+    updateCounter();
+  });
+
+  // Back To Top
+  const topBtn = document.getElementById('topBtn');
+
+  window.onscroll = function(){
+    if(document.body.scrollTop > 300 || document.documentElement.scrollTop > 300){
+      topBtn.style.display = 'block';
+    } else {
+      topBtn.style.display = 'none';
+    }
+  }
+
+  topBtn.onclick = function(){
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+
+</body>
+</html>
