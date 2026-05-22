@@ -1,414 +1,2371 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Aetherix | Next-Gen Aviation Ecosystem</title>
-  <!-- Bootstrap 5 + Icons + Fonts -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Orbitron:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyHub - Premium Aviation Management System</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%230a1628' width='100' height='100'/><path fill='%2300d4ff' d='M50 20 L65 45 L60 50 L70 60 L50 65 L30 60 L40 50 L35 45 Z'/></svg>">
+    
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@400;700;900&family=Montserrat:wght@400;600;700&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #0a0f1f;
-      color: #eef5ff;
-      scroll-behavior: smooth;
-      overflow-x: hidden;
-    }
+        :root {
+            --midnight-blue: #0a1628;
+            --aviation-black: #0d0d0d;
+            --sky-blue: #1e90ff;
+            --electric-cyan: #00d4ff;
+            --silver-gray: #a0aec0;
+            --neon-blue: #0066ff;
+            --emergency-orange: #ff6b35;
+            --dark-overlay: rgba(10, 22, 40, 0.95);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --primary-gradient: linear-gradient(135deg, #0a1628 0%, #1e3a8a 100%);
+            --neon-glow: 0 0 20px rgba(30, 144, 255, 0.5);
+        }
 
-    /* custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #101624;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #2c7da0;
-      border-radius: 10px;
-    }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--aviation-black);
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
 
-    h1, h2, h3, h4, .orbitron {
-      font-family: 'Orbitron', monospace;
-      letter-spacing: 1px;
-    }
+        /* ============ NAVBAR IMPROVEMENTS ============ */
+        .navbar {
+            background: linear-gradient(135deg, rgba(10, 22, 40, 0.97), rgba(13, 13, 13, 0.97));
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(30, 144, 255, 0.3);
+            padding: 12px 0;
+            transition: all 0.4s ease;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
 
-    /* glassmorphism base */
-    .glass-card, .navbar, .footer-dark, .stat-card, .service-card, .testimonial-card, .flight-card, .aircraft-card, .emergency-card {
-      background: rgba(15, 25, 45, 0.55);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(0, 255, 255, 0.25);
-      border-radius: 28px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      transition: all 0.35s ease;
-    }
+        .navbar.scrolled {
+            background: rgba(10, 22, 40, 0.99);
+            box-shadow: 0 4px 40px rgba(0, 0, 0, 0.6);
+            padding: 8px 0;
+        }
 
-    .glass-card:hover, .service-card:hover, .aircraft-card:hover {
-      transform: translateY(-8px);
-      border-color: #0ff;
-      box-shadow: 0 20px 35px -12px rgba(0, 255, 255, 0.2);
-    }
+        .navbar-brand {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1.1rem, 3vw, 1.6rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--sky-blue), var(--electric-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-    /* navbar */
-    .navbar {
-      transition: all 0.4s ease;
-      padding: 1rem 2rem;
-      background: rgba(2, 8, 20, 0.7);
-      backdrop-filter: blur(16px);
-    }
-    .navbar.scrolled {
-      background: #030711e6;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-      padding: 0.7rem 2rem;
-    }
-    .nav-link {
-      color: #ccdeff !important;
-      font-weight: 500;
-      margin: 0 0.3rem;
-      transition: 0.2s;
-    }
-    .nav-link:hover {
-      color: #0ff !important;
-      text-shadow: 0 0 6px cyan;
-    }
-    .dropdown-menu {
-      background: rgba(10, 20, 35, 0.95);
-      backdrop-filter: blur(10px);
-      border: 1px solid cyan;
-    }
-    .dropdown-item {
-      color: #fff;
-    }
-    .dropdown-item:hover {
-      background: #0ff2;
-      color: #0ff;
-    }
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
 
-    /* hero typing + particle overlay */
-    .hero-section {
-      position: relative;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #0a0f1f 0%, #07111f 100%), url('https://images.pexels.com/photos/46148/aircraft-jet-landing-clouds-46148.jpeg?auto=compress&cs=tinysrgb&w=1600');
-      background-size: cover;
-      background-blend-mode: overlay;
-      background-position: center;
-      display: flex;
-      align-items: center;
-    }
-    .hero-overlay {
-      background: radial-gradient(circle at 20% 30%, rgba(0,0,0,0.6), rgba(2,8,21,0.85));
-      width: 100%;
-      padding: 6rem 0;
-    }
-    .typing-text {
-      font-size: 2.8rem;
-      font-weight: 800;
-      border-right: 3px solid cyan;
-      white-space: nowrap;
-      overflow: hidden;
-      width: 0;
-      animation: typing 3s steps(30, end) forwards, blink 0.7s step-end infinite;
-    }
-    @keyframes typing {
-      from { width: 0; }
-      to { width: 100%; }
-    }
-    @keyframes blink {
-      0%,100%{ border-color: cyan; }
-      50%{ border-color: transparent; }
-    }
-    /* buttons */
-    .btn-glow {
-      background: linear-gradient(95deg, #00a6c4, #005b96);
-      border: none;
-      padding: 12px 28px;
-      font-weight: bold;
-      transition: 0.3s;
-      box-shadow: 0 0 12px rgba(0,255,255,0.5);
-    }
-    .btn-glow:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 20px cyan;
-      background: linear-gradient(95deg, #0cc, #0077b6);
-    }
+        .navbar-brand i {
+            font-size: 1.5rem;
+        }
 
-    /* emergency pulsating */
-    .pulse-alert {
-      animation: pulseRed 1.5s infinite;
-      border-radius: 30px;
-    }
-    @keyframes pulseRed {
-      0% { box-shadow: 0 0 0 0 rgba(255, 80, 40, 0.7); }
-      70% { box-shadow: 0 0 0 12px rgba(255, 80, 40, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(255, 80, 40, 0); }
-    }
-    .emergency-card {
-      border-left: 5px solid #ff4d4d;
-      transition: all 0.2s;
-    }
-    /* counters */
-    .counter-number {
-      font-size: 2.8rem;
-      font-weight: 800;
-      font-family: 'Orbitron', monospace;
-      color: #0ff;
-    }
-    /* flight status boards */
-    .status-badge {
-      background: #0a1930;
-      border-radius: 40px;
-      padding: 5px 12px;
-      font-size: 0.8rem;
-    }
-    /* progress bar */
-    .progress-custom {
-      height: 8px;
-      background: #1e2a3a;
-      border-radius: 4px;
-    }
-    .progress-fill {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, #0ff, #0077ff);
-      border-radius: 4px;
-    }
-    /* back to top */
-    .back-to-top {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: #0ff3;
-      backdrop-filter: blur(8px);
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 999;
-      transition: 0.3s;
-      border: 1px solid cyan;
-    }
-    /* loader */
-    .loader-wrapper {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #050a15;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.6s;
-    }
-    .loader {
-      width: 70px;
-      aspect-ratio: 1;
-      border-radius: 50%;
-      border: 4px solid #0ff;
-      border-right-color: #0000;
-      animation: spin 1s infinite;
-    }
-    @keyframes spin { to{ transform: rotate(360deg); } }
-    /* dark mode toggle */
-    .dark-toggle {
-      position: fixed;
-      bottom: 30px;
-      left: 30px;
-      z-index: 999;
-      background: #111c2f;
-      border-radius: 40px;
-      padding: 8px 16px;
-    }
-    body.dark {
-      background: #010101;
-      color: #ddd;
-    }
-    body.dark .glass-card {
-      background: rgba(0, 0, 0, 0.7);
-    }
-    /* footer */
-    .footer-dark {
-      background: #03050bdd;
-      backdrop-filter: blur(12px);
-      padding: 3rem 0 1rem;
-    }
-    iframe {
-      border-radius: 20px;
-    }
-    @media (max-width: 768px) {
-      .typing-text { font-size: 1.8rem; white-space: normal; border-right: none; animation: none; width: auto; text-align: center; }
-      .hero-section .display-3 { font-size: 2rem; }
-    }
-  </style>
+        .navbar-toggler {
+            border: 2px solid var(--electric-cyan);
+            padding: 8px 12px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            outline: none;
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%2300d4ff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        .nav-link {
+            color: var(--silver-gray) !important;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            margin: 0 3px;
+            padding: 10px 12px !important;
+            border-radius: 6px;
+            font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 12px;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--sky-blue), var(--electric-cyan));
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--electric-cyan) !important;
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .nav-link:hover::after {
+            width: calc(100% - 24px);
+        }
+
+        .nav-link i {
+            margin-right: 5px;
+            font-size: 0.95rem;
+        }
+
+        .dropdown-menu {
+            background: linear-gradient(135deg, rgba(10, 22, 40, 0.99), rgba(13, 13, 13, 0.99));
+            border: 1px solid rgba(30, 144, 255, 0.3);
+            backdrop-filter: blur(15px);
+            border-radius: 10px;
+            padding: 10px 0;
+            margin-top: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .dropdown-item {
+            color: var(--silver-gray);
+            transition: all 0.3s ease;
+            padding: 12px 20px;
+            margin: 5px 10px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: clamp(0.8rem, 1.4vw, 0.9rem);
+        }
+
+        .dropdown-item:hover {
+            background: rgba(30, 144, 255, 0.15);
+            color: var(--electric-cyan);
+            padding-left: 30px;
+        }
+
+        .dropdown-item i {
+            margin-right: 8px;
+            width: 16px;
+        }
+
+        .dropdown-divider {
+            border-color: rgba(30, 144, 255, 0.2);
+            margin: 8px 0;
+        }
+
+        /* ============ HERO SECTION ============ */
+        .hero-section {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--midnight-blue) 0%, #1a3a52 100%);
+            background-image: url('https://images.unsplash.com/photo-1517059879372-282ba75df970?w=1400&h=900&fit=crop');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(10, 22, 40, 0.85), rgba(30, 144, 255, 0.15));
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+            padding: 20px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1.8rem, 8vw, 4rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--sky-blue), var(--electric-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(0.95rem, 3vw, 1.4rem);
+            color: var(--silver-gray);
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .typing-effect {
+            display: inline-block;
+            border-right: 3px solid var(--electric-cyan);
+            white-space: nowrap;
+            overflow: hidden;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: var(--electric-cyan); }
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn-custom {
+            padding: clamp(10px, 2vw, 16px) clamp(20px, 4vw, 40px);
+            font-weight: 600;
+            border: 2px solid var(--electric-cyan);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            font-size: clamp(0.75rem, 1.5vw, 0.95rem);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .btn-custom::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--sky-blue);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .btn-custom-primary {
+            background: var(--sky-blue);
+            color: white;
+            box-shadow: var(--neon-glow);
+        }
+
+        .btn-custom-primary:hover {
+            box-shadow: 0 0 30px rgba(30, 144, 255, 0.8);
+            transform: translateY(-3px);
+        }
+
+        .btn-custom-secondary {
+            background: transparent;
+            color: var(--electric-cyan);
+        }
+
+        .btn-custom-secondary:hover {
+            background: var(--electric-cyan);
+            color: var(--midnight-blue);
+        }
+
+        .btn-emergency {
+            background: var(--emergency-orange);
+            border-color: var(--emergency-orange);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(255, 107, 53, 0); }
+        }
+
+        /* ============ PARTICLES ============ */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(0, 212, 255, 0.5);
+            border-radius: 50%;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+        }
+
+        /* ============ CAROUSEL ============ */
+        .carousel-section {
+            padding: clamp(40px, 8vw, 60px) 0;
+            background: var(--midnight-blue);
+        }
+
+        .carousel-item {
+            background-size: cover;
+            background-position: center;
+            height: clamp(200px, 50vw, 500px);
+            position: relative;
+        }
+
+        .carousel-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(10, 22, 40, 0.7), rgba(30, 144, 255, 0.2));
+            z-index: 1;
+        }
+
+        .carousel-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 2;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            padding: clamp(20px, 6vw, 60px) clamp(15px, 4vw, 30px) clamp(15px, 4vw, 30px);
+        }
+
+        .carousel-caption h5 {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1.2rem, 4vw, 2.2rem);
+            font-weight: 800;
+            color: var(--electric-cyan);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .carousel-caption p {
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            color: var(--silver-gray);
+            margin-bottom: 12px;
+        }
+
+        .carousel-control-prev, .carousel-control-next {
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-control-prev:hover, .carousel-control-next:hover {
+            opacity: 1;
+        }
+
+        .carousel-indicators {
+            bottom: 15px;
+        }
+
+        .carousel-indicators button {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: 2px solid var(--electric-cyan);
+        }
+
+        .carousel-indicators button.active {
+            background: var(--electric-cyan);
+        }
+
+        /* ============ SERVICES SECTION ============ */
+        .services-section {
+            padding: clamp(50px, 10vw, 80px) 0;
+            background: var(--aviation-black);
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1.8rem, 6vw, 3rem);
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: clamp(35px, 8vw, 60px);
+            background: linear-gradient(135deg, var(--sky-blue), var(--electric-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .service-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(30, 144, 255, 0.2);
+            border-radius: 12px;
+            padding: clamp(20px, 4vw, 35px);
+            height: 100%;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(30, 144, 255, 0.1), transparent);
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            border-color: var(--electric-cyan);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            transform: translateY(-8px);
+        }
+
+        .service-card:hover::before {
+            top: -20%;
+            right: -20%;
+        }
+
+        .service-icon {
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            color: var(--sky-blue);
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover .service-icon {
+            color: var(--electric-cyan);
+            transform: scale(1.2);
+        }
+
+        .service-title {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .service-desc {
+            color: var(--silver-gray);
+            line-height: 1.5;
+            font-size: clamp(0.8rem, 1.4vw, 0.9rem);
+        }
+
+        /* ============ EMERGENCY ALERTS ============ */
+        .emergency-section {
+            padding: clamp(50px, 10vw, 80px) 0;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 107, 53, 0.05));
+        }
+
+        .emergency-card {
+            background: var(--glass-bg);
+            border: 2px solid var(--emergency-orange);
+            border-radius: 12px;
+            padding: clamp(18px, 3vw, 25px);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .emergency-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(255, 107, 53, 0.1), transparent);
+            animation: glow-pulse 2s infinite;
+            z-index: -1;
+        }
+
+        @keyframes glow-pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        .emergency-icon {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: var(--emergency-orange);
+            margin-bottom: 10px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .emergency-title {
+            font-size: clamp(0.85rem, 2vw, 1.1rem);
+            font-weight: 700;
+            color: var(--emergency-orange);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .emergency-btn {
+            background: var(--emergency-orange);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            font-size: clamp(0.75rem, 1.3vw, 0.85rem);
+        }
+
+        .emergency-btn:hover {
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.6);
+            transform: translateY(-3px);
+        }
+
+        /* ============ FLIGHT BOOKING FORM ============ */
+        .booking-section {
+            padding: clamp(50px, 10vw, 80px) 0;
+            background: var(--midnight-blue);
+        }
+
+        .booking-form {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(30, 144, 255, 0.2);
+            border-radius: 12px;
+            padding: clamp(20px, 5vw, 45px);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--electric-cyan);
+            margin-bottom: 7px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: clamp(0.75rem, 1.4vw, 0.85rem);
+        }
+
+        .form-control, .form-select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(30, 144, 255, 0.2);
+            color: white;
+            padding: clamp(8px, 2vw, 13px) clamp(10px, 2vw, 15px);
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            font-size: clamp(0.85rem, 1.4vw, 0.95rem);
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: rgba(30, 144, 255, 0.1);
+            border-color: var(--electric-cyan);
+            color: white;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-select option {
+            background: var(--midnight-blue);
+            color: white;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: clamp(10px, 2vw, 16px);
+            background: linear-gradient(135deg, var(--sky-blue), var(--electric-cyan));
+            border: none;
+            color: white;
+            font-weight: 700;
+            font-size: clamp(0.85rem, 1.4vw, 1rem);
+            border-radius: 6px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .btn-submit:hover {
+            box-shadow: 0 0 30px rgba(30, 144, 255, 0.6);
+            transform: translateY(-3px);
+        }
+
+        /* ============ AIRCRAFT SECTION ============ */
+        .aircraft-section {
+            padding: clamp(50px, 10vw, 80px) 0;
+            background: var(--aviation-black);
+        }
+
+        .aircraft-card {
+            background: var(--glass-bg);
+            border: 1px solid rgba(30, 144, 255, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            height: 100%;
+        }
+
+        .aircraft-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.3);
+            border-color: var(--electric-cyan);
+        }
+
+        .aircraft-image {
+            width: 100%;
+            height: clamp(120px, 25vw, 220px);
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .aircraft-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(30, 144, 255, 0.1), transparent);
+            transition: all 0.3s ease;
+        }
+
+        .aircraft-card:hover .aircraft-image::after {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), transparent);
+        }
+
+        .aircraft-info {
+            padding: clamp(15px, 3vw, 25px);
+        }
+
+        .aircraft-name {
+            font-size: clamp(0.95rem, 2vw, 1.2rem);
+            font-weight: 700;
+            color: var(--electric-cyan);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .aircraft-company {
+            color: var(--silver-gray);
+            margin-bottom: 12px;
+            font-size: clamp(0.8rem, 1.3vw, 0.85rem);
+        }
+
+        .aircraft-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(30, 144, 255, 0.2);
+        }
+
+        .spec-item {
+            text-align: center;
+        }
+
+        .spec-value {
+            font-size: clamp(0.9rem, 1.8vw, 1rem);
+            font-weight: 700;
+            color: var(--sky-blue);
+        }
+
+        .spec-label {
+            font-size: clamp(0.7rem, 1.1vw, 0.75rem);
+            color: var(--silver-gray);
+            text-transform: uppercase;
+            margin-top: 2px;
+            letter-spacing: 0.3px;
+        }
+
+        /* ============ STATISTICS DASHBOARD ============ */
+        .stats-section {
+            padding: clamp(50px, 10vw, 80px) 0;
+            background: linear-gradient(135deg, var(--midnight-blue), #1a3a52);
+        }
+
+        .stat-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(30, 144, 255, 0.2);
+            border-radius: 12px;
+            padding: clamp(20px, 4vw, 35px);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .stat-card:hover {
+            border-color: var(--electric-cyan);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            transform: translateY(-8px);
+        }
+
+        .stat-icon {
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            color: var(--sky-blue);
+            margin-bottom: 12px;
+        }
+
+        .stat-number {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+            font-weight: 800;
+            color: var(--electric-cyan);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: clamp(0.8rem, 1.4vw, 0.9rem);
+            color: var(--silver-gray);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        /* ============ TIMELINE SECTION ============ */
+        .timeline-section {
+            padding: clamp(50px, 10vw, 80px) 0;
+            background: var(--aviation-black);
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, transparent, var(--sky-blue), transparent);
+        }
+
+        .timeline-item {
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: 0;
+            margin-right: 50%;
+            padding-right: 30px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: 50%;
+            margin-right: 0;
+            padding-left: 30px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 18px;
+            height: 18px;
+            background: var(--sky-blue);
+            border: 3px solid var(--aviation-black);
+            border-radius: 50%;
+            top: 20px;
+            z-index: 1;
+            box-shadow: var(--neon-glow);
+        }
+
+        .timeline-content {
+            background: var(--glass-bg);
+            border: 1px solid rgba(30, 144, 255, 0.2);
+            border-radius: 8px;
+            padding: clamp(15px, 3vw, 20px);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            border-color: var(--electric-cyan);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+        }
+
+        .timeline-title {
+            font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+            font-weight: 700;
+            color: var(--electric-cyan);
+            margin-bottom: 6px;
+        }
+
+        .timeline-desc {
+            color: var(--silver-gray);
+            font-size: clamp(0.8rem, 1.3vw, 0.9rem);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 0;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content {
+                margin-left: 25px;
+                margin-right: 0;
+                padding-left: 25px;
+                padding-right: 0;
+            }
+
+            .timeline-dot {
+                left: -9px;
+            }
+        }
+
+        /* ============ FAQ SECTION ============ */
+        .faq-section {
+            padding: clamp(50px, 10vw, 80px) 0;
+            background: var(--midnight-blue);
+        }
+
+        .accordion-button {
+            background: var(--glass-bg);
+            border: 1px solid rgba(30, 144, 255, 0.2);
+            color: var(--electric-cyan);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            padding: clamp(10px, 2vw, 14px) clamp(12px, 3vw, 18px);
+            font-size: clamp(0.8rem, 1.4vw, 0.9rem);
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background: rgba(30, 144, 255, 0.1);
+            border-color: var(--electric-cyan);
+            color: var(--electric-cyan);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+        }
+
+        .accordion-button:focus {
+            border-color: var(--electric-cyan);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .accordion-body {
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--silver-gray);
+            border-top: 1px solid rgba(30, 144, 255, 0.2);
+            padding: clamp(12px, 2vw, 16px);
+            font-size: clamp(0.8rem, 1.3vw, 0.9rem);
+            line-height: 1.5;
+        }
+
+        /* ============ VIDEO SECTION ============ */
+        .video-section {
+            padding: clamp(50px, 10vw, 80px) 0;
+            background: var(--aviation-black);
+        }
+
+        .video-card {
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 16/9;
+            border: 1px solid rgba(30, 144, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .video-card:hover {
+            border-color: var(--electric-cyan);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            transform: translateY(-8px);
+        }
+
+        .video-card iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ============ TESTIMONIALS SECTION ============ */
+        .testimonials-section {
+            padding: clamp(50px, 10vw, 80px) 0;
+            background: linear-gradient(135deg, var(--midnight-blue), #1a3a52);
+        }
+
+        .testimonial-card {
+            background: var(--glass-bg);
+            border: 1px solid rgba(30, 144, 255, 0.2);
+            border-radius: 12px;
+            padding: clamp(20px, 4vw, 35px);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            border-color: var(--electric-cyan);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            transform: translateY(-8px);
+        }
+
+        .testimonial-image {
+            width: clamp(50px, 10vw, 70px);
+            height: clamp(50px, 10vw, 70px);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            border: 2px solid var(--sky-blue);
+            background-size: cover;
+            background-position: center;
+        }
+
+        .testimonial-name {
+            font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+            font-weight: 700;
+            color: var(--electric-cyan);
+            margin-bottom: 4px;
+        }
+
+        .testimonial-role {
+            color: var(--silver-gray);
+            font-size: clamp(0.75rem, 1.2vw, 0.85rem);
+            margin-bottom: 10px;
+        }
+
+        .rating {
+            color: var(--emergency-orange);
+            margin-bottom: 10px;
+            font-size: clamp(0.85rem, 1.4vw, 0.95rem);
+        }
+
+        .testimonial-text {
+            color: var(--silver-gray);
+            line-height: 1.5;
+            font-style: italic;
+            font-size: clamp(0.8rem, 1.3vw, 0.9rem);
+        }
+
+        /* ============ CONTACT SECTION ============ */
+        .contact-section {
+            padding: clamp(50px, 10vw, 80px) 0;
+            background: var(--midnight-blue);
+        }
+
+        .contact-form {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(30, 144, 255, 0.2);
+            border-radius: 12px;
+            padding: clamp(20px, 5vw, 45px);
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(12px, 3vw, 25px);
+            margin-top: 25px;
+        }
+
+        .info-card {
+            background: var(--glass-bg);
+            border: 1px solid rgba(30, 144, 255, 0.2);
+            border-radius: 8px;
+            padding: clamp(15px, 3vw, 20px);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            border-color: var(--electric-cyan);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+        }
+
+        .info-icon {
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            color: var(--sky-blue);
+            margin-bottom: 10px;
+        }
+
+        .info-title {
+            font-size: clamp(0.9rem, 1.6vw, 1rem);
+            font-weight: 700;
+            color: var(--electric-cyan);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .info-text {
+            color: var(--silver-gray);
+            font-size: clamp(0.75rem, 1.3vw, 0.9rem);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .contact-info {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+
+        /* ============ FOOTER ============ */
+        footer {
+            background: linear-gradient(135deg, var(--aviation-black), #0a1628);
+            border-top: 1px solid rgba(30, 144, 255, 0.2);
+            padding: clamp(35px, 8vw, 50px) 0 clamp(12px, 2vw, 18px);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: clamp(20px, 4vw, 35px);
+            margin-bottom: 25px;
+        }
+
+        .footer-col h5 {
+            font-size: clamp(0.95rem, 1.7vw, 1.05rem);
+            font-weight: 700;
+            color: var(--electric-cyan);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 8px;
+        }
+
+        .footer-col a {
+            color: var(--silver-gray);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: clamp(0.8rem, 1.3vw, 0.9rem);
+        }
+
+        .footer-col a:hover {
+            color: var(--electric-cyan);
+            padding-left: 6px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(30, 144, 255, 0.1);
+            border: 1px solid rgba(30, 144, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--sky-blue);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+        }
+
+        .social-icon:hover {
+            background: var(--sky-blue);
+            color: white;
+            box-shadow: 0 0 20px rgba(30, 144, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(30, 144, 255, 0.2);
+            padding-top: 15px;
+            text-align: center;
+            color: var(--silver-gray);
+            font-size: clamp(0.75rem, 1.3vw, 0.85rem);
+        }
+
+        /* ============ UTILITY CLASSES ============ */
+        .back-to-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 45px;
+            height: 45px;
+            background: var(--sky-blue);
+            border: 2px solid var(--electric-cyan);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: var(--neon-glow);
+            font-size: 1rem;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            box-shadow: 0 0 30px rgba(30, 144, 255, 0.8);
+            transform: translateY(-5px);
+        }
+
+        .dark-mode-toggle {
+            position: fixed;
+            top: 85px;
+            right: 25px;
+            width: 45px;
+            height: 45px;
+            background: var(--midnight-blue);
+            border: 2px solid var(--electric-cyan);
+            color: var(--electric-cyan);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 999;
+            font-size: 1rem;
+        }
+
+        .dark-mode-toggle:hover {
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            transform: rotate(20deg);
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--aviation-black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeOut 0.5s ease 2s forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(30, 144, 255, 0.2);
+            border-top: 4px solid var(--electric-cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ============ RESPONSIVE IMPROVEMENTS ============ */
+        @media (max-width: 992px) {
+            .navbar-collapse {
+                margin-top: 12px;
+            }
+
+            .nav-link {
+                padding: 8px 10px !important;
+                margin: 0 2px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                min-height: 70vh;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn-custom {
+                width: 100%;
+            }
+
+            .dark-mode-toggle {
+                top: 70px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+                font-size: 0.9rem;
+            }
+
+            .back-to-top {
+                width: 40px;
+                height: 40px;
+                bottom: 15px;
+                right: 15px;
+                font-size: 0.85rem;
+            }
+
+            .section-title {
+                margin-bottom: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 10px 0;
+            }
+
+            .navbar-brand {
+                font-size: 1rem;
+                letter-spacing: 0.5px;
+            }
+
+            .hero-content {
+                padding: 10px;
+            }
+
+            .hero-buttons {
+                gap: 8px;
+            }
+
+            .btn-custom {
+                padding: 8px 12px;
+                font-size: 0.7rem;
+            }
+
+            .booking-form {
+                padding: 15px 12px;
+            }
+
+            .contact-info {
+                gap: 10px;
+            }
+
+            .footer-content {
+                gap: 15px;
+            }
+
+            .carousel-caption {
+                padding: clamp(15px, 4vw, 30px) clamp(10px, 3vw, 15px);
+            }
+        }
+    </style>
 </head>
 <body>
 
-<div class="loader-wrapper" id="loader">
-  <div class="loader"></div>
+<!-- Loading Screen -->
+<div class="loading-screen">
+    <div class="loader"></div>
 </div>
 
-<!-- Sticky social floating buttons (minimal) -->
-<div class="d-none d-md-flex flex-column position-fixed start-0 top-50 translate-middle-y ms-3 gap-2 z-3">
-  <a href="#" class="text-white bg-dark p-2 rounded-circle text-center" style="width: 40px;"><i class="fab fa-twitter"></i></a>
-  <a href="#" class="text-white bg-dark p-2 rounded-circle text-center" style="width: 40px;"><i class="fab fa-linkedin-in"></i></a>
-  <a href="#" class="text-white bg-dark p-2 rounded-circle text-center" style="width: 40px;"><i class="fab fa-telegram"></i></a>
+<!-- Dark Mode Toggle -->
+<div class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
+    <i class="fas fa-sun"></i>
 </div>
 
-<!-- Back to top -->
-<div class="back-to-top" id="backToTop"><i class="fas fa-arrow-up text-white"></i></div>
-
-<!-- Dark mode toggle -->
-<div class="dark-toggle">
-  <i class="fas fa-moon me-1" id="darkModeIcon" style="cursor:pointer;"></i> <span id="darkModeText" style="cursor:pointer;">Dark</span>
+<!-- Back to Top Button -->
+<div class="back-to-top" id="backToTop" title="Back to Top">
+    <i class="fas fa-arrow-up"></i>
 </div>
 
-<!-- Sticky Navbar -->
-<nav class="navbar navbar-expand-lg fixed-top" id="mainNavbar">
-  <div class="container">
-    <a class="navbar-brand fw-bold text-white orbitron" href="#"><i class="fas fa-plane-departure me-2 text-info"></i>AETHERIX</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon bg-white rounded"></span></button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="#flights">Flights</a></li>
-        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Airlines</a><ul class="dropdown-menu"><li><a class="dropdown-item" href="#">Emirates</a></li><li><a class="dropdown-item" href="#">Qatar Airways</a></li><li><a class="dropdown-item" href="#">Delta</a></li></ul></li>
-        <li class="nav-item"><a class="nav-link" href="#airports">Airports</a></li>
-        <li class="nav-item"><a class="nav-link" href="#tracking">Flight Tracking</a></li>
-        <li class="nav-item"><a class="nav-link" href="#cargo">Cargo</a></li>
-        <li class="nav-item"><a class="nav-link" href="#security">Security</a></li>
-        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-      </ul>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid px-3 px-md-4">
+        <a class="navbar-brand" href="#home">
+            <i class="fas fa-plane"></i> SkyHub
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#home">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#flights" id="flightsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-plane-departure"></i> Flights
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="flightsDropdown">
+                        <li><a class="dropdown-item" href="#booking"><i class="fas fa-ticket-alt"></i> Book</a></li>
+                        <li><a class="dropdown-item" href="#tracking"><i class="fas fa-map-location-dot"></i> Track</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#schedule"><i class="fas fa-calendar"></i> Schedule</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#services">
+                        <i class="fas fa-concierge-bell"></i> Services
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#aircraft">
+                        <i class="fas fa-plane"></i> Fleet
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#faq">
+                        <i class="fas fa-question-circle"></i> FAQ
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">
+                        <i class="fas fa-envelope"></i> Contact
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
 </nav>
 
-<!-- Hero + Slider combo (carousel hero) -->
-<div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <div class="hero-section" style="background-image: linear-gradient(0deg, #020617ba, #020617ba), url('https://images.pexels.com/photos/135788/pexels-photo-135788.jpeg?auto=compress&cs=tinysrgb&w=1600'); background-size: cover;">
-        <div class="hero-overlay text-center text-white py-5"><div class="container"><h1 class="display-3 fw-bold orbitron">Skyward Intelligence</h1><p class="lead">Next‑gen airport command & flight ecosystem</p><div class="typing-text mx-auto d-inline-block">AI-Powered Aviation Hub</div><div class="mt-4"><button class="btn btn-glow me-3"><i class="fas fa-ticket-alt"></i> Book Flight</button><button class="btn btn-outline-info pulse-alert"><i class="fas fa-phone-alt"></i> Emergency: +1-888-AERO-SOS</button></div></div></div>
-      </div>
+<!-- Particles Background -->
+<div class="particles" id="particles"></div>
+
+<!-- Hero Section -->
+<section class="hero-section" id="home">
+    <div class="hero-content">
+        <h1 class="hero-title">
+            <span class="typing-effect">SKYHUB AVIATION</span>
+        </h1>
+        <p class="hero-subtitle">Next-Generation Aviation Management</p>
+        <div class="hero-buttons">
+            <button class="btn-custom btn-custom-primary" onclick="scrollToSection('#booking')">
+                <i class="fas fa-ticket-alt"></i> Book Flight
+            </button>
+            <button class="btn-custom btn-custom-secondary" onclick="scrollToSection('#services')">
+                <i class="fas fa-info-circle"></i> Explore
+            </button>
+            <button class="btn-custom btn-emergency">
+                <i class="fas fa-phone"></i> Emergency
+            </button>
+        </div>
     </div>
-    <div class="carousel-item"><div class="hero-section" style="background: linear-gradient(0deg, #010514cc, #010514cc), url('https://images.pexels.com/photos/34784/airport-airplane-sky-clouds.jpg?auto=compress&cs=tinysrgb&w=1600'); background-size: cover;"><div class="hero-overlay"><div class="container text-white"><h2>Airport Terminal 5G Smart Hub</h2><p>Biometric boarding & smart gates</p><button class="btn btn-glow">Explore Terminals</button></div></div></div></div>
-    <div class="carousel-item"><div class="hero-section" style="background: linear-gradient(0deg, #011122cc, #011122cc), url('https://images.pexels.com/photos/2169685/pexels-photo-2169685.jpeg?auto=compress&cs=tinysrgb&w=1600'); background-size: cover;"><div class="hero-overlay"><div class="container text-white"><h2>Air Traffic Control Radar</h2><p>Real-time global flight monitoring</p><button class="btn btn-glow">Live Radar</button></div></div></div></div>
-  </div><button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button><button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
-</div>
+</section>
 
-<!-- Main content container -->
-<div class="container my-5 pt-4" id="flights">
-  <!-- Airline Services Section (grid) -->
-  <h2 class="orbitron text-center mb-5"><i class="fas fa-concierge-bell me-2 text-info"></i> Premium Aviation Services</h2>
-  <div class="row g-4">
-    <div class="col-md-6 col-lg-4"><div class="service-card p-4 h-100 text-center"><i class="fas fa-plane fa-3x mb-3 text-info"></i><h4>Flight Booking</h4><p>Online tickets, seat reservation, digital boarding pass & flight schedule.</p></div></div>
-    <div class="col-md-6 col-lg-4"><div class="service-card p-4 h-100 text-center"><i class="fas fa-building fa-3x mb-3 text-info"></i><h4>Airport Management</h4><p>Passenger flow, security check, baggage tracking & smart gate info.</p></div></div>
-    <div class="col-md-6 col-lg-4"><div class="service-card p-4 h-100 text-center"><i class="fas fa-radar fa-3x mb-3 text-info"></i><h4>Air Traffic Control</h4><p>Flight monitoring, radar tracking, route management, AI comms.</p></div></div>
-    <div class="col-md-6 col-lg-4"><div class="service-card p-4 h-100 text-center"><i class="fas fa-box-open fa-3x mb-3 text-info"></i><h4>Cargo Aviation</h4><p>Cargo tracking, express logistics, warehouse & international shipping.</p></div></div>
-    <div class="col-md-6 col-lg-4"><div class="service-card p-4 h-100 text-center"><i class="fas fa-shield-alt fa-3x mb-3 text-info"></i><h4>Aviation Security</h4><p>Airport cybersecurity, surveillance, emergency response & safety.</p></div></div>
-  </div>
-</div>
+<!-- Hero Carousel -->
+<section class="carousel-section">
+    <div class="container-fluid px-3 px-md-4">
+        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="4"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active" style="background-image: url('https://images.unsplash.com/photo-1436262174933-eb546695a97d?w=1400&h=800&fit=crop');">
+                    <div class="carousel-caption">
+                        <h5><i class="fas fa-plane"></i> Commercial Airlines</h5>
+                        <p>World-class air travel</p>
+                        <button class="btn-custom btn-custom-primary btn-sm" onclick="scrollToSection('#booking')">Book</button>
+                    </div>
+                </div>
+                <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1556388205-557d6b8d3d8f?w=1400&h=800&fit=crop');">
+                    <div class="carousel-caption">
+                        <h5><i class="fas fa-airport"></i> Modern Terminals</h5>
+                        <p>State-of-the-art infrastructure</p>
+                        <button class="btn-custom btn-custom-primary btn-sm">Learn</button>
+                    </div>
+                </div>
+                <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1400&h=800&fit=crop');">
+                    <div class="carousel-caption">
+                        <h5><i class="fas fa-satellite"></i> Flight Control</h5>
+                        <p>Advanced ATC systems</p>
+                        <button class="btn-custom btn-custom-primary btn-sm">Track</button>
+                    </div>
+                </div>
+                <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1522806497911-5e8f97a51a47?w=1400&h=800&fit=crop');">
+                    <div class="carousel-caption">
+                        <h5><i class="fas fa-cube"></i> Cargo Services</h5>
+                        <p>Global logistics</p>
+                        <button class="btn-custom btn-custom-primary btn-sm">Ship</button>
+                    </div>
+                </div>
+                <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1519452575417-564c1401ecc0?w=1400&h=800&fit=crop');">
+                    <div class="carousel-caption">
+                        <h5><i class="fas fa-jet-fighter"></i> Private Jets</h5>
+                        <p>Premium travel solutions</p>
+                        <button class="btn-custom btn-custom-primary btn-sm">Charter</button>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</section>
 
-<!-- Emergency Alert Section -->
-<div class="container my-5"><h2 class="orbitron text-center"><i class="fas fa-bell text-danger me-2"></i> Emergency Aviation Alerts</h2><div class="row mt-4 g-4">
-  <div class="col-md-4"><div class="emergency-card p-3 pulse-alert"><i class="fas fa-heartbeat text-danger fa-2x"></i><h5>Medical Emergency</h5><p>Rapid response team ready at all terminals.</p><button class="btn btn-sm btn-outline-danger">Call 911-AERO</button></div></div>
-  <div class="col-md-4"><div class="emergency-card p-3"><i class="fas fa-fire-extinguisher text-warning fa-2x"></i><h5>Airport Fire Service</h5><p>High-speed foam tenders & evacuation.</p><button class="btn btn-sm btn-outline-warning">Alert</button></div></div>
-  <div class="col-md-4"><div class="emergency-card p-3"><i class="fas fa-road text-info fa-2x"></i><h5>Runway Alert</h5><p>FOD detection / incursion prevention active.</p><button class="btn btn-sm btn-outline-info">Monitor</button></div></div>
-</div></div>
+<!-- Services Section -->
+<section class="services-section" id="services">
+    <div class="container px-3 px-md-4">
+        <h2 class="section-title" data-aos="fade-down">Our Services</h2>
+        <div class="row g-3 g-lg-4">
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="100">
+                <div class="service-card">
+                    <i class="fas fa-ticket-alt service-icon"></i>
+                    <h4 class="service-title">Flight Booking</h4>
+                    <p class="service-desc">Online ticketing, seat reservation, real-time updates</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="200">
+                <div class="service-card">
+                    <i class="fas fa-building service-icon"></i>
+                    <h4 class="service-title">Airport Mgmt</h4>
+                    <p class="service-desc">Passenger services, security, baggage tracking</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="300">
+                <div class="service-card">
+                    <i class="fas fa-satellite service-icon"></i>
+                    <h4 class="service-title">Air Traffic</h4>
+                    <p class="service-desc">Flight monitoring, radar tracking, routing</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="400">
+                <div class="service-card">
+                    <i class="fas fa-cube service-icon"></i>
+                    <h4 class="service-title">Cargo Services</h4>
+                    <p class="service-desc">Cargo tracking, international shipping</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="500">
+                <div class="service-card">
+                    <i class="fas fa-shield service-icon"></i>
+                    <h4 class="service-title">Security</h4>
+                    <p class="service-desc">Airport security, surveillance systems</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="600">
+                <div class="service-card">
+                    <i class="fas fa-headset service-icon"></i>
+                    <h4 class="service-title">Support 24/7</h4>
+                    <p class="service-desc">Customer service, baggage assistance</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-<!-- Flight Booking UI -->
-<div class="container my-5"><div class="glass-card p-4"><h3 class="orbitron"><i class="fas fa-book-open"></i> Smart Flight Booking</h3>
-  <form id="bookingForm" class="row g-3 mt-2"><div class="col-md-4"><label class="form-label">Full Name</label><input type="text" class="form-control bg-dark text-white" id="pName" placeholder="Passenger Name" required></div>
-  <div class="col-md-4"><label class="form-label">Passport/CNIC</label><input type="text" class="form-control bg-dark text-white" id="pid"></div>
-  <div class="col-md-4"><label class="form-label">Phone</label><input type="tel" class="form-control bg-dark text-white" id="phone"></div>
-  <div class="col-md-3"><label>Departure</label><select class="form-select bg-dark text-white"><option>JFK</option><option>DXB</option><option>LHR</option></select></div>
-  <div class="col-md-3"><label>Arrival</label><select class="form-select bg-dark text-white"><option>LAX</option><option>CDG</option><option>HND</option></select></div>
-  <div class="col-md-3"><label>Flight Class</label><select class="form-select bg-dark text-white"><option>Economy</option><option>Business</option><option>First</option></select></div>
-  <div class="col-md-3"><label>Travel Date</label><input type="date" class="form-control bg-dark text-white"></div>
-  <div class="col-12"><button type="submit" class="btn btn-info w-100">Search Flights <i class="fas fa-search"></i></button><div id="formAlert" class="mt-2 small text-info"></div></div>
-  </form>
-</div></div>
+<!-- Emergency Alerts Section -->
+<section class="emergency-section">
+    <div class="container px-3 px-md-4">
+        <h2 class="section-title" data-aos="fade-down">Emergency Services</h2>
+        <div class="row g-2 g-lg-3">
+            <div class="col-lg-2 col-md-4 col-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="emergency-card">
+                    <i class="fas fa-exclamation-triangle emergency-icon"></i>
+                    <h5 class="emergency-title">Flight</h5>
+                    <button class="emergency-btn">Alert</button>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="emergency-card">
+                    <i class="fas fa-heartbeat emergency-icon"></i>
+                    <h5 class="emergency-title">Medical</h5>
+                    <button class="emergency-btn">Alert</button>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="emergency-card">
+                    <i class="fas fa-fire emergency-icon"></i>
+                    <h5 class="emergency-title">Fire</h5>
+                    <button class="emergency-btn">Alert</button>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="emergency-card">
+                    <i class="fas fa-road emergency-icon"></i>
+                    <h5 class="emergency-title">Runway</h5>
+                    <button class="emergency-btn">Alert</button>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6" data-aos="fade-up" data-aos-delay="500">
+                <div class="emergency-card">
+                    <i class="fas fa-lock emergency-icon"></i>
+                    <h5 class="emergency-title">Security</h5>
+                    <button class="emergency-btn">Alert</button>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6" data-aos="fade-up" data-aos-delay="600">
+                <div class="emergency-card">
+                    <i class="fas fa-phone-square emergency-icon"></i>
+                    <h5 class="emergency-title">SOS</h5>
+                    <button class="emergency-btn">911</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-<!-- Featured Aircraft Section -->
-<div class="container my-5"><h2 class="orbitron text-center"><i class="fas fa-fighter-jet"></i> Elite Fleet Showcase</h2><div class="row mt-4">
-  <div class="col-md-4"><div class="aircraft-card p-3"><img src="https://images.pexels.com/photos/358319/pexels-photo-358319.jpeg?auto=compress&cs=tinysrgb&w=400" class="img-fluid rounded" alt="Boeing 787"><h5 class="mt-2">Boeing 787 Dreamliner</h5><p>Airline: United | Capacity: 290 | <span class="badge bg-success">Active</span></p></div></div>
-  <div class="col-md-4"><div class="aircraft-card p-3"><img src="https://images.pexels.com/photos/1268855/pexels-photo-1268855.jpeg?auto=compress&cs=tinysrgb&w=400" class="img-fluid rounded" alt="Airbus A380"><h5>Airbus A380</h5><p>Emirates | Capacity: 517 | <span class="badge bg-warning">On Schedule</span></p></div></div>
-  <div class="col-md-4"><div class="aircraft-card p-3"><img src="https://images.pexels.com/photos/210171/pexels-photo-210171.jpeg?auto=compress&cs=tinysrgb&w=400" class="img-fluid rounded" alt="Gulfstream G700"><h5>Gulfstream G700</h5><p>Private Jet | 19 seats | VIP charter</p></div></div>
-</div></div>
+<!-- Flight Booking Section -->
+<section class="booking-section" id="booking">
+    <div class="container px-3 px-md-4">
+        <h2 class="section-title" data-aos="fade-down">Book Your Flight</h2>
+        <div class="booking-form" data-aos="fade-up">
+            <form id="bookingForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-user"></i> Full Name</label>
+                        <input type="text" class="form-control" placeholder="Your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-passport"></i> Passport</label>
+                        <input type="text" class="form-control" placeholder="Document no." required>
+                    </div>
+                </div>
 
-<!-- Live Flight Monitoring & Dashboard -->
-<div class="container my-5"><h2 class="orbitron"><i class="fas fa-chart-line"></i> Live Flight Monitoring</h2><div class="row mt-3">
-  <div class="col-md-6"><div class="glass-card p-3"><div class="d-flex justify-content-between"><span>✈️ EK203 DXB → JFK</span><span class="badge bg-info">On Time</span></div><div class="progress-custom mt-2"><div class="progress-fill" style="width: 68%;"></div></div><span>Departure 23:45 | Arrival 06:20+1</span></div>
-  <div class="glass-card p-3 mt-3"><div class="d-flex justify-content-between"><span>🛫 QR705 DOH → LHR</span><span class="badge bg-warning">Delayed 15min</span></div><div class="progress-custom mt-2"><div class="progress-fill" style="width: 45%;"></div></div></div>
-  <div class="glass-card p-3 mt-3"><div><i class="fas fa-cloud-sun"></i> Weather: Clear sky, visibility 10km | Wind 12kts</div></div></div>
-  <div class="col-md-6"><div class="glass-card p-3"><canvas id="flightChart" width="300" height="150" style="max-width:100%"></canvas><div class="text-center mt-2">Real-time radar occupancy</div></div></div>
-</div></div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-phone"></i> Phone</label>
+                        <input type="tel" class="form-control" placeholder="+1 (555) 000-0000" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" class="form-control" placeholder="your@email.com" required>
+                    </div>
+                </div>
 
-<!-- Aviation Statistics Animated Counters -->
-<div class="container my-5"><h2 class="orbitron">Aviation Metrics Dashboard</h2><div class="row g-4 mt-2">
-  <div class="col-md-3"><div class="stat-card p-3 text-center"><i class="fas fa-plane-departure fa-2x"></i><div class="counter-number" id="counterDaily">0</div><p>Daily Flights</p></div></div>
-  <div class="col-md-3"><div class="stat-card p-3 text-center"><i class="fas fa-plane"></i><div class="counter-number" id="counterActive">0</div><p>Active Aircraft</p></div></div>
-  <div class="col-md-3"><div class="stat-card p-3 text-center"><i class="fas fa-users"></i><div class="counter-number" id="counterPax">0</div><p>Passengers Served</p></div></div>
-  <div class="col-md-3"><div class="stat-card p-3 text-center"><i class="fas fa-box"></i><div class="counter-number" id="counterCargo">0</div><p>Cargo (Tons)</p></div></div>
-</div></div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-map-pin"></i> Depart</label>
+                        <select class="form-select" required>
+                            <option>Select city</option>
+                            <option>New York (JFK)</option>
+                            <option>London (LHR)</option>
+                            <option>Dubai (DXB)</option>
+                            <option>Tokyo (NRT)</option>
+                            <option>Singapore (SIN)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-location-dot"></i> Arrive</label>
+                        <select class="form-select" required>
+                            <option>Select city</option>
+                            <option>Paris (CDG)</option>
+                            <option>Sydney (SYD)</option>
+                            <option>Bangkok (BKK)</option>
+                            <option>Mumbai (BOM)</option>
+                            <option>Hong Kong (HKG)</option>
+                        </select>
+                    </div>
+                </div>
 
-<!-- Video Gallery & Safety-->
-<div class="container my-5"><h2 class="orbitron">Aviation Safety & Operations</h2><div class="row"><div class="col-md-6"><div class="ratio ratio-16x9"><iframe src="https://www.youtube.com/embed/9KhZwsYtNDE?si=abc" title="Flight safety" allowfullscreen></iframe></div></div>
-<div class="col-md-6"><div class="ratio ratio-16x9"><iframe src="https://www.youtube.com/embed/lKi3_pI9tCc" title="Airport Management" allowfullscreen></iframe></div></div></div>
-<div class="row mt-3"><div class="col-md-4"><div class="glass-card p-2"><i class="fas fa-check-circle text-success"></i> Safety tip: Always wear seatbelt</div></div><div class="col-md-4"><div class="glass-card p-2"><i class="fas fa-robot"></i> AI runway monitoring active</div></div><div class="col-md-4"><div class="glass-card p-2"><i class="fas fa-satellite"></i> Satellite tracking enabled</div></div>
-</div></div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-plane"></i> Class</label>
+                        <select class="form-select" required>
+                            <option>Economy</option>
+                            <option>Business</option>
+                            <option>First</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-calendar"></i> Date</label>
+                        <input type="date" class="form-control" required>
+                    </div>
+                </div>
 
-<!-- Testimonials auto slider -->
-<div class="container my-5"><h2 class="orbitron text-center">Passenger Testimonials</h2><div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel"><div class="carousel-inner">
-  <div class="carousel-item active"><div class="testimonial-card p-4 text-center mx-auto" style="max-width: 500px;"><img src="https://randomuser.me/api/portraits/women/68.jpg" class="rounded-circle mb-3" width="70"><h5>Elena M.</h5><p><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star text-warning"></i><i class="fas fa-star-half-alt"></i> "Next-level digital airport experience!"</p></div></div>
-  <div class="carousel-item"><div class="testimonial-card p-4 text-center mx-auto" style="max-width: 500px;"><img src="https://randomuser.me/api/portraits/men/32.jpg" class="rounded-circle mb-3" width="70"><h5>James Carter</h5><p>★★★★★ "Aetherix dashboard is like NASA terminal, love it."</p></div></div>
-</div><button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev"><span class="carousel-control-prev-icon bg-dark rounded-circle"></span></button><button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next"><span class="carousel-control-next-icon bg-dark rounded-circle"></span></button></div></div>
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-check-circle"></i> Book Now
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
 
-<!-- FAQ Accordion -->
-<div class="container my-5"><h2 class="orbitron">Aviation Command FAQ</h2><div class="accordion" id="faqAccordion"><div class="accordion-item bg-transparent text-white"><h2 class="accordion-header"><button class="accordion-button bg-dark text-white" data-bs-toggle="collapse">✈️ How to track live flight?</button></h2><div class="accordion-collapse collapse show"><div class="accordion-body">Use our radar dashboard or flight status widget.</div></div></div>
-<div class="accordion-item bg-transparent"><h2><button class="accordion-button collapsed bg-dark text-white">🛡️ Aviation security protocols?</button></h2><div>Advanced screening & AI surveillance integrated.</div></div></div></div>
+<!-- Aircraft Section -->
+<section class="aircraft-section" id="aircraft">
+    <div class="container px-3 px-md-4">
+        <h2 class="section-title" data-aos="fade-down">Our Fleet</h2>
+        <div class="row g-3 g-lg-4">
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="100">
+                <div class="aircraft-card">
+                    <div class="aircraft-image" style="background-image: url('https://images.unsplash.com/photo-1521640021314-d5bcc9be19f1?w=800&h=400&fit=crop');"></div>
+                    <div class="aircraft-info">
+                        <h5 class="aircraft-name">Boeing 777</h5>
+                        <p class="aircraft-company">Emirates</p>
+                        <div class="aircraft-specs">
+                            <div class="spec-item">
+                                <div class="spec-value">350</div>
+                                <div class="spec-label">Capacity</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-value">Active</div>
+                                <div class="spec-label">Status</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="200">
+                <div class="aircraft-card">
+                    <div class="aircraft-image" style="background-image: url('https://images.unsplash.com/photo-1552920917-55b3f35d0a8a?w=800&h=400&fit=crop');"></div>
+                    <div class="aircraft-info">
+                        <h5 class="aircraft-name">Airbus A380</h5>
+                        <p class="aircraft-company">Qatar</p>
+                        <div class="aircraft-specs">
+                            <div class="spec-item">
+                                <div class="spec-value">500+</div>
+                                <div class="spec-label">Capacity</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-value">Active</div>
+                                <div class="spec-label">Status</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="300">
+                <div class="aircraft-card">
+                    <div class="aircraft-image" style="background-image: url('https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&h=400&fit=crop');"></div>
+                    <div class="aircraft-info">
+                        <h5 class="aircraft-name">Airbus A350</h5>
+                        <p class="aircraft-company">Singapore</p>
+                        <div class="aircraft-specs">
+                            <div class="spec-item">
+                                <div class="spec-value">300+</div>
+                                <div class="spec-label">Capacity</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-value">Active</div>
+                                <div class="spec-label">Status</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="400">
+                <div class="aircraft-card">
+                    <div class="aircraft-image" style="background-image: url('https://images.unsplash.com/photo-1557818735-69785c8a7336?w=800&h=400&fit=crop');"></div>
+                    <div class="aircraft-info">
+                        <h5 class="aircraft-name">Boeing 787</h5>
+                        <p class="aircraft-company">British</p>
+                        <div class="aircraft-specs">
+                            <div class="spec-item">
+                                <div class="spec-value">242</div>
+                                <div class="spec-label">Capacity</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-value">Active</div>
+                                <div class="spec-label">Status</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="500">
+                <div class="aircraft-card">
+                    <div class="aircraft-image" style="background-image: url('https://images.unsplash.com/photo-1517059879372-282ba75df970?w=800&h=400&fit=crop');"></div>
+                    <div class="aircraft-info">
+                        <h5 class="aircraft-name">Cessna Citation</h5>
+                        <p class="aircraft-company">Private Jets</p>
+                        <div class="aircraft-specs">
+                            <div class="spec-item">
+                                <div class="spec-value">8-12</div>
+                                <div class="spec-label">Capacity</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-value">Available</div>
+                                <div class="spec-label">Status</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="600">
+                <div class="aircraft-card">
+                    <div class="aircraft-image" style="background-image: url('https://images.unsplash.com/photo-1522806497911-5e8f97a51a47?w=800&h=400&fit=crop');"></div>
+                    <div class="aircraft-info">
+                        <h5 class="aircraft-name">Cargo A400M</h5>
+                        <p class="aircraft-company">Global Cargo</p>
+                        <div class="aircraft-specs">
+                            <div class="spec-item">
+                                <div class="spec-value">120T</div>
+                                <div class="spec-label">Payload</div>
+                            </div>
+                            <div class="spec-item">
+                                <div class="spec-value">Active</div>
+                                <div class="spec-label">Status</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-<!-- Contact + Map -->
-<div class="container my-5" id="contact"><div class="row"><div class="col-lg-6"><div class="glass-card p-4"><h3>Emergency & Support</h3><p><i class="fas fa-phone-alt"></i> +1 (800) 555-AERO<br><i class="fab fa-whatsapp"></i> +1 (888) 777-AERO</p><form><input type="text" placeholder="Name" class="form-control mb-2 bg-dark"><input type="email" placeholder="Email" class="form-control mb-2 bg-dark"><textarea rows="2" placeholder="Inquiry" class="form-control bg-dark"></textarea><button class="btn btn-info mt-2">Send Message</button></form></div></div>
-<div class="col-lg-6"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.9665!2d-74.0060!3d40.7128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a316c6c8b0d%3A0x5f9c0b3b3b3b3b3b!2sJFK!5e0!3m2!1sen!2sus!4v1644267888888!5m2!1sen!2sus" width="100%" height="250" allowfullscreen></iframe></div></div></div>
+<!-- Statistics Section -->
+<section class="stats-section">
+    <div class="container px-3 px-md-4">
+        <h2 class="section-title" data-aos="fade-down">Live Statistics</h2>
+        <div class="row g-3 g-lg-4">
+            <div class="col-lg-2 col-md-4 col-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="stat-card">
+                    <i class="fas fa-plane stat-icon"></i>
+                    <div class="stat-number" data-target="1250">0</div>
+                    <div class="stat-label">Daily Flights</div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="stat-card">
+                    <i class="fas fa-dumbbell stat-icon"></i>
+                    <div class="stat-number" data-target="580">0</div>
+                    <div class="stat-label">Active Aircraft</div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="stat-card">
+                    <i class="fas fa-users stat-icon"></i>
+                    <div class="stat-number" data-target="450">0</div>
+                    <div class="stat-label">Passengers (M)</div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="stat-card">
+                    <i class="fas fa-cube stat-icon"></i>
+                    <div class="stat-number" data-target="8900">0</div>
+                    <div class="stat-label">Cargo Tons</div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6" data-aos="fade-up" data-aos-delay="500">
+                <div class="stat-card">
+                    <i class="fas fa-exclamation-triangle stat-icon"></i>
+                    <div class="stat-number" data-target="12">0</div>
+                    <div class="stat-label">Active Alerts</div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-6" data-aos="fade-up" data-aos-delay="600">
+                <div class="stat-card">
+                    <i class="fas fa-globe stat-icon"></i>
+                    <div class="stat-number" data-target="195">0</div>
+                    <div class="stat-label">Countries</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Timeline Section -->
+<section class="timeline-section">
+    <div class="container px-3 px-md-4">
+        <h2 class="section-title" data-aos="fade-down">Aviation Journey</h2>
+        <div class="timeline">
+            <div class="timeline-item" data-aos="fade-right" data-aos-delay="100">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h5 class="timeline-title">First Commercial Flight</h5>
+                    <p class="timeline-desc">1914 - Commercial airline service began.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-aos="fade-left" data-aos-delay="200">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h5 class="timeline-title">Jet Age</h5>
+                    <p class="timeline-desc">1949 - First jet aircraft revolutionized travel.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-aos="fade-right" data-aos-delay="300">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h5 class="timeline-title">Supersonic Travel</h5>
+                    <p class="timeline-desc">1969 - Concorde faster than sound.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-aos="fade-left" data-aos-delay="400">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h5 class="timeline-title">Wide-Body Aircraft</h5>
+                    <p class="timeline-desc">1989 - Boeing 747 changed long-distance travel.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-aos="fade-right" data-aos-delay="500">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h5 class="timeline-title">AI & Modern Era</h5>
+                    <p class="timeline-desc">2024 - AI transforms aviation globally.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-section" id="faq">
+    <div class="container px-3 px-md-4">
+        <h2 class="section-title" data-aos="fade-down">FAQ</h2>
+        <div class="accordion" id="faqAccordion" data-aos="fade-up">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqOne">
+                        <i class="fas fa-question-circle"></i> How to book?
+                    </button>
+                </h2>
+                <div id="faqOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Visit booking section, select cities & date, fill details, and checkout. Confirmation email sent immediately.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqTwo">
+                        <i class="fas fa-question-circle"></i> Baggage allowance?
+                    </button>
+                </h2>
+                <div id="faqTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Economy: 1×20kg. Business: 2×30kg. First: Unlimited within limits.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqThree">
+                        <i class="fas fa-question-circle"></i> Modify booking?
+                    </button>
+                </h2>
+                <div id="faqThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Yes, up to 24 hours before departure. Use Manage Booking section.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqFour">
+                        <i class="fas fa-question-circle"></i> Track flight?
+                    </button>
+                </h2>
+                <div id="faqFour" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        Use flight tracker with flight number for real-time updates.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqFive">
+                        <i class="fas fa-question-circle"></i> In-flight services?
+                    </button>
+                </h2>
+                <div id="faqFive" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        All classes: meals, WiFi, entertainment. Business/First: premium amenities.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqSix">
+                        <i class="fas fa-question-circle"></i> Refund policy?
+                    </button>
+                </h2>
+                <div id="faqSix" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        7+ days: Full refund. 7-24h: 50%. Within 24h: Non-refundable.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Video Gallery Section -->
+<section class="video-section">
+    <div class="container px-3 px-md-4">
+        <h2 class="section-title" data-aos="fade-down">Aviation Media</h2>
+        <div class="row g-3 g-lg-4">
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="100">
+                <div class="video-card">
+                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="200">
+                <div class="video-card">
+                    <iframe src="https://www.youtube.com/embed/2g811Eo7K8U" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="300">
+                <div class="video-card">
+                    <iframe src="https://www.youtube.com/embed/jNgP6d9HraI" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="400">
+                <div class="video-card">
+                    <iframe src="https://www.youtube.com/embed/tYzMGcUty6s" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="500">
+                <div class="video-card">
+                    <iframe src="https://www.youtube.com/embed/YE7VzlLtp-c" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="600">
+                <div class="video-card">
+                    <iframe src="https://www.youtube.com/embed/0Sm3J_j_5p8" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section">
+    <div class="container px-3 px-md-4">
+        <h2 class="section-title" data-aos="fade-down">Customer Reviews</h2>
+        <div class="row g-3 g-lg-4">
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="100">
+                <div class="testimonial-card">
+                    <div class="testimonial-image" style="background-image: url('https://i.pravatar.cc/150?img=1');"></div>
+                    <h5 class="testimonial-name">Sarah Johnson</h5>
+                    <p class="testimonial-role">Business Traveler</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Excellent service and seamless experience throughout."</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="200">
+                <div class="testimonial-card">
+                    <div class="testimonial-image" style="background-image: url('https://i.pravatar.cc/150?img=2');"></div>
+                    <h5 class="testimonial-name">Michael Chen</h5>
+                    <p class="testimonial-role">Frequent Flyer</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Outstanding customer support and reliable operations."</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12" data-aos="fade-up" data-aos-delay="300">
+                <div class="testimonial-card">
+                    <div class="testimonial-image" style="background-image: url('https://i.pravatar.cc/150?img=3');"></div>
+                    <h5 class="testimonial-name">Emily Rodriguez</h5>
+                    <p class="testimonial-role">Family Traveler</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Perfect for families. Friendly staff and great amenities."</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="contact-section" id="contact">
+    <div class="container px-3 px-md-4">
+        <h2 class="section-title" data-aos="fade-down">Contact Us</h2>
+        <div class="row g-4">
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="contact-form">
+                    <h4 style="color: var(--electric-cyan); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; font-size: clamp(1rem, 1.8vw, 1.2rem);"><i class="fas fa-envelope"></i> Send Message</h4>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" placeholder="Your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="your@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Subject</label>
+                            <input type="text" class="form-control" placeholder="Subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Message</label>
+                            <textarea class="form-control" rows="4" placeholder="Your message..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">Send</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="contact-info">
+                    <div class="info-card">
+                        <i class="fas fa-map-marker-alt info-icon"></i>
+                        <h5 class="info-title">Location</h5>
+                        <p class="info-text">123 Aviation Blvd<br>Sky City, Dubai, UAE</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-phone info-icon"></i>
+                        <h5 class="info-title">Emergency</h5>
+                        <p class="info-text">+1-800-911-SKY<br>24/7 Available</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-envelope info-icon"></i>
+                        <h5 class="info-title">Email</h5>
+                        <p class="info-text">support@skyhub.com<br>info@skyhub.com</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-clock info-icon"></i>
+                        <h5 class="info-title">Hours</h5>
+                        <p class="info-text">Mon-Fri: 8AM-10PM<br>Sat-Sun: 9AM-8PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <!-- Footer -->
-<footer class="footer-dark mt-5"><div class="container"><div class="row"><div class="col-md-4"><i class="fas fa-globe-americas fa-2x text-info"></i><p>AETHERIX – AI Aviation Command</p></div><div class="col-md-4"><h6>Quick Links</h6><ul class="list-unstyled"><li>Flight Status</li><li>Cargo Tracking</li><li>Security Alerts</li></ul></div><div class="col-md-4"><i class="fab fa-twitter me-2"></i><i class="fab fa-instagram me-2"></i><i class="fab fa-linkedin"></i><p class="mt-2">© 2025 Aetherix Aviation Ecosystem</p></div></div></div></footer>
+<footer>
+    <div class="container px-3 px-md-4">
+        <div class="footer-content">
+            <div class="footer-col">
+                <h5><i class="fas fa-plane"></i> SkyHub</h5>
+                <p style="color: var(--silver-gray); margin-bottom: 12px; font-size: clamp(0.8rem, 1.3vw, 0.9rem); line-height: 1.5;">Next-gen aviation management serving millions globally.</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h5><i class="fas fa-link"></i> Quick Links</h5>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#booking">Book</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5><i class="fas fa-cogs"></i> Services</h5>
+                <ul>
+                    <li><a href="#services">Booking</a></li>
+                    <li><a href="#services">Cargo</a></li>
+                    <li><a href="#services">Airport</a></li>
+                    <li><a href="#services">Security</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5><i class="fas fa-exclamation-circle"></i> Emergency</h5>
+                <ul>
+                    <li><a href="tel:+1800911">Call: 911</a></li>
+                    <li><a href="tel:+18005749842">Hotline: 24/7</a></li>
+                    <li><a href="#contact">Report</a></li>
+                    <li><a href="#">Safety</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 SkyHub Aviation. All rights reserved. | <a href="#" style="color: var(--electric-cyan); text-decoration: none;">Privacy</a> | <a href="#" style="color: var(--electric-cyan); text-decoration: none;">Terms</a></p>
+        </div>
+    </div>
+</footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- AOS Animation JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
 <script>
-  // loader hide
-  window.addEventListener("load", ()=>{ document.getElementById("loader").style.opacity="0"; setTimeout(()=>{ document.getElementById("loader").style.display="none"; }, 600); });
-  // navbar scroll effect
-  window.addEventListener("scroll", function(){ if(window.scrollY>50) document.getElementById("mainNavbar").classList.add("scrolled"); else document.getElementById("mainNavbar").classList.remove("scrolled"); });
-  // back to top
-  document.getElementById("backToTop").addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"});});
-  // counter animation
-  const counters = [{id:"counterDaily",target:1240},{id:"counterActive",target:358},{id:"counterPax",target:28500},{id:"counterCargo",target:1860}];
-  function animateCounters(){ counters.forEach(c=>{ let el=document.getElementById(c.id); let current=0; let increment=c.target/50; let update=setInterval(()=>{ current+=increment; if(current>=c.target){ el.innerText=c.target.toLocaleString(); clearInterval(update); } else el.innerText=Math.floor(current).toLocaleString(); }, 30); }); }
-  window.addEventListener("scroll", function checkOnce(){ let stats = document.querySelector(".stat-card"); if(stats && stats.getBoundingClientRect().top<window.innerHeight-100){ animateCounters(); window.removeEventListener("scroll", checkOnce); } });
-  // flight chart
-  const ctx = document.getElementById('flightChart')?.getContext('2d'); if(ctx) new Chart(ctx, { type: 'doughnut', data: { labels: ['Active Flights', 'On Ground', 'Delayed'], datasets: [{ data: [342, 189, 27], backgroundColor: ['#0ff','#2c7da0','#ff884d'] }] } });
-  // booking form validation ui
-  document.getElementById("bookingForm")?.addEventListener("submit", function(e){ e.preventDefault(); document.getElementById("formAlert").innerHTML = "<i class='fas fa-check-circle'></i> Flight search initiated (demo)."; });
-  // Dark mode toggle
-  let dark = false; const toggle = document.getElementById("darkModeIcon"); const textSpan = document.getElementById("darkModeText"); toggle.onclick = ()=>{ document.body.classList.toggle("dark"); dark=!dark; textSpan.innerText=dark?"Light":"Dark"; };
-  // live clock widget (optional)
-  const clockDiv = document.createElement("div"); clockDiv.className="position-fixed top-0 end-0 mt-3 me-4 glass-card p-2 text-white z-3 small"; document.body.appendChild(clockDiv);
-  setInterval(()=>{ let d=new Date(); clockDiv.innerHTML=`<i class='far fa-clock'></i> ${d.toLocaleTimeString()}`; },1000);
-  // notification popup simulation
-  setTimeout(()=>{ const notif = document.createElement("div"); notif.className = "position-fixed top-20 start-50 translate-middle-x glass-card p-3 text-white animate__animated z-3"; notif.style.top="80px"; notif.innerHTML="✈️ Welcome to AETHERIX – Smart Aviation Hub <i class='fas fa-rocket'></i>"; document.body.appendChild(notif); setTimeout(()=>notif.remove(),5000); },2000);
+    // ==================== INITIALIZATION ====================
+    document.addEventListener('DOMContentLoaded', function() {
+        AOS.init({ duration: 1000, once: false, mirror: true });
+        initNavbarScroll();
+        initBackToTop();
+        initDarkModeToggle();
+        initFormSubmission();
+        initCounterAnimations();
+        generateParticles();
+    });
+
+    function initNavbarScroll() {
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    }
+
+    function initBackToTop() {
+        const backToTopBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+        backToTopBtn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    function initDarkModeToggle() {
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const htmlElement = document.documentElement;
+        darkModeToggle.addEventListener('click', function() {
+            const isDarkMode = htmlElement.style.filter === 'invert(1)';
+            if (!isDarkMode) {
+                htmlElement.style.filter = 'invert(1)';
+                htmlElement.style.transition = 'filter 0.3s ease';
+                darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                htmlElement.style.filter = 'invert(0)';
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        });
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            htmlElement.style.filter = 'invert(1)';
+            darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+    }
+
+    function initFormSubmission() {
+        const bookingForm = document.getElementById('bookingForm');
+        const contactForm = document.getElementById('contactForm');
+        if (bookingForm) {
+            bookingForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                showNotification('✈️ Booking confirmed! Check your email.', 'success');
+                bookingForm.reset();
+            });
+        }
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                showNotification('📧 Message sent! Response in 24 hours.', 'success');
+                contactForm.reset();
+            });
+        }
+    }
+
+    function showNotification(message, type = 'success') {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: ${type === 'success' ? '#00d4ff' : '#ff6b35'};
+            color: white;
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+            font-size: 0.9rem;
+            max-width: 85vw;
+        `;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }, 4000);
+    }
+
+    function initCounterAnimations() {
+        const counterElements = document.querySelectorAll('[data-target]');
+        let hasAnimated = false;
+        window.addEventListener('scroll', function() {
+            if (hasAnimated) return;
+            counterElements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight;
+                if (elementPosition < screenPosition) {
+                    const targetValue = parseInt(element.getAttribute('data-target'));
+                    animateCounter(element, targetValue);
+                    hasAnimated = true;
+                }
+            });
+        });
+    }
+
+    function animateCounter(element, target) {
+        let current = 0;
+        const increment = target / 50;
+        const counter = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                element.textContent = target;
+                clearInterval(counter);
+            } else {
+                element.textContent = Math.floor(current);
+            }
+        }, 40);
+    }
+
+    function generateParticles() {
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 12; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.width = Math.random() * 5 + 2 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+    }
+
+    function scrollToSection(sectionId) {
+        const element = document.querySelector(sectionId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (href !== '#') {
+                e.preventDefault();
+                scrollToSection(href);
+            }
+        });
+    });
+
+    document.querySelectorAll('.emergency-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const title = this.closest('.emergency-card').querySelector('.emergency-title').textContent;
+            showNotification(`🚨 ${title} alert activated!`, 'warning');
+        });
+    });
+
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(400px); opacity: 0; } }
+        @keyframes fadeInUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    `;
+    document.head.appendChild(style);
+
+    window.addEventListener('load', function() {
+        const loadingScreen = document.querySelector('.loading-screen');
+        if (loadingScreen) {
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
+                loadingScreen.style.visibility = 'hidden';
+                loadingScreen.style.transition = 'all 0.5s ease';
+            }, 1500);
+        }
+    });
 </script>
+
 </body>
 </html>
