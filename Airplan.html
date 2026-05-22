@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkyLink Aviation Management</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Poppins',sans-serif;
+      background:#050b18;
+      color:#fff;
+      overflow-x:hidden;
+    }
+
+    :root{
+      --primary:#00d9ff;
+      --dark:#050b18;
+      --glass:rgba(255,255,255,0.08);
+      --border:rgba(255,255,255,0.12);
+    }
+
+    .navbar{
+      background:rgba(0,0,0,0.4);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(255,255,255,0.1);
+    }
+
+    .navbar-brand{
+      font-family:'Orbitron',sans-serif;
+      font-size:1.5rem;
+      color:var(--primary)!important;
+      font-weight:bold;
+    }
+
+    .nav-link{
+      color:#fff!important;
+      margin:0 10px;
+      transition:0.3s;
+    }
+
+    .nav-link:hover{
+      color:var(--primary)!important;
+    }
+
+    .hero{
+      height:100vh;
+      background:url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1974&auto=format&fit=crop') center/cover no-repeat;
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+    }
+
+    .hero::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.7);
+    }
+
+    .hero-content{
+      position:relative;
+      z-index:2;
+      max-width:850px;
+      padding:20px;
+    }
+
+    .hero h1{
+      font-size:4rem;
+      font-family:'Orbitron',sans-serif;
+      color:#fff;
+      text-shadow:0 0 20px rgba(0,217,255,0.6);
+    }
+
+    .hero p{
+      margin-top:20px;
+      color:#ddd;
+      font-size:1.1rem;
+    }
+
+    .btn-custom{
+      padding:14px 30px;
+      border:none;
+      border-radius:40px;
+      margin:10px;
+      font-weight:600;
+      transition:0.4s;
+      text-decoration:none;
+      display:inline-block;
+    }
+
+    .btn-primary-custom{
+      background:linear-gradient(45deg,#00d9ff,#006eff);
+      color:#fff;
+      box-shadow:0 0 20px rgba(0,217,255,0.4);
+    }
+
+    .btn-primary-custom:hover{
+      transform:translateY(-5px);
+      box-shadow:0 0 30px rgba(0,217,255,0.8);
+    }
+
+    section{
+      padding:100px 0;
+    }
+
+    .section-title{
+      text-align:center;
+      margin-bottom:60px;
+    }
+
+    .section-title h2{
+      font-size:2.8rem;
+      font-family:'Orbitron',sans-serif;
+      color:var(--primary);
+    }
+
+    .glass-card{
+      background:var(--glass);
+      backdrop-filter:blur(15px);
+      border:1px solid var(--border);
+      border-radius:20px;
+      padding:30px;
+      transition:0.4s;
+      height:100%;
+      box-shadow:0 0 20px rgba(0,0,0,0.2);
+    }
+
+    .glass-card:hover{
+      transform:translateY(-10px);
+      border-color:var(--primary);
+      box-shadow:0 0 30px rgba(0,217,255,0.3);
+    }
+
+    .glass-card i{
+      font-size:3rem;
+      color:var(--primary);
+      margin-bottom:20px;
+    }
+
+    .stats{
+      background:#09111f;
+    }
+
+    .counter{
+      font-size:3rem;
+      font-weight:bold;
+      color:var(--primary);
+      font-family:'Orbitron',sans-serif;
+    }
+
+    .booking-form{
+      background:rgba(255,255,255,0.06);
+      padding:40px;
+      border-radius:25px;
+      border:1px solid rgba(255,255,255,0.1);
+      backdrop-filter:blur(15px);
+    }
+
+    .form-control,
+    .form-select{
+      background:rgba(255,255,255,0.08);
+      border:none;
+      color:#fff;
+      padding:14px;
+      border-radius:12px;
+    }
+
+    .form-control::placeholder{
+      color:#ccc;
+    }
+
+    iframe{
+      width:100%;
+      border-radius:20px;
+      border:none;
+    }
+
+    footer{
+      background:#020611;
+      padding:40px 0;
+      text-align:center;
+      border-top:1px solid rgba(255,255,255,0.1);
+    }
+
+    .social-icons a{
+      width:45px;
+      height:45px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:50%;
+      background:rgba(255,255,255,0.08);
+      color:#fff;
+      margin:10px;
+      transition:0.4s;
+      text-decoration:none;
+    }
+
+    .social-icons a:hover{
+      background:var(--primary);
+      transform:translateY(-5px);
+    }
+
+    .aircraft-img{
+      border-radius:20px;
+      width:100%;
+      height:250px;
+      object-fit:cover;
+    }
+
+    .top-btn{
+      position:fixed;
+      right:20px;
+      bottom:20px;
+      width:50px;
+      height:50px;
+      border-radius:50%;
+      background:var(--primary);
+      color:#fff;
+      border:none;
+      z-index:999;
+      display:none;
+    }
+
+    @media(max-width:991px){
+      .hero h1{
+        font-size:2.5rem;
+      }
+    }
+
+    @media(max-width:576px){
+      .hero h1{
+        font-size:2rem;
+      }
+
+      .section-title h2{
+        font-size:2rem;
+      }
+
+      .booking-form{
+        padding:25px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#"><i class="fa-solid fa-plane"></i> SkyLink</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="#booking">Booking</a></li>
+        <li class="nav-item"><a class="nav-link" href="#fleet">Fleet</a></li>
+        <li class="nav-item"><a class="nav-link" href="#stats">Stats</a></li>
+        <li class="nav-item"><a class="nav-link" href="#videos">Videos</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <h1>Future of Smart Aviation Management</h1>
+    <p>Premium Airline & Airport Management System with futuristic dashboards, AI flight tracking, aviation analytics and enterprise-grade UI.</p>
+
+    <a href="#booking" class="btn-custom btn-primary-custom">
+      <i class="fa-solid fa-ticket"></i> Book Flight
+    </a>
+
+    <a href="#contact" class="btn-custom btn-primary-custom">
+      <i class="fa-solid fa-headset"></i> Contact Support
+    </a>
+  </div>
+</section>
+
+<!-- Services -->
+<section id="services">
+  <div class="container">
+    <div class="section-title">
+      <h2>Airline Services</h2>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="glass-card text-center">
+          <i class="fa-solid fa-plane-departure"></i>
+          <h4>Flight Booking</h4>
+          <p>Book international and domestic flights with advanced seat selection and smart booking system.</p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <div class="glass-card text-center">
+          <i class="fa-solid fa-tower-observation"></i>
+          <h4>Air Traffic Control</h4>
+          <p>AI-powered aviation monitoring with real-time flight management dashboards.</p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <div class="glass-card text-center">
+          <i class="fa-solid fa-shield-halved"></i>
+          <h4>Aviation Security</h4>
+          <p>Smart airport surveillance, emergency alerts and cybersecurity protection systems.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Booking -->
+<section id="booking">
+  <div class="container">
+    <div class="section-title">
+      <h2>Flight Booking</h2>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="booking-form">
+          <div class="row g-4">
+            <div class="col-md-6">
+              <input type="text" class="form-control" placeholder="Passenger Name">
+            </div>
+
+            <div class="col-md-6">
+              <input type="text" class="form-control" placeholder="Passport Number">
+            </div>
+
+            <div class="col-md-6">
+              <input type="text" class="form-control" placeholder="Departure City">
+            </div>
+
+            <div class="col-md-6">
+              <input type="text" class="form-control" placeholder="Destination City">
+            </div>
+
+            <div class="col-md-6">
+              <input type="date" class="form-control">
+            </div>
+
+            <div class="col-md-6">
+              <select class="form-select">
+                <option>Economy Class</option>
+                <option>Business Class</option>
+                <option>First Class</option>
+              </select>
+            </div>
+
+            <div class="col-12 text-center">
+              <button class="btn-custom btn-primary-custom">
+                <i class="fa-solid fa-plane-circle-check"></i> Confirm Booking
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Fleet -->
+<section id="fleet">
+  <div class="container">
+    <div class="section-title">
+      <h2>Aircraft Fleet</h2>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="glass-card">
+          <img src="https://images.unsplash.com/photo-1517479149777-5f3b1511d5ad?q=80&w=1200&auto=format&fit=crop" class="aircraft-img">
+          <h4 class="mt-4">Boeing 787 Dreamliner</h4>
+          <p>Long-range international aircraft with advanced passenger comfort and smart technology.</p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <div class="glass-card">
+          <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1200&auto=format&fit=crop" class="aircraft-img">
+          <h4 class="mt-4">Airbus A380</h4>
+          <p>World-class premium aircraft designed for luxury and maximum passenger capacity.</p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <div class="glass-card">
+          <img src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?q=80&w=1200&auto=format&fit=crop" class="aircraft-img">
+          <h4 class="mt-4">Cargo Aircraft</h4>
+          <p>Fast international cargo delivery systems with enterprise logistics integration.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="stats" id="stats">
+  <div class="container">
+    <div class="section-title">
+      <h2>Aviation Statistics</h2>
+    </div>
+
+    <div class="row text-center g-4">
+      <div class="col-lg-3 col-md-6">
+        <div class="glass-card">
+          <div class="counter" data-target="1200">0</div>
+          <p>Daily Flights</p>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <div class="glass-card">
+          <div class="counter" data-target="45000">0</div>
+          <p>Passengers</p>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <div class="glass-card">
+          <div class="counter" data-target="320">0</div>
+          <p>Aircraft Active</p>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <div class="glass-card">
+          <div class="counter" data-target="99">0</div>
+          <p>Safety Rate %</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Videos -->
+<section id="videos">
+  <div class="container">
+    <div class="section-title">
+      <h2>Aviation Videos</h2>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <iframe height="315" src="https://www.youtube.com/embed/9No-FiEInLA" allowfullscreen></iframe>
+      </div>
+
+      <div class="col-lg-6">
+        <iframe height="315" src="https://www.youtube.com/embed/Scxs7L0vhZ4" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact">
+  <div class="container">
+    <div class="section-title">
+      <h2>Contact Us</h2>
+    </div>
+
+    <div class="row g-4 align-items-center">
+      <div class="col-lg-6">
+        <div class="booking-form">
+          <input type="text" class="form-control mb-3" placeholder="Your Name">
+          <input type="email" class="form-control mb-3" placeholder="Your Email">
+          <textarea rows="5" class="form-control mb-3" placeholder="Message"></textarea>
+
+          <button class="btn-custom btn-primary-custom w-100">
+            Send Message
+          </button>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <iframe height="450" src="https://maps.google.com/maps?q=dubai%20airport&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <h3 class="mb-4">SkyLink Aviation</h3>
+
+    <div class="social-icons">
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      <a href="#"><i class="fab fa-youtube"></i></a>
+    </div>
+
+    <p class="mt-4">© 2026 SkyLink Aviation Management System. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<!-- Back To Top -->
+<button class="top-btn" id="topBtn">
+  <i class="fa-solid fa-arrow-up"></i>
+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // Counter Animation
+  const counters = document.querySelectorAll('.counter');
+
+  counters.forEach(counter => {
+    counter.innerText = '0';
+
+    const updateCounter = () => {
+      const target = +counter.getAttribute('data-target');
+      const current = +counter.innerText;
+
+      const increment = target / 100;
+
+      if(current < target){
+        counter.innerText = `${Math.ceil(current + increment)}`;
+        setTimeout(updateCounter,20);
+      }else{
+        counter.innerText = target;
+      }
+    }
+
+    updateCounter();
+  });
+
+  // Back To Top
+  const topBtn = document.getElementById('topBtn');
+
+  window.addEventListener('scroll',()=>{
+    if(window.scrollY > 300){
+      topBtn.style.display = 'block';
+    }else{
+      topBtn.style.display = 'none';
+    }
+  });
+
+  topBtn.addEventListener('click',()=>{
+    window.scrollTo({
+      top:0,
+      behavior:'smooth'
+    });
+  });
+</script>
+
+</body>
+</html>
