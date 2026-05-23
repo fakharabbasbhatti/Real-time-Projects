@@ -4,551 +4,1122 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>PakRail Nexus | Futuristic Railway Ecosystem</title>
-  
-  <!-- Google Fonts & Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ===== RAILWAY STATION COLOR PALETTE ===== */
+    :root {
+      /* Core Railway Colors */
+      --loco-black:    #0f0e0c;       /* Locomotive black */
+      --iron-dark:     #1a1915;       /* Cast iron dark */
+      --steel-mid:     #2e2d29;       /* Railway steel */
+      --track-charcoal:#3c3b36;       /* Track ballast */
+      --signal-amber:  #f5a623;       /* Signal amber lamp */
+      --signal-red:    #d63031;       /* Stop signal red */
+      --signal-green:  #00b894;       /* Go signal green */
+      --platform-cream:#e8dfc8;       /* Old platform stone */
+      --platform-warm: #c9b99a;       /* Worn platform beige */
+      --boiler-orange: #e17055;       /* Steam boiler glow */
+      --brass-gold:    #c8923a;       /* Brass fittings */
+      --rust-brown:    #8B4513;       /* Track rust */
+      --steam-white:   #f5f0e8;       /* Steam/smoke white */
+      --coach-navy:    #1d3461;       /* Heritage coach blue */
+      --window-teal:   #2d7d8e;       /* Station window teal */
+
+      /* UI Tokens */
+      --bg-primary:    var(--loco-black);
+      --bg-surface:    var(--iron-dark);
+      --bg-card:       rgba(30,29,25,0.85);
+      --border-subtle: rgba(245,166,35,0.18);
+      --border-active: rgba(245,166,35,0.6);
+      --text-main:     var(--steam-white);
+      --text-muted:    var(--platform-warm);
+      --text-accent:   var(--signal-amber);
+
+      --radius-card: 20px;
+      --radius-btn:  60px;
     }
 
-    :root {
-      --deep-space: #0b0c1a;
-      --cosmic-purple: #6c2bd9;
-      --electric-blue: #2b9eff;
-      --cyan-glow: #00e0ff;
-      --neon-mint: #00f5b0;
-      --glass-bg: rgba(12, 14, 28, 0.65);
-      --glass-border: rgba(0, 224, 255, 0.25);
-      --card-glow: 0 20px 35px -12px rgba(0, 0, 0, 0.5);
-      --text-dim: #cbd5ff;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
-      background: radial-gradient(ellipse at 20% 30%, #11122b, #03040c);
-      font-family: 'Inter', sans-serif;
-      color: #f0f3ff;
+      background: var(--bg-primary);
+      background-image:
+        radial-gradient(ellipse 80% 60% at 10% 20%, rgba(245,166,35,0.06) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 80% at 85% 80%, rgba(29,52,97,0.12) 0%, transparent 55%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f5a623' fill-opacity='0.025'%3E%3Crect x='0' y='29' width='60' height='2'/%3E%3Crect x='29' y='0' width='2' height='60'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text-main);
       overflow-x: hidden;
     }
 
-    /* smooth scrolling */
-    html {
-      scroll-behavior: smooth;
+    /* Diagonal track lines background accent */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent 0px,
+        transparent 40px,
+        rgba(245,166,35,0.018) 40px,
+        rgba(245,166,35,0.018) 41px
+      );
+      pointer-events: none;
+      z-index: 0;
     }
 
-    /* custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #0f1123;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--electric-blue);
-      border-radius: 10px;
-    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--iron-dark); }
+    ::-webkit-scrollbar-thumb { background: var(--brass-gold); border-radius: 10px; }
 
-    /* animated gradient border effect */
-    .glass-card {
-      background: var(--glass-bg);
-      backdrop-filter: blur(14px);
-      border: 1px solid var(--glass-border);
-      border-radius: 32px;
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    }
-    .glass-card:hover {
-      border-color: var(--cyan-glow);
-      box-shadow: 0 0 22px rgba(0,224,255,0.2);
-      transform: translateY(-5px);
-    }
-
-    /* navbar — sleek and minimal */
-    .navbar {
-      background: rgba(8, 10, 25, 0.75);
+    /* ===== CARD COMPONENT ===== */
+    .rail-card {
+      background: var(--bg-card);
       backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(0, 224, 255, 0.2);
-      padding: 0.8rem 0;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-card);
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+    .rail-card:hover {
+      border-color: var(--border-active);
+      box-shadow: 0 0 28px rgba(245,166,35,0.12), 0 16px 32px rgba(0,0,0,0.4);
+      transform: translateY(-4px);
+    }
+
+    /* Amber accent bar on card top */
+    .rail-card.accented {
+      border-top: 3px solid var(--signal-amber);
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      background: rgba(15,14,12,0.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(245,166,35,0.22);
+      padding: 0.75rem 0;
     }
     .navbar-brand {
-      font-family: 'Space Grotesk', monospace;
-      font-weight: 700;
-      font-size: 1.7rem;
-      background: linear-gradient(135deg, #fff, var(--cyan-glow));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent !important;
-      letter-spacing: -0.5px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.55rem;
+      color: var(--steam-white) !important;
+      letter-spacing: -0.3px;
     }
+    .navbar-brand span { color: var(--signal-amber); }
     .nav-link {
-      color: #eef5ff !important;
+      color: var(--platform-cream) !important;
       font-weight: 500;
-      margin: 0 0.2rem;
-      transition: 0.2s;
+      padding: 0.45rem 1.1rem !important;
       border-radius: 40px;
-      padding: 0.5rem 1.2rem;
+      transition: 0.2s;
+      font-size: 0.95rem;
     }
     .nav-link:hover {
-      background: rgba(43, 158, 255, 0.15);
-      color: var(--cyan-glow) !important;
-    }
-    .btn-cyber {
-      background: linear-gradient(105deg, var(--electric-blue), var(--cosmic-purple));
-      border: none;
-      padding: 10px 28px;
-      border-radius: 60px;
-      font-weight: 600;
-      color: white;
-      transition: 0.3s;
-      letter-spacing: 0.3px;
-      box-shadow: 0 4px 12px rgba(43, 158, 255, 0.3);
-    }
-    .btn-cyber:hover {
-      transform: scale(1.02);
-      background: linear-gradient(105deg, #3aaaff, #7d3eff);
-      box-shadow: 0 8px 22px rgba(0, 160, 255, 0.4);
+      background: rgba(245,166,35,0.12);
+      color: var(--signal-amber) !important;
     }
 
-    /* hero section */
+    .btn-amber {
+      background: linear-gradient(110deg, var(--signal-amber), var(--brass-gold));
+      color: var(--loco-black);
+      border: none;
+      padding: 11px 28px;
+      border-radius: var(--radius-btn);
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.2px;
+      transition: 0.25s;
+      box-shadow: 0 4px 16px rgba(245,166,35,0.3);
+    }
+    .btn-amber:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 24px rgba(245,166,35,0.45);
+      background: linear-gradient(110deg, #ffc84a, var(--signal-amber));
+    }
+
+    .btn-outline-amber {
+      background: transparent;
+      border: 1.5px solid rgba(245,166,35,0.5);
+      color: var(--signal-amber);
+      padding: 11px 28px;
+      border-radius: var(--radius-btn);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: 0.25s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-outline-amber:hover {
+      background: rgba(245,166,35,0.12);
+      border-color: var(--signal-amber);
+      color: var(--signal-amber);
+    }
+
+    /* ===== HERO ===== */
     .hero-section {
       min-height: 100vh;
       display: flex;
       align-items: center;
-      padding: 120px 0 80px;
+      padding: 130px 0 80px;
       position: relative;
-      isolation: isolate;
+      z-index: 1;
     }
-    .hero-badge {
-      background: rgba(0, 224, 255, 0.12);
-      backdrop-filter: blur(4px);
+
+    .badge-station {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245,166,35,0.1);
+      border: 1px solid rgba(245,166,35,0.35);
       border-radius: 80px;
-      display: inline-block;
-      padding: 6px 20px;
-      font-size: 0.9rem;
-      border: 1px solid rgba(0, 224, 255, 0.4);
-      margin-bottom: 20px;
+      padding: 6px 18px;
+      font-size: 0.85rem;
+      color: var(--signal-amber);
+      font-weight: 600;
+      margin-bottom: 24px;
+      letter-spacing: 0.3px;
     }
-    .glow-text {
-      font-size: clamp(2.6rem, 7vw, 5.2rem);
+    .badge-station::before {
+      content: '';
+      display: block;
+      width: 8px;
+      height: 8px;
+      background: var(--signal-amber);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--signal-amber);
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.5rem, 6.5vw, 4.8rem);
       font-weight: 800;
-      line-height: 1.2;
-      background: linear-gradient(to right, #fff, #b0ecff, var(--cyan-glow));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+      line-height: 1.12;
+      letter-spacing: -1.5px;
+      color: var(--steam-white);
     }
-    .hero-img-container {
+    .hero-title .accent { color: var(--signal-amber); }
+    .hero-title .accent-red { color: var(--signal-red); }
+
+    .hero-desc { color: var(--platform-warm); font-size: 1.05rem; line-height: 1.7; }
+
+    /* Hero image frame */
+    .hero-img-wrap {
       position: relative;
     }
-    .floating-card {
+    .hero-img-wrap img {
+      border-radius: 24px;
+      width: 100%;
+      object-fit: cover;
+      filter: brightness(0.85) saturate(1.1);
+      border: 1px solid rgba(245,166,35,0.2);
+    }
+    /* amber corner accent */
+    .hero-img-wrap::before {
+      content: '';
       position: absolute;
-      background: rgba(0, 0, 0, 0.6);
+      top: -8px;
+      left: -8px;
+      width: 60px;
+      height: 60px;
+      border-top: 3px solid var(--signal-amber);
+      border-left: 3px solid var(--signal-amber);
+      border-radius: 6px 0 0 0;
+      z-index: 2;
+    }
+    .hero-img-wrap::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      right: -8px;
+      width: 60px;
+      height: 60px;
+      border-bottom: 3px solid var(--signal-amber);
+      border-right: 3px solid var(--signal-amber);
+      border-radius: 0 0 6px 0;
+      z-index: 2;
+    }
+
+    /* Floating info tags */
+    .float-tag {
+      position: absolute;
+      background: rgba(15,14,12,0.92);
       backdrop-filter: blur(12px);
-      padding: 12px 20px;
-      border-radius: 28px;
-      border-left: 3px solid var(--neon-mint);
+      border-left: 3px solid var(--signal-amber);
+      padding: 10px 16px;
+      border-radius: 0 14px 14px 0;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--steam-white);
+      animation: floatY 3s ease-in-out infinite alternate;
+      z-index: 3;
+    }
+    .float-tag span { color: var(--signal-amber); }
+    .float-tag-2 { border-left-color: var(--signal-green); animation-delay: 1s; }
+    .float-tag-2 span { color: var(--signal-green); }
+    @keyframes floatY {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-10px); }
+    }
+    .ft1 { top: 12%; left: -4%; }
+    .ft2 { bottom: 14%; right: -4%; border-radius: 14px 0 0 14px; border-left: none; border-right: 3px solid var(--signal-green); }
+
+    /* Hero stat strip */
+    .stat-strip {
+      background: rgba(26,25,21,0.8);
+      border: 1px solid rgba(245,166,35,0.2);
+      border-radius: 16px;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 2rem;
+    }
+    .stat-strip-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-size: 0.9rem;
       font-weight: 500;
-      animation: drift 3s infinite alternate;
     }
-    @keyframes drift {
-      0% { transform: translateY(0px); }
-      100% { transform: translateY(-12px); }
-    }
-    .card-1 { top: 10%; left: -5%; }
-    .card-2 { bottom: 12%; right: -8%; }
+    .stat-strip-item i { color: var(--signal-amber); font-size: 1.1rem; }
 
-    /* modern service icons */
-    .service-icon-lg {
-      width: 70px;
-      height: 70px;
-      background: linear-gradient(145deg, rgba(43, 158, 255, 0.2), rgba(108, 43, 217, 0.3));
-      border-radius: 28px;
+    /* ===== SECTION HEADER ===== */
+    .section-tag {
+      display: inline-block;
+      background: rgba(245,166,35,0.1);
+      border: 1px solid rgba(245,166,35,0.3);
+      color: var(--signal-amber);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 5px 16px;
+      border-radius: 40px;
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--steam-white);
+    }
+    .section-title em { font-style: normal; color: var(--signal-amber); }
+
+    /* ===== SERVICES ===== */
+    .service-icon {
+      width: 60px;
+      height: 60px;
+      background: rgba(245,166,35,0.1);
+      border: 1px solid rgba(245,166,35,0.25);
+      border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2rem;
-      color: var(--cyan-glow);
-      margin-bottom: 1.4rem;
+      font-size: 1.6rem;
+      color: var(--signal-amber);
+      margin-bottom: 1.2rem;
       transition: 0.2s;
     }
-    .service-card {
-      padding: 2rem 1.5rem;
-      transition: all 0.25s;
+    .service-card:hover .service-icon {
+      background: rgba(245,166,35,0.2);
+      border-color: var(--signal-amber);
+    }
+    .service-card { padding: 1.8rem 1.5rem; }
+    .service-card h5 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.6rem;
+    }
+    .service-card p { color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; }
+
+    /* ===== BOOKING ===== */
+    .booking-section { background: rgba(26,25,21,0.5); border-top: 1px solid rgba(245,166,35,0.15); border-bottom: 1px solid rgba(245,166,35,0.15); }
+
+    .form-control-dark, .form-select-dark {
+      background: rgba(15,14,12,0.7) !important;
+      border: 1px solid rgba(245,166,35,0.2) !important;
+      border-radius: 12px !important;
+      color: var(--steam-white) !important;
+      padding: 12px 18px !important;
+      font-size: 0.92rem;
+      transition: border-color 0.2s;
+    }
+    .form-control-dark:focus, .form-select-dark:focus {
+      border-color: var(--signal-amber) !important;
+      box-shadow: 0 0 0 3px rgba(245,166,35,0.12) !important;
+      outline: none;
+    }
+    .form-control-dark::placeholder { color: rgba(200,185,154,0.5); }
+    .form-select-dark option { background: #1a1915; color: var(--steam-white); }
+    .form-label-sm { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.8px; color: var(--platform-warm); text-transform: uppercase; margin-bottom: 6px; }
+
+    /* Route arrow */
+    .route-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--signal-amber);
+      font-size: 1.2rem;
+      padding-top: 26px;
     }
 
-    /* timeline modern */
-    .timeline-modern {
-      position: relative;
-    }
-    .timeline-item-new {
-      background: rgba(20, 22, 45, 0.7);
-      backdrop-filter: blur(10px);
-      border-radius: 28px;
-      padding: 1.8rem;
-      margin-bottom: 2rem;
-      border: 1px solid rgba(0, 224, 255, 0.2);
-      transition: 0.2s;
-    }
-    .timeline-item-new:hover {
-      border-color: var(--cyan-glow);
-      background: rgba(30, 35, 65, 0.75);
-    }
-
-    /* dashboard */
+    /* ===== DASHBOARD / INSIGHTS ===== */
     .stat-card {
       text-align: center;
-      padding: 1.8rem;
-      border-radius: 32px;
+      padding: 1.6rem 1rem;
+      border-radius: var(--radius-card);
     }
-    .stat-number {
+    .stat-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: var(--signal-amber);
+      line-height: 1;
+    }
+    .stat-label { font-size: 0.82rem; color: var(--text-muted); margin-top: 6px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.8px; }
+    .stat-icon { font-size: 1.2rem; color: rgba(245,166,35,0.5); margin-top: 10px; }
+
+    /* Progress bars */
+    .track-line {
+      background: rgba(60,59,54,0.6);
+      border-radius: 60px;
+      height: 10px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .track-fill {
+      background: linear-gradient(90deg, var(--signal-amber), var(--signal-green));
+      height: 100%;
+      border-radius: 60px;
+      transition: width 1s ease;
+    }
+    .track-fill-red { background: linear-gradient(90deg, var(--signal-red), var(--boiler-orange)); }
+
+    .train-row {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(245,166,35,0.1);
+    }
+    .train-row:last-child { border-bottom: none; }
+    .train-badge {
+      display: inline-block;
+      padding: 3px 12px;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .badge-on-time { background: rgba(0,184,148,0.15); color: var(--signal-green); border: 1px solid rgba(0,184,148,0.3); }
+    .badge-delayed { background: rgba(214,48,49,0.15); color: var(--signal-red); border: 1px solid rgba(214,48,49,0.3); }
+    .badge-arriving { background: rgba(245,166,35,0.15); color: var(--signal-amber); border: 1px solid rgba(245,166,35,0.3); }
+
+    /* Alert strip */
+    .alert-strip {
+      background: rgba(245,166,35,0.07);
+      border: 1px solid rgba(245,166,35,0.25);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: var(--signal-amber);
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Security panel items */
+    .sec-item { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
+    .sec-item:last-child { border-bottom: none; }
+
+    /* ===== JOURNEY STEPS ===== */
+    .step-card {
+      text-align: center;
+      padding: 2rem 1.2rem;
+      position: relative;
+    }
+    .step-num {
+      font-family: 'Syne', sans-serif;
       font-size: 3rem;
       font-weight: 800;
-      font-family: 'Space Grotesk', monospace;
-      background: linear-gradient(135deg, var(--cyan-glow), #fff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    /* progress bars */
-    .progress-custom {
-      background: #202336;
-      border-radius: 60px;
-      height: 12px;
-      overflow: hidden;
-    }
-    .progress-bar-custom {
-      background: linear-gradient(90deg, var(--electric-blue), var(--neon-mint));
-      width: 0%;
-      border-radius: 60px;
-    }
-
-    /* Responsive magic */
-    @media (max-width: 991px) {
-      .hero-section {
-        text-align: center;
-        padding-top: 100px;
-      }
-      .card-1, .card-2 {
-        display: none;
-      }
-      .navbar-collapse {
-        background: rgba(10, 12, 28, 0.95);
-        backdrop-filter: blur(20px);
-        border-radius: 28px;
-        padding: 1rem;
-        margin-top: 1rem;
-      }
-      .timeline-item-new {
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-      }
-    }
-
-    @media (max-width: 576px) {
-      .glass-card, .booking-form {
-        padding: 1.5rem !important;
-      }
-      .btn-cyber {
-        width: 100%;
-        text-align: center;
-      }
-    }
-
-    /* animated background particles (minimal) */
-    .orb-bg {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      z-index: -2;
-    }
-    .blob {
+      color: rgba(245,166,35,0.15);
+      line-height: 1;
       position: absolute;
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(0,224,255,0.1), transparent);
+      top: 1rem;
+      right: 1.2rem;
+    }
+    .step-icon { font-size: 2.2rem; color: var(--signal-amber); margin-bottom: 1rem; display: block; }
+    .step-card h5 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; margin-bottom: 0.4rem; }
+    .step-card p { font-size: 0.88rem; color: var(--text-muted); }
+
+    /* Connecting dotted line between steps */
+    .step-connector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(245,166,35,0.4);
+      font-size: 1.4rem;
+      padding-top: 30px;
+    }
+
+    /* ===== HERITAGE BANNER ===== */
+    .heritage-banner {
+      background: linear-gradient(110deg, rgba(29,52,97,0.6), rgba(139,69,19,0.2));
+      border: 1px solid rgba(245,166,35,0.2);
+      border-radius: 24px;
+      padding: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .heritage-icon { font-size: 4rem; color: var(--brass-gold); flex-shrink: 0; }
+    .heritage-banner h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.5rem; color: var(--steam-white); }
+    .heritage-banner p { color: var(--platform-warm); font-size: 0.95rem; margin-top: 6px; }
+
+    /* ===== CONTACT ===== */
+    .contact-icon-box {
+      width: 52px;
+      height: 52px;
+      background: rgba(245,166,35,0.1);
+      border: 1px solid rgba(245,166,35,0.25);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: var(--signal-amber);
+      flex-shrink: 0;
+    }
+    .contact-item { display: flex; align-items: center; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .contact-item:last-child { border-bottom: none; }
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
-      filter: blur(70px);
-      animation: floatBlob 18s infinite alternate;
+      background: rgba(245,166,35,0.1);
+      border: 1px solid rgba(245,166,35,0.25);
+      color: var(--signal-amber);
+      font-size: 1rem;
+      transition: 0.2s;
+      text-decoration: none;
     }
-    @keyframes floatBlob {
-      0% { transform: translate(0%, 0%) scale(1); }
-      100% { transform: translate(8%, 6%) scale(1.2); }
+    .social-btn:hover {
+      background: rgba(245,166,35,0.2);
+      color: var(--signal-amber);
     }
-    .blob2 {
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(108,43,217,0.12), transparent);
-      bottom: -150px;
-      right: -100px;
-    }
+
+    /* ===== FOOTER ===== */
     footer {
-      background: #050617;
-      border-top: 1px solid rgba(0,224,255,0.2);
+      background: var(--iron-dark);
+      border-top: 1px solid rgba(245,166,35,0.2);
     }
+    .footer-brand { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem; color: var(--steam-white); }
+    .footer-brand span { color: var(--signal-amber); }
+    .footer-track {
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--signal-amber), var(--brass-gold), transparent);
+      border-radius: 60px;
+      margin: 2rem 0;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 991px) {
+      .hero-section { text-align: center; }
+      .ft1, .ft2 { display: none; }
+      .navbar-collapse {
+        background: rgba(15,14,12,0.97);
+        border-radius: 16px;
+        padding: 1rem;
+        margin-top: 0.8rem;
+        border: 1px solid rgba(245,166,35,0.2);
+      }
+      .route-arrow { padding-top: 0; }
+    }
+    @media (max-width: 576px) {
+      .stat-strip { justify-content: center; }
+      .btn-amber, .btn-outline-amber { width: 100%; text-align: center; }
+      .heritage-banner { flex-direction: column; text-align: center; }
+    }
+
+    /* Section spacing */
+    section { position: relative; z-index: 1; }
+    .py-section { padding: 90px 0; }
   </style>
 </head>
 <body>
 
-<div class="orb-bg">
-  <div class="blob" style="top: -100px; left: -150px;"></div>
-  <div class="blob blob2" style="bottom: -100px; right: -120px;"></div>
-</div>
-
+<!-- ===== NAVBAR ===== -->
 <nav class="navbar navbar-expand-lg fixed-top">
   <div class="container">
-    <a class="navbar-brand" href="#"><i class="fa-solid fa-train-subway-tunnel me-2"></i>PAKRAIL<span style="color:#00e0ff;"> NEXUS</span></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" style="border:1px solid #2b9eff;">
-      <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+    <a class="navbar-brand" href="#home">
+      <i class="fa-solid fa-train me-2" style="color: var(--signal-amber);"></i>
+      PAKRAIL<span> NEXUS</span>
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" style="color: var(--signal-amber);">
+      <i class="fa-solid fa-bars" style="color: var(--signal-amber); font-size: 1.2rem;"></i>
     </button>
     <div class="collapse navbar-collapse" id="mainNav">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-1">
         <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-        <li class="nav-item"><a class="nav-link" href="#booking">Smart Booking</a></li>
-        <li class="nav-item"><a class="nav-link" href="#insights">Live Insights</a></li>
+        <li class="nav-item"><a class="nav-link" href="#booking">Booking</a></li>
+        <li class="nav-item"><a class="nav-link" href="#insights">Operations</a></li>
         <li class="nav-item"><a class="nav-link" href="#contact">Connect</a></li>
-        <li class="nav-item ms-lg-2"><a href="#booking" class="btn-cyber"><i class="fa-regular fa-calendar-check me-2"></i>Book Now</a></li>
+        <li class="nav-item ms-lg-3">
+          <a href="#booking" class="btn-amber"><i class="fa-regular fa-calendar-check me-2"></i>Book Ticket</a>
+        </li>
       </ul>
     </div>
   </div>
 </nav>
 
-<!-- HERO SECTION reimagined -->
+<!-- ===== HERO ===== -->
 <section class="hero-section" id="home">
   <div class="container">
     <div class="row align-items-center g-5">
       <div class="col-lg-6 order-2 order-lg-1">
-        <div class="hero-badge"><i class="fa-regular fa-bell me-1"></i> AI-Powered Railway • Rawalpindi Hub</div>
-        <h1 class="glow-text">Next‑Gen Rail<br>Intelligence Nexus</h1>
-        <p class="mt-3 mb-4 text-light-emphasis" style="color:#bcc7ff; font-size:1.1rem;">Real‑time tracking, zero‑latency booking, and hyper‑connected stations. Experience the future of Pakistan Railways with cyber-secure dashboards & instant mobility.</p>
+        <div class="badge-station">LIVE SYSTEM &nbsp;·&nbsp; Rawalpindi Central Hub</div>
+        <h1 class="hero-title">
+          Pakistan's<br>
+          <em class="accent">Intelligent</em><br>
+          Rail<span class="accent-red"> Network</span>
+        </h1>
+        <p class="hero-desc mt-4 mb-4" style="max-width: 500px;">
+          Where 170 years of railway heritage meets AI-powered precision. Real-time tracking, zero-latency booking, and cyber-secure operations — built for Pakistan's next era.
+        </p>
         <div class="d-flex flex-wrap gap-3">
-          <a href="#booking" class="btn-cyber px-4 py-3"><i class="fa-solid fa-ticket-airline me-2"></i>Instant e‑Ticket</a>
-          <a href="#insights" class="btn btn-outline-light px-4 py-3 rounded-pill" style="border-color:rgba(0,224,255,0.5);">Live Monitoring →</a>
+          <a href="#booking" class="btn-amber py-3 px-4">
+            <i class="fa-solid fa-ticket me-2"></i>Instant e-Ticket
+          </a>
+          <a href="#insights" class="btn-outline-amber py-3 px-4">Live Operations →</a>
         </div>
-        <div class="glass-card p-3 mt-5 d-flex justify-content-between align-items-center flex-wrap">
-          <div><i class="fa-solid fa-chart-line text-info"></i> 99.6% On‑time</div>
-          <div><i class="fa-solid fa-map-pin text-info"></i> 38+ Smart Stations</div>
-          <div><i class="fa-solid fa-robot text-info"></i> AI Safety Shield</div>
+
+        <div class="stat-strip">
+          <div class="stat-strip-item"><i class="fa-solid fa-chart-line"></i> 99.6% On-time</div>
+          <div class="stat-strip-item"><i class="fa-solid fa-train-subway"></i> 38 Smart Stations</div>
+          <div class="stat-strip-item"><i class="fa-solid fa-shield-halved"></i> AI Safety Shield</div>
+          <div class="stat-strip-item"><i class="fa-solid fa-leaf"></i> Green Rail Initiative</div>
         </div>
       </div>
-      <div class="col-lg-6 order-1 order-lg-2 hero-img-container">
-        <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&auto=format" class="img-fluid rounded-4" alt="modern train" style="filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6)); border-radius: 32px;">
-        <div class="floating-card card-1"><i class="fa-solid fa-location-dot text-info me-2"></i> Rawalpindi Junction | Platform AI</div>
-        <div class="floating-card card-2"><i class="fa-solid fa-gauge-high text-info me-2"></i> Speed: 160 km/h | Green Line</div>
+
+      <div class="col-lg-6 order-1 order-lg-2">
+        <div class="hero-img-wrap">
+          <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&auto=format" alt="Pakistan Railway modern train">
+          <div class="float-tag ft1">
+            <i class="fa-solid fa-location-dot me-2"></i>
+            Platform 3 — <span>Rawalpindi Jn.</span>
+          </div>
+          <div class="float-tag float-tag-2 ft2">
+            <i class="fa-solid fa-gauge-high me-2"></i>
+            <span>162 km/h</span> · Green Line AI-01
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SERVICES modern layout -->
-<section id="services" class="py-5 py-md-5" style="padding: 80px 0;">
+<!-- ===== HERITAGE BANNER ===== -->
+<section style="padding: 0 0 70px;">
+  <div class="container">
+    <div class="heritage-banner">
+      <div class="heritage-icon"><i class="fa-solid fa-train-tram"></i></div>
+      <div>
+        <h3>Pakistan Railways — Est. 1855 · Now Digitized</h3>
+        <p>Over 7,700 km of track connecting 500+ stations. From steam locomotives to AI-driven express lines — the heritage rolls forward.</p>
+      </div>
+      <div class="ms-auto d-flex gap-3 flex-wrap">
+        <div class="text-center" style="min-width: 80px;">
+          <div style="font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; color:var(--signal-amber);">168</div>
+          <div style="font-size:0.78rem; color:var(--platform-warm); text-transform:uppercase; letter-spacing:0.6px;">Years</div>
+        </div>
+        <div class="text-center" style="min-width: 80px;">
+          <div style="font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; color:var(--signal-amber);">500+</div>
+          <div style="font-size:0.78rem; color:var(--platform-warm); text-transform:uppercase; letter-spacing:0.6px;">Stations</div>
+        </div>
+        <div class="text-center" style="min-width: 80px;">
+          <div style="font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; color:var(--signal-amber);">7.7K</div>
+          <div style="font-size:0.78rem; color:var(--platform-warm); text-transform:uppercase; letter-spacing:0.6px;">km Track</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section id="services" class="py-section">
   <div class="container">
     <div class="text-center mb-5">
-      <h2 style="font-size: clamp(2rem,5vw,3.2rem); font-weight: 700;"><span style="border-bottom: 3px solid var(--cyan-glow);">Intelligent Railway</span> Solutions</h2>
-      <p class="mt-3" style="color: #b5c5ff;">Fusing IoT, cloud & realtime analytics for seamless mobility</p>
+      <div class="section-tag">Platform Services</div>
+      <h2 class="section-title">Intelligent <em>Railway</em> Solutions</h2>
+      <p class="mt-3" style="color: var(--text-muted); max-width: 480px; margin: 12px auto 0;">IoT, cloud intelligence & real-time analytics fused for seamless passenger mobility</p>
     </div>
+
     <div class="row g-4">
       <div class="col-md-6 col-lg-4">
-        <div class="glass-card service-card h-100">
-          <div class="service-icon-lg"><i class="fa-solid fa-microchip"></i></div>
-          <h4>AI Fleet Manager</h4>
-          <p>Predictive maintenance & autonomous dispatching for all intercity fleets.</p>
+        <div class="rail-card accented service-card h-100">
+          <div class="service-icon"><i class="fa-solid fa-microchip"></i></div>
+          <h5>AI Fleet Manager</h5>
+          <p>Predictive maintenance and autonomous dispatching across all intercity fleets with real-time fault detection.</p>
         </div>
       </div>
       <div class="col-md-6 col-lg-4">
-        <div class="glass-card service-card h-100">
-          <div class="service-icon-lg"><i class="fa-solid fa-qrcode"></i></div>
-          <h4>Smart Digital Gates</h4>
-          <p>QR/face entry, contactless boarding with biometric validation at scale.</p>
+        <div class="rail-card accented service-card h-100">
+          <div class="service-icon"><i class="fa-solid fa-qrcode"></i></div>
+          <h5>Smart Digital Gates</h5>
+          <p>QR & face-scan entry with contactless biometric boarding validation at scale across all major stations.</p>
         </div>
       </div>
       <div class="col-md-6 col-lg-4">
-        <div class="glass-card service-card h-100">
-          <div class="service-icon-lg"><i class="fa-solid fa-chart-simple"></i></div>
-          <h4>Real‑time Freight</h4>
-          <p>Cargo monitoring, supply chain analytics, warehouse integration.</p>
+        <div class="rail-card accented service-card h-100">
+          <div class="service-icon"><i class="fa-solid fa-chart-simple"></i></div>
+          <h5>Real-time Freight</h5>
+          <p>End-to-end cargo monitoring, supply chain analytics and seamless warehouse integration.</p>
         </div>
       </div>
       <div class="col-md-6 col-lg-4">
-        <div class="glass-card service-card h-100">
-          <div class="service-icon-lg"><i class="fa-solid fa-shield-virus"></i></div>
-          <h4>Cyber Security Ops</h4>
-          <p>24/7 AI firewall, anomaly detection for passenger data protection.</p>
+        <div class="rail-card accented service-card h-100">
+          <div class="service-icon"><i class="fa-solid fa-shield-virus"></i></div>
+          <h5>Cyber Security Ops</h5>
+          <p>24/7 AI firewall with anomaly detection protecting passenger data and critical railway infrastructure.</p>
         </div>
       </div>
       <div class="col-md-6 col-lg-4">
-        <div class="glass-card service-card h-100">
-          <div class="service-icon-lg"><i class="fa-solid fa-cloud-sun"></i></div>
-          <h4>Climate Intelligence</h4>
-          <p>Weather-adaptive routing & fog-safe navigation alerts.</p>
+        <div class="rail-card accented service-card h-100">
+          <div class="service-icon"><i class="fa-solid fa-cloud-sun"></i></div>
+          <h5>Climate Intelligence</h5>
+          <p>Weather-adaptive routing with fog-safe navigation alerts and monsoon-responsive scheduling.</p>
         </div>
       </div>
       <div class="col-md-6 col-lg-4">
-        <div class="glass-card service-card h-100">
-          <div class="service-icon-lg"><i class="fa-solid fa-head-side-goggles"></i></div>
-          <h4>AR Station Guide</h4>
-          <p>Augmented wayfinding & real-time crowd management for terminals.</p>
+        <div class="rail-card accented service-card h-100">
+          <div class="service-icon"><i class="fa-solid fa-vr-cardboard"></i></div>
+          <h5>AR Station Guide</h5>
+          <p>Augmented reality wayfinding and real-time crowd management across all terminal concourses.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- BOOKING SECTION - fresh and more intuitive -->
-<section id="booking" class="py-5" style="background: rgba(0, 0, 0, 0.3);">
+<!-- ===== BOOKING ===== -->
+<section id="booking" class="booking-section py-section">
   <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg-5 mb-4 mb-lg-0">
-        <h2 class="display-5 fw-semibold"><i class="fa-regular fa-credit-card me-2 text-info"></i>Express Digital Booking</h2>
-        <p class="lead mt-3" style="color:#ccd6ff;">AI fare optimization • instant e‑tickets • wallet integration</p>
-        <ul class="list-unstyled mt-4">
-          <li><i class="fa-regular fa-circle-check text-success me-2"></i> Cancel & reschedule with 0% fee</li>
-          <li><i class="fa-regular fa-circle-check text-success me-2"></i> Seat map with VR preview</li>
-          <li><i class="fa-regular fa-circle-check text-success me-2"></i> Loyalty points & corporate passes</li>
+    <div class="row align-items-start g-5">
+      <div class="col-lg-5">
+        <div class="section-tag">Express Booking</div>
+        <h2 class="section-title">Digital <em>Ticket</em> Portal</h2>
+        <p class="mt-3" style="color: var(--text-muted);">AI fare optimization, instant e-tickets, and full wallet integration — book in under 60 seconds.</p>
+
+        <ul class="list-unstyled mt-4" style="display: flex; flex-direction: column; gap: 14px;">
+          <li style="display:flex; align-items:center; gap:12px;">
+            <span style="width:28px; height:28px; background:rgba(0,184,148,0.15); border:1px solid rgba(0,184,148,0.3); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <i class="fa-solid fa-check" style="color:var(--signal-green); font-size:0.75rem;"></i>
+            </span>
+            <span style="color:var(--platform-cream); font-size:0.93rem;">Cancel & reschedule with zero penalty fee</span>
+          </li>
+          <li style="display:flex; align-items:center; gap:12px;">
+            <span style="width:28px; height:28px; background:rgba(0,184,148,0.15); border:1px solid rgba(0,184,148,0.3); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <i class="fa-solid fa-check" style="color:var(--signal-green); font-size:0.75rem;"></i>
+            </span>
+            <span style="color:var(--platform-cream); font-size:0.93rem;">Interactive seat map with compartment preview</span>
+          </li>
+          <li style="display:flex; align-items:center; gap:12px;">
+            <span style="width:28px; height:28px; background:rgba(0,184,148,0.15); border:1px solid rgba(0,184,148,0.3); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <i class="fa-solid fa-check" style="color:var(--signal-green); font-size:0.75rem;"></i>
+            </span>
+            <span style="color:var(--platform-cream); font-size:0.93rem;">Loyalty points, family passes & corporate accounts</span>
+          </li>
+          <li style="display:flex; align-items:center; gap:12px;">
+            <span style="width:28px; height:28px; background:rgba(0,184,148,0.15); border:1px solid rgba(0,184,148,0.3); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <i class="fa-solid fa-check" style="color:var(--signal-green); font-size:0.75rem;"></i>
+            </span>
+            <span style="color:var(--platform-cream); font-size:0.93rem;">JazzCash, EasyPaisa, and card payment supported</span>
+          </li>
         </ul>
+
+        <!-- Signal lamp decoration -->
+        <div style="margin-top: 2rem; display: flex; gap: 12px; align-items: center;">
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="width:20px; height:20px; border-radius:50%; background:var(--signal-red); box-shadow:0 0 10px rgba(214,48,49,0.6);"></div>
+            <div style="width:20px; height:20px; border-radius:50%; background:var(--signal-amber); box-shadow:0 0 10px rgba(245,166,35,0.6);"></div>
+            <div style="width:20px; height:20px; border-radius:50%; background:var(--signal-green); box-shadow:0 0 10px rgba(0,184,148,0.6);"></div>
+          </div>
+          <span style="color:var(--text-muted); font-size:0.85rem;">Signal green — booking system operational</span>
+        </div>
       </div>
+
       <div class="col-lg-7">
-        <div class="glass-card p-4 p-xl-5">
-          <form id="smartBookingForm">
-            <div class="row g-3">
-              <div class="col-md-6"><input type="text" class="form-control bg-dark bg-opacity-25 text-white border-secondary" placeholder="Full name" style="border-radius: 60px; padding: 12px 20px;"></div>
-              <div class="col-md-6"><input type="text" class="form-control bg-dark bg-opacity-25 text-white border-secondary" placeholder="CNIC / Passport" style="border-radius: 60px;"></div>
-              <div class="col-md-5"><input type="text" class="form-control bg-dark bg-opacity-25 text-white" placeholder="From: Rawalpindi" style="border-radius: 60px;"></div>
-              <div class="col-md-5"><input type="text" class="form-control bg-dark bg-opacity-25 text-white" placeholder="To: Lahore / Karachi" style="border-radius: 60px;"></div>
-              <div class="col-md-2"><input type="date" class="form-control bg-dark bg-opacity-25 text-white" style="border-radius: 60px;"></div>
-              <div class="col-md-6"><select class="form-select bg-dark bg-opacity-25 text-white border-secondary" style="border-radius: 60px;"><option>Business+ (Premium)</option><option>First Class AC</option><option>Standard Economy</option></select></div>
-              <div class="col-md-6"><select class="form-select bg-dark bg-opacity-25 text-white"><option>Green Line Express</option><option>Sir Syed Express</option><option>Business Shuttle</option></select></div>
-              <div class="col-12"><button type="button" class="btn-cyber w-100 py-3" onclick="alert('Demo: Ticket booked! Smart notification sent 📱')"><i class="fa-regular fa-bell me-2"></i>Confirm & Pay Securely</button></div>
+        <div class="rail-card p-4 p-xl-5">
+          <h5 class="mb-4" style="font-family:'Syne',sans-serif; font-weight:700; color:var(--signal-amber);">
+            <i class="fa-solid fa-ticket me-2"></i>Reserve Your Journey
+          </h5>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="form-label-sm">Passenger Name</div>
+              <input type="text" class="form-control form-control-dark w-100" placeholder="Full name as on CNIC">
             </div>
-          </form>
-          <div class="text-center mt-3 small text-secondary">✅ 256‑bit encrypted | Instant confirmation</div>
+            <div class="col-md-6">
+              <div class="form-label-sm">CNIC / Passport</div>
+              <input type="text" class="form-control form-control-dark w-100" placeholder="ID number">
+            </div>
+            <div class="col-md-5">
+              <div class="form-label-sm">From Station</div>
+              <input type="text" class="form-control form-control-dark w-100" placeholder="Rawalpindi Jn.">
+            </div>
+            <div class="col-md-1 route-arrow d-none d-md-flex">
+              <i class="fa-solid fa-arrow-right"></i>
+            </div>
+            <div class="col-md-6 col-md-5">
+              <div class="form-label-sm">To Station</div>
+              <input type="text" class="form-control form-control-dark w-100" placeholder="Lahore / Karachi">
+            </div>
+            <div class="col-md-4">
+              <div class="form-label-sm">Travel Date</div>
+              <input type="date" class="form-control form-control-dark w-100">
+            </div>
+            <div class="col-md-4">
+              <div class="form-label-sm">Class</div>
+              <select class="form-select form-select-dark w-100">
+                <option>Business+ Premium</option>
+                <option>First Class AC</option>
+                <option>Standard Economy</option>
+                <option>Sleeper Economy</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <div class="form-label-sm">Train</div>
+              <select class="form-select form-select-dark w-100">
+                <option>Green Line Express</option>
+                <option>Sir Syed Express</option>
+                <option>Business Shuttle</option>
+                <option>Karakoram Express</option>
+              </select>
+            </div>
+            <div class="col-12 mt-2">
+              <button type="button" class="btn-amber w-100 py-3" style="font-size:1rem;" onclick="alert('✅ Demo: Ticket confirmed! SMS & email notification sent 📱')">
+                <i class="fa-solid fa-lock me-2"></i>Confirm & Pay Securely
+              </button>
+            </div>
+          </div>
+          <div class="text-center mt-3" style="color: var(--text-muted); font-size: 0.8rem;">
+            <i class="fa-solid fa-shield-halved me-1" style="color:var(--signal-green);"></i>
+            256-bit encrypted · Instant e-ticket delivery · PCI-DSS compliant
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- LIVE INSIGHTS + DASHBOARD (reimagined) -->
-<section id="insights" class="py-5">
+<!-- ===== LIVE INSIGHTS ===== -->
+<section id="insights" class="py-section">
   <div class="container">
     <div class="text-center mb-5">
-      <h2 class="fw-bold"><span class="gradient-text" style="background: linear-gradient(135deg, #00e0ff, #b66eff); -webkit-background-clip:text; background-clip:text; color:transparent;">Operational Command Center</span></h2>
-      <p>Real‑time metrics and AI-driven performance indicators</p>
+      <div class="section-tag">Command Center</div>
+      <h2 class="section-title">Operational <em>Intelligence</em> Hub</h2>
+      <p class="mt-3" style="color: var(--text-muted);">Real-time metrics and AI-driven performance indicators across the network</p>
     </div>
+
+    <!-- Stat Cards -->
     <div class="row g-4 mb-5">
-      <div class="col-sm-6 col-lg-3"><div class="glass-card stat-card"><div class="stat-number" data-target="328">0</div><p>Active Trains Today</p><i class="fa-solid fa-train text-info"></i></div></div>
-      <div class="col-sm-6 col-lg-3"><div class="glass-card stat-card"><div class="stat-number" data-target="142500">0</div><p>Daily Passengers</p><i class="fa-regular fa-user text-info"></i></div></div>
-      <div class="col-sm-6 col-lg-3"><div class="glass-card stat-card"><div class="stat-number" data-target="96.4">0</div><p>Punctuality Rate (%)</p><i class="fa-regular fa-clock text-info"></i></div></div>
-      <div class="col-sm-6 col-lg-3"><div class="glass-card stat-card"><div class="stat-number" data-target="100">0</div><p>Digital Stations</p><i class="fa-solid fa-wifi text-info"></i></div></div>
+      <div class="col-6 col-lg-3">
+        <div class="rail-card stat-card">
+          <div class="stat-value" data-target="328">0</div>
+          <div class="stat-label">Active Trains Today</div>
+          <div class="stat-icon"><i class="fa-solid fa-train"></i></div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="rail-card stat-card">
+          <div class="stat-value" data-target="142500">0</div>
+          <div class="stat-label">Daily Passengers</div>
+          <div class="stat-icon"><i class="fa-regular fa-user"></i></div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="rail-card stat-card">
+          <div class="stat-value" data-target="96">0</div>
+          <div class="stat-label">Punctuality Rate %</div>
+          <div class="stat-icon"><i class="fa-regular fa-clock"></i></div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="rail-card stat-card">
+          <div class="stat-value" data-target="100">0</div>
+          <div class="stat-label">Digital Stations</div>
+          <div class="stat-icon"><i class="fa-solid fa-wifi"></i></div>
+        </div>
+      </div>
     </div>
+
+    <!-- Train tracking + security -->
     <div class="row g-4">
       <div class="col-md-7">
-        <div class="glass-card p-4 h-100">
-          <h4><i class="fa-solid fa-location-dot me-2 text-info"></i> Live Train Tracking (Rawalpindi Corridor)</h4>
-          <div class="mt-3"><div class="d-flex justify-content-between"><span>Karakoram Express</span><span>On time 87%</span></div><div class="progress-custom mt-1"><div class="progress-bar-custom" style="width: 87%"></div></div></div>
-          <div class="mt-3"><div class="d-flex justify-content-between"><span>Green Line AI-01</span><span>94%</span></div><div class="progress-custom mt-1"><div class="progress-bar-custom" style="width: 94%"></div></div></div>
-          <div class="mt-3"><div class="d-flex justify-content-between"><span>Pakistan Business Express</span><span>79%</span></div><div class="progress-custom mt-1"><div class="progress-bar-custom" style="width: 79%"></div></div></div>
-          <div class="mt-4 alert alert-dark bg-transparent border-info text-info"><i class="fa-regular fa-bell"></i> Next arrival: Platform 3, Green Line arrives in 11 mins</div>
+        <div class="rail-card p-4 h-100">
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <h5 style="font-family:'Syne',sans-serif; font-weight:700; margin:0;">
+              <i class="fa-solid fa-satellite-dish me-2" style="color:var(--signal-amber);"></i>Live Train Tracker
+            </h5>
+            <span class="badge-on-time train-badge">Rawalpindi Corridor</span>
+          </div>
+
+          <div class="train-row">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div>
+                <span style="font-weight:600; font-size:0.95rem;">Karakoram Express</span>
+                <span class="train-badge badge-on-time ms-2">On Time</span>
+              </div>
+              <span style="color:var(--signal-amber); font-weight:700;">87%</span>
+            </div>
+            <div class="track-line"><div class="track-fill" style="width:87%"></div></div>
+            <div style="color:var(--text-muted); font-size:0.78rem; margin-top:5px;">Rawalpindi → Lahore · Departs 14:30</div>
+          </div>
+
+          <div class="train-row">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div>
+                <span style="font-weight:600; font-size:0.95rem;">Green Line AI-01</span>
+                <span class="train-badge badge-on-time ms-2">Arriving</span>
+              </div>
+              <span style="color:var(--signal-amber); font-weight:700;">94%</span>
+            </div>
+            <div class="track-line"><div class="track-fill" style="width:94%"></div></div>
+            <div style="color:var(--text-muted); font-size:0.78rem; margin-top:5px;">Karachi → Rawalpindi · Platform 3 · ETA 11 min</div>
+          </div>
+
+          <div class="train-row">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div>
+                <span style="font-weight:600; font-size:0.95rem;">Business Express</span>
+                <span class="train-badge badge-delayed ms-2">+18 min</span>
+              </div>
+              <span style="color:var(--signal-amber); font-weight:700;">79%</span>
+            </div>
+            <div class="track-line"><div class="track-fill track-fill-red" style="width:79%"></div></div>
+            <div style="color:var(--text-muted); font-size:0.78rem; margin-top:5px;">Rawalpindi → Peshawar · Minor delay — fog clearance</div>
+          </div>
+
+          <div class="alert-strip mt-4">
+            <i class="fa-regular fa-bell"></i>
+            <span>Platform 3 · Green Line AI-01 arrives in <strong>11 minutes</strong> · Boarding in progress</span>
+          </div>
         </div>
       </div>
+
       <div class="col-md-5">
-        <div class="glass-card p-4 h-100" style="background: rgba(0,0,0,0.45);">
-          <h4><i class="fa-solid fa-chart-line me-2"></i> Smart Alerts & Security</h4>
-          <div class="mt-3"><i class="fa-regular fa-circle-check text-success me-2"></i> AI camera feed: All clear</div>
-          <div class="mt-2"><i class="fa-solid fa-train text-warning me-2"></i> Platform occupancy: 68%</div>
-          <div class="mt-2"><i class="fa-solid fa-cloud-rain me-2"></i> Weather alert: Light fog clearance active</div>
-          <hr class="border-secondary">
-          <button class="btn btn-outline-info w-100 rounded-pill" onclick="alert('Emergency helpline 1399 activated')"><i class="fa-solid fa-phone-alt"></i> Railway Emergency One‑Tap</button>
+        <div class="rail-card p-4 h-100">
+          <h5 style="font-family:'Syne',sans-serif; font-weight:700; margin-bottom:1.2rem;">
+            <i class="fa-solid fa-tower-broadcast me-2" style="color:var(--signal-amber);"></i>Security & Alerts
+          </h5>
+          <div class="sec-item">
+            <i class="fa-regular fa-circle-check" style="color:var(--signal-green); font-size:1.1rem;"></i>
+            <span style="font-size:0.88rem;">AI camera feed — all stations clear</span>
+          </div>
+          <div class="sec-item">
+            <i class="fa-solid fa-users" style="color:var(--signal-amber); font-size:1.1rem;"></i>
+            <span style="font-size:0.88rem;">Platform occupancy: 68% — moderate crowd</span>
+          </div>
+          <div class="sec-item">
+            <i class="fa-solid fa-cloud-rain" style="color:var(--window-teal); font-size:1.1rem;"></i>
+            <span style="font-size:0.88rem;">Weather: Light fog — clearance protocol active</span>
+          </div>
+          <div class="sec-item">
+            <i class="fa-solid fa-bolt" style="color:var(--signal-amber); font-size:1.1rem;"></i>
+            <span style="font-size:0.88rem;">Power grid: All stations nominal</span>
+          </div>
+          <div class="sec-item">
+            <i class="fa-solid fa-shield-halved" style="color:var(--signal-green); font-size:1.1rem;"></i>
+            <span style="font-size:0.88rem;">Cybersecurity: 0 anomalies detected</span>
+          </div>
+          <hr style="border-color:rgba(245,166,35,0.15); margin: 1rem 0;">
+          <button class="btn-amber w-100 py-2" onclick="alert('Emergency Railway Helpline 1399 — connecting...')">
+            <i class="fa-solid fa-phone me-2"></i>Railway Emergency 1399
+          </button>
+          <div style="text-align:center; margin-top:10px; font-size:0.78rem; color:var(--text-muted);">24/7 · Available nationwide</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TIMELINE (fresh modern journey) -->
-<section class="py-5">
+<!-- ===== JOURNEY STEPS ===== -->
+<section style="padding: 0 0 90px;">
   <div class="container">
-    <div class="text-center mb-5"><h2 class="fw-bold">⚡ Seamless Travel Journey</h2><p>From digital booking to smart arrival</p></div>
-    <div class="row gy-4">
-      <div class="col-md-6 col-lg-3"><div class="timeline-item-new text-center"><i class="fa-solid fa-mobile-screen-button fs-1 mb-3 text-info"></i><h5>1. Smart Booking</h5><p>AI choice & fare prediction</p></div></div>
-      <div class="col-md-6 col-lg-3"><div class="timeline-item-new text-center"><i class="fa-solid fa-fingerprint fs-1 mb-3 text-info"></i><h5>2. Biometric Entry</h5><p>Face‑scan & express gates</p></div></div>
-      <div class="col-md-6 col-lg-3"><div class="timeline-item-new text-center"><i class="fa-solid fa-train fs-1 mb-3 text-info"></i><h5>3. Live Onboard</h5><p>Real‑time info & entertainment</p></div></div>
-      <div class="col-md-6 col-lg-3"><div class="timeline-item-new text-center"><i class="fa-solid fa-flag-checkered fs-1 mb-3 text-info"></i><h5>4. Smart Disembark</h5><p>Luggage assist & transport integration</p></div></div>
+    <div class="text-center mb-5">
+      <div class="section-tag">How It Works</div>
+      <h2 class="section-title">Your <em>Seamless</em> Journey</h2>
+    </div>
+    <div class="row align-items-center g-3">
+      <div class="col-md-6 col-lg-3">
+        <div class="rail-card step-card accented h-100">
+          <div class="step-num">01</div>
+          <i class="fa-solid fa-mobile-screen-button step-icon"></i>
+          <h5>Smart Booking</h5>
+          <p>AI fare prediction and seat selection — book in 60 seconds from any device.</p>
+        </div>
+      </div>
+      <div class="col-1 step-connector d-none d-lg-flex">
+        <i class="fa-solid fa-arrow-right"></i>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="rail-card step-card accented h-100">
+          <div class="step-num">02</div>
+          <i class="fa-solid fa-fingerprint step-icon"></i>
+          <h5>Biometric Entry</h5>
+          <p>Face-scan and QR gate validation — express boarding in under 5 seconds.</p>
+        </div>
+      </div>
+      <div class="col-1 step-connector d-none d-lg-flex">
+        <i class="fa-solid fa-arrow-right"></i>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="rail-card step-card accented h-100">
+          <div class="step-num">03</div>
+          <i class="fa-solid fa-train step-icon"></i>
+          <h5>Live Onboard</h5>
+          <p>Real-time journey info, entertainment system and onboard Wi-Fi included.</p>
+        </div>
+      </div>
+      <div class="col-1 step-connector d-none d-lg-flex">
+        <i class="fa-solid fa-arrow-right"></i>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="rail-card step-card accented h-100">
+          <div class="step-num">04</div>
+          <i class="fa-solid fa-flag-checkered step-icon"></i>
+          <h5>Smart Arrival</h5>
+          <p>Luggage assist, AR wayfinding and seamless last-mile transport integration.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- CONTACT / CONNECT -->
-<section id="contact" class="pb-5">
+<!-- ===== CONTACT ===== -->
+<section id="contact" style="padding-bottom: 80px;">
   <div class="container">
-    <div class="glass-card p-4 p-md-5 text-center">
-      <h3 class="fw-bold"><i class="fa-regular fa-address-card me-2"></i> Nexus Control Hub</h3>
-      <div class="row mt-4">
-        <div class="col-md-4 mb-3"><i class="fa-solid fa-location-dot text-info fs-4"></i><p class="mt-2"><strong>HQ Rawalpindi</strong><br>Railway HQ, Saddar</p></div>
-        <div class="col-md-4 mb-3"><i class="fa-solid fa-headset text-info fs-4"></i><p class="mt-2"><strong>24/7 AI Support</strong><br>+92 111 786 786</p></div>
-        <div class="col-md-4 mb-3"><i class="fa-regular fa-envelope text-info fs-4"></i><p class="mt-2"><strong>nexus@pakrail.pk</strong><br>Real-time assistance</p></div>
-      </div>
-      <div class="social-icons mt-2">
-        <a href="#" class="text-white mx-2 fs-4"><i class="fab fa-twitter"></i></a>
-        <a href="#" class="text-white mx-2 fs-4"><i class="fab fa-linkedin"></i></a>
-        <a href="#" class="text-white mx-2 fs-4"><i class="fab fa-instagram"></i></a>
+    <div class="rail-card p-4 p-md-5">
+      <div class="row g-4 align-items-start">
+        <div class="col-lg-5">
+          <div class="section-tag">Get in Touch</div>
+          <h2 class="section-title">Nexus <em>Control</em> Hub</h2>
+          <p class="mt-3" style="color:var(--text-muted);">Round-the-clock operations support, AI assistance, and passenger services available at every node.</p>
+          <div class="mt-4 d-flex gap-2">
+            <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-btn"><i class="fab fa-linkedin"></i></a>
+            <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-btn"><i class="fab fa-facebook"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="contact-item">
+            <div class="contact-icon-box"><i class="fa-solid fa-location-dot"></i></div>
+            <div>
+              <div style="font-weight:600; font-size:0.95rem;">Headquarters</div>
+              <div style="color:var(--text-muted); font-size:0.88rem; margin-top:2px;">Railway HQ, Saddar, Rawalpindi · Punjab, Pakistan</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon-box"><i class="fa-solid fa-headset"></i></div>
+            <div>
+              <div style="font-weight:600; font-size:0.95rem;">24/7 AI Support Line</div>
+              <div style="color:var(--text-muted); font-size:0.88rem; margin-top:2px;">+92 111 786 786 &nbsp;·&nbsp; Emergency: 1399</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon-box"><i class="fa-regular fa-envelope"></i></div>
+            <div>
+              <div style="font-weight:600; font-size:0.95rem;">Digital Correspondence</div>
+              <div style="color:var(--text-muted); font-size:0.88rem; margin-top:2px;">nexus@pakrail.pk &nbsp;·&nbsp; Real-time ticket assistance</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon-box"><i class="fa-solid fa-globe"></i></div>
+            <div>
+              <div style="font-weight:600; font-size:0.95rem;">Online Portal</div>
+              <div style="color:var(--text-muted); font-size:0.88rem; margin-top:2px;">www.pakrail.pk &nbsp;·&nbsp; Booking, refunds & tracking</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<footer class="py-5 mt-4" style="background:#040616;">
-  <div class="container text-center">
-    <p class="mb-0 text-light-emphasis">© 2026 PAKRAIL NEXUS — Future ready railway ecosystem | Smart Nation Initiative</p>
+<!-- ===== FOOTER ===== -->
+<footer class="py-5">
+  <div class="container">
+    <div class="footer-track"></div>
+    <div class="row align-items-center">
+      <div class="col-md-6 mb-3 mb-md-0">
+        <div class="footer-brand"><i class="fa-solid fa-train me-2" style="color:var(--signal-amber);"></i>PAKRAIL <span>NEXUS</span></div>
+        <p style="color:var(--text-muted); font-size:0.85rem; margin-top:8px;">Futuristic Railway Ecosystem · Smart Nation Initiative · Est. 1855</p>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <p style="color:var(--text-muted); font-size:0.82rem;">© 2026 PakRail Nexus · All rights reserved</p>
+        <p style="color:rgba(200,185,154,0.4); font-size:0.78rem; margin-top:4px;">Signal Green — All Systems Operational</p>
+      </div>
+    </div>
   </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // Animated counter with intersection observer
-  const counters = document.querySelectorAll('.stat-number');
-  const startCounting = (counter) => {
-    const target = parseFloat(counter.getAttribute('data-target'));
+  // Animated counter
+  const counters = document.querySelectorAll('.stat-value[data-target]');
+  const startCount = (el) => {
+    const target = parseFloat(el.getAttribute('data-target'));
+    const isLarge = target > 1000;
     let current = 0;
-    const increment = target / 65;
-    const update = () => {
-      current += increment;
+    const steps = 60;
+    const inc = target / steps;
+    const tick = () => {
+      current += inc;
       if (current < target) {
-        counter.innerText = Math.floor(current);
-        requestAnimationFrame(update);
+        el.textContent = isLarge ? Math.floor(current).toLocaleString() : Math.floor(current);
+        requestAnimationFrame(tick);
       } else {
-        counter.innerText = target;
+        el.textContent = isLarge ? target.toLocaleString() : target;
       }
     };
-    update();
+    tick();
   };
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        startCounting(entry.target);
-        observer.unobserve(entry.target);
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { startCount(e.target); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.4 });
+  counters.forEach(c => obs.observe(c));
+
+  // Animate track fill bars on scroll
+  const barObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.width = e.target.getAttribute('style').match(/width:\s*(\S+)/)?.[1] || '0%';
       }
     });
-  }, { threshold: 0.3 });
-  counters.forEach(c => observer.observe(c));
-
-  // small animated progress bars
-  setTimeout(() => {
-    document.querySelectorAll('.progress-bar-custom').forEach(bar => {
-      let width = bar.style.width;
-      if(width) bar.style.width = width;
-    });
-  }, 200);
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.track-fill').forEach(b => {
+    const w = b.style.width;
+    b.style.width = '0%';
+    setTimeout(() => b.style.width = w, 400);
+  });
 </script>
 </body>
 </html>
