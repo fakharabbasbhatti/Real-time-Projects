@@ -1,532 +1,1838 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>PAKISTAN DIGITAL CITIZEN SERVICES | NADRA AI COMMAND CENTER</title>
-  <!-- Bootstrap 5 + Icons + Fonts -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pakistan Digital Citizen Services - NADRA | Smart Government Portal</title>
+    
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ====== ROOT COLOR SYSTEM ====== */
+        :root {
+            --midnight-navy: #050816;
+            --dark-graphite: #0d111f;
+            --cyber-black: #020409;
+            --neon-cyan: #00f0ff;
+            --electric-blue: #007bff;
+            --digital-green: #00ff95;
+            --emergency-red: #ff3b3b;
+            --silver-white: #dfefff;
+            --soft-gray: #9ca3af;
+            --glass-bg: rgba(13, 17, 31, 0.7);
+            --glass-border: rgba(0, 240, 255, 0.2);
+        }
 
-    body {
-      background-color: #050816;
-      font-family: 'Poppins', 'Rajdhani', sans-serif;
-      overflow-x: hidden;
-      color: #dfefff;
-      scroll-behavior: smooth;
-    }
+        /* ====== GLOBAL STYLES ====== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    /* Animated cyber grid background */
-    .cyber-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-      background: radial-gradient(circle at 20% 30%, #0a0f1f, #020409);
-      overflow: hidden;
-    }
+        html {
+            scroll-behavior: smooth;
+        }
 
-    .cyber-bg::before {
-      content: "";
-      position: absolute;
-      width: 200%;
-      height: 200%;
-      background-image: linear-gradient(#00f0ff10 1px, transparent 1px), linear-gradient(90deg, #00f0ff10 1px, transparent 1px);
-      background-size: 40px 40px;
-      animation: gridMove 20s linear infinite;
-      pointer-events: none;
-    }
+        body {
+            font-family: 'Rajdhani', monospace;
+            background: linear-gradient(135deg, var(--cyber-black) 0%, var(--dark-graphite) 50%, var(--midnight-navy) 100%);
+            color: var(--silver-white);
+            overflow-x: hidden;
+            position: relative;
+        }
 
-    @keyframes gridMove {
-      0% { transform: translate(0,0);}
-      100% { transform: translate(40px,40px);}
-    }
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 240, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 255, 149, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+            animation: gradientShift 15s ease-in-out infinite;
+        }
 
-    /* floating neon particles */
-    .particle {
-      position: fixed;
-      background: #00f0ff;
-      border-radius: 50%;
-      filter: blur(2px);
-      opacity: 0.3;
-      animation: floatParticle 12s infinite ease-in-out;
-      pointer-events: none;
-      z-index: -1;
-    }
+        @keyframes gradientShift {
+            0%, 100% {
+                background: 
+                    radial-gradient(circle at 20% 50%, rgba(0, 240, 255, 0.03) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 80%, rgba(0, 255, 149, 0.03) 0%, transparent 50%);
+            }
+            50% {
+                background: 
+                    radial-gradient(circle at 80% 50%, rgba(0, 240, 255, 0.05) 0%, transparent 50%),
+                    radial-gradient(circle at 20% 80%, rgba(0, 255, 149, 0.05) 0%, transparent 50%);
+            }
+        }
 
-    @keyframes floatParticle {
-      0% { transform: translateY(0) scale(1); opacity: 0;}
-      50% { opacity: 0.5;}
-      100% { transform: translateY(-200px) scale(0); opacity: 0;}
-    }
+        body > * {
+            position: relative;
+            z-index: 2;
+        }
 
-    /* glassmorphism core */
-    .glass-panel {
-      background: rgba(13, 17, 31, 0.55);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(0, 240, 255, 0.25);
-      border-radius: 32px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 12px rgba(0,240,255,0.2);
-    }
+        /* ====== TYPOGRAPHY ====== */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
 
-    .neon-text {
-      text-shadow: 0 0 5px #00f0ff, 0 0 10px #007bff;
-    }
+        .display-title {
+            font-size: clamp(2rem, 8vw, 5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--digital-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+            animation: glowPulse 3s ease-in-out infinite;
+        }
 
-    .btn-neon {
-      background: transparent;
-      border: 1.5px solid #00f0ff;
-      color: #00f0ff;
-      border-radius: 40px;
-      font-weight: 600;
-      transition: 0.3s;
-      box-shadow: 0 0 6px #00f0ff;
-    }
+        @keyframes glowPulse {
+            0%, 100% { text-shadow: 0 0 30px rgba(0, 240, 255, 0.5); }
+            50% { text-shadow: 0 0 50px rgba(0, 240, 255, 0.8); }
+        }
 
-    .btn-neon:hover {
-      background: #00f0ff20;
-      box-shadow: 0 0 20px #00f0ff;
-      color: white;
-      transform: scale(1.02);
-    }
+        .neon-text {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
+        }
 
-    .btn-glow-green {
-      background: linear-gradient(135deg, #00ff95, #00b37c);
-      border: none;
-      color: #020409;
-      font-weight: bold;
-      box-shadow: 0 0 12px #00ff95;
-      transition: 0.2s;
-    }
+        /* ====== GLASS MORPHISM ====== */
+        .glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
 
-    .navbar-glass {
-      background: rgba(2, 4, 9, 0.75);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid rgba(0,240,255,0.4);
-      transition: all 0.3s;
-    }
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(0, 240, 255, 0.1) 50%, transparent 70%);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+            pointer-events: none;
+        }
 
-    .nav-link {
-      font-family: 'Orbitron', monospace;
-      font-weight: 500;
-      margin: 0 6px;
-      position: relative;
-    }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
 
-    .nav-link:hover {
-      text-shadow: 0 0 4px #00f0ff;
-      color: #00f0ff !important;
-    }
+        .glass-card:hover {
+            border-color: rgba(0, 240, 255, 0.5);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.3), inset 0 0 30px rgba(0, 240, 255, 0.1);
+            transform: translateY(-10px);
+        }
 
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0%;
-      height: 2px;
-      background: #00f0ff;
-      transition: 0.3s;
-      box-shadow: 0 0 8px #00f0ff;
-    }
+        /* ====== NEON ELEMENTS ====== */
+        .neon-border {
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 20px var(--neon-cyan), inset 0 0 20px rgba(0, 240, 255, 0.2);
+            border-radius: 10px;
+            animation: neonGlow 2s ease-in-out infinite;
+        }
 
-    .nav-link:hover::after {
-      width: 100%;
-    }
+        @keyframes neonGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px var(--neon-cyan), inset 0 0 20px rgba(0, 240, 255, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 40px var(--neon-cyan), inset 0 0 30px rgba(0, 240, 255, 0.3);
+            }
+        }
 
-    /* holographic card 3D */
-    .service-card {
-      background: rgba(8, 12, 25, 0.6);
-      backdrop-filter: blur(10px);
-      border-radius: 28px;
-      border: 1px solid rgba(0,240,255,0.3);
-      transition: all 0.3s cubic-bezier(0.2,0.9,0.4,1.1);
-      overflow: hidden;
-    }
+        /* ====== NAVBAR ====== */
+        .navbar-custom {
+            background: linear-gradient(90deg, rgba(5, 8, 22, 0.95) 0%, rgba(13, 17, 31, 0.95) 100%);
+            border-bottom: 2px solid rgba(0, 240, 255, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
+            animation: slideDown 0.6s ease-out;
+        }
 
-    .service-card:hover {
-      transform: translateY(-8px) scale(1.01);
-      border-color: #00f0ff;
-      box-shadow: 0 20px 35px -12px #00f0ff30, 0 0 16px #00f0ff;
-    }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    .input-glass {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(0,240,255,0.4);
-      color: white;
-      border-radius: 20px;
-      backdrop-filter: blur(4px);
-      transition: 0.2s;
-    }
+        .navbar-brand {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--digital-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.1em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-    .input-glass:focus {
-      border-color: #00f0ff;
-      box-shadow: 0 0 16px #00f0ff;
-      background: rgba(0,0,0,0.6);
-      color: white;
-    }
+        .navbar-brand i {
+            font-size: 2rem;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 15px var(--neon-cyan);
+        }
 
-    /* animated counters */
-    .counter-num {
-      font-family: 'Orbitron', monospace;
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: #00f0ff;
-    }
+        .nav-link {
+            font-family: 'Rajdhani', monospace;
+            font-weight: 600;
+            color: var(--silver-white) !important;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.9rem;
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem !important;
+        }
 
-    .hud-pulse {
-      animation: pulseRing 1.8s infinite;
-    }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--digital-green));
+            transition: width 0.3s ease;
+        }
 
-    @keyframes pulseRing {
-      0% { box-shadow: 0 0 0 0 #00f0ff80; }
-      100% { box-shadow: 0 0 0 12px transparent; }
-    }
+        .nav-link:hover::after {
+            width: 100%;
+        }
 
-    .timeline-node {
-      border-left: 3px solid #00f0ff;
-      transition: all 0.3s;
-    }
+        .nav-link:hover {
+            color: var(--neon-cyan) !important;
+            text-shadow: 0 0 10px var(--neon-cyan);
+        }
 
-    .carousel-futuristic .carousel-item img {
-      filter: brightness(0.6) contrast(1.2);
-      object-fit: cover;
-      height: 500px;
-    }
+        .navbar-search {
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            color: var(--silver-white);
+            transition: all 0.3s ease;
+        }
 
-    .carousel-caption {
-      background: linear-gradient(90deg, rgba(0,0,0,0.7), transparent);
-      border-radius: 20px;
-      backdrop-filter: blur(10px);
-    }
+        .navbar-search:focus {
+            background: rgba(0, 240, 255, 0.2);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+        }
 
-    footer a {
-      text-decoration: none;
-      color: #9ca3af;
-      transition: 0.2s;
-    }
-    footer a:hover {
-      color: #00f0ff;
-      text-shadow: 0 0 4px cyan;
-    }
+        .navbar-search::placeholder {
+            color: var(--soft-gray);
+        }
 
-    @media (max-width: 768px) {
-      .hero-split {
-        flex-direction: column;
-      }
-      .counter-num {
-        font-size: 1.8rem;
-      }
-    }
-  </style>
+        .digital-clock {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.85rem;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
+            letter-spacing: 0.1em;
+        }
+
+        .notification-bell {
+            color: var(--neon-cyan);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: bellRing 2s ease-in-out infinite;
+        }
+
+        @keyframes bellRing {
+            0%, 100% { transform: rotate(0deg); }
+            10% { transform: rotate(10deg); }
+            20% { transform: rotate(-10deg); }
+            30% { transform: rotate(10deg); }
+            40% { transform: rotate(-10deg); }
+            50% { transform: rotate(0deg); }
+        }
+
+        .notification-bell:hover {
+            text-shadow: 0 0 15px var(--neon-cyan);
+            transform: scale(1.2);
+        }
+
+        /* ====== HERO SECTION ====== */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(5, 8, 22, 0.8) 0%, rgba(13, 17, 31, 0.8) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 10vw, 4.5rem);
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 4vw, 1.3rem);
+            color: var(--digital-green);
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .typing-animation {
+            display: inline-block;
+            border-right: 3px solid var(--neon-cyan);
+            animation: typing 3s steps(30, end) infinite, blink 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            0% { width: 0; }
+            60% { width: 100%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes blink {
+            from, to { border-color: transparent; }
+            50% { border-color: var(--neon-cyan); }
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .btn-primary-neon {
+            background: linear-gradient(135deg, var(--neon-cyan), var(--digital-green));
+            border: 2px solid var(--neon-cyan);
+            color: var(--cyber-black);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.8rem 2.5rem;
+            border-radius: 10px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            font-family: 'Rajdhani', monospace;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary-neon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary-neon:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary-neon:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.4);
+        }
+
+        .btn-secondary-neon {
+            background: transparent;
+            border: 2px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.8rem 2.5rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-family: 'Rajdhani', monospace;
+            font-size: 0.95rem;
+        }
+
+        .btn-secondary-neon:hover {
+            background: rgba(0, 240, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .stat-card {
+            background: rgba(0, 240, 255, 0.05);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--soft-gray);
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        /* Hero Right Side - 3D Card */
+        .hero-visual {
+            perspective: 1000px;
+            animation: fadeInRight 1s ease-out;
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .smart-cnic-card {
+            width: 100%;
+            max-width: 400px;
+            height: 250px;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.2) 0%, rgba(0, 255, 149, 0.1) 100%);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 15px;
+            padding: 2rem;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: float 3s ease-in-out infinite;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.3), inset 0 0 40px rgba(0, 240, 255, 0.1);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotateX(0deg); }
+            50% { transform: translateY(-20px) rotateX(5deg); }
+        }
+
+        .cnic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cnic-logo {
+            font-size: 1.5rem;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 15px var(--neon-cyan);
+        }
+
+        .cnic-chip {
+            width: 50px;
+            height: 35px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--digital-green));
+            border-radius: 5px;
+            opacity: 0.8;
+        }
+
+        .cnic-number {
+            font-size: 1.3rem;
+            letter-spacing: 0.2em;
+            margin: 1rem 0;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .cnic-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+
+        .verification-ring {
+            position: absolute;
+            top: 50%;
+            right: -50px;
+            width: 300px;
+            height: 300px;
+            border: 2px solid rgba(0, 240, 255, 0.3);
+            border-radius: 50%;
+            animation: rotate 8s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .verification-ring:nth-child(2) {
+            right: -30px;
+            width: 250px;
+            height: 250px;
+            animation: rotate 6s linear infinite reverse;
+        }
+
+        .floating-widget {
+            position: absolute;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 1rem;
+            border-radius: 10px;
+            backdrop-filter: blur(20px);
+            animation: floatAround 6s ease-in-out infinite;
+        }
+
+        @keyframes floatAround {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(10px, -15px); }
+            50% { transform: translate(0, -30px); }
+            75% { transform: translate(-10px, -15px); }
+        }
+
+        .widget-1 {
+            top: 20%;
+            left: -5%;
+            width: 150px;
+            animation-delay: 0s;
+        }
+
+        .widget-2 {
+            top: 60%;
+            right: -5%;
+            width: 160px;
+            animation-delay: 1s;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-visual {
+                order: -1;
+            }
+
+            .floating-widget {
+                display: none;
+            }
+        }
+
+        /* ====== SERVICES SECTION ====== */
+        .services-section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            margin-bottom: 4rem;
+            position: relative;
+            text-align: center;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--digital-green));
+            border-radius: 2px;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .service-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            padding: 2.5rem 2rem;
+            border-radius: 15px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            group: "service";
+            cursor: pointer;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(0, 240, 255, 0.1) 50%, transparent 70%);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+            pointer-events: none;
+        }
+
+        .service-card:hover {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.4), inset 0 0 40px rgba(0, 240, 255, 0.1);
+            transform: translateY(-15px) scale(1.02);
+        }
+
+        .service-icon {
+            font-size: 3.5rem;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 20px var(--neon-cyan);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover .service-icon {
+            animation: iconBounce 0.6s ease-out;
+            color: var(--digital-green);
+            text-shadow: 0 0 20px var(--digital-green);
+        }
+
+        @keyframes iconBounce {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        .service-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .service-desc {
+            font-size: 0.95rem;
+            color: var(--soft-gray);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-status {
+            display: inline-block;
+            background: rgba(0, 255, 149, 0.2);
+            border: 1px solid var(--digital-green);
+            color: var(--digital-green);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* ====== APPLICATION FORM ====== */
+        .application-section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .form-container {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.7rem;
+            color: var(--neon-cyan);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+        }
+
+        .form-control {
+            background: rgba(0, 240, 255, 0.05);
+            border: 2px solid rgba(0, 240, 255, 0.2);
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            color: var(--silver-white);
+            font-family: 'Rajdhani', monospace;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            background: rgba(0, 240, 255, 0.1);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3), inset 0 0 20px rgba(0, 240, 255, 0.1);
+            outline: none;
+        }
+
+        .form-control::placeholder {
+            color: var(--soft-gray);
+        }
+
+        .form-control option {
+            background: var(--midnight-navy);
+            color: var(--silver-white);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .file-upload-zone {
+            border: 2px dashed rgba(0, 240, 255, 0.5);
+            border-radius: 15px;
+            padding: 2.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(0, 240, 255, 0.05);
+        }
+
+        .file-upload-zone:hover {
+            border-color: var(--neon-cyan);
+            background: rgba(0, 240, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+
+        .file-upload-icon {
+            font-size: 3rem;
+            color: var(--neon-cyan);
+            margin-bottom: 1rem;
+        }
+
+        .form-row {
+            margin-bottom: 2rem;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--neon-cyan), var(--digital-green));
+            border: none;
+            color: var(--cyber-black);
+            padding: 1rem 3rem;
+            border-radius: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-family: 'Rajdhani', monospace;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: left 0.5s ease;
+        }
+
+        .btn-submit:hover::before {
+            left: 100%;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.4);
+        }
+
+        /* ====== DASHBOARD SECTION ====== */
+        .dashboard-section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .dashboard-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+            animation: scanLine 3s ease-in-out infinite;
+        }
+
+        @keyframes scanLine {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 200%; }
+        }
+
+        .dashboard-label {
+            color: var(--soft-gray);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 15px var(--neon-cyan);
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-icon {
+            font-size: 2rem;
+            color: var(--digital-green);
+            margin-top: 1rem;
+        }
+
+        .progress-ring {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.35s;
+            stroke: var(--neon-cyan);
+            fill: transparent;
+            stroke-width: 4;
+            filter: drop-shadow(0 0 5px var(--neon-cyan));
+        }
+
+        /* ====== EMERGENCY SECTION ====== */
+        .emergency-section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .emergency-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .emergency-card {
+            background: linear-gradient(135deg, rgba(255, 59, 59, 0.1) 0%, rgba(255, 59, 59, 0.05) 100%);
+            border: 2px solid var(--emergency-red);
+            padding: 2.5rem 2rem;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: pulseRed 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseRed {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(255, 59, 59, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(255, 59, 59, 0.6);
+            }
+        }
+
+        .emergency-icon {
+            font-size: 3rem;
+            color: var(--emergency-red);
+            text-shadow: 0 0 20px var(--emergency-red);
+            margin-bottom: 1rem;
+            animation: iconPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .emergency-title {
+            color: var(--emergency-red);
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .emergency-number {
+            font-size: 1.3rem;
+            color: var(--silver-white);
+            margin: 1rem 0;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .emergency-card:hover {
+            border-color: #ff5555;
+            transform: translateY(-10px);
+            background: linear-gradient(135deg, rgba(255, 59, 59, 0.2) 0%, rgba(255, 59, 59, 0.1) 100%);
+        }
+
+        /* ====== TIMELINE SECTION ====== */
+        .timeline-section {
+            padding: 6rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--neon-cyan), var(--digital-green));
+            top: 0;
+        }
+
+        .timeline-item {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: 0;
+            margin-right: 52%;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: 52%;
+            margin-right: 0;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--neon-cyan);
+            border: 4px solid var(--midnight-navy);
+            border-radius: 50%;
+            top: 0;
+            z-index: 10;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(0, 240, 255, 0);
+            }
+        }
+
+        .timeline-content {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 2rem;
+            border-radius: 10px;
+            backdrop-filter: blur(20px);
+        }
+
+        .timeline-title {
+            color: var(--neon-cyan);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .timeline-description {
+            color: var(--soft-gray);
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 15px;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content {
+                margin-left: 60px;
+                margin-right: 0;
+                text-align: left;
+            }
+
+            .timeline-marker {
+                left: 15px;
+            }
+        }
+
+        /* ====== FOOTER ====== */
+        .footer {
+            background: linear-gradient(180deg, rgba(5, 8, 22, 0.8) 0%, rgba(13, 17, 31, 0.9) 100%);
+            border-top: 2px solid rgba(0, 240, 255, 0.3);
+            padding: 4rem 2rem 2rem;
+            margin-top: 8rem;
+            backdrop-filter: blur(20px);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h5 {
+            color: var(--neon-cyan);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px var(--neon-cyan);
+        }
+
+        .footer-link {
+            color: var(--soft-gray);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.7rem;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .footer-link:hover {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
+            margin-left: 5px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(0, 240, 255, 0.2);
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--soft-gray);
+            font-size: 0.9rem;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            justify-content: center;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--neon-cyan);
+            border-radius: 50%;
+            color: var(--neon-cyan);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            background: var(--neon-cyan);
+            color: var(--cyber-black);
+            box-shadow: 0 0 20px var(--neon-cyan);
+            transform: translateY(-5px);
+        }
+
+        /* ====== RESPONSIVE ====== */
+        @media (max-width: 992px) {
+            .section-title {
+                font-size: clamp(1.5rem, 5vw, 2.5rem);
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-search {
+                display: none;
+            }
+
+            .hero-section {
+                padding: 2rem 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .btn-primary-neon,
+            .btn-secondary-neon {
+                width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            .emergency-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ====== SCROLLBAR ====== */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--midnight-navy);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--neon-cyan), var(--digital-green));
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-cyan);
+            box-shadow: 0 0 15px var(--neon-cyan);
+        }
+    </style>
 </head>
+
 <body>
-<div class="cyber-bg"></div>
-<div id="particles-js"></div>
+    <!-- ====== NAVBAR ====== -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="#home">
+                <i class="fas fa-id-card"></i>
+                <span>NADRA Digital</span>
+            </a>
 
-<!-- navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark sticky-top navbar-glass py-3">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="#" style="font-family: 'Orbitron'; font-size: 1.6rem;">
-      <i class="fas fa-microchip text-info me-2"></i>PAK DIGITAL<span class="text-info"> AI</span>
-    </a>
-    <div class="d-flex d-lg-none gap-2">
-      <i class="fas fa-user-astronaut text-info fs-5"></i>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
-    <div class="collapse navbar-collapse" id="mainNav">
-      <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">CNIC Services</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Domicile</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Certificates</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Verification</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Appointments</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Tracking</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Complaints</a></li>
-      </ul>
-      <div class="d-flex gap-3 align-items-center">
-        <i class="fas fa-search text-info"></i>
-        <span class="badge bg-dark text-info" id="liveClock">00:00:00</span>
-        <i class="fas fa-bell text-info"></i>
-        <i class="fas fa-microphone-alt text-info"></i>
-        <i class="fas fa-adjust text-info" id="darkModeToggle" style="cursor:pointer"></i>
-      </div>
-    </div>
-  </div>
-</nav>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-bars" style="color: var(--neon-cyan);"></i>
+            </button>
 
-<!-- Hero Split Screen -->
-<section class="container mt-4 pt-2">
-  <div class="row align-items-center g-4 hero-split">
-    <div class="col-lg-6">
-      <span class="badge bg-info text-dark mb-3 px-3 py-2"><i class="fas fa-robot"></i> AI-POWERED GOVERNMENT ECOSYSTEM</span>
-      <h1 class="display-3 fw-bold" style="font-family:'Orbitron';">
-        <span class="text-info">Digital</span> Pakistan <br> <span id="typingEffect" style="border-right: 3px solid cyan;"></span>
-      </h1>
-      <p class="lead mt-3">NADRA • Khidmat Markaz • Biometric AI • Smart Identity Ecosystem</p>
-      <div class="d-flex flex-wrap gap-3 mt-4">
-        <button class="btn btn-glow-green px-4 py-2"><i class="fas fa-fingerprint"></i> Apply Now</button>
-        <button class="btn btn-neon px-4 py-2"><i class="fas fa-headset"></i> Emergency 15</button>
-      </div>
-      <div class="row mt-5 g-3 text-center">
-        <div class="col-4"><span class="counter-num" data-target="158">0</span><br>Verified Today</div>
-        <div class="col-4"><span class="counter-num" data-target="42">0</span><br>AI Offices</div>
-        <div class="col-4"><span class="counter-num" data-target="99.8">0</span>%<br>AI Accuracy</div>
-      </div>
-    </div>
-    <div class="col-lg-6 position-relative">
-      <div class="glass-panel p-4 text-center position-relative">
-        <div class="holographic-ring" style="position:absolute; inset:-10px; border-radius:40px; border:1px solid cyan; animation: spin 10s linear infinite;"></div>
-        <i class="fas fa-id-card fa-4x text-info mb-3"></i>
-        <h3>SMART CNIC <i class="fas fa-qrcode"></i></h3>
-        <div class="bg-dark p-3 rounded-4 mt-2"><span class="text-info">Biometric Scanner Active</span><div class="progress mt-2"><div class="progress-bar bg-info" style="width:78%">AI scanning</div></div></div>
-        <div class="mt-3 d-flex justify-content-around"><i class="fas fa-radar fa-2x text-info pulse"></i><i class="fas fa-shield-alt fa-2x text-info"></i><i class="fas fa-microchip fa-2x text-info"></i></div>
-      </div>
-    </div>
-  </div>
-</section>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#application">Apply</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#timeline">Process</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
 
-<!-- Futuristic Carousel -->
-<section class="container mt-5">
-  <div id="govCarousel" class="carousel slide carousel-futuristic" data-bs-ride="carousel">
-    <div class="carousel-inner rounded-4">
-      <div class="carousel-item active"><img src="https://picsum.photos/id/104/1600/500" class="d-block w-100" alt="NADRA"><div class="carousel-caption"><h3>NADRA Smart HQ</h3><button class="btn btn-neon">Explore</button></div></div>
-      <div class="carousel-item"><img src="https://picsum.photos/id/20/1600/500" class="d-block w-100" alt="Khidmat"><div class="carousel-caption"><h3>E-Khidmat Center</h3><button class="btn btn-neon">Digital Access</button></div></div>
-      <div class="carousel-item"><img src="https://picsum.photos/id/26/1600/500" class="d-block w-100" alt="AI Verification"><div class="carousel-caption"><h3>AI Biometric Hub</h3><button class="btn btn-neon">Verify Now</button></div></div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#govCarousel" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
-    <button class="carousel-control-next" type="button" data-bs-target="#govCarousel" data-bs-slide="next"></button>
-  </div>
-</section>
+                <div class="d-flex align-items-center gap-3 ms-4 flex-wrap">
+                    <input type="text" class="navbar-search" placeholder="Search services...">
+                    <span class="digital-clock" id="digitalClock">00:00:00</span>
+                    <i class="fas fa-bell notification-bell"></i>
+                    <button class="btn btn-sm btn-outline-success">Login</button>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-<!-- AI SERVICES SECTION glass cards -->
-<section class="container my-5">
-  <div class="text-center mb-4"><h2 class="fw-bold neon-text"><i class="fas fa-cogs"></i> AI GOVERNMENT SERVICES</h2><div class="bg-info mx-auto" style="width:80px; height:3px;"></div></div>
-  <div class="row g-4">
-    <div class="col-md-6 col-lg-3"><div class="service-card p-4 text-center"><i class="fas fa-id-card fa-3x text-info"></i><h5 class="mt-2">CNIC Registration</h5><small>AI Biometric</small><div class="mt-2"><span class="badge bg-info">active</span></div></div></div>
-    <div class="col-md-6 col-lg-3"><div class="service-card p-4 text-center"><i class="fas fa-fingerprint fa-3x text-info"></i><h5>NIC Renewal</h5><small>Instant update</small></div></div>
-    <div class="col-md-6 col-lg-3"><div class="service-card p-4 text-center"><i class="fas fa-file-alt fa-3x text-info"></i><h5>Domicile Service</h5><small>Digital seal</small></div></div>
-    <div class="col-md-6 col-lg-3"><div class="service-card p-4 text-center"><i class="fas fa-baby-carriage fa-3x text-info"></i><h5>Birth Certificate</h5><small>e-Registry</small></div></div>
-    <div class="col-md-6 col-lg-3"><div class="service-card p-4 text-center"><i class="fas fa-heartbeat fa-3x text-info"></i><h5>Marriage Certificate</h5></div></div>
-    <div class="col-md-6 col-lg-3"><div class="service-card p-4 text-center"><i class="fas fa-skull fa-3x text-info"></i><h5>Death Certificate</h5></div></div>
-    <div class="col-md-6 col-lg-3"><div class="service-card p-4 text-center"><i class="fas fa-users fa-3x text-info"></i><h5>Family Registration</h5></div></div>
-    <div class="col-md-6 col-lg-3"><div class="service-card p-4 text-center"><i class="fas fa-user-check fa-3x text-info"></i><h5>Character Cert</h5></div></div>
-  </div>
-</section>
+    <!-- ====== HERO SECTION ====== -->
+    <section class="hero-section" id="home">
+        <div class="hero-grid">
+            <!-- Left Content -->
+            <div class="hero-content">
+                <h1 class="display-title">Pakistan Digital <br>Citizen Services</h1>
+                <p class="hero-subtitle">
+                    AI-Powered National Identity <span class="typing-animation">Verification Portal</span>
+                </p>
 
-<!-- Digital Application System (Form) -->
-<section class="container my-5">
-  <div class="glass-panel p-4">
-    <h3 class="text-info"><i class="fas fa-edit"></i> SMART DIGITAL APPLICATION</h3>
-    <form id="digitalAppForm" class="row g-4 mt-2">
-      <div class="col-md-6"><input type="text" class="form-control input-glass" placeholder="Applicant Name" required></div>
-      <div class="col-md-6"><input type="text" class="form-control input-glass" placeholder="Father Name" required></div>
-      <div class="col-md-6"><input type="text" class="form-control input-glass" placeholder="CNIC Number (13 digits)"></div>
-      <div class="col-md-6"><input type="tel" class="form-control input-glass" placeholder="Phone Number"></div>
-      <div class="col-md-6"><input type="email" class="form-control input-glass" placeholder="Email"></div>
-      <div class="col-md-6"><input type="text" class="form-control input-glass" placeholder="District / Tehsil"></div>
-      <div class="col-md-12"><select class="form-select input-glass"><option>Select Service Type</option><option>CNIC Renewal</option><option>Domicile</option><option>Birth Certificate</option></select></div>
-      <div class="col-md-6"><input type="file" class="form-control input-glass"></div>
-      <div class="col-md-6"><input type="date" class="form-control input-glass"></div>
-      <div class="col-12"><button type="submit" class="btn btn-glow-green"><i class="fas fa-microchip"></i> Submit AI Verification</button></div>
-    </form>
-  </div>
-</section>
+                <p style="font-size: 1.1rem; color: var(--silver-white); margin-bottom: 1.5rem;">
+                    Seamless digital identity management, smart verification, and next-generation citizen services powered by advanced AI technology.
+                </p>
 
-<!-- LIVE AI GOVERNMENT DASHBOARD (analytics) -->
-<section class="container my-5">
-  <div class="glass-panel p-4">
-    <h3 class="text-info"><i class="fas fa-chart-line"></i> AI COMMAND DASHBOARD • LIVE METRICS</h3>
-    <div class="row mt-4 text-center g-3">
-      <div class="col-6 col-md-3"><div class="bg-dark p-3 rounded-4 border border-info"><span class="counter-num" data-target="12840">0</span><br>Applications</div></div>
-      <div class="col-6 col-md-3"><div class="bg-dark p-3 rounded-4 border border-info"><span class="counter-num" data-target="9270">0</span><br>Verified</div></div>
-      <div class="col-6 col-md-3"><div class="bg-dark p-3 rounded-4 border border-info"><span class="counter-num" data-target="43">0</span><br>Active Offices</div></div>
-      <div class="col-6 col-md-3"><div class="bg-dark p-3 rounded-4 border border-info"><span class="counter-num" data-target="99.4">0</span>%<br>AI Accuracy</div></div>
-    </div>
-    <div class="mt-4"><div class="progress"><div class="progress-bar bg-info" style="width:68%">Queue Monitoring 68%</div></div><span class="small">Live Citizen Traffic: <span id="trafficCounter">247</span> active tokens</span></div>
-  </div>
-</section>
+                <div class="hero-buttons">
+                    <button class="btn-primary-neon">Apply Now</button>
+                    <button class="btn-secondary-neon">Learn More</button>
+                </div>
 
-<!-- Emergency Help Center -->
-<section class="container my-5">
-  <h3 class="text-danger"><i class="fas fa-exclamation-triangle"></i> EMERGENCY HELP CENTER</h3>
-  <div class="row g-4 mt-2">
-    <div class="col-md-4"><div class="glass-panel p-3 border-danger"><i class="fas fa-id-card fa-2x text-danger"></i> <strong>Lost CNIC</strong><button class="btn btn-sm btn-outline-danger mt-2">Report Now</button></div></div>
-    <div class="col-md-4"><div class="glass-panel p-3 border-warning"><i class="fas fa-user-secret fa-2x text-warning"></i> <strong>Identity Theft</strong><button class="btn btn-sm btn-outline-warning mt-2">Lock Identity</button></div></div>
-    <div class="col-md-4"><div class="glass-panel p-3 border-info"><i class="fas fa-phone-alt fa-2x text-info"></i> <strong>Citizen Helpline</strong><button class="btn btn-sm btn-outline-info mt-2">Call 911</button></div></div>
-  </div>
-</section>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">50M+</div>
+                        <div class="stat-label">Citizens Verified</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">99.9%</div>
+                        <div class="stat-label">Accuracy Rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Support Available</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Service Centers</div>
+                    </div>
+                </div>
+            </div>
 
-<!-- Smart Digital Identity Cards -->
-<section class="container my-5">
-  <h3 class="neon-text"><i class="fas fa-id-card"></i> SMART DIGITAL IDENTITY ECOSYSTEM</h3>
-  <div class="row mt-4">
-    <div class="col-md-6 col-lg-4 mb-3"><div class="service-card p-3 d-flex align-items-center"><i class="fas fa-qrcode fa-3x text-info me-3"></i><div><h5>Smart CNIC</h5><small>Encrypted NFC</small><button class="btn btn-sm btn-neon mt-1">Apply</button></div></div></div>
-    <div class="col-md-6 col-lg-4 mb-3"><div class="service-card p-3 d-flex align-items-center"><i class="fas fa-eye fa-3x text-info me-3"></i><div><h5>Biometric Verification</h5><small>AI Match</small><button class="btn btn-sm btn-neon">Verify</button></div></div></div>
-    <div class="col-md-6 col-lg-4 mb-3"><div class="service-card p-3 d-flex align-items-center"><i class="fas fa-passport fa-3x text-info me-3"></i><div><h5>Digital Domicile</h5><small>Blockchain Ready</small><button class="btn btn-sm btn-neon">Request</button></div></div></div>
-  </div>
-</section>
+            <!-- Right Visual -->
+            <div class="hero-visual">
+                <div class="smart-cnic-card">
+                    <div class="verification-ring"></div>
+                    <div class="verification-ring"></div>
 
-<!-- Timeline Journey -->
-<section class="container my-5">
-  <div class="glass-panel p-4"><h4><i class="fas fa-timeline"></i> DIGITAL CITIZEN JOURNEY</h4>
-    <div class="row mt-4">
-      <div class="col-md-4 timeline-node p-3"><i class="fas fa-file-upload fa-2x text-info"></i> <span>Submission</span></div>
-      <div class="col-md-4 timeline-node p-3"><i class="fas fa-fingerprint fa-2x text-info"></i> <span>Biometric AI</span></div>
-      <div class="col-md-4 timeline-node p-3"><i class="fas fa-check-circle fa-2x text-success"></i> <span>Certificate Issued</span></div>
-    </div>
-  </div>
-</section>
+                    <div class="cnic-header">
+                        <div class="cnic-logo">
+                            <i class="fas fa-shield-alt"></i> NADRA
+                        </div>
+                        <div class="cnic-chip"></div>
+                    </div>
 
-<!-- FAQ Accordion futuristic -->
-<section class="container my-5">
-  <h3>AI ASSISTANT FAQ</h3>
-  <div class="accordion" id="faqAccordion">
-    <div class="accordion-item glass-panel bg-transparent"><h2 class="accordion-header"><button class="accordion-button bg-transparent text-info" data-bs-toggle="collapse" data-bs-target="#faq1">How to get digital CNIC?</button></h2><div id="faq1" class="accordion-collapse collapse show"><div class="accordion-body">AI-powered biometric verification at any Khidmat Markaz.</div></div></div>
-    <div class="accordion-item glass-panel bg-transparent mt-2"><h2 class="accordion-header"><button class="accordion-button collapsed bg-transparent text-info" data-bs-toggle="collapse" data-bs-target="#faq2">Biometric verification process?</button></h2><div id="faq2" class="collapse"><div class="accordion-body">Fingerprint + facial recognition secured by NADRA AI.</div></div></div>
-  </div>
-</section>
+                    <div class="cnic-number">XXXX-XXXX-XXXX-XXXX</div>
 
-<!-- Contact & Map -->
-<section class="container my-5">
-  <div class="row">
-    <div class="col-md-6"><div class="glass-panel p-4"><h4><i class="fas fa-headset"></i> Digital Support</h4><input class="form-control input-glass mt-2" placeholder="Your Message"><button class="btn btn-neon mt-3">Send AI Inquiry</button></div></div>
-    <div class="col-md-6"><div class="glass-panel p-4"><iframe width="100%" height="200" style="border-radius:24px; border:0;" loading="lazy" src="https://maps.google.com/maps?q=islamabad&t=&z=12&output=embed"></iframe><p class="mt-2">NADRA Headquarters, Islamabad</p></div></div>
-  </div>
-</section>
+                    <div class="cnic-footer">
+                        <span>SMART CNIC CARD</span>
+                        <span>VERIFIED ✓</span>
+                    </div>
+                </div>
 
-<!-- footer premium -->
-<footer class="mt-5 glass-panel rounded-0 pt-5 pb-4" style="border-radius: 40px 40px 0 0 !important;">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4"><i class="fas fa-microchip fa-2x text-info"></i><h5>Pakistan Digital AI</h5><p>Citizen-first smart governance</p></div>
-      <div class="col-md-4"><h6>Quick Links</h6><a href="#">CNIC Portal</a><br><a href="#">Complaints</a><br><a href="#">Emergency</a></div>
-      <div class="col-md-4"><h6>Subscribe to AI alerts</h6><div class="input-group"><input type="email" class="form-control input-glass" placeholder="Email"><button class="btn btn-neon">Notify</button></div></div>
-    </div>
-    <hr class="bg-info"><div class="text-center small">© 2026 Digital Pakistan NADRA AI Command • All services secure</div>
-  </div>
-</footer>
+                <div class="floating-widget widget-1" style="font-size: 0.8rem;">
+                    <i class="fas fa-check-circle" style="color: var(--digital-green); margin-bottom: 0.5rem;"></i>
+                    <div>Biometric Verified</div>
+                </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  // live digital clock
-  function updateClock(){
-    let now = new Date();
-    document.getElementById('liveClock').innerText = now.toLocaleTimeString();
-  }
-  setInterval(updateClock,1000);
-  updateClock();
+                <div class="floating-widget widget-2" style="font-size: 0.8rem;">
+                    <i class="fas fa-lock" style="color: var(--neon-cyan); margin-bottom: 0.5rem;"></i>
+                    <div>Encrypted Data</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  // Typing effect for hero
-  const phrases = ["Smart Identity", "Biometric CNIC", "AI Verification", "Digital Pakistan"];
-  let idx=0, charIdx=0, isDeleting=false;
-  const typingSpan = document.getElementById("typingEffect");
-  function typeEffect(){
-    let current = phrases[idx];
-    if(isDeleting){
-      typingSpan.innerText = current.substring(0,charIdx-1);
-      charIdx--;
-    } else {
-      typingSpan.innerText = current.substring(0,charIdx+1);
-      charIdx++;
-    }
-    if(!isDeleting && charIdx === current.length){
-      isDeleting=true;
-      setTimeout(typeEffect,1500);
-      return;
-    }
-    if(isDeleting && charIdx===0){
-      isDeleting=false;
-      idx=(idx+1)%phrases.length;
-      setTimeout(typeEffect,300);
-      return;
-    }
-    setTimeout(typeEffect, isDeleting?60:120);
-  }
-  typeEffect();
+    <!-- ====== SERVICES SECTION ====== -->
+    <section class="services-section" id="services">
+        <h2 class="section-title">Digital Services</h2>
 
-  // animated counters
-  const counters = document.querySelectorAll('.counter-num');
-  const animateCounter = (el) => {
-    const target = parseFloat(el.getAttribute('data-target'));
-    let current = 0;
-    const increment = target/60;
-    const update = () => {
-      current += increment;
-      if(current < target){
-        el.innerText = Math.floor(current);
-        requestAnimationFrame(update);
-      } else {
-        el.innerText = target;
-      }
-    };
-    update();
-  };
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting){
-        animateCounter(entry.target);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {threshold:0.2});
-  counters.forEach(c => observer.observe(c));
+        <div class="services-grid">
+            <div class="service-card">
+                <i class="fas fa-id-card service-icon"></i>
+                <h3 class="service-title">CNIC Registration</h3>
+                <p class="service-desc">Apply for your National ID Card with advanced verification</p>
+                <span class="service-status">Available</span>
+            </div>
 
-  // particle generator
-  for(let i=0; i<75; i++){
-    let particle = document.createElement('div');
-    particle.classList.add('particle');
-    let size = Math.random()*4+1;
-    particle.style.width = size+'px';
-    particle.style.height = size+'px';
-    particle.style.left = Math.random()*100+'%';
-    particle.style.top = Math.random()*100+'%';
-    particle.style.animationDelay = Math.random()*15+'s';
-    particle.style.animationDuration = 8+Math.random()*12+'s';
-    document.body.appendChild(particle);
-  }
+            <div class="service-card">
+                <i class="fas fa-sync-alt service-icon"></i>
+                <h3 class="service-title">NIC Renewal</h3>
+                <p class="service-desc">Renew your existing CNIC with quick processing</p>
+                <span class="service-status">Available</span>
+            </div>
 
-  // Dark/Light toggle (simulate via body class + invert)
-  let dark=true;
-  document.getElementById('darkModeToggle').addEventListener('click',()=>{
-    if(dark){
-      document.body.style.background = "#f0f5ff";
-      document.body.style.color = "#020409";
-      document.querySelectorAll('.glass-panel').forEach(el=>el.style.background="rgba(255,255,255,0.7)");
-      dark=false;
-    } else {
-      document.body.style.background = "#050816";
-      document.body.style.color = "#dfefff";
-      document.querySelectorAll('.glass-panel').forEach(el=>el.style.background="rgba(13, 17, 31, 0.55)");
-      dark=true;
-    }
-  });
-  // Traffic live simulation
-  setInterval(()=>{
-    let traffic = document.getElementById('trafficCounter');
-    if(traffic){
-      let val = parseInt(traffic.innerText) + Math.floor(Math.random()*5)-2;
-      if(val<80) val=80;
-      traffic.innerText = val;
-    }
-  }, 5000);
-  // form submit alert
-  document.getElementById('digitalAppForm')?.addEventListener('submit',(e)=>{
-    e.preventDefault();
-    alert("AI Verification initiated – your application is now in secure queue.");
-  });
-</script>
+            <div class="service-card">
+                <i class="fas fa-certificate service-icon"></i>
+                <h3 class="service-title">Domicile Certificate</h3>
+                <p class="service-desc">Get your domicile certification online</p>
+                <span class="service-status">Available</span>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-book service-icon"></i>
+                <h3 class="service-title">Birth Certificate</h3>
+                <p class="service-desc">Digital birth certificate registration and retrieval</p>
+                <span class="service-status">Available</span>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-heart-broken service-icon"></i>
+                <h3 class="service-title">Death Certificate</h3>
+                <p class="service-desc">Death certificate registration and issuance</p>
+                <span class="service-status">Available</span>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-ring service-icon"></i>
+                <h3 class="service-title">Marriage Certificate</h3>
+                <p class="service-desc">Marriage registration with government approval</p>
+                <span class="service-status">Available</span>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-users service-icon"></i>
+                <h3 class="service-title">Family Registration</h3>
+                <p class="service-desc">Complete family documentation and registration</p>
+                <span class="service-status">Available</span>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-star service-icon"></i>
+                <h3 class="service-title">Character Certificate</h3>
+                <p class="service-desc">Character verification for official purposes</p>
+                <span class="service-status">Available</span>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-fingerprint service-icon"></i>
+                <h3 class="service-title">Biometric Verification</h3>
+                <p class="service-desc">Advanced AI-powered biometric authentication</p>
+                <span class="service-status">Active</span>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-calendar-check service-icon"></i>
+                <h3 class="service-title">Online Appointments</h3>
+                <p class="service-desc">Book appointments at NADRA centers</p>
+                <span class="service-status">Available</span>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-phone service-icon"></i>
+                <h3 class="service-title">Complaint Portal</h3>
+                <p class="service-desc">File and track complaints online</p>
+                <span class="service-status">Available</span>
+            </div>
+
+            <div class="service-card">
+                <i class="fas fa-map-location-dot service-icon"></i>
+                <h3 class="service-title">Citizen Tracking</h3>
+                <p class="service-desc">Real-time tracking of applications</p>
+                <span class="service-status">Available</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== APPLICATION FORM ====== -->
+    <section class="application-section" id="application">
+        <h2 class="section-title">Digital Application System</h2>
+
+        <div class="form-container">
+            <form id="applicationForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" placeholder="Enter your full name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Father's Name</label>
+                        <input type="text" class="form-control" placeholder="Enter father's name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">CNIC Number</label>
+                        <input type="text" class="form-control" placeholder="XXXXX-XXXXXXX-X" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" placeholder="+92 3XX XXXXXXX" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-control" placeholder="email@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">District</label>
+                        <select class="form-control" required>
+                            <option>Select District</option>
+                            <option>Lahore</option>
+                            <option>Karachi</option>
+                            <option>Islamabad</option>
+                            <option>Rawalpindi</option>
+                            <option>Faisalabad</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">Complete Address</label>
+                    <input type="text" class="form-control" placeholder="Street address" required>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Service Type</label>
+                        <select class="form-control" required>
+                            <option>Select Service</option>
+                            <option>CNIC Registration</option>
+                            <option>NIC Renewal</option>
+                            <option>Birth Certificate</option>
+                            <option>Domicile Certificate</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Appointment Date</label>
+                        <input type="date" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">Upload Documents</label>
+                    <div class="file-upload-zone">
+                        <div class="file-upload-icon">
+                            <i class="fas fa-cloud-arrow-up"></i>
+                        </div>
+                        <p style="margin-bottom: 0.5rem;">Drag and drop your documents here</p>
+                        <p style="font-size: 0.85rem; color: var(--soft-gray);">or click to browse files</p>
+                        <input type="file" multiple hidden>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-paper-plane"></i> Submit Application
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ====== DASHBOARD SECTION ====== -->
+    <section class="dashboard-section" id="dashboard">
+        <h2 class="section-title">AI Government Dashboard</h2>
+
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <div class="dashboard-label">Applications Submitted</div>
+                <div class="dashboard-value" id="appSubmitted">1,247</div>
+                <i class="fas fa-file-contract dashboard-icon"></i>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="dashboard-label">Verified Citizens</div>
+                <div class="dashboard-value" id="verified">892</div>
+                <i class="fas fa-check-double dashboard-icon"></i>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="dashboard-label">Active Offices</div>
+                <div class="dashboard-value" id="offices">47</div>
+                <i class="fas fa-building dashboard-icon"></i>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="dashboard-label">Pending Requests</div>
+                <div class="dashboard-value" id="pending">234</div>
+                <i class="fas fa-hourglass-end dashboard-icon"></i>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="dashboard-label">Complaints Resolved</div>
+                <div class="dashboard-value" id="resolved">156</div>
+                <i class="fas fa-shield-check dashboard-icon"></i>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="dashboard-label">Appointments Booked</div>
+                <div class="dashboard-value" id="appointments">523</div>
+                <i class="fas fa-calendar-days dashboard-icon"></i>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="dashboard-label">AI Accuracy</div>
+                <div class="dashboard-value">99.9%</div>
+                <i class="fas fa-microchip dashboard-icon"></i>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="dashboard-label">Live Visitors</div>
+                <div class="dashboard-value" id="visitors">2,145</div>
+                <i class="fas fa-users dashboard-icon"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== EMERGENCY SECTION ====== -->
+    <section class="emergency-section">
+        <h2 class="section-title">Emergency Help Center</h2>
+
+        <div class="emergency-grid">
+            <div class="emergency-card">
+                <i class="fas fa-id-card-slash emergency-icon"></i>
+                <div class="emergency-title">Lost CNIC</div>
+                <div class="emergency-number">+92 51 9101234</div>
+                <p style="color: var(--soft-gray); font-size: 0.9rem;">Report lost identity card</p>
+            </div>
+
+            <div class="emergency-card">
+                <i class="fas fa-shield-virus emergency-icon"></i>
+                <div class="emergency-title">Identity Theft</div>
+                <div class="emergency-number">+92 51 9105678</div>
+                <p style="color: var(--soft-gray); font-size: 0.9rem;">Fraud report hotline</p>
+            </div>
+
+            <div class="emergency-card">
+                <i class="fas fa-exclamation-triangle emergency-icon"></i>
+                <div class="emergency-title">Document Fraud</div>
+                <div class="emergency-number">+92 51 9109999</div>
+                <p style="color: var(--soft-gray); font-size: 0.9rem;">Report fraudulent documents</p>
+            </div>
+
+            <div class="emergency-card">
+                <i class="fas fa-clock emergency-icon"></i>
+                <div class="emergency-title">Urgent Verification</div>
+                <div class="emergency-number">+92 51 9110000</div>
+                <p style="color: var(--soft-gray); font-size: 0.9rem;">Expedited verification</p>
+            </div>
+
+            <div class="emergency-card">
+                <i class="fas fa-message emergency-icon"></i>
+                <div class="emergency-title">Citizen Complaints</div>
+                <div class="emergency-number">+92 51 9111111</div>
+                <p style="color: var(--soft-gray); font-size: 0.9rem;">Customer complaint line</p>
+            </div>
+
+            <div class="emergency-card">
+                <i class="fas fa-headset emergency-icon"></i>
+                <div class="emergency-title">24/7 Helpline</div>
+                <div class="emergency-number">+92 51 9112222</div>
+                <p style="color: var(--soft-gray); font-size: 0.9rem;">Round-the-clock support</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== TIMELINE SECTION ====== -->
+    <section class="timeline-section" id="timeline">
+        <h2 class="section-title">Citizen Journey Timeline</h2>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Application Submission</div>
+                    <div class="timeline-description">Submit your application with all required documents online through our portal</div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Document Upload</div>
+                    <div class="timeline-description">Upload scanned copies of identity proof and supporting documents</div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Biometric Verification</div>
+                    <div class="timeline-description">Visit your nearest NADRA center for fingerprinting and facial recognition</div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">AI Validation</div>
+                    <div class="timeline-description">Advanced AI systems validate your identity and cross-check all information</div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Approval Process</div>
+                    <div class="timeline-description">Government officials review and approve your verified documents</div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Certificate Issuance</div>
+                    <div class="timeline-description">Your digital certificate is generated and cryptographically signed</div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Delivery Completion</div>
+                    <div class="timeline-description">Receive your certificate via email or collect from nearest service center</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="footer" id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h5><i class="fas fa-landmark"></i> NADRA Services</h5>
+                <a href="#" class="footer-link">CNIC Registration</a>
+                <a href="#" class="footer-link">NIC Renewal</a>
+                <a href="#" class="footer-link">Birth Certificate</a>
+                <a href="#" class="footer-link">Domicile Services</a>
+                <a href="#" class="footer-link">Character Certificate</a>
+            </div>
+
+            <div class="footer-section">
+                <h5><i class="fas fa-headset"></i> Support</h5>
+                <a href="#" class="footer-link">Contact Us</a>
+                <a href="#" class="footer-link">FAQs</a>
+                <a href="#" class="footer-link">Help Center</a>
+                <a href="#" class="footer-link">Complaints</a>
+                <a href="#" class="footer-link">Feedback</a>
+            </div>
+
+            <div class="footer-section">
+                <h5><i class="fas fa-shield-alt"></i> Government</h5>
+                <a href="#" class="footer-link">Digital Pakistan</a>
+                <a href="#" class="footer-link">E-Khidmat Centers</a>
+                <a href="#" class="footer-link">Khidmat Markaz</a>
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms & Conditions</a>
+            </div>
+
+            <div class="footer-section">
+                <h5><i class="fas fa-share-nodes"></i> Follow Us</h5>
+                <div class="social-icons">
+                    <a href="#" class="social-icon" title="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-icon" title="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-icon" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" class="social-icon" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Pakistan Digital Citizen Services | NADRA. All rights reserved. | Powered by Advanced AI Technology</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        // Digital Clock
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('digitalClock').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Animated Counter
+        function animateCounter(elementId, targetValue) {
+            const element = document.getElementById(elementId);
+            const finalValue = parseInt(targetValue.replace(/[^0-9]/g, ''));
+            let currentValue = 0;
+            const increment = Math.ceil(finalValue / 50);
+            const interval = setInterval(() => {
+                currentValue += increment;
+                if (currentValue >= finalValue) {
+                    currentValue = finalValue;
+                    clearInterval(interval);
+                }
+                element.textContent = currentValue.toLocaleString();
+            }, 30);
+        }
+
+        // Intersection Observer for Animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 1s ease-out forwards';
+                    if (entry.target.id) {
+                        animateCounter(entry.target.id, entry.target.textContent);
+                    }
+                }
+            });
+        });
+
+        document.querySelectorAll('.dashboard-value').forEach(el => observer.observe(el));
+
+        // Form Submission
+        document.getElementById('applicationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('✓ Application submitted successfully! Check your email for confirmation.');
+        });
+
+        // File Upload Zone
+        const fileUploadZone = document.querySelector('.file-upload-zone');
+        fileUploadZone.addEventListener('click', () => fileUploadZone.querySelector('input').click());
+
+        // Scroll Animations
+        const scrollElements = document.querySelectorAll('.service-card, .glass-card');
+        const observerScroll = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
+                }
+            });
+        });
+
+        scrollElements.forEach(el => observerScroll.observe(el));
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Notification Bell Click
+        document.querySelector('.notification-bell').addEventListener('click', () => {
+            alert('🔔 You have 3 new notifications about your application status.');
+        });
+
+        // Random Dashboard Updates
+        setInterval(() => {
+            const elements = ['appSubmitted', 'verified', 'offices', 'pending', 'resolved', 'appointments', 'visitors'];
+            elements.forEach(id => {
+                const currentValue = parseInt(document.getElementById(id).textContent.replace(/[^0-9]/g, ''));
+                const newValue = currentValue + Math.floor(Math.random() * 10);
+                document.getElementById(id).textContent = newValue.toLocaleString();
+            });
+        }, 5000);
+
+        // Parallax Effect on Hero Section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroSection = document.querySelector('.hero-section');
+            heroSection.style.transform = `translateY(${scrolled * 0.5}px)`;
+        });
+
+        console.log('🚀 Pakistan Digital Citizen Services Portal Loaded');
+    </script>
 </body>
+
 </html>
