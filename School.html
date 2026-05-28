@@ -1,2422 +1,1414 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APS Smart Education - Futuristic Digital Campus</title>
-    
-    <!-- Bootstrap 5 CDN -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Font Awesome CDN -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- Google Fonts CDN -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --midnight-blue: #0a1a2e;
-            --military-black: #16213e;
-            --electric-cyan: #00d4ff;
-            --neon-blue: #0066ff;
-            --emerald-green: #1dd1a1;
-            --silver-gray: #b8c5d6;
-            --golden-orange: #ff8c42;
-            --white: #ffffff;
-            --dark-bg: #0a0e27;
-            --card-bg: rgba(16, 34, 60, 0.8);
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--midnight-blue) 100%);
-            color: var(--silver-gray);
-            overflow-x: hidden;
-        }
-
-        /* Typography */
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-        }
-
-        .heading-futuristic {
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-            letter-spacing: 2px;
-        }
-
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--military-black);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--electric-cyan);
-            border-radius: 5px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--neon-blue);
-        }
-
-        /* Navbar Styling */
-        .navbar-futuristic {
-            background: rgba(10, 26, 46, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 2px solid rgba(0, 212, 255, 0.2);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.1);
-        }
-
-        .navbar-brand {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--electric-cyan) 0%, var(--neon-blue) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: 2px;
-        }
-
-        .nav-link {
-            color: var(--silver-gray) !important;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 600;
-            margin: 0 10px;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--electric-cyan) 0%, var(--emerald-green) 100%);
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .nav-link:hover {
-            color: var(--electric-cyan) !important;
-        }
-
-        .digital-clock {
-            font-family: 'Rajdhani', sans-serif;
-            color: var(--electric-cyan);
-            font-weight: 700;
-            font-size: 0.9rem;
-            margin-right: 20px;
-        }
-
-        /* Search Bar */
-        .search-futuristic {
-            background: rgba(0, 212, 255, 0.05);
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            color: var(--silver-gray);
-            padding: 8px 15px;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-        }
-
-        .search-futuristic:focus {
-            background: rgba(0, 212, 255, 0.1);
-            border-color: var(--electric-cyan);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-            color: var(--white);
-        }
-
-        .search-futuristic::placeholder {
-            color: rgba(184, 197, 214, 0.5);
-        }
-
-        /* Dark Mode Toggle */
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 25px;
-        }
-
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: var(--military-black);
-            transition: 0.4s;
-            border-radius: 25px;
-            border: 1px solid var(--electric-cyan);
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: 0.4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: var(--electric-cyan);
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(25px);
-        }
-
-        /* Glassmorphism Effect */
-        .glass {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 15px;
-        }
-
-        .glass-strong {
-            background: rgba(16, 34, 60, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 212, 255, 0.2);
-        }
-
-        /* Hero Section */
-        .hero-section {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 60px 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(0, 102, 255, 0.05) 100%);
-            z-index: -1;
-        }
-
-        .hero-left {
-            padding: 40px;
-            animation: slideInLeft 0.8s ease;
-        }
-
-        .hero-right {
-            padding: 40px;
-            animation: slideInRight 0.8s ease;
-            position: relative;
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .hero-title {
-            font-size: clamp(2.5rem, 8vw, 4.5rem);
-            font-family: 'Orbitron', sans-serif;
-            background: linear-gradient(135deg, var(--electric-cyan) 0%, var(--emerald-green) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            animation: glow 3s ease-in-out infinite;
-        }
-
-        @keyframes glow {
-            0%, 100% {
-                text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
-            }
-            50% {
-                text-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
-            }
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1rem, 3vw, 1.5rem);
-            color: var(--silver-gray);
-            margin-bottom: 30px;
-            font-family: 'Rajdhani', sans-serif;
-        }
-
-        .hero-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 20px;
-            margin: 40px 0;
-        }
-
-        .stat-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .stat-card:hover {
-            background: rgba(0, 212, 255, 0.1);
-            border-color: var(--electric-cyan);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-            transform: translateY(-5px);
-        }
-
-        .stat-number {
-            font-size: 1.8rem;
-            color: var(--electric-cyan);
-            font-weight: 700;
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--silver-gray);
-            margin-top: 10px;
-        }
-
-        .cta-button {
-            padding: 12px 35px;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 600;
-            border: none;
-            border-radius: 25px;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            margin-right: 15px;
-            margin-bottom: 15px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-primary {
-            background: linear-gradient(135deg, var(--electric-cyan) 0%, var(--emerald-green) 100%);
-            color: var(--military-black);
-        }
-
-        .cta-primary:hover {
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
-            transform: translateY(-3px);
-        }
-
-        .cta-secondary {
-            background: transparent;
-            color: var(--electric-cyan);
-            border: 2px solid var(--electric-cyan);
-        }
-
-        .cta-secondary:hover {
-            background: var(--electric-cyan);
-            color: var(--military-black);
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
-        }
-
-        .cta-emergency {
-            background: linear-gradient(135deg, #ff4444 0%, #ff8800 100%);
-            color: white;
-        }
-
-        .cta-emergency:hover {
-            box-shadow: 0 0 30px rgba(255, 68, 68, 0.6);
-        }
-
-        .hero-image {
-            width: 100%;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 2px solid rgba(0, 212, 255, 0.3);
-            box-shadow: 0 0 40px rgba(0, 212, 255, 0.2);
-        }
-
-        .hero-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .floating-widget {
-            position: absolute;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            padding: 15px;
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
-        }
-
-        .widget-1 {
-            top: 20%;
-            right: 5%;
-            width: 180px;
-            animation-delay: 0s;
-        }
-
-        .widget-2 {
-            bottom: 15%;
-            right: 10%;
-            width: 160px;
-            animation-delay: 0.5s;
-        }
-
-        /* Slider Section */
-        .slider-section {
-            padding: 80px 0;
-            background: linear-gradient(135deg, rgba(16, 34, 60, 0.5) 0%, rgba(26, 52, 80, 0.5) 100%);
-            margin: 60px 0;
-        }
-
-        .slider-container {
-            position: relative;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .slide {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            padding: 60px 40px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .slide.active {
-            display: block;
-            opacity: 1;
-        }
-
-        .slide::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 102, 255, 0.1) 100%);
-            z-index: -1;
-        }
-
-        .slide-title {
-            font-size: 2.5rem;
-            color: var(--electric-cyan);
-            margin-bottom: 20px;
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        .slide-description {
-            font-size: 1.1rem;
-            color: var(--silver-gray);
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        .slider-nav {
-            position: absolute;
-            bottom: 40px;
-            right: 40px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .slider-btn {
-            width: 40px;
-            height: 40px;
-            border: 2px solid var(--electric-cyan);
-            background: transparent;
-            color: var(--electric-cyan);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .slider-btn:hover {
-            background: var(--electric-cyan);
-            color: var(--military-black);
-        }
-
-        .slide-dots {
-            text-align: center;
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: rgba(0, 212, 255, 0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .dot.active {
-            background: var(--electric-cyan);
-            width: 30px;
-            border-radius: 5px;
-        }
-
-        /* Services Section */
-        .services-section {
-            padding: 100px 0;
-            position: relative;
-        }
-
-        .section-title {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            text-align: center;
-            margin-bottom: 60px;
-            font-family: 'Orbitron', sans-serif;
-            position: relative;
-        }
-
-        .section-title::before {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent 0%, var(--electric-cyan) 50%, transparent 100%);
-        }
-
-        .service-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 80px;
-        }
-
-        .service-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            padding: 40px 30px;
-            border-radius: 15px;
-            text-align: center;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: -1;
-        }
-
-        .service-card:hover {
-            border-color: var(--electric-cyan);
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
-        }
-
-        .service-card:hover::before {
-            opacity: 1;
-        }
-
-        .service-icon {
-            font-size: 3.5rem;
-            color: var(--electric-cyan);
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .service-card:hover .service-icon {
-            transform: scale(1.2) rotate(10deg);
-            color: var(--emerald-green);
-            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-        }
-
-        .service-title {
-            font-size: 1.5rem;
-            color: var(--white);
-            margin: 20px 0;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-        }
-
-        .service-description {
-            font-size: 0.95rem;
-            color: var(--silver-gray);
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .service-features {
-            text-align: left;
-            font-size: 0.9rem;
-            color: var(--silver-gray);
-        }
-
-        .service-features li {
-            margin: 8px 0;
-            padding-left: 20px;
-            position: relative;
-        }
-
-        .service-features li:before {
-            content: '▸';
-            position: absolute;
-            left: 0;
-            color: var(--emerald-green);
-        }
-
-        /* Admission Form */
-        .admission-section {
-            padding: 100px 0;
-            background: linear-gradient(135deg, rgba(0, 26, 52, 0.5) 0%, rgba(16, 34, 60, 0.5) 100%);
-        }
-
-        .form-container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: var(--glass-bg);
-            padding: 50px;
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-            position: relative;
-        }
-
-        .form-label {
-            display: block;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 600;
-            color: var(--electric-cyan);
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-control, .form-select {
-            background: rgba(255, 255, 255, 0.05) !important;
-            border: 1px solid rgba(0, 212, 255, 0.3) !important;
-            color: var(--white) !important;
-            padding: 12px 15px !important;
-            border-radius: 10px !important;
-            font-family: 'Poppins', sans-serif !important;
-            transition: all 0.3s ease !important;
-        }
-
-        .form-control:focus, .form-select:focus {
-            background: rgba(0, 212, 255, 0.1) !important;
-            border-color: var(--electric-cyan) !important;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3) !important;
-            color: var(--white) !important;
-        }
-
-        .form-control::placeholder {
-            color: rgba(184, 197, 214, 0.5) !important;
-        }
-
-        .form-control::-webkit-input-placeholder {
-            color: rgba(184, 197, 214, 0.5) !important;
-        }
-
-        .form-select option {
-            background: var(--military-black);
-            color: var(--silver-gray);
-        }
-
-        /* Dashboard Section */
-        .dashboard-section {
-            padding: 100px 0;
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 50px;
-        }
-
-        .dashboard-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .dashboard-card:hover {
-            border-color: var(--electric-cyan);
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
-            transform: translateY(-5px);
-        }
-
-        .dashboard-icon {
-            font-size: 2.5rem;
-            color: var(--electric-cyan);
-            margin-bottom: 15px;
-        }
-
-        .dashboard-value {
-            font-size: 2.2rem;
-            color: var(--emerald-green);
-            font-weight: 700;
-            margin: 15px 0;
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        .dashboard-label {
-            font-size: 0.9rem;
-            color: var(--silver-gray);
-            font-family: 'Rajdhani', sans-serif;
-        }
-
-        /* Emergency Section */
-        .emergency-section {
-            padding: 100px 0;
-            background: linear-gradient(135deg, rgba(51, 20, 20, 0.4) 0%, rgba(40, 10, 10, 0.4) 100%);
-        }
-
-        .emergency-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 50px;
-        }
-
-        .emergency-card {
-            background: rgba(255, 68, 68, 0.05);
-            border: 2px solid rgba(255, 68, 68, 0.3);
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            transition: all 0.3s ease;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                box-shadow: 0 0 10px rgba(255, 68, 68, 0.3);
-            }
-            50% {
-                box-shadow: 0 0 30px rgba(255, 68, 68, 0.6);
-            }
-        }
-
-        .emergency-card:hover {
-            border-color: #ff4444;
-            background: rgba(255, 68, 68, 0.1);
-        }
-
-        .emergency-icon {
-            font-size: 3rem;
-            color: #ff4444;
-            margin-bottom: 15px;
-            animation: shake 0.5s ease-in-out;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-5deg); }
-            75% { transform: rotate(5deg); }
-        }
-
-        .emergency-title {
-            font-size: 1.4rem;
-            color: #ff4444;
-            margin: 15px 0;
-            font-weight: 700;
-        }
-
-        .emergency-contact {
-            color: var(--electric-cyan);
-            font-weight: 600;
-            margin-top: 15px;
-            font-size: 1.1rem;
-        }
-
-        /* Faculty Section */
-        .faculty-section {
-            padding: 100px 0;
-        }
-
-        .faculty-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .faculty-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .faculty-card:hover {
-            border-color: var(--electric-cyan);
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
-        }
-
-        .faculty-image {
-            width: 100%;
-            height: 280px;
-            background: linear-gradient(135deg, var(--electric-cyan) 0%, var(--neon-blue) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .faculty-info {
-            padding: 30px;
-        }
-
-        .faculty-name {
-            font-size: 1.3rem;
-            color: var(--white);
-            margin: 10px 0;
-            font-weight: 700;
-        }
-
-        .faculty-position {
-            color: var(--electric-cyan);
-            font-size: 0.95rem;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        .faculty-details {
-            font-size: 0.9rem;
-            color: var(--silver-gray);
-            margin: 10px 0;
-        }
-
-        /* Analytics Section */
-        .analytics-section {
-            padding: 100px 0;
-            background: linear-gradient(135deg, rgba(0, 26, 52, 0.5) 0%, rgba(16, 34, 60, 0.5) 100%);
-        }
-
-        .analytics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 25px;
-            margin-top: 50px;
-        }
-
-        .analytics-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-        }
-
-        .analytics-value {
-            font-size: 2.8rem;
-            color: var(--electric-cyan);
-            font-weight: 700;
-            margin: 15px 0;
-            font-family: 'Orbitron', sans-serif;
-            transition: all 0.3s ease;
-        }
-
-        .analytics-card:hover .analytics-value {
-            color: var(--emerald-green);
-            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-            transform: scale(1.1);
-        }
-
-        .analytics-label {
-            color: var(--silver-gray);
-            font-size: 0.95rem;
-            font-family: 'Rajdhani', sans-serif;
-        }
-
-        .progress-bar-container {
-            width: 100%;
-            height: 6px;
-            background: rgba(0, 212, 255, 0.1);
-            border-radius: 3px;
-            margin-top: 15px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--electric-cyan) 0%, var(--emerald-green) 100%);
-            border-radius: 3px;
-            animation: fillProgress 2s ease-out forwards;
-        }
-
-        @keyframes fillProgress {
-            from {
-                width: 0;
-            }
-            to {
-                width: 100%;
-            }
-        }
-
-        /* Timeline Section */
-        .timeline-section {
-            padding: 100px 0;
-        }
-
-        .timeline {
-            position: relative;
-            padding: 40px 0;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 3px;
-            height: 100%;
-            background: linear-gradient(180deg, var(--electric-cyan) 0%, transparent 100%);
-        }
-
-        .timeline-item {
-            margin-bottom: 50px;
-            position: relative;
-        }
-
-        .timeline-item:nth-child(odd) .timeline-content {
-            margin-left: 0;
-            margin-right: auto;
-            padding-right: 50px;
-        }
-
-        .timeline-item:nth-child(even) .timeline-content {
-            margin-left: auto;
-            margin-right: 0;
-            padding-left: 50px;
-        }
-
-        .timeline-content {
-            width: 45%;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            padding: 25px;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .timeline-content:hover {
-            border-color: var(--electric-cyan);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
-        }
-
-        .timeline-dot {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 20px;
-            background: var(--electric-cyan);
-            border: 4px solid var(--military-black);
-            border-radius: 50%;
-            top: 20px;
-            z-index: 10;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-        }
-
-        .timeline-title {
-            font-size: 1.3rem;
-            color: var(--electric-cyan);
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .timeline-description {
-            color: var(--silver-gray);
-            font-size: 0.95rem;
-        }
-
-        /* FAQ Section */
-        .faq-section {
-            padding: 100px 0;
-            background: linear-gradient(135deg, rgba(0, 26, 52, 0.5) 0%, rgba(16, 34, 60, 0.5) 100%);
-        }
-
-        .faq-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .accordion-button {
-            background: var(--glass-bg) !important;
-            color: var(--electric-cyan) !important;
-            border: 1px solid var(--glass-border) !important;
-            border-radius: 10px !important;
-            margin-bottom: 15px !important;
-            font-weight: 600 !important;
-            font-family: 'Rajdhani', sans-serif !important;
-            padding: 20px !important;
-            transition: all 0.3s ease !important;
-        }
-
-        .accordion-button:not(.collapsed) {
-            background: rgba(0, 212, 255, 0.1) !important;
-            border-color: var(--electric-cyan) !important;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2) !important;
-        }
-
-        .accordion-button::after {
-            filter: invert(1) brightness(0) saturate(100%) invert(53%) sepia(80%) saturate(1230%) hue-rotate(172deg);
-        }
-
-        .accordion-body {
-            background: rgba(0, 212, 255, 0.05) !important;
-            color: var(--silver-gray) !important;
-            border: 1px solid rgba(0, 212, 255, 0.1) !important;
-            border-radius: 0 0 10px 10px !important;
-            padding: 20px !important;
-            line-height: 1.8;
-        }
-
-        /* Contact Section */
-        .contact-section {
-            padding: 100px 0;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            margin-top: 50px;
-        }
-
-        .contact-info {
-            background: var(--glass-bg);
-            padding: 40px;
-            border-radius: 15px;
-            border: 1px solid var(--glass-border);
-        }
-
-        .contact-icon {
-            font-size: 2.5rem;
-            color: var(--electric-cyan);
-            margin-bottom: 15px;
-        }
-
-        .contact-title {
-            font-size: 1.3rem;
-            color: var(--white);
-            margin: 15px 0;
-            font-weight: 700;
-        }
-
-        .contact-details {
-            color: var(--silver-gray);
-            font-size: 0.95rem;
-            line-height: 1.8;
-        }
-
-        .map-container {
-            width: 100%;
-            height: 400px;
-            border-radius: 15px;
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
-            margin-top: 50px;
-        }
-
-        .map-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* Footer */
-        .footer {
-            background: linear-gradient(135deg, var(--military-black) 0%, var(--midnight-blue) 100%);
-            border-top: 1px solid rgba(0, 212, 255, 0.2);
-            padding: 60px 0 20px;
-            margin-top: 100px;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-section h5 {
-            color: var(--electric-cyan);
-            margin-bottom: 20px;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-        }
-
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section li {
-            margin: 10px 0;
-        }
-
-        .footer-section a {
-            color: var(--silver-gray);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
-        }
-
-        .footer-section a:hover {
-            color: var(--electric-cyan);
-            padding-left: 10px;
-        }
-
-        .social-icons {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(0, 212, 255, 0.1);
-            border: 1px solid var(--glass-border);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--electric-cyan);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .social-icon:hover {
-            background: var(--electric-cyan);
-            color: var(--military-black);
-            transform: translateY(-5px);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(0, 212, 255, 0.2);
-            padding-top: 30px;
-            text-align: center;
-            color: var(--silver-gray);
-            font-size: 0.9rem;
-        }
-
-        /* Video Section */
-        .video-section {
-            padding: 100px 0;
-            background: linear-gradient(135deg, rgba(0, 26, 52, 0.5) 0%, rgba(16, 34, 60, 0.5) 100%);
-        }
-
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-top: 50px;
-        }
-
-        .video-card {
-            border-radius: 15px;
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .video-card:hover {
-            border-color: var(--electric-cyan);
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
-            transform: translateY(-10px);
-        }
-
-        .video-card iframe {
-            width: 100%;
-            height: 250px;
-            border: none;
-        }
-
-        /* Responsiveness */
-        @media (max-width: 768px) {
-            .hero-section {
-                flex-direction: column;
-                min-height: auto;
-                padding: 40px 0;
-            }
-
-            .hero-left, .hero-right {
-                padding: 20px;
-            }
-
-            .service-grid, .faculty-grid, .emergency-grid, .analytics-grid, .video-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .timeline::before {
-                display: none;
-            }
-
-            .timeline-item:nth-child(odd) .timeline-content,
-            .timeline-item:nth-child(even) .timeline-content {
-                margin: 0;
-                padding: 20px;
-                width: 100%;
-            }
-
-            .hero-stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .section-title {
-                font-size: 1.8rem;
-            }
-
-            .widget-1, .widget-2 {
-                display: none;
-            }
-
-            .navbar {
-                padding: 0.5rem 1rem;
-            }
-
-            .nav-link {
-                margin: 5px 0;
-            }
-
-            .digital-clock {
-                display: none;
-            }
-
-            .slider-nav {
-                position: relative;
-                bottom: auto;
-                right: auto;
-                margin-top: 20px;
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-title {
-                font-size: 1.8rem;
-            }
-
-            .hero-subtitle {
-                font-size: 1rem;
-            }
-
-            .section-title {
-                font-size: 1.5rem;
-            }
-
-            .service-card, .dashboard-card, .analytics-card {
-                padding: 20px 15px;
-            }
-
-            .form-container {
-                padding: 30px 20px;
-            }
-
-            .cta-button {
-                padding: 10px 20px;
-                font-size: 0.85rem;
-                margin-right: 0;
-                width: 100%;
-                margin-bottom: 10px;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>APS Smart Education – Digital Campus</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%231a3a5c'/><text x='50%' y='56%' dominant-baseline='middle' text-anchor='middle' font-size='36' font-family='serif' fill='%23f0a500'>A</text></svg>" />
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --navy:      #0f2340;
+      --navy-mid:  #1a3a5c;
+      --navy-lt:   #224d7a;
+      --gold:      #f0a500;
+      --gold-lt:   #f7c847;
+      --cream:     #fdf6ec;
+      --white:     #ffffff;
+      --gray-100:  #f4f6f9;
+      --gray-400:  #9aaabb;
+      --gray-600:  #5a7280;
+      --red-emg:   #e63946;
+      --green-ok:  #2ec4b6;
+      --shadow:    0 8px 40px rgba(15,35,64,.15);
+      --shadow-lg: 0 20px 60px rgba(15,35,64,.25);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--navy);
+      overflow-x: hidden;
+    }
+
+    h1,h2,h3,h4,h5 { font-family: 'Playfair Display', serif; }
+    .label, .stat-num, .nav-link, button, .badge-label { font-family: 'Space Grotesk', sans-serif; }
+
+    ::-webkit-scrollbar { width: 7px; }
+    ::-webkit-scrollbar-track { background: var(--navy); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+
+    /* ── NAVBAR ── */
+    .navbar-aps {
+      background: var(--navy);
+      border-bottom: 3px solid var(--gold);
+      padding: 0 2rem;
+      position: sticky; top: 0; z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0,0,0,.3);
+    }
+    .navbar-brand-aps {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; font-weight: 900;
+      color: var(--white) !important;
+      letter-spacing: .5px; display: flex; align-items: center; gap: .6rem;
+    }
+    .brand-badge {
+      background: var(--gold); color: var(--navy);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .65rem; font-weight: 700; letter-spacing: 1px;
+      padding: 2px 7px; border-radius: 4px; text-transform: uppercase;
+    }
+    .navbar-aps .nav-link {
+      color: rgba(255,255,255,.75) !important;
+      font-size: .88rem; font-weight: 500; padding: 1.2rem .9rem !important;
+      transition: color .25s, border-bottom .25s;
+      border-bottom: 3px solid transparent;
+    }
+    .navbar-aps .nav-link:hover,
+    .navbar-aps .nav-link.active {
+      color: var(--gold) !important;
+      border-bottom-color: var(--gold);
+    }
+    .clock-badge {
+      background: rgba(240,165,0,.15); border: 1px solid rgba(240,165,0,.3);
+      color: var(--gold); font-family: 'Space Grotesk', sans-serif;
+      font-size: .8rem; font-weight: 700; padding: 4px 12px; border-radius: 20px;
+    }
+    .btn-nav-cta {
+      background: var(--gold); color: var(--navy);
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: .82rem;
+      border: none; padding: 8px 20px; border-radius: 6px; cursor: pointer;
+      transition: background .2s, transform .2s;
+    }
+    .btn-nav-cta:hover { background: var(--gold-lt); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, #1e4976 100%);
+      min-height: 92vh; display: flex; align-items: center;
+      position: relative; overflow: hidden; padding: 5rem 0;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f0a500' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-eyebrow {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .82rem; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--gold);
+      display: flex; align-items: center; gap: .5rem; margin-bottom: 1.2rem;
+    }
+    .hero-eyebrow span { width: 30px; height: 2px; background: var(--gold); display: inline-block; }
+    .hero-title {
+      font-size: clamp(2.8rem, 6vw, 5rem); line-height: 1.1;
+      color: var(--white); margin-bottom: 1.4rem; font-weight: 900;
+    }
+    .hero-title em { color: var(--gold); font-style: normal; }
+    .hero-sub {
+      color: rgba(255,255,255,.65); font-size: 1.1rem; line-height: 1.7;
+      max-width: 520px; margin-bottom: 2.5rem;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary-aps {
+      background: var(--gold); color: var(--navy); border: none;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: .92rem;
+      padding: 14px 32px; border-radius: 8px; cursor: pointer;
+      transition: all .3s; display: inline-flex; align-items: center; gap: .5rem;
+    }
+    .btn-primary-aps:hover { background: var(--gold-lt); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(240,165,0,.35); }
+    .btn-outline-aps {
+      background: transparent; color: var(--white);
+      border: 2px solid rgba(255,255,255,.35);
+      font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: .92rem;
+      padding: 13px 30px; border-radius: 8px; cursor: pointer;
+      transition: all .3s; display: inline-flex; align-items: center; gap: .5rem;
+    }
+    .btn-outline-aps:hover { border-color: var(--gold); color: var(--gold); }
+    .btn-danger-aps {
+      background: var(--red-emg); color: var(--white); border: none;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: .88rem;
+      padding: 10px 22px; border-radius: 8px; cursor: pointer;
+      transition: all .25s; display: inline-flex; align-items: center; gap: .4rem;
+      animation: pulse-red 2s infinite;
+    }
+    @keyframes pulse-red {
+      0%,100% { box-shadow: 0 0 0 0 rgba(230,57,70,.4); }
+      50% { box-shadow: 0 0 0 8px rgba(230,57,70,0); }
+    }
+
+    /* Hero Stats Strip */
+    .hero-stats {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 1px; background: rgba(255,255,255,.1);
+      border-radius: 12px; overflow: hidden; margin-top: 3rem;
+    }
+    .hero-stat {
+      background: rgba(255,255,255,.06); padding: 1.4rem 1rem; text-align: center;
+      transition: background .25s;
+    }
+    .hero-stat:hover { background: rgba(240,165,0,.12); }
+    .hero-stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); font-weight: 900; }
+    .hero-stat-label { font-size: .78rem; color: rgba(255,255,255,.55); margin-top: .3rem; font-family: 'Space Grotesk', sans-serif; letter-spacing: 1px; text-transform: uppercase; }
+
+    /* Hero Image */
+    .hero-img-wrap {
+      position: relative; border-radius: 16px; overflow: hidden;
+      box-shadow: var(--shadow-lg); border: 3px solid rgba(240,165,0,.3);
+    }
+    .hero-img-wrap img { width: 100%; height: 420px; object-fit: cover; display: block; }
+    .hero-badge {
+      position: absolute; background: var(--navy); border: 2px solid var(--gold);
+      border-radius: 10px; padding: .8rem 1.2rem; font-family: 'Space Grotesk', sans-serif;
+      font-size: .82rem; color: var(--white); font-weight: 600;
+    }
+    .hero-badge-1 { top: 20px; right: 20px; }
+    .hero-badge-2 { bottom: 20px; left: 20px; }
+    .hero-badge .badge-val { color: var(--gold); font-size: 1.2rem; font-weight: 800; display: block; }
+
+    /* ── SECTION COMMON ── */
+    .section-pad { padding: 5rem 0; }
+    .section-pad-alt { padding: 5rem 0; background: var(--navy); }
+    .section-pad-gray { padding: 5rem 0; background: var(--gray-100); }
+
+    .sec-label {
+      font-family: 'Space Grotesk', sans-serif; font-size: .78rem;
+      font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: .5rem;
+    }
+    .sec-title { font-size: clamp(1.8rem, 4vw, 2.8rem); color: var(--navy); line-height: 1.2; }
+    .sec-title-white { color: var(--white); }
+    .sec-rule { width: 50px; height: 3px; background: var(--gold); margin: 1rem 0 1.5rem; }
+    .sec-sub { color: var(--gray-600); font-size: 1rem; max-width: 600px; line-height: 1.7; }
+    .sec-sub-white { color: rgba(255,255,255,.6); }
+
+    /* ── ANNOUNCEMENT TICKER ── */
+    .ticker-wrap {
+      background: var(--gold); color: var(--navy); overflow: hidden;
+      white-space: nowrap; padding: .5rem 0;
+    }
+    .ticker-inner {
+      display: inline-block; animation: ticker-scroll 35s linear infinite;
+      font-family: 'Space Grotesk', sans-serif; font-size: .85rem; font-weight: 600;
+    }
+    @keyframes ticker-scroll { from { transform: translateX(100vw); } to { transform: translateX(-100%); } }
+    .ticker-label {
+      background: var(--navy); color: var(--gold);
+      padding: .5rem 1rem; font-weight: 700; font-size: .82rem;
+      font-family: 'Space Grotesk', sans-serif; letter-spacing: 1px;
+    }
+
+    /* ── SLIDER ── */
+    .slider-section { background: var(--navy); padding: 5rem 0; }
+    .slider-wrap { position: relative; }
+    .slide-item { display: none; }
+    .slide-item.active { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+    .slide-img { border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-lg); }
+    .slide-img img { width: 100%; height: 320px; object-fit: cover; }
+    .slide-eyebrow { color: var(--gold); font-family: 'Space Grotesk', sans-serif; font-size: .8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: .8rem; }
+    .slide-title { font-size: 2.2rem; color: var(--white); line-height: 1.2; margin-bottom: 1rem; }
+    .slide-desc { color: rgba(255,255,255,.6); line-height: 1.7; margin-bottom: 1.5rem; }
+    .slider-controls { display: flex; gap: 1rem; align-items: center; margin-top: 2.5rem; }
+    .ctrl-btn {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(240,165,0,.15); border: 2px solid var(--gold);
+      color: var(--gold); font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .25s;
+    }
+    .ctrl-btn:hover { background: var(--gold); color: var(--navy); }
+    .slide-dots { display: flex; gap: 8px; }
+    .sdot { width: 8px; height: 8px; border-radius: 50%; background: rgba(240,165,0,.3); cursor: pointer; transition: all .3s; }
+    .sdot.active { background: var(--gold); width: 24px; border-radius: 4px; }
+
+    /* ── SERVICES ── */
+    .srv-card {
+      background: var(--white); border-radius: 14px; padding: 2rem 1.6rem;
+      border: 1px solid rgba(15,35,64,.08); transition: all .3s;
+      box-shadow: 0 2px 12px rgba(15,35,64,.06); height: 100%;
+    }
+    .srv-card:hover { transform: translateY(-8px); box-shadow: var(--shadow); border-color: var(--gold); }
+    .srv-icon {
+      width: 60px; height: 60px; border-radius: 12px;
+      background: rgba(240,165,0,.12); display: flex; align-items: center;
+      justify-content: center; font-size: 1.5rem; color: var(--gold); margin-bottom: 1.2rem;
+      transition: background .3s;
+    }
+    .srv-card:hover .srv-icon { background: var(--gold); color: var(--white); }
+    .srv-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: .7rem; color: var(--navy); }
+    .srv-desc { color: var(--gray-600); font-size: .9rem; line-height: 1.6; margin-bottom: 1rem; }
+    .srv-list { list-style: none; font-size: .85rem; color: var(--gray-600); }
+    .srv-list li { padding: .3rem 0; display: flex; gap: .4rem; align-items: center; }
+    .srv-list li::before { content: '▸'; color: var(--gold); flex-shrink: 0; }
+
+    /* ── ADMISSION FORM ── */
+    .form-card {
+      background: var(--white); border-radius: 16px; padding: 3rem 2.5rem;
+      box-shadow: var(--shadow);
+    }
+    .form-group-aps { margin-bottom: 1.5rem; }
+    .lbl {
+      font-family: 'Space Grotesk', sans-serif; font-size: .82rem; font-weight: 600;
+      color: var(--navy-mid); margin-bottom: .4rem; display: block; letter-spacing: .5px;
+    }
+    .inp {
+      width: 100%; padding: 11px 16px; border-radius: 8px;
+      border: 1.5px solid rgba(15,35,64,.15);
+      font-family: 'DM Sans', sans-serif; font-size: .92rem; color: var(--navy);
+      background: var(--cream); transition: border-color .25s, box-shadow .25s;
+      outline: none;
+    }
+    .inp:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(240,165,0,.15); }
+    select.inp { appearance: none; cursor: pointer; }
+    .btn-submit {
+      width: 100%; padding: 14px; border-radius: 10px; border: none;
+      background: var(--navy); color: var(--white); cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: .95rem;
+      transition: all .3s; display: flex; align-items: center; justify-content: center; gap: .5rem;
+    }
+    .btn-submit:hover { background: var(--navy-mid); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(15,35,64,.3); }
+
+    /* ── DASHBOARD ── */
+    .dash-card {
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px; padding: 1.8rem 1.5rem; text-align: center;
+      transition: all .3s;
+    }
+    .dash-card:hover { background: rgba(240,165,0,.1); border-color: rgba(240,165,0,.4); transform: translateY(-6px); }
+    .dash-icon { font-size: 2rem; color: var(--gold); margin-bottom: .8rem; }
+    .dash-val { font-family: 'Playfair Display', serif; font-size: 2.4rem; color: var(--white); margin: .5rem 0; }
+    .dash-lbl { font-family: 'Space Grotesk', sans-serif; font-size: .78rem; color: rgba(255,255,255,.5); letter-spacing: 1px; text-transform: uppercase; }
+    .prog-track { height: 4px; background: rgba(255,255,255,.1); border-radius: 2px; margin-top: 1rem; overflow: hidden; }
+    .prog-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-lt)); border-radius: 2px; transition: width 1.5s ease; }
+
+    /* ── EMERGENCY ── */
+    .emg-card {
+      background: rgba(230,57,70,.06); border: 2px solid rgba(230,57,70,.25);
+      border-radius: 14px; padding: 2rem 1.5rem; text-align: center;
+      transition: all .3s;
+    }
+    .emg-card:hover { border-color: var(--red-emg); background: rgba(230,57,70,.12); transform: translateY(-5px); }
+    .emg-icon { font-size: 2.4rem; color: var(--red-emg); margin-bottom: .8rem; }
+    .emg-title { color: var(--red-emg); font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; margin-bottom: .5rem; }
+    .emg-desc { color: rgba(255,255,255,.5); font-size: .85rem; margin-bottom: 1rem; }
+    .emg-num {
+      background: rgba(230,57,70,.15); border: 1px solid rgba(230,57,70,.3);
+      color: var(--red-emg); font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700; font-size: 1rem; padding: 8px 16px; border-radius: 20px;
+      display: inline-flex; gap: .4rem; align-items: center;
+    }
+
+    /* ── FACULTY ── */
+    .fac-card {
+      background: var(--white); border-radius: 14px; overflow: hidden;
+      box-shadow: 0 2px 12px rgba(15,35,64,.07); transition: all .3s;
+      border: 1px solid rgba(15,35,64,.06);
+    }
+    .fac-card:hover { transform: translateY(-8px); box-shadow: var(--shadow); border-color: var(--gold); }
+    .fac-img { width: 100%; height: 240px; object-fit: cover; display: block; }
+    .fac-img-placeholder {
+      width: 100%; height: 240px; display: flex; align-items: center; justify-content: center;
+      font-size: 4rem; background: linear-gradient(135deg, var(--navy), var(--navy-lt));
+    }
+    .fac-body { padding: 1.5rem; }
+    .fac-name { font-size: 1.15rem; color: var(--navy); margin-bottom: .3rem; }
+    .fac-pos { font-family: 'Space Grotesk', sans-serif; font-size: .82rem; color: var(--gold); font-weight: 600; margin-bottom: 1rem; }
+    .fac-meta { font-size: .85rem; color: var(--gray-600); margin: .3rem 0; display: flex; gap: .4rem; align-items: center; }
+    .fac-meta i { color: var(--navy-mid); width: 14px; }
+
+    /* ── ANALYTICS ── */
+    .ana-card {
+      background: var(--white); border-radius: 14px; padding: 2rem 1.5rem;
+      text-align: center; box-shadow: 0 2px 12px rgba(15,35,64,.06);
+      border: 1px solid rgba(15,35,64,.07); transition: all .3s;
+    }
+    .ana-card:hover { border-color: var(--gold); box-shadow: var(--shadow); transform: translateY(-5px); }
+    .ana-val { font-family: 'Playfair Display', serif; font-size: 2.6rem; color: var(--navy); margin: .6rem 0; }
+    .ana-card:hover .ana-val { color: var(--gold); }
+    .ana-lbl { font-family: 'Space Grotesk', sans-serif; font-size: .8rem; color: var(--gray-600); letter-spacing: 1px; text-transform: uppercase; }
+    .ana-icon { font-size: 1.8rem; color: var(--gold); margin-bottom: .5rem; }
+
+    /* ── TIMELINE ── */
+    .tl { position: relative; padding: 2rem 0; }
+    .tl::before {
+      content: ''; position: absolute; left: 50%; transform: translateX(-50%);
+      top: 0; bottom: 0; width: 2px;
+      background: linear-gradient(180deg, var(--gold) 0%, rgba(240,165,0,.1) 100%);
+    }
+    .tl-item { display: flex; margin-bottom: 3rem; position: relative; }
+    .tl-item:nth-child(odd) { justify-content: flex-end; padding-right: calc(50% + 30px); }
+    .tl-item:nth-child(even) { justify-content: flex-start; padding-left: calc(50% + 30px); }
+    .tl-dot {
+      position: absolute; left: 50%; top: 22px; transform: translateX(-50%);
+      width: 18px; height: 18px; background: var(--gold);
+      border: 3px solid var(--cream); border-radius: 50%; z-index: 2;
+      box-shadow: 0 0 0 4px rgba(240,165,0,.2);
+    }
+    .tl-card {
+      background: var(--white); border-radius: 12px; padding: 1.4rem 1.6rem;
+      box-shadow: 0 2px 12px rgba(15,35,64,.07); border: 1px solid rgba(15,35,64,.06);
+      transition: border-color .3s, box-shadow .3s; max-width: 360px; width: 100%;
+    }
+    .tl-card:hover { border-color: var(--gold); box-shadow: var(--shadow); }
+    .tl-num { font-family: 'Space Grotesk', sans-serif; font-size: .75rem; color: var(--gold); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: .4rem; }
+    .tl-title { font-size: 1.05rem; color: var(--navy); margin-bottom: .4rem; }
+    .tl-desc { font-size: .88rem; color: var(--gray-600); line-height: 1.6; }
+
+    /* ── FAQ ── */
+    .faq-item { border-bottom: 1px solid rgba(255,255,255,.08); }
+    .faq-q {
+      width: 100%; background: none; border: none; padding: 1.4rem 0;
+      text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1rem;
+      color: rgba(255,255,255,.85); gap: 1rem; transition: color .25s;
+    }
+    .faq-q:hover { color: var(--gold); }
+    .faq-q .faq-icon { color: var(--gold); font-size: .9rem; transition: transform .3s; flex-shrink: 0; }
+    .faq-q.open .faq-icon { transform: rotate(45deg); }
+    .faq-a {
+      max-height: 0; overflow: hidden; transition: max-height .4s ease, padding .3s;
+      color: rgba(255,255,255,.55); font-size: .92rem; line-height: 1.7;
+    }
+    .faq-a.open { max-height: 300px; padding-bottom: 1.2rem; }
+
+    /* ── GALLERY ── */
+    .gallery-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;
+    }
+    .gallery-item { border-radius: 10px; overflow: hidden; aspect-ratio: 4/3; cursor: pointer; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s, filter .4s; }
+    .gallery-item:hover img { transform: scale(1.07); filter: brightness(1.1); }
+
+    /* ── CONTACT ── */
+    .contact-card {
+      background: var(--white); border-radius: 14px; padding: 2rem;
+      box-shadow: 0 2px 12px rgba(15,35,64,.06); border: 1px solid rgba(15,35,64,.06);
+      height: 100%;
+    }
+    .contact-icon { width: 52px; height: 52px; background: rgba(240,165,0,.12); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--gold); margin-bottom: 1rem; }
+    .contact-title { font-size: 1.1rem; color: var(--navy); margin-bottom: .6rem; }
+    .contact-text { font-size: .9rem; color: var(--gray-600); line-height: 1.8; }
+    .contact-text strong { color: var(--navy); }
+    .map-wrap { border-radius: 14px; overflow: hidden; border: 2px solid rgba(240,165,0,.2); margin-top: 2.5rem; }
+    .map-wrap iframe { width: 100%; height: 380px; border: none; display: block; }
+
+    /* ── FOOTER ── */
+    .footer { background: var(--navy); padding: 4rem 0 1.5rem; border-top: 3px solid rgba(240,165,0,.3); }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--white); margin-bottom: .5rem; }
+    .footer-logo em { color: var(--gold); font-style: normal; }
+    .footer-tagline { color: rgba(255,255,255,.45); font-size: .88rem; margin-bottom: 1.2rem; line-height: 1.6; }
+    .footer-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: .82rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; }
+    .footer-links { list-style: none; }
+    .footer-links li { margin: .5rem 0; }
+    .footer-links a { color: rgba(255,255,255,.5); text-decoration: none; font-size: .9rem; transition: color .25s, padding-left .25s; }
+    .footer-links a:hover { color: var(--gold); padding-left: 5px; }
+    .social-row { display: flex; gap: .7rem; margin-top: 1rem; }
+    .soc-btn {
+      width: 38px; height: 38px; border-radius: 8px;
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,.6); font-size: .9rem; cursor: pointer;
+      transition: all .25s; text-decoration: none;
+    }
+    .soc-btn:hover { background: var(--gold); color: var(--navy); border-color: var(--gold); transform: translateY(-3px); }
+    .newsletter-row { display: flex; gap: .5rem; margin-top: .8rem; }
+    .newsletter-inp {
+      flex: 1; padding: 10px 14px; border-radius: 8px;
+      border: 1.5px solid rgba(255,255,255,.1); background: rgba(255,255,255,.06);
+      color: var(--white); font-family: 'DM Sans', sans-serif; font-size: .88rem; outline: none;
+    }
+    .newsletter-inp::placeholder { color: rgba(255,255,255,.3); }
+    .newsletter-inp:focus { border-color: var(--gold); }
+    .newsletter-btn {
+      background: var(--gold); color: var(--navy); border: none;
+      padding: 10px 16px; border-radius: 8px; cursor: pointer; font-size: .9rem;
+      transition: background .2s;
+    }
+    .newsletter-btn:hover { background: var(--gold-lt); }
+    .footer-divider { border-color: rgba(255,255,255,.08); margin: 2rem 0 1.2rem; }
+    .footer-bottom { color: rgba(255,255,255,.35); font-size: .83rem; text-align: center; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 991px) {
+      .slide-item.active { grid-template-columns: 1fr; }
+      .slide-img { display: none; }
+      .tl::before { left: 24px; }
+      .tl-item:nth-child(odd),
+      .tl-item:nth-child(even) { padding-left: 60px; padding-right: 0; justify-content: flex-start; }
+      .tl-dot { left: 24px; }
+      .tl-card { max-width: 100%; }
+    }
+    @media (max-width: 767px) {
+      .hero { padding: 3rem 0; min-height: auto; }
+      .hero-stats { grid-template-columns: repeat(2,1fr); }
+      .hero-btns { flex-direction: column; }
+      .hero-btns button { width: 100%; justify-content: center; }
+      .hero-img-wrap { margin-top: 2.5rem; }
+      .hero-img-wrap img { height: 240px; }
+      .section-pad, .section-pad-alt, .section-pad-gray { padding: 3rem 0; }
+    }
+    @media (max-width: 480px) {
+      .hero-stat-num { font-size: 1.5rem; }
+      .dash-val { font-size: 1.8rem; }
+      .form-card { padding: 2rem 1.2rem; }
+    }
+
+    /* ── TOAST ── */
+    .toast-aps {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
+      background: var(--navy); color: var(--white);
+      padding: 1rem 1.5rem; border-radius: 10px; border-left: 4px solid var(--gold);
+      box-shadow: var(--shadow); font-family: 'Space Grotesk', sans-serif; font-size: .9rem;
+      display: none; max-width: 340px; line-height: 1.5;
+    }
+    .toast-aps.show { display: block; animation: toastIn .3s ease; }
+    @keyframes toastIn { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+  </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-futuristic">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#home">
-                <i class="fas fa-school"></i> APS SMART
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon" style="filter: invert(1); opacity: 0.7;"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#home">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#admission">Admissions</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#services">Student Portal</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#dashboard">Smart Classes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#faculty">Faculty</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#analytics">Exams</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contact</a>
-                    </li>
-                </ul>
-                <div class="d-flex align-items-center ms-3">
-                    <div class="digital-clock" id="digitalClock">00:00:00</div>
-                    <input type="text" class="search-futuristic ms-2" placeholder="Search...">
-                    <i class="fas fa-bell" style="color: var(--electric-cyan); font-size: 1.2rem; margin-left: 20px; cursor: pointer;"></i>
-                    <label class="toggle-switch ms-3">
-                        <input type="checkbox" id="darkModeToggle">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-            </div>
+
+<!-- ══ ANNOUNCEMENT TICKER ══ -->
+<div style="display:flex; align-items:center;">
+  <div class="ticker-label"><i class="fas fa-bullhorn"></i> NEWS</div>
+  <div class="ticker-wrap" style="flex:1;">
+    <span class="ticker-inner">
+      &nbsp;&nbsp;&nbsp; 📢 APS Bahawalpur – Admissions Open 2026-27 &nbsp;|&nbsp; 🏆 APS tops Board Exams with 98% pass rate &nbsp;|&nbsp; 📅 Annual Sports Day on June 15 – All students to participate &nbsp;|&nbsp; 💻 New Computer Lab inaugurated – 60 latest machines available &nbsp;|&nbsp; 🎓 Scholarship applications for deserving students now open &nbsp;&nbsp;&nbsp;
+    </span>
+  </div>
+</div>
+
+<!-- ══ NAVBAR ══ -->
+<nav class="navbar navbar-expand-lg navbar-aps">
+  <div class="container-fluid px-3">
+    <a href="#home" class="navbar-brand-aps text-decoration-none">
+      <i class="fas fa-graduation-cap" style="color:var(--gold)"></i>
+      APS Smart <span class="brand-badge">Bahawalpur</span>
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMain"
+      style="color:rgba(255,255,255,.7); font-size:1.2rem;">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="#admission">Admissions</a></li>
+        <li class="nav-item"><a class="nav-link" href="#dashboard">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="#faculty">Faculty</a></li>
+        <li class="nav-item"><a class="nav-link" href="#analytics">Exams</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+      <div class="d-flex align-items-center gap-3 ms-3 flex-wrap">
+        <span class="clock-badge" id="clock">00:00:00</span>
+        <button class="btn-nav-cta" onclick="document.getElementById('admission').scrollIntoView({behavior:'smooth'})">
+          Apply Now
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="home">
+  <div class="container-fluid px-4 px-md-5">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <div class="hero-eyebrow"><span></span> Army Public School &amp; College</div>
+        <h1 class="hero-title">
+          Next-Gen <em>Smart</em><br>Digital Campus
+        </h1>
+        <p class="hero-sub">
+          APS Bahawalpur delivers world-class education powered by cutting-edge technology, AI-driven analytics, and a commitment to excellence that has shaped Pakistan's future for over 25 years.
+        </p>
+        <div class="hero-btns">
+          <button class="btn-primary-aps" onclick="document.getElementById('admission').scrollIntoView({behavior:'smooth'})">
+            <i class="fas fa-arrow-right"></i> Start Admission
+          </button>
+          <button class="btn-outline-aps" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">
+            <i class="fas fa-play-circle"></i> Explore Portal
+          </button>
+          <button class="btn-danger-aps">
+            <i class="fas fa-phone-alt"></i> Emergency: 112
+          </button>
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero-section" id="home">
-        <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col-lg-6 hero-left">
-                    <h1 class="hero-title">
-                        APS SMART <br>EDUCATION
-                    </h1>
-                    <p class="hero-subtitle">
-                        Next-Generation Digital Campus Management System
-                    </p>
-                    <div class="hero-stats">
-                        <div class="stat-card">
-                            <div class="stat-number" id="studentCount">2500+</div>
-                            <div class="stat-label">Students</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number" id="classCount">95+</div>
-                            <div class="stat-label">Classes</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number" id="facultyCount">150+</div>
-                            <div class="stat-label">Faculty</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number">25+</div>
-                            <div class="stat-label">Years</div>
-                        </div>
-                    </div>
-                    <div style="margin-top: 40px;">
-                        <button class="cta-button cta-primary">
-                            <i class="fas fa-arrow-right"></i> Start Admission
-                        </button>
-                        <button class="cta-button cta-secondary">
-                            <i class="fas fa-play"></i> Watch Demo
-                        </button>
-                        <button class="cta-button cta-emergency">
-                            <i class="fas fa-phone"></i> Emergency: 112
-                        </button>
-                    </div>
-                </div>
-                <div class="col-lg-6 hero-right">
-                    <div class="hero-image">
-                        <img src="https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=600&h=400&fit=crop" alt="Smart Classroom">
-                    </div>
-                    <div class="floating-widget widget-1">
-                        <div style="color: var(--electric-cyan); font-size: 0.9rem; font-weight: 700;">
-                            <i class="fas fa-chart-line"></i> Student Performance
-                        </div>
-                        <div style="color: var(--silver-gray); font-size: 0.8rem; margin-top: 10px;">
-                            Avg: 87.5%
-                        </div>
-                    </div>
-                    <div class="floating-widget widget-2">
-                        <div style="color: var(--electric-cyan); font-size: 0.9rem; font-weight: 700;">
-                            <i class="fas fa-users"></i> Online Now
-                        </div>
-                        <div style="color: var(--silver-gray); font-size: 0.8rem; margin-top: 10px;">
-                            342 Active
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="hero-stat-num" id="sc">2500+</div><div class="hero-stat-label">Students</div></div>
+          <div class="hero-stat"><div class="hero-stat-num">95+</div><div class="hero-stat-label">Classes</div></div>
+          <div class="hero-stat"><div class="hero-stat-num">150+</div><div class="hero-stat-label">Faculty</div></div>
+          <div class="hero-stat"><div class="hero-stat-num">25+</div><div class="hero-stat-label">Years</div></div>
         </div>
-    </section>
-
-    <!-- Slider Section -->
-    <section class="slider-section">
-        <div class="container">
-            <h2 class="section-title" style="margin-bottom: 40px;">Featured Systems</h2>
-            <div class="slider-container">
-                <div class="slide active">
-                    <h3 class="slide-title">APS Campus System</h3>
-                    <p class="slide-description">
-                        Experience our comprehensive digital campus management system with real-time monitoring, integrated security, and advanced student analytics. Our AI-powered platform manages admissions, attendance, academics, and campus operations seamlessly.
-                    </p>
-                    <button class="cta-button cta-primary">Explore Campus <i class="fas fa-arrow-right ms-2"></i></button>
-                </div>
-
-                <div class="slide">
-                    <h3 class="slide-title">Smart Classrooms</h3>
-                    <p class="slide-description">
-                        Interactive smart boards with AI-powered classroom management. Real-time attendance tracking, live lecture streaming, collaborative learning tools, and automated performance analytics for enhanced education delivery.
-                    </p>
-                    <button class="cta-button cta-primary">View Features <i class="fas fa-arrow-right ms-2"></i></button>
-                </div>
-
-                <div class="slide">
-                    <h3 class="slide-title">AI Education Analytics</h3>
-                    <p class="slide-description">
-                        Advanced data-driven insights into student performance, learning patterns, and academic progress. Predictive analytics help identify at-risk students and personalized recommendations for improvement.
-                    </p>
-                    <button class="cta-button cta-primary">View Analytics <i class="fas fa-arrow-right ms-2"></i></button>
-                </div>
-
-                <div class="slide">
-                    <h3 class="slide-title">Digital Examination System</h3>
-                    <p class="slide-description">
-                        Secure online examination platform with automated grading, plagiarism detection, and comprehensive result management. Support for multiple question types and real-time performance tracking.
-                    </p>
-                    <button class="cta-button cta-primary">Start Exam <i class="fas fa-arrow-right ms-2"></i></button>
-                </div>
-
-                <div class="slide">
-                    <h3 class="slide-title">Campus Security System</h3>
-                    <p class="slide-description">
-                        AI-powered surveillance, smart entry gates, visitor monitoring, and emergency alert system. Integrated access control ensuring campus safety with real-time incident management.
-                    </p>
-                    <button class="cta-button cta-primary">Security Features <i class="fas fa-arrow-right ms-2"></i></button>
-                </div>
-
-                <div class="slide-dots" id="slideDots"></div>
-                <div class="slider-nav">
-                    <button class="slider-btn" onclick="changeSlide(-1)">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
-                    <button class="slider-btn" onclick="changeSlide(1)">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="hero-img-wrap">
+          <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=700&h=420&fit=crop&q=80" alt="APS Smart Classroom" />
+          <div class="hero-badge hero-badge-1">
+            <span class="badge-val">94%</span> Attendance Rate
+          </div>
+          <div class="hero-badge hero-badge-2">
+            <i class="fas fa-circle" style="color:#2ec4b6; font-size:.7rem; margin-right:5px;"></i>
+            <span>342 Students Online Now</span>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Services Section -->
-    <section class="services-section" id="services">
-        <div class="container">
-            <h2 class="section-title">Smart APS Services</h2>
-            <div class="service-grid">
-                <div class="service-card">
-                    <i class="fas fa-file-medical service-icon"></i>
-                    <h3 class="service-title">Digital Admission</h3>
-                    <p class="service-description">
-                        Streamlined online admission process with instant verification and document submission.
-                    </p>
-                    <ul class="service-features">
-                        <li>Online Forms</li>
-                        <li>Student Registration</li>
-                        <li>Digital Verification</li>
-                        <li>Fee Management</li>
-                    </ul>
-                </div>
+<!-- ══ FEATURED SLIDER ══ -->
+<section class="slider-section">
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col">
+        <div class="sec-label">Featured Systems</div>
+        <h2 class="sec-title sec-title-white">APS Digital Platforms</h2>
+        <div class="sec-rule"></div>
+      </div>
+    </div>
+    <div class="slider-wrap" id="sliderWrap">
 
-                <div class="service-card">
-                    <i class="fas fa-laptop service-icon"></i>
-                    <h3 class="service-title">Smart Classrooms</h3>
-                    <p class="service-description">
-                        AI-enabled learning environment with interactive boards and real-time engagement tools.
-                    </p>
-                    <ul class="service-features">
-                        <li>Smart Boards</li>
-                        <li>Live Streaming</li>
-                        <li>Attendance Tracking</li>
-                        <li>Performance Monitoring</li>
-                    </ul>
-                </div>
-
-                <div class="service-card">
-                    <i class="fas fa-chart-pie service-icon"></i>
-                    <h3 class="service-title">Student Analytics</h3>
-                    <p class="service-description">
-                        Comprehensive data analytics for tracking student performance and academic progress.
-                    </p>
-                    <ul class="service-features">
-                        <li>Performance Tracking</li>
-                        <li>Result Analysis</li>
-                        <li>Progress Reports</li>
-                        <li>Parent Portal</li>
-                    </ul>
-                </div>
-
-                <div class="service-card">
-                    <i class="fas fa-camera service-icon"></i>
-                    <h3 class="service-title">Campus Security</h3>
-                    <p class="service-description">
-                        Advanced AI surveillance and smart entry gates for enhanced campus safety.
-                    </p>
-                    <ul class="service-features">
-                        <li>AI Surveillance</li>
-                        <li>Smart Entry Gates</li>
-                        <li>Visitor Monitoring</li>
-                        <li>Emergency Alerts</li>
-                    </ul>
-                </div>
-
-                <div class="service-card">
-                    <i class="fas fa-clipboard-check service-icon"></i>
-                    <h3 class="service-title">Examination System</h3>
-                    <p class="service-description">
-                        Secure online examination platform with automated grading and result management.
-                    </p>
-                    <ul class="service-features">
-                        <li>Online Exams</li>
-                        <li>AI Grading</li>
-                        <li>Result Portal</li>
-                        <li>Scheduling Tools</li>
-                    </ul>
-                </div>
-
-                <div class="service-card">
-                    <i class="fas fa-book service-icon"></i>
-                    <h3 class="service-title">Digital Library</h3>
-                    <p class="service-description">
-                        Extensive collection of e-books, research materials, and smart study resources.
-                    </p>
-                    <ul class="service-features">
-                        <li>E-Books</li>
-                        <li>Research Portal</li>
-                        <li>Study Rooms</li>
-                        <li>Resource Management</li>
-                    </ul>
-                </div>
-            </div>
+      <div class="slide-item active">
+        <div class="slide-text">
+          <div class="slide-eyebrow">01 / Campus Management</div>
+          <h3 class="slide-title">APS Integrated Campus System</h3>
+          <p class="slide-desc">Manage admissions, attendance, academics, finance, and campus security from a single unified platform. Real-time dashboards give principals and parents complete visibility into every aspect of school operations.</p>
+          <button class="btn-primary-aps">Explore Campus <i class="fas fa-arrow-right ms-2"></i></button>
         </div>
-    </section>
-
-    <!-- Admission Form Section -->
-    <section class="admission-section" id="admission">
-        <div class="container">
-            <h2 class="section-title">Smart Admission System</h2>
-            <div class="form-container">
-                <form id="admissionForm">
-                    <div class="form-group">
-                        <label class="form-label"><i class="fas fa-user"></i> Student Name</label>
-                        <input type="text" class="form-control" placeholder="Enter full name" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label"><i class="fas fa-user-tie"></i> Father Name</label>
-                        <input type="text" class="form-control" placeholder="Enter father's name" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label"><i class="fas fa-id-card"></i> CNIC / B-Form</label>
-                        <input type="text" class="form-control" placeholder="Enter CNIC or B-Form number" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label"><i class="fas fa-phone"></i> Phone Number</label>
-                        <input type="tel" class="form-control" placeholder="+92 3XX XXXXXXX" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label"><i class="fas fa-envelope"></i> Email Address</label>
-                        <input type="email" class="form-control" placeholder="Enter email" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label"><i class="fas fa-graduation-cap"></i> Select Class</label>
-                        <select class="form-select" required>
-                            <option value="">-- Select Class --</option>
-                            <option value="nursery">Nursery</option>
-                            <option value="kg1">KG 1</option>
-                            <option value="kg2">KG 2</option>
-                            <option value="class1">Class 1</option>
-                            <option value="class2">Class 2</option>
-                            <option value="class3">Class 3</option>
-                            <option value="class4">Class 4</option>
-                            <option value="class5">Class 5</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label"><i class="fas fa-map-marker-alt"></i> Select Campus</label>
-                        <select class="form-select" required>
-                            <option value="">-- Select Campus --</option>
-                            <option value="rawalpindi">Rawalpindi</option>
-                            <option value="islamabad">Islamabad</option>
-                            <option value="peshawar">Peshawar</option>
-                            <option value="lahore">Lahore</option>
-                            <option value="karachi">Karachi</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label"><i class="fas fa-file"></i> Upload Documents</label>
-                        <input type="file" class="form-control" required>
-                    </div>
-
-                    <button type="submit" class="cta-button cta-primary" style="width: 100%;">
-                        <i class="fas fa-paper-plane"></i> Submit Application
-                    </button>
-                </form>
-            </div>
+        <div class="slide-img">
+          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=320&fit=crop&q=80" alt="Campus" />
         </div>
-    </section>
+      </div>
 
-    <!-- Dashboard Section -->
-    <section class="dashboard-section" id="dashboard">
-        <div class="container">
-            <h2 class="section-title">Live School Dashboard</h2>
-            <div class="dashboard-grid">
-                <div class="dashboard-card">
-                    <i class="fas fa-users-class dashboard-icon"></i>
-                    <div class="dashboard-value" id="attendanceValue">94%</div>
-                    <div class="dashboard-label">Attendance Rate</div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar-fill" style="width: 94%; animation-delay: 0s;"></div>
-                    </div>
-                </div>
-
-                <div class="dashboard-card">
-                    <i class="fas fa-book-open dashboard-icon"></i>
-                    <div class="dashboard-value" id="classesValue">45</div>
-                    <div class="dashboard-label">Active Classes</div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar-fill" style="width: 100%; animation-delay: 0.2s;"></div>
-                    </div>
-                </div>
-
-                <div class="dashboard-card">
-                    <i class="fas fa-chalkboard-user dashboard-icon"></i>
-                    <div class="dashboard-value" id="facultyValue">150</div>
-                    <div class="dashboard-label">Faculty Members</div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar-fill" style="width: 88%; animation-delay: 0.4s;"></div>
-                    </div>
-                </div>
-
-                <div class="dashboard-card">
-                    <i class="fas fa-trophy dashboard-icon"></i>
-                    <div class="dashboard-value" id="resultsValue">98%</div>
-                    <div class="dashboard-label">Pass Rate</div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar-fill" style="width: 98%; animation-delay: 0.6s;"></div>
-                    </div>
-                </div>
-
-                <div class="dashboard-card">
-                    <i class="fas fa-wifi dashboard-icon"></i>
-                    <div class="dashboard-value" id="wifiValue">99%</div>
-                    <div class="dashboard-label">Network Status</div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar-fill" style="width: 99%; animation-delay: 0.8s;"></div>
-                    </div>
-                </div>
-
-                <div class="dashboard-card">
-                    <i class="fas fa-calendar-check dashboard-icon"></i>
-                    <div class="dashboard-value" id="eventsValue">12</div>
-                    <div class="dashboard-label">Upcoming Events</div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar-fill" style="width: 75%; animation-delay: 1s;"></div>
-                    </div>
-                </div>
-            </div>
+      <div class="slide-item">
+        <div class="slide-text">
+          <div class="slide-eyebrow">02 / Smart Learning</div>
+          <h3 class="slide-title">AI-Powered Smart Classrooms</h3>
+          <p class="slide-desc">Interactive smart boards, live lecture streaming, collaborative tools, and automated performance analytics. Attendance tracked automatically via facial recognition—teachers focus on teaching, not admin.</p>
+          <button class="btn-primary-aps">View Features <i class="fas fa-arrow-right ms-2"></i></button>
         </div>
-    </section>
-
-    <!-- Emergency Section -->
-    <section class="emergency-section">
-        <div class="container">
-            <h2 class="section-title">Emergency Response System</h2>
-            <div class="emergency-grid">
-                <div class="emergency-card">
-                    <i class="fas fa-first-aid emergency-icon"></i>
-                    <h3 class="emergency-title">Medical Emergency</h3>
-                    <p style="color: var(--silver-gray); margin: 15px 0;">Immediate medical assistance</p>
-                    <div class="emergency-contact">
-                        <i class="fas fa-phone"></i> 115 / 112
-                    </div>
-                </div>
-
-                <div class="emergency-card">
-                    <i class="fas fa-shield-halved emergency-icon"></i>
-                    <h3 class="emergency-title">Security Threat</h3>
-                    <p style="color: var(--silver-gray); margin: 15px 0;">Campus security alert</p>
-                    <div class="emergency-contact">
-                        <i class="fas fa-phone"></i> 100 / 112
-                    </div>
-                </div>
-
-                <div class="emergency-card">
-                    <i class="fas fa-fire emergency-icon"></i>
-                    <h3 class="emergency-title">Fire Emergency</h3>
-                    <p style="color: var(--silver-gray); margin: 15px 0;">Fire rescue services</p>
-                    <div class="emergency-contact">
-                        <i class="fas fa-phone"></i> 16 / 112
-                    </div>
-                </div>
-
-                <div class="emergency-card">
-                    <i class="fas fa-person-shelter emergency-icon"></i>
-                    <h3 class="emergency-title">Campus Lockdown</h3>
-                    <p style="color: var(--silver-gray); margin: 15px 0;">Threat containment protocol</p>
-                    <div class="emergency-contact">
-                        <i class="fas fa-phone"></i> Code Red
-                    </div>
-                </div>
-
-                <div class="emergency-card">
-                    <i class="fas fa-triangle-exclamation emergency-icon"></i>
-                    <h3 class="emergency-title">Natural Disaster</h3>
-                    <p style="color: var(--silver-gray); margin: 15px 0;">Earthquake/Disaster response</p>
-                    <div class="emergency-contact">
-                        <i class="fas fa-phone"></i> Evacuation Alert
-                    </div>
-                </div>
-
-                <div class="emergency-card">
-                    <i class="fas fa-phone-slash emergency-icon"></i>
-                    <h3 class="emergency-title">General Emergency</h3>
-                    <p style="color: var(--silver-gray); margin: 15px 0;">All-purpose emergency line</p>
-                    <div class="emergency-contact">
-                        <i class="fas fa-phone"></i> 112
-                    </div>
-                </div>
-            </div>
+        <div class="slide-img">
+          <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&h=320&fit=crop&q=80" alt="Smart Classroom" />
         </div>
-    </section>
+      </div>
 
-    <!-- Faculty Section -->
-    <section class="faculty-section" id="faculty">
-        <div class="container">
-            <h2 class="section-title">Faculty Showcase</h2>
-            <div class="faculty-grid">
-                <div class="faculty-card">
-                    <div class="faculty-image">
-                        <i class="fas fa-user-tie"></i>
-                    </div>
-                    <div class="faculty-info">
-                        <h4 class="faculty-name">Col. Muhammad Khan</h4>
-                        <div class="faculty-position">Principal</div>
-                        <div class="faculty-details">
-                            <i class="fas fa-briefcase"></i> 25 Years Experience
-                        </div>
-                        <div class="faculty-details">
-                            <i class="fas fa-calendar"></i> Mon-Fri 8AM-2PM
-                        </div>
-                        <div class="faculty-details">
-                            <i class="fas fa-phone"></i> +92 300 1234567
-                        </div>
-                    </div>
-                </div>
-
-                <div class="faculty-card">
-                    <div class="faculty-image">
-                        <i class="fas fa-user-tie"></i>
-                    </div>
-                    <div class="faculty-info">
-                        <h4 class="faculty-name">Dr. Ayesha Ahmed</h4>
-                        <div class="faculty-position">Vice Principal</div>
-                        <div class="faculty-details">
-                            <i class="fas fa-briefcase"></i> 18 Years Experience
-                        </div>
-                        <div class="faculty-details">
-                            <i class="fas fa-calendar"></i> Mon-Fri 8AM-3PM
-                        </div>
-                        <div class="faculty-details">
-                            <i class="fas fa-phone"></i> +92 300 1234568
-                        </div>
-                    </div>
-                </div>
-
-                <div class="faculty-card">
-                    <div class="faculty-image">
-                        <i class="fas fa-flask"></i>
-                    </div>
-                    <div class="faculty-info">
-                        <h4 class="faculty-name">Prof. Ahmed Hassan</h4>
-                        <div class="faculty-position">Science Department Head</div>
-                        <div class="faculty-details">
-                            <i class="fas fa-briefcase"></i> 15 Years Experience
-                        </div>
-                        <div class="faculty-details">
-                            <i class="fas fa-calendar"></i> Mon-Fri 8AM-3PM
-                        </div>
-                        <div class="faculty-details">
-                            <i class="fas fa-phone"></i> +92 300 1234569
-                        </div>
-                    </div>
-                </div>
-
-                <div class="faculty-card">
-                    <div class="faculty-image">
-                        <i class="fas fa-laptop"></i>
-                    </div>
-                    <div class="faculty-info">
-                        <h4 class="faculty-name">Mr. Hassan Ali</h4>
-                        <div class="faculty-position">Computer Department</div>
-                        <div class="faculty-details">
-                            <i class="fas fa-briefcase"></i> 12 Years Experience
-                        </div>
-                        <div class="faculty-details">
-                            <i class="fas fa-calendar"></i> Mon-Fri 8AM-3PM
-                        </div>
-                        <div class="faculty-details">
-                            <i class="fas fa-phone"></i> +92 300 1234570
-                        </div>
-                    </div>
-                </div>
-
-                <div class="faculty-card">
-                    <div class="faculty-image">
-                        <i class="fas fa-book"></i>
-                    </div>
-                    <div class="faculty-info">
-                        <h4 class="faculty-name">Mrs. Fatima Khan</h4>
-                        <div class="faculty-position">English Department</div>
-                        <div class="faculty-details">
-                            <i class="fas fa-briefcase"></i> 10 Years Experience
-                        </div>
-                        <div class="faculty-details">
-                            <i class="fas fa-calendar"></i> Mon-Fri 8AM-2PM
-                        </div>
-                        <div class="faculty-details">
-                            <i class="fas fa-phone"></i> +92 300 1234571
-                        </div>
-                    </div>
-                </div>
-
-                <div class="faculty-card">
-                    <div class="faculty-image">
-                        <i class="fas fa-dumbbell"></i>
-                    </div>
-                    <div class="faculty-info">
-                        <h4 class="faculty-name">Mr. Usman Khan</h4>
-                        <div class="faculty-position">Sports Department</div>
-                        <div class="faculty-details">
-                            <i class="fas fa-briefcase"></i> 8 Years Experience
-                        </div>
-                        <div class="faculty-details">
-                            <i class="fas fa-calendar"></i> Mon-Fri 3PM-5PM
-                        </div>
-                        <div class="faculty-details">
-                            <i class="fas fa-phone"></i> +92 300 1234572
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="slide-item">
+        <div class="slide-text">
+          <div class="slide-eyebrow">03 / Analytics</div>
+          <h3 class="slide-title">Education Intelligence Dashboard</h3>
+          <p class="slide-desc">Predictive analytics identify at-risk students early. Personalised recommendations, trend analysis, and parent-facing reports keep every stakeholder informed and proactive.</p>
+          <button class="btn-primary-aps">View Analytics <i class="fas fa-arrow-right ms-2"></i></button>
         </div>
-    </section>
-
-    <!-- Video Gallery Section -->
-    <section class="video-section">
-        <div class="container">
-            <h2 class="section-title">APS Media Gallery</h2>
-            <div class="video-grid">
-                <div class="video-card">
-                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen="" loading="lazy"></iframe>
-                </div>
-
-                <div class="video-card">
-                    <iframe src="https://www.youtube.com/embed/jNQXAC9IVRw" allowfullscreen="" loading="lazy"></iframe>
-                </div>
-
-                <div class="video-card">
-                    <iframe src="https://www.youtube.com/embed/9bZkp7q19f0" allowfullscreen="" loading="lazy"></iframe>
-                </div>
-
-                <div class="video-card">
-                    <iframe src="https://www.youtube.com/embed/BJ0bCwOV9UY" allowfullscreen="" loading="lazy"></iframe>
-                </div>
-
-                <div class="video-card">
-                    <iframe src="https://www.youtube.com/embed/kffacxfA7g4" allowfullscreen="" loading="lazy"></iframe>
-                </div>
-
-                <div class="video-card">
-                    <iframe src="https://www.youtube.com/embed/WXsD0ZgxjT0" allowfullscreen="" loading="lazy"></iframe>
-                </div>
-            </div>
+        <div class="slide-img">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=320&fit=crop&q=80" alt="Analytics" />
         </div>
-    </section>
+      </div>
 
-    <!-- Timeline Section -->
-    <section class="timeline-section">
-        <div class="container">
-            <h2 class="section-title">Student Journey</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h4 class="timeline-title">Admission Process</h4>
-                        <p class="timeline-description">Complete your online application with required documents and initial assessment</p>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h4 class="timeline-title">Registration</h4>
-                        <p class="timeline-description">Finalize enrollment, select courses, and obtain your student ID</p>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h4 class="timeline-title">Smart Classes Begin</h4>
-                        <p class="timeline-description">Access interactive classrooms with AI-powered learning tools and real-time collaboration</p>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h4 class="timeline-title">Continuous Assessment</h4>
-                        <p class="timeline-description">Regular evaluations, quizzes, and projects with instant feedback</p>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h4 class="timeline-title">Examinations</h4>
-                        <p class="timeline-description">Participate in secure online examinations with proctoring and automated grading</p>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <h4 class="timeline-title">Results & Graduation</h4>
-                        <p class="timeline-description">Receive certified results and graduate with honors, ready for higher education</p>
-                    </div>
-                </div>
-            </div>
+      <div class="slide-item">
+        <div class="slide-text">
+          <div class="slide-eyebrow">04 / Examinations</div>
+          <h3 class="slide-title">Secure Digital Examination System</h3>
+          <p class="slide-desc">Online exams with live proctoring, automated multi-type grading, plagiarism detection, and instant result publication. Supports all formats from MCQs to long-form essays.</p>
+          <button class="btn-primary-aps">Start Exam <i class="fas fa-arrow-right ms-2"></i></button>
         </div>
-    </section>
-
-    <!-- Analytics Section -->
-    <section class="analytics-section" id="analytics">
-        <div class="container">
-            <h2 class="section-title">Academic Analytics</h2>
-            <div class="analytics-grid">
-                <div class="analytics-card">
-                    <i class="fas fa-users dashboard-icon"></i>
-                    <div class="analytics-value" id="analyticsStudents">2500+</div>
-                    <div class="analytics-label">Total Students</div>
-                </div>
-
-                <div class="analytics-card">
-                    <i class="fas fa-book-open dashboard-icon"></i>
-                    <div class="analytics-value" id="analyticsClasses">95+</div>
-                    <div class="analytics-label">Active Classes</div>
-                </div>
-
-                <div class="analytics-card">
-                    <i class="fas fa-chalkboard-user dashboard-icon"></i>
-                    <div class="analytics-value" id="analyticsFaculty">150+</div>
-                    <div class="analytics-label">Faculty Members</div>
-                </div>
-
-                <div class="analytics-card">
-                    <i class="fas fa-certificate dashboard-icon"></i>
-                    <div class="analytics-value" id="analyticsPassRate">98%</div>
-                    <div class="analytics-label">Pass Rate</div>
-                </div>
-
-                <div class="analytics-card">
-                    <i class="fas fa-laptop dashboard-icon"></i>
-                    <div class="analytics-value" id="analyticsLabs">12</div>
-                    <div class="analytics-label">Computer Labs</div>
-                </div>
-
-                <div class="analytics-card">
-                    <i class="fas fa-calendar dashboard-icon"></i>
-                    <div class="analytics-value" id="analyticsActivities">45</div>
-                    <div class="analytics-label">Campus Activities</div>
-                </div>
-            </div>
+        <div class="slide-img">
+          <img src="https://images.unsplash.com/photo-1588072432836-e10032774350?w=600&h=320&fit=crop&q=80" alt="Exams" />
         </div>
-    </section>
+      </div>
 
-    <!-- FAQ Section -->
-    <section class="faq-section">
-        <div class="container faq-container">
-            <h2 class="section-title">Frequently Asked Questions</h2>
-            <div class="accordion" id="faqAccordion">
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                            <i class="fas fa-question-circle"></i> How do I apply for admission?
-                        </button>
-                    </h2>
-                    <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            Visit our Smart Admission System portal, fill out the online form with required information, upload necessary documents, and submit. You'll receive an instant confirmation with your application ID. Our team will contact you within 48 hours.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                            <i class="fas fa-question-circle"></i> What is the fee structure?
-                        </button>
-                    </h2>
-                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            Fees vary based on class level and campus location. We offer flexible payment plans, fee waivers for deserving students, and scholarships for merit-based selections. Contact the administration office for detailed fee schedules.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-                            <i class="fas fa-question-circle"></i> How does the Smart Classroom system work?
-                        </button>
-                    </h2>
-                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            Our Smart Classrooms use AI-powered interactive boards, real-time attendance tracking, and live video conferencing. Teachers can deliver engaging lessons with multimedia content while the system automatically tracks student performance and engagement metrics.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
-                            <i class="fas fa-question-circle"></i> Can parents track their child's progress?
-                        </button>
-                    </h2>
-                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            Yes! Parents have access to the Parent Portal where they can view real-time attendance, academic performance, assignment submissions, exam results, and teacher feedback. They can also communicate directly with teachers.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
-                            <i class="fas fa-question-circle"></i> What safety measures are in place?
-                        </button>
-                    </h2>
-                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            APS has a comprehensive Campus Security System including AI-powered surveillance, smart entry gates, visitor monitoring, trained security personnel, and emergency response protocols. All facilities meet international safety standards.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
-                            <i class="fas fa-question-circle"></i> Is there transportation available?
-                        </button>
-                    </h2>
-                    <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            Yes, we provide GPS-enabled smart buses covering major areas. Parents can track bus locations in real-time through our mobile app. Safe student boarding and dropping is ensured with trained staff.
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="slide-item">
+        <div class="slide-text">
+          <div class="slide-eyebrow">05 / Security</div>
+          <h3 class="slide-title">Campus Security &amp; Safety System</h3>
+          <p class="slide-desc">AI-powered CCTV, smart biometric entry gates, real-time visitor management, and emergency broadcast system. Parents receive instant alerts when students enter or leave campus.</p>
+          <button class="btn-primary-aps">Security Details <i class="fas fa-arrow-right ms-2"></i></button>
         </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="contact-section" id="contact">
-        <div class="container">
-            <h2 class="section-title">Get In Touch</h2>
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <i class="fas fa-map-marker-alt contact-icon"></i>
-                    <h4 class="contact-title">Campus Address</h4>
-                    <div class="contact-details">
-                        <strong>APS Rawalpindi</strong><br>
-                        Adiala Road, Rawalpindi<br>
-                        Punjab, Pakistan<br><br>
-                        <strong>APS Islamabad</strong><br>
-                        Sector F-7/2, Islamabad<br>
-                        Pakistan
-                    </div>
-                </div>
-
-                <div class="contact-info">
-                    <i class="fas fa-phone contact-icon"></i>
-                    <h4 class="contact-title">Contact Numbers</h4>
-                    <div class="contact-details">
-                        <strong>Main Office:</strong><br>
-                        +92 51 2201234<br>
-                        +92 51 2201235<br><br>
-                        <strong>Admissions:</strong><br>
-                        +92 300 5555001<br>
-                        <strong>Emergency: 112</strong>
-                    </div>
-                </div>
-
-                <div class="contact-info">
-                    <i class="fas fa-envelope contact-icon"></i>
-                    <h4 class="contact-title">Email Address</h4>
-                    <div class="contact-details">
-                        <strong>Admissions:</strong><br>
-                        admissions@apsedu.edu.pk<br><br>
-                        <strong>General Inquiry:</strong><br>
-                        info@apsedu.edu.pk<br><br>
-                        <strong>Support:</strong><br>
-                        support@apsedu.edu.pk
-                    </div>
-                </div>
-            </div>
-
-            <div class="map-container">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3318.6945246551803!2d72.1959459!3d33.6201253!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38df96dfe5b3e6b9%3A0x3d8f8f8f8f8f8f8!2sArmy%20Public%20School%20(APS)%20Rawalpindi!5e0!3m2!1sen!2s!4v1234567890" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-            </div>
+        <div class="slide-img">
+          <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&h=320&fit=crop&q=80" alt="Security" />
         </div>
-    </section>
+      </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h5><i class="fas fa-graduation-cap"></i> APS Smart Education</h5>
-                    <p style="color: var(--silver-gray); margin-bottom: 20px;">
-                        Transforming education through technology and innovation. Leading the way in smart digital campus management.
-                    </p>
-                    <div class="social-icons">
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                    </div>
-                </div>
+    </div>
+    <div class="slider-controls mt-3">
+      <button class="ctrl-btn" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></button>
+      <button class="ctrl-btn" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></button>
+      <div class="slide-dots" id="slideDots"></div>
+    </div>
+  </div>
+</section>
 
-                <div class="footer-section">
-                    <h5><i class="fas fa-link"></i> Quick Links</h5>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#admission">Admissions</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#faculty">Faculty</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms & Conditions</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h5><i class="fas fa-user-graduate"></i> Student Portal</h5>
-                    <ul>
-                        <li><a href="#">Student Login</a></li>
-                        <li><a href="#">Class Schedule</a></li>
-                        <li><a href="#">Exam Results</a></li>
-                        <li><a href="#">Attendance</a></li>
-                        <li><a href="#">Assignment Submission</a></li>
-                        <li><a href="#">Online Classes</a></li>
-                        <li><a href="#">Resources</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h5><i class="fas fa-bell"></i> Newsletter</h5>
-                    <p style="color: var(--silver-gray); margin-bottom: 15px;">Subscribe to get latest updates and announcements.</p>
-                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                        <input type="email" class="form-control" placeholder="Your email" style="background: rgba(255,255,255,0.1) !important; border-color: var(--glass-border) !important; color: white !important;">
-                        <button class="cta-button cta-primary" style="margin: 0; padding: 10px 20px;">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                    <p style="font-size: 0.8rem; color: var(--silver-gray);">
-                        <i class="fas fa-shield-alt"></i> We respect your privacy
-                    </p>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p>
-                    <i class="fas fa-copyright"></i> 2024 APS Smart Education System. All Rights Reserved. | 
-                    Designed with <i class="fas fa-heart" style="color: #ff4444;"></i> by Digital Innovation Team
-                </p>
-            </div>
+<!-- ══ SERVICES ══ -->
+<section class="section-pad-gray" id="services">
+  <div class="container">
+    <div class="sec-label">What We Offer</div>
+    <h2 class="sec-title">Smart APS Services</h2>
+    <div class="sec-rule"></div>
+    <p class="sec-sub mb-5">A complete digital ecosystem covering every dimension of school life — from admission to graduation.</p>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4">
+        <div class="srv-card">
+          <div class="srv-icon"><i class="fas fa-file-alt"></i></div>
+          <h3 class="srv-title">Digital Admission</h3>
+          <p class="srv-desc">Paperless online admission with instant document verification and automated fee management.</p>
+          <ul class="srv-list"><li>Online Application Forms</li><li>Document Upload & Verification</li><li>Automated Fee Management</li><li>Real-time Status Tracking</li></ul>
         </div>
-    </footer>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="srv-card">
+          <div class="srv-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+          <h3 class="srv-title">Smart Classrooms</h3>
+          <p class="srv-desc">AI-enabled interactive learning environment with live collaboration and engagement tools.</p>
+          <ul class="srv-list"><li>Interactive Smart Boards</li><li>Live Lecture Streaming</li><li>Biometric Attendance</li><li>Performance Monitoring</li></ul>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="srv-card">
+          <div class="srv-icon"><i class="fas fa-chart-bar"></i></div>
+          <h3 class="srv-title">Student Analytics</h3>
+          <p class="srv-desc">Comprehensive data analytics for tracking performance, progress, and early intervention.</p>
+          <ul class="srv-list"><li>Performance Dashboards</li><li>At-risk Student Alerts</li><li>Parent Progress Reports</li><li>Predictive Grading Insights</li></ul>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="srv-card">
+          <div class="srv-icon"><i class="fas fa-shield-alt"></i></div>
+          <h3 class="srv-title">Campus Security</h3>
+          <p class="srv-desc">24/7 AI surveillance, biometric gates, and real-time parent notification system.</p>
+          <ul class="srv-list"><li>AI-Powered CCTV Surveillance</li><li>Smart Biometric Entry Gates</li><li>Visitor Management System</li><li>Emergency Broadcast Alerts</li></ul>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="srv-card">
+          <div class="srv-icon"><i class="fas fa-clipboard-list"></i></div>
+          <h3 class="srv-title">Examination System</h3>
+          <p class="srv-desc">Secure proctored online exams with AI-assisted grading and instant result publishing.</p>
+          <ul class="srv-list"><li>Online Proctored Exams</li><li>AI Auto-Grading Engine</li><li>Instant Result Publication</li><li>Exam Scheduling Tools</li></ul>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="srv-card">
+          <div class="srv-icon"><i class="fas fa-book-open"></i></div>
+          <h3 class="srv-title">Digital Library</h3>
+          <p class="srv-desc">Thousands of e-books, research journals, and study resources accessible 24/7 from any device.</p>
+          <ul class="srv-list"><li>5000+ E-Books & Journals</li><li>Online Research Portal</li><li>Virtual Study Rooms</li><li>Audio & Video Lessons</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<!-- ══ ADMISSION FORM ══ -->
+<section class="section-pad" id="admission" style="background:var(--white);">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-5">
+        <div class="sec-label">Apply Online</div>
+        <h2 class="sec-title">Smart Admission System 2026–27</h2>
+        <div class="sec-rule"></div>
+        <p class="sec-sub mb-4">Complete your application in minutes. Submit documents digitally, track your application status in real-time, and receive instant confirmation.</p>
+        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=480&h=320&fit=crop&q=80" alt="Students" style="width:100%;border-radius:12px;box-shadow:var(--shadow);" />
+      </div>
+      <div class="col-lg-7">
+        <div class="form-card">
+          <h3 style="font-size:1.5rem; margin-bottom:1.5rem; color:var(--navy);">New Student Application</h3>
+          <form id="admissionForm">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="form-group-aps">
+                  <label class="lbl"><i class="fas fa-user" style="color:var(--gold);margin-right:6px;"></i> Student Full Name</label>
+                  <input class="inp" type="text" placeholder="Enter full name" required />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group-aps">
+                  <label class="lbl"><i class="fas fa-user-tie" style="color:var(--gold);margin-right:6px;"></i> Father's Name</label>
+                  <input class="inp" type="text" placeholder="Enter father's name" required />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group-aps">
+                  <label class="lbl"><i class="fas fa-id-card" style="color:var(--gold);margin-right:6px;"></i> CNIC / B-Form</label>
+                  <input class="inp" type="text" placeholder="XXXXX-XXXXXXX-X" required />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group-aps">
+                  <label class="lbl"><i class="fas fa-phone" style="color:var(--gold);margin-right:6px;"></i> Phone Number</label>
+                  <input class="inp" type="tel" placeholder="+92 3XX XXXXXXX" required />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group-aps">
+                  <label class="lbl"><i class="fas fa-envelope" style="color:var(--gold);margin-right:6px;"></i> Email Address</label>
+                  <input class="inp" type="email" placeholder="parent@email.com" required />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group-aps">
+                  <label class="lbl"><i class="fas fa-calendar" style="color:var(--gold);margin-right:6px;"></i> Date of Birth</label>
+                  <input class="inp" type="date" required />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group-aps">
+                  <label class="lbl"><i class="fas fa-graduation-cap" style="color:var(--gold);margin-right:6px;"></i> Apply for Class</label>
+                  <select class="inp" required>
+                    <option value="">— Select Class —</option>
+                    <option>Nursery</option><option>KG 1</option><option>KG 2</option>
+                    <option>Class 1</option><option>Class 2</option><option>Class 3</option>
+                    <option>Class 4</option><option>Class 5</option><option>Class 6</option>
+                    <option>Class 7</option><option>Class 8</option><option>Class 9</option>
+                    <option>Class 10 (Matric)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group-aps">
+                  <label class="lbl"><i class="fas fa-venus-mars" style="color:var(--gold);margin-right:6px;"></i> Gender</label>
+                  <select class="inp" required>
+                    <option value="">— Select —</option>
+                    <option>Male</option><option>Female</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group-aps">
+                  <label class="lbl"><i class="fas fa-map-marker-alt" style="color:var(--gold);margin-right:6px;"></i> Home Address</label>
+                  <input class="inp" type="text" placeholder="Full home address" required />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group-aps">
+                  <label class="lbl"><i class="fas fa-school" style="color:var(--gold);margin-right:6px;"></i> Previous School</label>
+                  <input class="inp" type="text" placeholder="Previous school name" />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group-aps">
+                  <label class="lbl"><i class="fas fa-percentage" style="color:var(--gold);margin-right:6px;"></i> Previous Year %</label>
+                  <input class="inp" type="text" placeholder="e.g. 87%" />
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group-aps">
+                  <label class="lbl"><i class="fas fa-file-upload" style="color:var(--gold);margin-right:6px;"></i> Upload Documents (CNIC/B-Form + Photos)</label>
+                  <input class="inp" type="file" multiple accept=".pdf,.jpg,.jpeg,.png" />
+                </div>
+              </div>
+              <div class="col-12 mt-2">
+                <button type="submit" class="btn-submit">
+                  <i class="fas fa-paper-plane"></i> Submit Application
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Custom JavaScript -->
-    <script>
-        // Digital Clock
-        function updateClock() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('digitalClock').textContent = `${hours}:${minutes}:${seconds}`;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
+<!-- ══ DASHBOARD ══ -->
+<section class="section-pad-alt" id="dashboard">
+  <div class="container">
+    <div class="sec-label">Live Overview</div>
+    <h2 class="sec-title sec-title-white">School Live Dashboard</h2>
+    <div class="sec-rule"></div>
+    <div class="row g-4 mt-1">
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="dash-card">
+          <div class="dash-icon"><i class="fas fa-users"></i></div>
+          <div class="dash-val">94%</div>
+          <div class="dash-lbl">Attendance</div>
+          <div class="prog-track"><div class="prog-fill" style="width:94%"></div></div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="dash-card">
+          <div class="dash-icon"><i class="fas fa-door-open"></i></div>
+          <div class="dash-val">45</div>
+          <div class="dash-lbl">Live Classes</div>
+          <div class="prog-track"><div class="prog-fill" style="width:100%"></div></div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="dash-card">
+          <div class="dash-icon"><i class="fas fa-chalkboard-user"></i></div>
+          <div class="dash-val">150</div>
+          <div class="dash-lbl">Faculty</div>
+          <div class="prog-track"><div class="prog-fill" style="width:88%"></div></div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="dash-card">
+          <div class="dash-icon"><i class="fas fa-trophy"></i></div>
+          <div class="dash-val">98%</div>
+          <div class="dash-lbl">Pass Rate</div>
+          <div class="prog-track"><div class="prog-fill" style="width:98%"></div></div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="dash-card">
+          <div class="dash-icon"><i class="fas fa-wifi"></i></div>
+          <div class="dash-val">99%</div>
+          <div class="dash-lbl">Network</div>
+          <div class="prog-track"><div class="prog-fill" style="width:99%"></div></div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="dash-card">
+          <div class="dash-icon"><i class="fas fa-calendar-check"></i></div>
+          <div class="dash-val">12</div>
+          <div class="dash-lbl">Events</div>
+          <div class="prog-track"><div class="prog-fill" style="width:75%"></div></div>
+        </div>
+      </div>
+    </div>
+    <!-- Campus Photos strip -->
+    <div class="row g-3 mt-5">
+      <div class="col-12">
+        <div class="sec-label">Campus Life</div>
+        <h3 class="sec-title-white" style="font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:1.2rem;">Life at APS Bahawalpur</h3>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=400&h=300&fit=crop&q=80" alt="Classroom" />
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=400&h=300&fit=crop&q=80" alt="Sports" />
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=300&fit=crop&q=80" alt="Library" />
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1581078426770-6d336e5042ff?w=400&h=300&fit=crop&q=80" alt="Science Lab" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        // Slider Functionality
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        const slideCount = slides.length;
+<!-- ══ EMERGENCY ══ -->
+<section class="section-pad" style="background: linear-gradient(135deg, #1a0a0a 0%, #2a0f0f 100%);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="sec-label" style="justify-content:center;display:flex;">Emergency Response</div>
+      <h2 class="sec-title sec-title-white">Campus Emergency System</h2>
+      <div class="sec-rule mx-auto"></div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4">
+        <div class="emg-card">
+          <div class="emg-icon"><i class="fas fa-first-aid"></i></div>
+          <div class="emg-title">Medical Emergency</div>
+          <div class="emg-desc">On-site medical staff + ambulance dispatch within 5 minutes</div>
+          <div class="emg-num"><i class="fas fa-phone-alt"></i> 115 / 112</div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="emg-card">
+          <div class="emg-icon"><i class="fas fa-shield-halved"></i></div>
+          <div class="emg-title">Security Threat</div>
+          <div class="emg-desc">Armed security team + police liaison on campus</div>
+          <div class="emg-num"><i class="fas fa-phone-alt"></i> 100 / 112</div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="emg-card">
+          <div class="emg-icon"><i class="fas fa-fire"></i></div>
+          <div class="emg-title">Fire Emergency</div>
+          <div class="emg-desc">Fire extinguishers on every floor + direct fire brigade line</div>
+          <div class="emg-num"><i class="fas fa-phone-alt"></i> 16 / 112</div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="emg-card">
+          <div class="emg-icon"><i class="fas fa-lock"></i></div>
+          <div class="emg-title">Campus Lockdown</div>
+          <div class="emg-desc">Immediate gate lockdown, PA system broadcast, and parent notification</div>
+          <div class="emg-num"><i class="fas fa-broadcast-tower"></i> Code Red</div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="emg-card">
+          <div class="emg-icon"><i class="fas fa-triangle-exclamation"></i></div>
+          <div class="emg-title">Natural Disaster</div>
+          <div class="emg-desc">Earthquake drills every quarter, designated assembly points</div>
+          <div class="emg-num"><i class="fas fa-running"></i> Evacuation Alert</div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="emg-card">
+          <div class="emg-icon"><i class="fas fa-phone-volume"></i></div>
+          <div class="emg-title">General Emergency</div>
+          <div class="emg-desc">24/7 helpline staffed by trained emergency coordinators</div>
+          <div class="emg-num"><i class="fas fa-phone-alt"></i> 0322-9234045</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        function initSlider() {
-            const dotsContainer = document.getElementById('slideDots');
-            for (let i = 0; i < slideCount; i++) {
-                const dot = document.createElement('div');
-                dot.className = 'dot' + (i === 0 ? ' active' : '');
-                dot.onclick = () => goToSlide(i);
-                dotsContainer.appendChild(dot);
-            }
-        }
+<!-- ══ FACULTY ══ -->
+<section class="section-pad-gray" id="faculty">
+  <div class="container">
+    <div class="sec-label">Meet the Team</div>
+    <h2 class="sec-title">Our Distinguished Faculty</h2>
+    <div class="sec-rule"></div>
+    <p class="sec-sub mb-5">Experienced educators committed to nurturing academic excellence and character development.</p>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4">
+        <div class="fac-card">
+          <img class="fac-img" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=240&fit=crop&q=80" alt="Principal" />
+          <div class="fac-body">
+            <h4 class="fac-name">Col. Muhammad Khan</h4>
+            <div class="fac-pos">Principal</div>
+            <div class="fac-meta"><i class="fas fa-briefcase"></i> 25 Years Experience</div>
+            <div class="fac-meta"><i class="fas fa-award"></i> M.Phil. Education Admin</div>
+            <div class="fac-meta"><i class="fas fa-clock"></i> Mon–Fri 8AM–2PM</div>
+            <div class="fac-meta"><i class="fas fa-phone"></i> +92 300 1234567</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="fac-card">
+          <img class="fac-img" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=240&fit=crop&q=80" alt="Vice Principal" />
+          <div class="fac-body">
+            <h4 class="fac-name">Dr. Ayesha Ahmed</h4>
+            <div class="fac-pos">Vice Principal</div>
+            <div class="fac-meta"><i class="fas fa-briefcase"></i> 18 Years Experience</div>
+            <div class="fac-meta"><i class="fas fa-award"></i> PhD Education</div>
+            <div class="fac-meta"><i class="fas fa-clock"></i> Mon–Fri 8AM–3PM</div>
+            <div class="fac-meta"><i class="fas fa-phone"></i> +92 300 1234568</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="fac-card">
+          <img class="fac-img" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=240&fit=crop&q=80" alt="Science Head" />
+          <div class="fac-body">
+            <h4 class="fac-name">Prof. Ahmed Hassan</h4>
+            <div class="fac-pos">Head of Science Dept.</div>
+            <div class="fac-meta"><i class="fas fa-briefcase"></i> 15 Years Experience</div>
+            <div class="fac-meta"><i class="fas fa-award"></i> M.Sc. Physics (Gold Medal)</div>
+            <div class="fac-meta"><i class="fas fa-clock"></i> Mon–Fri 8AM–3PM</div>
+            <div class="fac-meta"><i class="fas fa-phone"></i> +92 300 1234569</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="fac-card">
+          <img class="fac-img" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=240&fit=crop&q=80" alt="IT Head" />
+          <div class="fac-body">
+            <h4 class="fac-name">Mr. Hassan Ali</h4>
+            <div class="fac-pos">Head of Computer Dept.</div>
+            <div class="fac-meta"><i class="fas fa-briefcase"></i> 12 Years Experience</div>
+            <div class="fac-meta"><i class="fas fa-award"></i> BS Computer Science</div>
+            <div class="fac-meta"><i class="fas fa-clock"></i> Mon–Fri 8AM–3PM</div>
+            <div class="fac-meta"><i class="fas fa-phone"></i> +92 300 1234570</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="fac-card">
+          <img class="fac-img" src="https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400&h=240&fit=crop&q=80" alt="English Teacher" />
+          <div class="fac-body">
+            <h4 class="fac-name">Mrs. Fatima Khan</h4>
+            <div class="fac-pos">Head of English Dept.</div>
+            <div class="fac-meta"><i class="fas fa-briefcase"></i> 10 Years Experience</div>
+            <div class="fac-meta"><i class="fas fa-award"></i> MA English Literature</div>
+            <div class="fac-meta"><i class="fas fa-clock"></i> Mon–Fri 8AM–2PM</div>
+            <div class="fac-meta"><i class="fas fa-phone"></i> +92 300 1234571</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="fac-card">
+          <img class="fac-img" src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=400&h=240&fit=crop&q=80" alt="Sports Teacher" />
+          <div class="fac-body">
+            <h4 class="fac-name">Mr. Usman Khan</h4>
+            <div class="fac-pos">Head of Sports Dept.</div>
+            <div class="fac-meta"><i class="fas fa-briefcase"></i> 8 Years Experience</div>
+            <div class="fac-meta"><i class="fas fa-award"></i> BS Sports Science</div>
+            <div class="fac-meta"><i class="fas fa-clock"></i> Mon–Fri 3PM–5PM</div>
+            <div class="fac-meta"><i class="fas fa-phone"></i> +92 300 1234572</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        function showSlide(n) {
-            slides.forEach(slide => slide.classList.remove('active'));
-            document.querySelectorAll('.dot').forEach(dot => dot.classList.remove('active'));
-            
-            slides[currentSlide].classList.add('active');
-            document.querySelectorAll('.dot')[currentSlide].classList.add('active');
-        }
+<!-- ══ STUDENT JOURNEY TIMELINE ══ -->
+<section class="section-pad" style="background:var(--white);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="sec-label">Roadmap</div>
+      <h2 class="sec-title">The Student Journey</h2>
+      <div class="sec-rule mx-auto"></div>
+    </div>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-num">Step 01</div>
+          <h4 class="tl-title">Online Application</h4>
+          <p class="tl-desc">Complete the digital admission form, upload required documents, and submit for review. Receive instant acknowledgement with your application ID.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-num">Step 02</div>
+          <h4 class="tl-title">Assessment & Interview</h4>
+          <p class="tl-desc">Attend the entrance assessment and parent-teacher interview. Results are communicated within 48 hours.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-num">Step 03</div>
+          <h4 class="tl-title">Enrolment & ID Card</h4>
+          <p class="tl-desc">Finalise fee payment, select subjects, and collect your smart student ID card with RFID access.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-num">Step 04</div>
+          <h4 class="tl-title">Smart Classes Begin</h4>
+          <p class="tl-desc">Access AI-powered interactive classrooms, digital textbooks, and the student portal from Day 1.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-num">Step 05</div>
+          <h4 class="tl-title">Continuous Assessment</h4>
+          <p class="tl-desc">Regular quizzes, projects, and assignments with instant AI-driven feedback to keep performance on track.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-num">Step 06</div>
+          <h4 class="tl-title">Examinations & Graduation</h4>
+          <p class="tl-desc">Sit secure online board exams, receive certified results, and graduate with distinction—ready for the next chapter.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        function changeSlide(direction) {
-            currentSlide = (currentSlide + direction + slideCount) % slideCount;
-            showSlide(currentSlide);
-        }
+<!-- ══ ANALYTICS ══ -->
+<section class="section-pad-gray" id="analytics">
+  <div class="container">
+    <div class="sec-label">By the Numbers</div>
+    <h2 class="sec-title">Academic Analytics 2025–26</h2>
+    <div class="sec-rule"></div>
+    <div class="row g-4 mt-1">
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="ana-card"><div class="ana-icon"><i class="fas fa-users"></i></div><div class="ana-val">2500+</div><div class="ana-lbl">Students</div></div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="ana-card"><div class="ana-icon"><i class="fas fa-door-open"></i></div><div class="ana-val">95+</div><div class="ana-lbl">Classes</div></div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="ana-card"><div class="ana-icon"><i class="fas fa-chalkboard-user"></i></div><div class="ana-val">150+</div><div class="ana-lbl">Faculty</div></div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="ana-card"><div class="ana-icon"><i class="fas fa-certificate"></i></div><div class="ana-val">98%</div><div class="ana-lbl">Pass Rate</div></div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="ana-card"><div class="ana-icon"><i class="fas fa-laptop"></i></div><div class="ana-val">12</div><div class="ana-lbl">Computer Labs</div></div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="ana-card"><div class="ana-icon"><i class="fas fa-trophy"></i></div><div class="ana-val">45+</div><div class="ana-lbl">Achievements</div></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        function goToSlide(n) {
-            currentSlide = n;
-            showSlide(currentSlide);
-        }
+<!-- ══ FAQ ══ -->
+<section class="section-pad-alt">
+  <div class="container" style="max-width:760px;">
+    <div class="text-center mb-5">
+      <div class="sec-label">Got Questions?</div>
+      <h2 class="sec-title sec-title-white">Frequently Asked Questions</h2>
+      <div class="sec-rule mx-auto"></div>
+    </div>
+    <div id="faqList">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How do I apply for admission?
+          <i class="fas fa-plus faq-icon"></i>
+        </button>
+        <div class="faq-a">Visit our Smart Admission section on this page, fill out the complete online form with required documents, and submit. You'll receive an instant confirmation with your application ID. Our admissions team contacts you within 48 hours for next steps including assessment scheduling.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What is the fee structure for 2026–27?
+          <i class="fas fa-plus faq-icon"></i>
+        </button>
+        <div class="faq-a">Fees vary by class level. We offer flexible monthly and quarterly payment plans, merit-based scholarships (up to 100% waiver), and fee concessions for siblings and deserving families. Contact admissions at +92 322-9234045 or visit the campus for the detailed fee schedule.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How do Smart Classrooms work?
+          <i class="fas fa-plus faq-icon"></i>
+        </button>
+        <div class="faq-a">Our Smart Classrooms are equipped with 75-inch interactive boards, high-speed Wi-Fi, and AI-powered biometric attendance. Lessons are recorded and uploaded to the student portal for revision. Teachers use real-time polling and quiz tools to keep lessons engaging.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Can parents monitor their child's progress?
+          <i class="fas fa-plus faq-icon"></i>
+        </button>
+        <div class="faq-a">Yes. Every parent receives login credentials to the Parent Portal where they can view real-time attendance, exam results, assignment submissions, and teacher remarks. Push notifications alert parents immediately if a student is absent or leaves campus.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Is school transport available?
+          <i class="fas fa-plus faq-icon"></i>
+        </button>
+        <div class="faq-a">Yes. GPS-tracked smart buses cover all major areas of Bahawalpur. Parents can track the bus live via our mobile app. Trained female attendants accompany younger students. Monthly transport fees apply depending on the route.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What safety measures does APS have?
+          <i class="fas fa-plus faq-icon"></i>
+        </button>
+        <div class="faq-a">APS maintains 24/7 armed guards, AI CCTV covering all areas, biometric entry gates, a dedicated first-aid room, and a trained medical officer on campus. Emergency drills are conducted every quarter and a direct line to police and fire brigade is maintained at all times.</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        initSlider();
-        showSlide(0);
+<!-- ══ CONTACT ══ -->
+<section class="section-pad" id="contact" style="background:var(--white);">
+  <div class="container">
+    <div class="sec-label">Reach Us</div>
+    <h2 class="sec-title">Get In Touch</h2>
+    <div class="sec-rule"></div>
+    <div class="row g-4 mt-1">
+      <div class="col-md-4">
+        <div class="contact-card">
+          <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <h4 class="contact-title">Campus Address</h4>
+          <div class="contact-text">
+            <strong>APS Bahawalpur</strong><br>
+            Noor Mahal Road, Bahawalpur<br>
+            Punjab, Pakistan<br><br>
+            <strong>APS Islamabad</strong><br>
+            Sector F-7/2, Islamabad<br>
+            Pakistan
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="contact-card">
+          <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
+          <h4 class="contact-title">Contact Numbers</h4>
+          <div class="contact-text">
+            <strong>Main Office:</strong><br>
+            +92 322 9234045<br>
+            +92 308 6046246<br><br>
+            <strong>Admissions Office:</strong><br>
+            +92 322 9234045<br><br>
+            <strong style="color:var(--red-emg);">Emergency: 112</strong>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="contact-card">
+          <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+          <h4 class="contact-title">Email Addresses</h4>
+          <div class="contact-text">
+            <strong>Admissions:</strong><br>
+            admissions@apsedu.edu.pk<br><br>
+            <strong>General Inquiry:</strong><br>
+            info@apsedu.edu.pk<br><br>
+            <strong>Technical Support:</strong><br>
+            support@apsedu.edu.pk
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="map-wrap">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3459.1!2d71.6752!3d29.3956!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x393b90a0b33f8a5f%3A0x1!2sNoor+Mahal+Road%2C+Bahawalpur!5e0!3m2!1sen!2spk!4v1234567890" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+  </div>
+</section>
 
-        // Auto advance slider every 5 seconds
-        setInterval(() => changeSlide(1), 5000);
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-4 col-md-6">
+        <div class="footer-logo"><em>APS</em> Smart Education</div>
+        <p class="footer-tagline">Transforming young minds through world-class education, technology-driven learning, and a culture of discipline and excellence since 1999.</p>
+        <div class="social-row">
+          <a href="#" class="soc-btn"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="soc-btn"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="soc-btn"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="soc-btn"><i class="fab fa-youtube"></i></a>
+          <a href="#" class="soc-btn"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-6">
+        <div class="footer-title">Quick Links</div>
+        <ul class="footer-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#admission">Admissions</a></li>
+          <li><a href="#faculty">Faculty</a></li>
+          <li><a href="#analytics">Exams</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="footer-title">Student Portal</div>
+        <ul class="footer-links">
+          <li><a href="#">Student Login</a></li>
+          <li><a href="#">Class Timetable</a></li>
+          <li><a href="#">Exam Results</a></li>
+          <li><a href="#">Attendance Record</a></li>
+          <li><a href="#">Submit Assignment</a></li>
+          <li><a href="#">Live Classes</a></li>
+          <li><a href="#">Digital Library</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="footer-title">Newsletter</div>
+        <p style="color:rgba(255,255,255,.45);font-size:.88rem;margin-bottom:1rem;">Subscribe for latest APS news, events &amp; announcements.</p>
+        <div class="newsletter-row">
+          <input class="newsletter-inp" type="email" placeholder="Your email address" />
+          <button class="newsletter-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+        <p style="color:rgba(255,255,255,.3);font-size:.78rem;margin-top:.8rem;"><i class="fas fa-lock" style="color:var(--gold);margin-right:5px;"></i> Your privacy is protected.</p>
+        <div style="margin-top:1.5rem;padding:1rem;background:rgba(240,165,0,.08);border-radius:10px;border:1px solid rgba(240,165,0,.15);">
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:.78rem;color:var(--gold);font-weight:700;letter-spacing:1px;margin-bottom:.4rem;">OFFICE HOURS</div>
+          <div style="color:rgba(255,255,255,.5);font-size:.85rem;line-height:1.6;">Mon – Fri: 7:30 AM – 2:30 PM<br>Sat: 8:00 AM – 12:00 PM</div>
+        </div>
+      </div>
+    </div>
+    <hr class="footer-divider" />
+    <p class="footer-bottom">
+      &copy; 2026 APS Smart Education System, Bahawalpur. All rights reserved. &nbsp;|&nbsp; Designed by Digital Innovation Team &nbsp;<i class="fas fa-heart" style="color:var(--gold);"></i>
+    </p>
+  </div>
+</footer>
 
-        // Dark Mode Toggle (Placeholder)
-        document.getElementById('darkModeToggle').addEventListener('change', function() {
-            if (this.checked) {
-                document.body.style.filter = 'brightness(0.9)';
-            } else {
-                document.body.style.filter = 'brightness(1)';
-            }
+<!-- ══ TOAST ══ -->
+<div class="toast-aps" id="toast">
+  <strong style="color:var(--gold)"><i class="fas fa-check-circle"></i> Application Submitted!</strong><br>
+  Thank you! Our admissions team will contact you within 48 hours.
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // ── CLOCK ──
+  function tick() {
+    const d = new Date();
+    document.getElementById('clock').textContent =
+      [d.getHours(), d.getMinutes(), d.getSeconds()]
+        .map(n => String(n).padStart(2,'0')).join(':');
+  }
+  setInterval(tick, 1000); tick();
+
+  // ── SLIDER ──
+  const slides = document.querySelectorAll('.slide-item');
+  let cur = 0;
+  const dotsEl = document.getElementById('slideDots');
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'sdot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  });
+  function goTo(n) {
+    slides[cur].classList.remove('active');
+    document.querySelectorAll('.sdot')[cur].classList.remove('active');
+    cur = (n + slides.length) % slides.length;
+    slides[cur].classList.add('active');
+    document.querySelectorAll('.sdot')[cur].classList.add('active');
+  }
+  function moveSlide(dir) { goTo(cur + dir); }
+  setInterval(() => moveSlide(1), 6000);
+
+  // ── FAQ ──
+  function toggleFaq(btn) {
+    const ans = btn.nextElementSibling;
+    const isOpen = ans.classList.contains('open');
+    document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+    document.querySelectorAll('.faq-q').forEach(b => b.classList.remove('open'));
+    if (!isOpen) { ans.classList.add('open'); btn.classList.add('open'); }
+  }
+
+  // ── FORM SUBMIT ──
+  document.getElementById('admissionForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 5000);
+    this.reset();
+  });
+
+  // ── SCROLL ACTIVE NAV ──
+  const sections = document.querySelectorAll('section[id]');
+  window.addEventListener('scroll', () => {
+    let active = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) active = s.id;
+    });
+    document.querySelectorAll('.navbar-aps .nav-link').forEach(l => {
+      l.classList.toggle('active', l.getAttribute('href') === '#' + active);
+    });
+  });
+
+  // ── INTERSECTION OBSERVER (fade-in) ──
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.srv-card, .fac-card, .dash-card, .ana-card, .tl-card, .emg-card, .contact-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity .5s ease, transform .5s ease';
+    obs.observe(el);
+  });
+
+  // ── PROGRESS BARS ──
+  const progObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.prog-fill').forEach(f => {
+          const w = f.style.width; f.style.width = '0';
+          setTimeout(() => f.style.width = w, 200);
         });
-
-        // Smooth Scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-
-        // Animated Counter
-        function animateCounter(element, target) {
-            let current = 0;
-            const increment = target / 50;
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(timer);
-                }
-                element.textContent = Math.ceil(current) + '+';
-            }, 20);
-        }
-
-        // Intersection Observer for animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        });
-
-        document.querySelectorAll('.service-card, .faculty-card, .dashboard-card').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'all 0.5s ease';
-            observer.observe(el);
-        });
-
-        // Form Submission
-        document.getElementById('admissionForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Thank you for your application! We will contact you soon.');
-            this.reset();
-        });
-
-        // Navbar Active Link
-        window.addEventListener('scroll', () => {
-            let current = '';
-            document.querySelectorAll('section').forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (pageYOffset >= sectionTop - 200) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href').slice(1) === current) {
-                    link.classList.add('active');
-                }
-            });
-        });
-
-        // Add active style to navbar links on scroll
-        const style = document.createElement('style');
-        style.textContent = `.nav-link.active { color: var(--electric-cyan) !important; }`;
-        document.head.appendChild(style);
-
-        // Random stat updates
-        function updateStats() {
-            const stats = [
-                { id: 'studentCount', value: 2500 },
-                { id: 'classCount', value: 95 },
-                { id: 'facultyCount', value: 150 }
-            ];
-
-            stats.forEach(stat => {
-                const el = document.getElementById(stat.id);
-                if (el) {
-                    const random = Math.floor(Math.random() * 20) - 10;
-                    el.textContent = (stat.value + random) + '+';
-                }
-            });
-        }
-
-        setInterval(updateStats, 3000);
-
-        // Page Load Animation
-        window.addEventListener('load', () => {
-            document.body.style.opacity = '1';
-        });
-
-        // Prevent right-click context menu (optional security measure)
-        document.addEventListener('contextmenu', (e) => {
-            // e.preventDefault(); // Uncomment if you want to disable right-click
-        });
-
-        // Console message
-        console.log('%cAPS Smart Education System', 'color: #00d4ff; font-size: 20px; font-weight: bold;');
-        console.log('%cFuturistic Digital Campus Management', 'color: #1dd1a1; font-size: 14px;');
-    </script>
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.dash-card').forEach(c => progObs.observe(c));
+</script>
 </body>
 </html>
