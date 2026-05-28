@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>APS Smart Education System</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--bg:#050816;
+--bg2:#09111f;
+--cyan:#00e5ff;
+--blue:#0077ff;
+--green:#00ff9d;
+--orange:#ff9f43;
+--white:#ffffff;
+--glass:rgba(255,255,255,0.08);
+--border:rgba(255,255,255,0.12);
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+scroll-behavior:smooth;
+}
+
+body{
+font-family:'Poppins',sans-serif;
+background:linear-gradient(135deg,#030712,#071326,#02060f);
+color:white;
+overflow-x:hidden;
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar{
+width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+background:linear-gradient(var(--cyan),var(--blue));
+border-radius:20px;
+}
+
+/* Background */
+
+.cyber-bg{
+position:fixed;
+width:100%;
+height:100%;
+top:0;
+left:0;
+z-index:-1;
+background:
+radial-gradient(circle at 20% 20%, rgba(0,229,255,.15), transparent 20%),
+radial-gradient(circle at 80% 50%, rgba(0,255,157,.08), transparent 20%),
+linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+background-size:100% 100%,100% 100%,40px 40px,40px 40px;
+animation:gridMove 20s linear infinite;
+}
+
+@keyframes gridMove{
+0%{transform:translateY(0);}
+100%{transform:translateY(40px);}
+}
+
+/* Navbar */
+
+.navbar{
+backdrop-filter:blur(20px);
+background:rgba(0,0,0,.4)!important;
+border-bottom:1px solid rgba(255,255,255,.1);
+padding:15px 0;
+}
+
+.navbar-brand{
+font-family:'Orbitron',sans-serif;
+font-size:1.4rem;
+font-weight:700;
+color:var(--cyan)!important;
+}
+
+.nav-link{
+color:white!important;
+margin:0 10px;
+position:relative;
+font-weight:500;
+}
+
+.nav-link::after{
+content:'';
+position:absolute;
+left:0;
+bottom:-5px;
+width:0;
+height:2px;
+background:var(--cyan);
+transition:.4s;
+}
+
+.nav-link:hover::after{
+width:100%;
+}
+
+.clock-box{
+padding:8px 15px;
+border:1px solid rgba(255,255,255,.1);
+border-radius:50px;
+background:rgba(255,255,255,.05);
+font-family:'Orbitron';
+color:var(--green);
+}
+
+/* Hero */
+
+.hero{
+min-height:100vh;
+display:flex;
+align-items:center;
+padding-top:100px;
+position:relative;
+}
+
+.hero-text h1{
+font-size:clamp(2.8rem,6vw,6rem);
+font-family:'Orbitron';
+font-weight:700;
+line-height:1.1;
+background:linear-gradient(to right,var(--cyan),white);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.hero-text p{
+color:#c8d4e6;
+margin:25px 0;
+font-size:1.1rem;
+}
+
+.glass-card{
+background:var(--glass);
+border:1px solid var(--border);
+backdrop-filter:blur(15px);
+border-radius:25px;
+padding:25px;
+box-shadow:0 0 30px rgba(0,229,255,.08);
+}
+
+.btn-cyber{
+background:linear-gradient(90deg,var(--cyan),var(--blue));
+border:none;
+padding:14px 35px;
+border-radius:50px;
+color:white;
+font-weight:600;
+transition:.4s;
+}
+
+.btn-cyber:hover{
+transform:translateY(-4px);
+box-shadow:0 0 25px rgba(0,229,255,.5);
+}
+
+.btn-danger-glow{
+background:#ff003c;
+padding:14px 30px;
+border:none;
+border-radius:50px;
+color:white;
+box-shadow:0 0 20px rgba(255,0,60,.5);
+}
+
+/* Hero Image */
+
+.hero-image{
+position:relative;
+}
+
+.hero-image img{
+width:100%;
+border-radius:30px;
+border:1px solid rgba(255,255,255,.1);
+box-shadow:0 0 60px rgba(0,229,255,.2);
+}
+
+.floating-box{
+position:absolute;
+padding:18px;
+border-radius:20px;
+background:rgba(255,255,255,.07);
+backdrop-filter:blur(12px);
+border:1px solid rgba(255,255,255,.1);
+animation:float 4s ease-in-out infinite;
+}
+
+.float1{
+top:20px;
+left:-20px;
+}
+
+.float2{
+bottom:30px;
+right:-20px;
+animation-delay:2s;
+}
+
+@keyframes float{
+0%,100%{
+transform:translateY(0);
+}
+50%{
+transform:translateY(-15px);
+}
+}
+
+/* Section */
+
+.section-title{
+font-family:'Orbitron';
+font-size:2.5rem;
+margin-bottom:50px;
+text-align:center;
+background:linear-gradient(to right,var(--cyan),white);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+/* Services */
+
+.service-card{
+height:100%;
+padding:35px;
+position:relative;
+overflow:hidden;
+transition:.4s;
+}
+
+.service-card:hover{
+transform:translateY(-10px);
+box-shadow:0 0 40px rgba(0,229,255,.2);
+}
+
+.service-card i{
+font-size:3rem;
+color:var(--cyan);
+margin-bottom:20px;
+}
+
+.service-card::before{
+content:'';
+position:absolute;
+top:0;
+left:-100%;
+width:100%;
+height:100%;
+background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);
+transition:1s;
+}
+
+.service-card:hover::before{
+left:100%;
+}
+
+/* Dashboard */
+
+.dashboard-box{
+padding:30px;
+text-align:center;
+height:100%;
+}
+
+.dashboard-box h2{
+font-family:'Orbitron';
+font-size:2.5rem;
+color:var(--cyan);
+}
+
+/* Admission Form */
+
+.form-control,
+.form-select{
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.1);
+color:white;
+padding:14px;
+border-radius:15px;
+}
+
+.form-control:focus,
+.form-select:focus{
+background:rgba(255,255,255,.08);
+color:white;
+border-color:var(--cyan);
+box-shadow:0 0 20px rgba(0,229,255,.2);
+}
+
+/* Faculty */
+
+.faculty-card{
+overflow:hidden;
+transition:.5s;
+}
+
+.faculty-card img{
+height:300px;
+object-fit:cover;
+transition:.5s;
+}
+
+.faculty-card:hover img{
+transform:scale(1.1);
+}
+
+/* Emergency */
+
+.emergency-card{
+border:1px solid rgba(255,0,60,.4);
+box-shadow:0 0 25px rgba(255,0,60,.15);
+animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+0%{
+box-shadow:0 0 10px rgba(255,0,60,.2);
+}
+50%{
+box-shadow:0 0 35px rgba(255,0,60,.5);
+}
+100%{
+box-shadow:0 0 10px rgba(255,0,60,.2);
+}
+}
+
+/* Timeline */
+
+.timeline{
+position:relative;
+margin:50px auto;
+}
+
+.timeline::before{
+content:'';
+position:absolute;
+left:50%;
+width:4px;
+height:100%;
+background:var(--cyan);
+transform:translateX(-50%);
+}
+
+.timeline-item{
+position:relative;
+width:50%;
+padding:20px 40px;
+}
+
+.timeline-item:nth-child(odd){
+left:0;
+}
+
+.timeline-item:nth-child(even){
+left:50%;
+}
+
+.timeline-content{
+padding:25px;
+}
+
+/* Footer */
+
+footer{
+background:#020611;
+padding:80px 0 30px;
+border-top:1px solid rgba(255,255,255,.08);
+}
+
+.social-icons a{
+width:45px;
+height:45px;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+border-radius:50%;
+background:rgba(255,255,255,.08);
+margin-right:10px;
+color:white;
+transition:.4s;
+}
+
+.social-icons a:hover{
+background:var(--cyan);
+transform:translateY(-5px);
+}
+
+/* Responsive */
+
+@media(max-width:991px){
+
+.hero{
+text-align:center;
+}
+
+.timeline::before{
+left:10px;
+}
+
+.timeline-item{
+width:100%;
+padding-left:40px;
+padding-right:0;
+left:0!important;
+margin-bottom:30px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="cyber-bg"></div>
+
+<!-- Navbar -->
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+<div class="container">
+
+<a class="navbar-brand" href="#">
+<i class="fa-solid fa-shield-halved"></i> APS SMART CAMPUS
+</a>
+
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+<span class="navbar-toggler-icon"></span>
+</button>
+
+<div class="collapse navbar-collapse" id="navMenu">
+
+<ul class="navbar-nav mx-auto">
+<li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+<li class="nav-item"><a class="nav-link" href="#">Admissions</a></li>
+<li class="nav-item"><a class="nav-link" href="#">Student Portal</a></li>
+<li class="nav-item"><a class="nav-link" href="#">Faculty</a></li>
+<li class="nav-item"><a class="nav-link" href="#">Security</a></li>
+<li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+</ul>
+
+<div class="clock-box" id="clock"></div>
+
+</div>
+</div>
+</nav>
+
+<!-- Hero -->
+
+<section class="hero">
+
+<div class="container">
+
+<div class="row align-items-center g-5">
+
+<div class="col-lg-6">
+
+<div class="hero-text">
+
+<h1>FUTURISTIC APS EDUCATION SYSTEM</h1>
+
+<p>
+AI-powered smart campus management with futuristic dashboards,
+digital classrooms, advanced analytics, and military-grade security systems.
+</p>
+
+<div class="d-flex gap-3 flex-wrap">
+<button class="btn-cyber">
+Apply Now
+</button>
+
+<button class="btn-danger-glow">
+Emergency
+</button>
+</div>
+
+<div class="glass-card mt-5">
+
+<div class="row text-center">
+
+<div class="col-4">
+<h3 class="text-info">15K+</h3>
+<p>Students</p>
+</div>
+
+<div class="col-4">
+<h3 class="text-success">120+</h3>
+<p>Faculty</p>
+</div>
+
+<div class="col-4">
+<h3 class="text-warning">98%</h3>
+<p>Results</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-6">
+
+<div class="hero-image">
+
+<img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1200&auto=format&fit=crop" alt="APS">
+
+<div class="floating-box float1">
+<h5><i class="fa-solid fa-chart-line"></i> AI Analytics</h5>
+<p>Live Monitoring</p>
+</div>
+
+<div class="floating-box float2">
+<h5><i class="fa-solid fa-user-shield"></i> Security</h5>
+<p>Smart Campus</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- Services -->
+
+<section class="py-5">
+
+<div class="container">
+
+<h2 class="section-title">SMART APS SERVICES</h2>
+
+<div class="row g-4">
+
+<div class="col-lg-4 col-md-6">
+<div class="glass-card service-card">
+<i class="fa-solid fa-user-graduate"></i>
+<h4>Online Admissions</h4>
+<p>Smart registration system with AI verification and digital processing.</p>
+</div>
+</div>
+
+<div class="col-lg-4 col-md-6">
+<div class="glass-card service-card">
+<i class="fa-solid fa-laptop-code"></i>
+<h4>AI Smart Classes</h4>
+<p>Interactive digital classrooms with advanced learning systems.</p>
+</div>
+</div>
+
+<div class="col-lg-4 col-md-6">
+<div class="glass-card service-card">
+<i class="fa-solid fa-shield"></i>
+<h4>Campus Security</h4>
+<p>Military-grade AI surveillance and emergency alert systems.</p>
+</div>
+</div>
+
+<div class="col-lg-4 col-md-6">
+<div class="glass-card service-card">
+<i class="fa-solid fa-book-open"></i>
+<h4>Digital Library</h4>
+<p>Cloud-powered e-learning and smart research systems.</p>
+</div>
+</div>
+
+<div class="col-lg-4 col-md-6">
+<div class="glass-card service-card">
+<i class="fa-solid fa-chart-pie"></i>
+<h4>Student Analytics</h4>
+<p>Advanced academic monitoring and performance tracking.</p>
+</div>
+</div>
+
+<div class="col-lg-4 col-md-6">
+<div class="glass-card service-card">
+<i class="fa-solid fa-network-wired"></i>
+<h4>Smart Networking</h4>
+<p>High-speed digital campus infrastructure and connectivity.</p>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- Dashboard -->
+
+<section class="py-5">
+
+<div class="container">
+
+<h2 class="section-title">LIVE SCHOOL DASHBOARD</h2>
+
+<div class="row g-4">
+
+<div class="col-lg-3 col-md-6">
+<div class="glass-card dashboard-box">
+<h2>96%</h2>
+<p>Attendance</p>
+</div>
+</div>
+
+<div class="col-lg-3 col-md-6">
+<div class="glass-card dashboard-box">
+<h2>128</h2>
+<p>Faculty</p>
+</div>
+</div>
+
+<div class="col-lg-3 col-md-6">
+<div class="glass-card dashboard-box">
+<h2>320+</h2>
+<p>Classes</p>
+</div>
+</div>
+
+<div class="col-lg-3 col-md-6">
+<div class="glass-card dashboard-box">
+<h2>15K</h2>
+<p>Students</p>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- Admission -->
+
+<section class="py-5">
+
+<div class="container">
+
+<h2 class="section-title">ONLINE ADMISSION</h2>
+
+<div class="row justify-content-center">
+
+<div class="col-lg-8">
+
+<div class="glass-card">
+
+<div class="row g-4">
+
+<div class="col-md-6">
+<input type="text" class="form-control" placeholder="Student Name">
+</div>
+
+<div class="col-md-6">
+<input type="text" class="form-control" placeholder="Father Name">
+</div>
+
+<div class="col-md-6">
+<input type="text" class="form-control" placeholder="B-Form / CNIC">
+</div>
+
+<div class="col-md-6">
+<input type="text" class="form-control" placeholder="Phone Number">
+</div>
+
+<div class="col-md-6">
+<select class="form-select">
+<option>Select Class</option>
+<option>Grade 1</option>
+<option>Grade 5</option>
+<option>Matric</option>
+</select>
+</div>
+
+<div class="col-md-6">
+<input type="email" class="form-control" placeholder="Email Address">
+</div>
+
+<div class="col-12">
+<input type="file" class="form-control">
+</div>
+
+<div class="col-12 text-center">
+<button class="btn-cyber">
+Submit Admission
+</button>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- Faculty -->
+
+<section class="py-5">
+
+<div class="container">
+
+<h2 class="section-title">APS FACULTY</h2>
+
+<div class="row g-4">
+
+<div class="col-lg-4">
+
+<div class="glass-card faculty-card">
+
+<img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1000&auto=format&fit=crop" class="w-100">
+
+<div class="p-4">
+<h4>Principal</h4>
+<p>Leadership & Administration</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-4">
+
+<div class="glass-card faculty-card">
+
+<img src="https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=1000&auto=format&fit=crop" class="w-100">
+
+<div class="p-4">
+<h4>Science Department</h4>
+<p>AI Integrated Labs</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="col-lg-4">
+
+<div class="glass-card faculty-card">
+
+<img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1000&auto=format&fit=crop" class="w-100">
+
+<div class="p-4">
+<h4>Computer Department</h4>
+<p>Digital Learning Systems</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- Emergency -->
+
+<section class="py-5">
+
+<div class="container">
+
+<h2 class="section-title">EMERGENCY CENTER</h2>
+
+<div class="row g-4">
+
+<div class="col-lg-4">
+<div class="glass-card emergency-card">
+<h4><i class="fa-solid fa-fire"></i> Fire Alert</h4>
+<p>AI monitored fire response system.</p>
+</div>
+</div>
+
+<div class="col-lg-4">
+<div class="glass-card emergency-card">
+<h4><i class="fa-solid fa-shield"></i> Security Threat</h4>
+<p>Military-grade campus lockdown system.</p>
+</div>
+</div>
+
+<div class="col-lg-4">
+<div class="glass-card emergency-card">
+<h4><i class="fa-solid fa-kit-medical"></i> Medical Help</h4>
+<p>Instant smart emergency support.</p>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- Timeline -->
+
+<section class="py-5">
+
+<div class="container">
+
+<h2 class="section-title">STUDENT JOURNEY</h2>
+
+<div class="timeline">
+
+<div class="timeline-item">
+<div class="glass-card timeline-content">
+<h4>Admission</h4>
+<p>Digital enrollment and verification.</p>
+</div>
+</div>
+
+<div class="timeline-item">
+<div class="glass-card timeline-content">
+<h4>Smart Classes</h4>
+<p>AI powered classroom learning.</p>
+</div>
+</div>
+
+<div class="timeline-item">
+<div class="glass-card timeline-content">
+<h4>Examinations</h4>
+<p>Online evaluation and analytics.</p>
+</div>
+</div>
+
+<div class="timeline-item">
+<div class="glass-card timeline-content">
+<h4>Graduation</h4>
+<p>Future-ready student achievements.</p>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- Footer -->
+
+<footer>
+
+<div class="container">
+
+<div class="row g-5">
+
+<div class="col-lg-4">
+
+<h3 class="mb-4">APS SMART CAMPUS</h3>
+
+<p>
+Next-generation education ecosystem with AI-powered smart infrastructure.
+</p>
+
+<div class="social-icons mt-4">
+
+<a href="#"><i class="fab fa-facebook-f"></i></a>
+<a href="#"><i class="fab fa-instagram"></i></a>
+<a href="#"><i class="fab fa-linkedin-in"></i></a>
+<a href="#"><i class="fab fa-youtube"></i></a>
+
+</div>
+
+</div>
+
+<div class="col-lg-4">
+
+<h4 class="mb-4">Quick Links</h4>
+
+<ul class="list-unstyled">
+
+<li class="mb-2">Admissions</li>
+<li class="mb-2">Student Portal</li>
+<li class="mb-2">Faculty</li>
+<li class="mb-2">Security</li>
+<li class="mb-2">Contact</li>
+
+</ul>
+
+</div>
+
+<div class="col-lg-4">
+
+<h4 class="mb-4">Newsletter</h4>
+
+<div class="d-flex gap-2">
+<input type="email" class="form-control" placeholder="Email">
+<button class="btn-cyber">Join</button>
+</div>
+
+</div>
+
+</div>
+
+<hr class="my-5" style="border-color:rgba(255,255,255,.1)">
+
+<div class="text-center">
+<p>© 2026 APS Smart Education System. All Rights Reserved.</p>
+</div>
+
+</div>
+
+</footer>
+
+<!-- Bootstrap JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+/* Clock */
+
+function updateClock(){
+
+const now = new Date();
+
+const time = now.toLocaleTimeString();
+
+document.getElementById("clock").innerHTML = time;
+
+}
+
+setInterval(updateClock,1000);
+
+updateClock();
+
+/* Counter Animation */
+
+const counters = document.querySelectorAll('.dashboard-box h2');
+
+counters.forEach(counter=>{
+
+const updateCounter = ()=>{
+
+const target = +counter.innerText.replace(/\D/g,'');
+
+let count = +counter.getAttribute('data-count') || 0;
+
+const increment = target / 50;
+
+if(count < target){
+
+count += increment;
+
+counter.setAttribute('data-count', count);
+
+counter.innerText = Math.floor(count) + (counter.innerText.includes('%') ? '%' : '+');
+
+setTimeout(updateCounter,30);
+
+}else{
+
+counter.innerText = counter.innerText;
+
+}
+
+};
+
+updateCounter();
+
+});
+
+</script>
+
+</body>
+</html>
