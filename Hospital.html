@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>NEXUS HMIS | AI-Powered Smart Hospital Command Center</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0c12;
+            color: #eef2ff;
+            overflow-x: hidden;
+        }
+
+        /* futuristic scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #11161f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2e3a55;
+            border-radius: 10px;
+        }
+
+        /* main layout */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* top header */
+        .command-header {
+            background: rgba(8, 12, 20, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo h1 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #aaffff, #2d9cdb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+        .logo span {
+            font-size: 0.8rem;
+            color: #7f8fa4;
+        }
+        .status-badge {
+            background: #0f212e;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            border-left: 3px solid #0ff;
+            font-size: 0.85rem;
+        }
+
+        /* dashboard grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 1.5rem;
+            padding: 1.8rem 2rem;
+        }
+
+        /* widget cards */
+        .widget-card {
+            background: rgba(18, 24, 34, 0.7);
+            backdrop-filter: blur(4px);
+            border-radius: 28px;
+            border: 1px solid rgba(64, 224, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        .widget-card:hover {
+            border-color: #0ff3;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+        }
+        .card-header {
+            padding: 1.2rem 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(72, 187, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+        }
+        .card-header i {
+            font-size: 1.6rem;
+            color: #0ff;
+        }
+        .card-content {
+            padding: 1.3rem 1.5rem;
+        }
+
+        /* metrics & kpi */
+        .kpi-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        .metric {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: #caf0ff;
+        }
+        .mini-tag {
+            font-size: 0.7rem;
+            background: #1e2a3a;
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+        }
+        .progress-bar {
+            height: 8px;
+            background: #1f2a3e;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 0.7rem 0;
+        }
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #0ff, #2d9cdb);
+            border-radius: 8px;
+        }
+
+        /* tables & lists */
+        .compact-list {
+            list-style: none;
+            font-size: 0.85rem;
+        }
+        .compact-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .badge {
+            background: #0ff1a;
+            padding: 0.2rem 0.7rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+        }
+        .badge-warning {
+            background: #f0b27a30;
+            color: #ffb347;
+        }
+        .badge-success {
+            background: #2ecc7130;
+            color: #2ecc71;
+        }
+        .badge-critical {
+            background: #e74c3c30;
+            color: #ff6b6b;
+        }
+
+        /* row grid for modules compact */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+
+        button {
+            background: none;
+            border: none;
+            color: #0ff;
+            cursor: default;
+        }
+
+        @media (max-width: 780px) {
+            .dashboard-grid {
+                padding: 1rem;
+                gap: 1rem;
+            }
+        }
+        .footer-note {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.7rem;
+            border-top: 1px solid #1e2a3e;
+            margin-top: 1rem;
+        }
+        canvas { max-height: 140px; width: 100%; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="command-header">
+        <div class="logo">
+            <h1>⚡ NEXUS HMIS</h1>
+            <span>AI-Powered Hospital Command Center · ERP v2.0</span>
+        </div>
+        <div class="status-badge">
+            <i class="fas fa-sync-alt" style="font-size: 0.7rem;"></i> LIVE SYNC · 22 MODULES ACTIVE
+        </div>
+    </div>
+
+    <div class="dashboard-grid" id="dashboardRoot">
+        <!-- dynamic widgets will be injected, but we build static for all 20 modules + KPIs -->
+    </div>
+    <div class="footer-note">
+        <i class="fas fa-chart-line"></i> Predictive Healthcare Analytics | Smart AI Insights | HIPAA Ready Command Center
+    </div>
+</div>
+
+<script>
+    // --------------------------------------------------------------
+    // MOCK REAL-TIME DATA ENGINE (futuristic, dynamic values)
+    // --------------------------------------------------------------
+    function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1) + min); }
+    function randomPercent() { return randomInt(45, 98); }
+
+    // Hospital state managers
+    let liveData = {
+        totalPatients: 342,
+        emergencyAlerts: 3,
+        icuOccupancy: 78,
+        availableDoctors: 24,
+        todayAppointments: 187,
+        medicineStockLevel: 64,
+        revenueToday: 89250,
+        patientSatisfaction: 86,
+        bedAvailability: 142,
+        ambulanceStatus: 5,   // active ambulances
+        bloodAvailability: 68,
+        otStatus: 3,          // free OTs
+        performanceIndex: 91,
+        // additional modules specifics
+        labRequestsToday: 104,
+        radiologyPending: 33,
+        inventoryItems: 1240,
+        insuranceClaimsPending: 17
+    };
+
+    // updater for demo animation (live)
+    function refreshDynamicMetrics() {
+        liveData.totalPatients = randomInt(310, 420);
+        liveData.emergencyAlerts = randomInt(1, 5);
+        liveData.icuOccupancy = randomInt(55, 92);
+        liveData.availableDoctors = randomInt(18, 32);
+        liveData.todayAppointments = randomInt(150, 220);
+        liveData.medicineStockLevel = randomInt(40, 88);
+        liveData.revenueToday = randomInt(72000, 125000);
+        liveData.patientSatisfaction = randomInt(74, 96);
+        liveData.bedAvailability = randomInt(110, 190);
+        liveData.ambulanceStatus = randomInt(3, 8);
+        liveData.bloodAvailability = randomInt(55, 85);
+        liveData.otStatus = randomInt(2, 5);
+        liveData.performanceIndex = randomInt(82, 98);
+        liveData.labRequestsToday = randomInt(70, 150);
+        liveData.radiologyPending = randomInt(20, 55);
+        liveData.inventoryItems = randomInt(1100, 1400);
+        liveData.insuranceClaimsPending = randomInt(8, 28);
+        renderAllWidgets();
+    }
+
+    // helper to build each module widget
+    function createModuleCard(icon, title, contentHtml) {
+        const card = document.createElement('div');
+        card.className = 'widget-card';
+        card.innerHTML = `
+            <div class="card-header">
+                <i class="${icon}"></i>
+                <span>${title}</span>
+            </div>
+            <div class="card-content">
+                ${contentHtml}
+            </div>
+        `;
+        return card;
+    }
+
+    // main rendering engine (20 modules + KPI sections combined)
+    function renderAllWidgets() {
+        const container = document.getElementById('dashboardRoot');
+        container.innerHTML = '';
+
+        // 1. Patient Management System (PMS)
+        container.appendChild(createModuleCard('fas fa-users', 'Patient Management System', `
+            <div class="kpi-row"><span>👥 Active Inpatients</span><span class="metric">${randomInt(82, 124)}</span></div>
+            <div class="compact-list"><li>New registrations today: ${randomInt(12, 35)}</li><li>Discharges: ${randomInt(8, 22)}</li><li>Follow-up scheduled: ${randomInt(45, 70)}</li></div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 68%"></div></div>
+            <div><i class="fas fa-chart-line"></i> Patient history records: 3.2k+</div>
+        `));
+
+        // 2. Doctor Management System
+        container.appendChild(createModuleCard('fas fa-user-md', 'Doctor Management', `
+            <div class="two-col"><div><i class="fas fa-stethoscope"></i> Active: ${liveData.availableDoctors}</div><div><i class="fas fa-calendar-alt"></i> On leave: ${randomInt(3,9)}</div></div>
+            <div class="progress-bar mt-1"><div class="progress-fill" style="width: ${randomInt(70,95)}%"></div></div>
+            <div>⭐ Performance avg: 4.8/5 &nbsp;| Online consults: ${randomInt(30,70)} today</div>
+        `));
+
+        // 3. Appointment Management
+        container.appendChild(createModuleCard('fas fa-calendar-check', 'Appointment System', `
+            <div class="metric">${liveData.todayAppointments}</div><div>Today's bookings</div>
+            <div class="compact-list"><li>Queue position (avg): ${randomInt(4,15)} min</li><li>Token issued: ${randomInt(80,210)}</li><li>Doctor availability: ${randomInt(12,28)} slots</li></div>
+        `));
+
+        // 4. EMR (Electronic Medical Records)
+        container.appendChild(createModuleCard('fas fa-folder-medical', 'EMR / Medical Records', `
+            <div><i class="fas fa-database"></i> 14,280 digital records</div>
+            <div class="compact-list"><li>Prescriptions today: ${randomInt(180, 300)}</li><li>Diagnosis records: ${randomInt(70,140)}</li><li>Clinical notes updated: ✅ Live</li></div>
+        `));
+
+        // 5. Laboratory Information System (LIS)
+        container.appendChild(createModuleCard('fas fa-microscope', 'Laboratory LIS', `
+            <div>🩸 Blood tests: ${randomInt(44,98)} | 🧪 Urine: ${randomInt(25,65)}</div>
+            <div>Requests pending: ${randomInt(12,38)}</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: ${randomPercent()}%"></div></div>
+            <div>📊 Analytics: 92% SLA met</div>
+        `));
+
+        // 6. Radiology RIS
+        container.appendChild(createModuleCard('fas fa-x-ray', 'Radiology RIS', `
+            <div class="two-col"><div>X-Ray: ${randomInt(18,45)}</div><div>MRI: ${randomInt(7,22)}</div><div>CT: ${randomInt(9,18)}</div></div>
+            <div>Ultrasound reports: ${randomInt(15,40)} &nbsp; <i class="fas fa-image"></i> Image viewer ready</div>
+        `));
+
+        // 7. Pharmacy Management
+        container.appendChild(createModuleCard('fas fa-capsules', 'Pharmacy Inventory', `
+            <div>Stock level: <span class="metric">${liveData.medicineStockLevel}%</span></div>
+            <div>Expiry monitor: ${randomInt(2,12)} items critical</div>
+            <div>Supplier orders: ${randomInt(4,18)} pending</div>
+        `));
+
+        // 8. Billing & Finance
+        container.appendChild(createModuleCard('fas fa-file-invoice-dollar', 'Billing & Finance', `
+            <div>💰 Today Revenue: $${liveData.revenueToday.toLocaleString()}</div>
+            <div>Insurance claims: ${randomInt(12,46)} pending &nbsp;| Payments tracked: $${randomInt(30000,90000)}</div>
+            <canvas id="revenueMiniChart" height="50"></canvas>
+        `));
+
+        // 9. ICU Monitoring System
+        container.appendChild(createModuleCard('fas fa-heartbeat', 'ICU Command', `
+            <div>Occupancy: <span class="metric">${liveData.icuOccupancy}%</span> (${Math.round(liveData.icuOccupancy/100*28)}/28 beds)</div>
+            <div>🫀 Heart rate avg: ${randomInt(72,98)} bpm &nbsp;💨 O2 Sat: ${randomInt(88,100)}%</div>
+            <div>Ventilators used: ${randomInt(8,22)} | Live dashboard active</div>
+        `));
+
+        // 10. Emergency Department
+        container.appendChild(createModuleCard('fas fa-ambulance', 'Emergency Dept', `
+            <div>🚨 Active alerts: <span class="badge-critical">${liveData.emergencyAlerts}</span></div>
+            <div>Trauma cases today: ${randomInt(11,33)} &nbsp; Response center: 92% critical</div>
+            <div>Avg response time: ${randomInt(4,11)} min</div>
+        `));
+
+        // 11. Ambulance Management
+        container.appendChild(createModuleCard('fas fa-truck-medical', 'Ambulance Fleet', `
+            <div>🚑 Live ambulances: ${liveData.ambulanceStatus}</div>
+            <div>Driver assigned: ${randomInt(4,9)} &nbsp; Emergency dispatch: ${randomInt(2,8)} en route</div>
+            <div>Response time avg: ${randomInt(5,14)} min &nbsp; <i class="fas fa-map-marked-alt"></i> route monitoring</div>
+        `));
+
+        // 12. Operation Theatre
+        container.appendChild(createModuleCard('fas fa-procedures', 'OT Management', `
+            <div>Free OTs: ${liveData.otStatus} / 8 &nbsp; Surgeries today: ${randomInt(6,19)}</div>
+            <div>Surgical team: Dr. ${['Arora','Mehta','Sharma'][randomInt(0,2)]} + team</div>
+            <div>Recovery occupancy: ${randomInt(40,80)}%</div>
+        `));
+
+        // 13. Bed Management
+        container.appendChild(createModuleCard('fas fa-bed', 'Bed Management', `
+            <div>Available Beds: <span class="metric">${liveData.bedAvailability}</span> | Occupied: ${randomInt(240,310)}</div>
+            <div>ICU beds free: ${randomInt(4,12)} &nbsp; Ward allocation active</div>
+        `));
+
+        // 14. Nursing Management
+        container.appendChild(createModuleCard('fas fa-hand-holding-heart', 'Nursing', `
+            <div>Nurses on duty: ${randomInt(38,72)} &nbsp; Shift rostering: morning ${randomInt(24,40)}</div>
+            <div>Medication tracking: ${randomInt(110,240)} doses given</div>
+        `));
+
+        // 15. Blood Bank
+        container.appendChild(createModuleCard('fas fa-tint', 'Blood Bank', `
+            <div>🩸 Stock: ${liveData.bloodAvailability}% &nbsp; A+ : ${randomInt(18,45)} units</div>
+            <div>Donors registered today: ${randomInt(3,16)} &nbsp; Requests: ${randomInt(5,22)}</div>
+            <div class="progress-fill" style="width: ${liveData.bloodAvailability}%; height:4px; background:#ff4d4d;"></div>
+        `));
+
+        // 16. Insurance Management
+        container.appendChild(createModuleCard('fas fa-shield-alt', 'Insurance', `
+            <div>Providers: ${randomInt(6,14)} &nbsp; Claims pending: ${liveData.insuranceClaimsPending}</div>
+            <div>Approval rate: ${randomInt(72,94)}% &nbsp; Reports ready</div>
+        `));
+
+        // 17. HR & Staff
+        container.appendChild(createModuleCard('fas fa-id-card', 'HR & Staff', `
+            <div>👨‍⚕️ Doctors: ${randomInt(45,68)} &nbsp; Nurses: ${randomInt(110,180)} &nbsp; Technicians: ${randomInt(32,55)}</div>
+            <div>Payroll this month: $${randomInt(420000,680000)} &nbsp; Shift schedule active</div>
+        `));
+
+        // 18. Hospital Inventory
+        container.appendChild(createModuleCard('fas fa-cubes', 'Inventory Mgmt', `
+            <div>📦 Equipment count: ${liveData.inventoryItems}</div>
+            <div>Assets tracking: 98% uptime &nbsp; Purchase orders: ${randomInt(8,23)}</div>
+        `));
+
+        // 19. AI Healthcare Analytics Center
+        container.appendChild(createModuleCard('fas fa-brain', 'AI Analytics', `
+            <div>📈 Patient statistics: +12% YoY &nbsp; Disease forecast: Flu season moderate</div>
+            <div>Department perf: Cardiology ⭐ &nbsp; AI Suggestion: Optimize OT utilization</div>
+            <div>Predictive insight: Bed shortage in 4h? Probability 22%</div>
+        `));
+
+        // 20. Admin Command Center
+        container.appendChild(createModuleCard('fas fa-crown', 'Admin Command', `
+            <div>System health: 99.97% uptime &nbsp; Audit logs: ${randomInt(340,820)} events today</div>
+            <div>User roles: 12 active &nbsp; Access control: HIPAA enforced</div>
+            <div>Hospital KPI index: <span class="metric">${liveData.performanceIndex}</span> / 100 🚀</div>
+        `));
+
+        // ---------------- ADVANCED DASHBOARD WIDGETS (special live row)
+        const extraWidget = document.createElement('div');
+        extraWidget.className = 'widget-card';
+        extraWidget.style.gridColumn = 'span 2';
+        extraWidget.innerHTML = `
+            <div class="card-header"><i class="fas fa-chart-simple"></i> 🧠 SMART HOSPITAL COMMAND WIDGETS · LIVE INDEX</div>
+            <div class="card-content">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 1rem;">
+                    <div><i class="fas fa-users"></i> Patients: ${liveData.totalPatients}</div>
+                    <div><i class="fas fa-bell"></i> Emergency: ${liveData.emergencyAlerts}</div>
+                    <div><i class="fas fa-bed"></i> ICU occ: ${liveData.icuOccupancy}%</div>
+                    <div><i class="fas fa-user-md"></i> Doctors avail: ${liveData.availableDoctors}</div>
+                    <div><i class="fas fa-calendar-day"></i> Appointments: ${liveData.todayAppointments}</div>
+                    <div><i class="fas fa-pills"></i> Medicine stock: ${liveData.medicineStockLevel}%</div>
+                    <div><i class="fas fa-chart-line"></i> Revenue: $${(liveData.revenueToday/1000).toFixed(0)}k</div>
+                    <div><i class="fas fa-smile"></i> Satisfaction: ${liveData.patientSatisfaction}%</div>
+                    <div><i class="fas fa-robot"></i> AI Health Insight: reduce wait time</div>
+                    <div><i class="fas fa-procedures"></i> Bed free: ${liveData.bedAvailability}</div>
+                    <div><i class="fas fa-truck"></i> Ambulance active: ${liveData.ambulanceStatus}</div>
+                    <div><i class="fas fa-droplet"></i> Blood bank: ${liveData.bloodAvailability}%</div>
+                    <div><i class="fas fa-scalpel"></i> OT free: ${liveData.otStatus}</div>
+                    <div><i class="fas fa-chart-simple"></i> Hospital Perf: ${liveData.performanceIndex}</div>
+                </div>
+                <div class="progress-bar mt-2"><div class="progress-fill" style="width: ${liveData.performanceIndex}%"></div></div>
+                <div class="mt-1"><i class="fas fa-microchip"></i> Predictive Analytics: Emergency load expected normal &nbsp; | &nbsp; AI recommendation: schedule extra nursing shift tonight</div>
+            </div>
+        `;
+        container.appendChild(extraWidget);
+
+        // small chart for billing preview (draw mini revenue graph)
+        const canvasElem = document.getElementById('revenueMiniChart');
+        if (canvasElem) {
+            const ctx = canvasElem.getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: { labels: ['Mon','Tue','Wed','Thu','Fri'], datasets: [{ label: 'Revenue (k$)', data: [45, 62, 78, 89, (liveData.revenueToday/1000).toFixed(0)], borderColor: '#0ff', tension: 0.3, fill: false, pointBackgroundColor: '#0ff' }] },
+                options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { labels: { color: '#ccc' } } } }
+            });
+        }
+    }
+
+    // additional live micro-interval updates for all module numbers
+    let refreshInterval;
+    function startLiveUpdates() {
+        refreshDynamicMetrics();
+        refreshInterval = setInterval(() => {
+            refreshDynamicMetrics();
+        }, 8500);
+    }
+
+    // initial charts after DOM ready also for any potential extra charts inside modules
+    window.addEventListener('load', () => {
+        startLiveUpdates();
+        // additional manual for custom chart if any radiology image - just decoration
+    });
+</script>
+</body>
+</html>
