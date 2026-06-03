@@ -2,439 +2,757 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FoodHub Restaurant</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>FoodHub Restaurant | Fresh & Fast Delivery</title>
 
+<!-- Bootstrap 5 + Icons + AOS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body{
-background:#0f172a;
-color:#fff;
-font-family:Arial,sans-serif;
-overflow-x:hidden;
+body {
+  background: #0f172a;
+  color: #f1f5f9;
+  font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+  scroll-behavior: smooth;
 }
 
-.navbar{
-backdrop-filter:blur(15px);
-background:rgba(0,0,0,.4);
+/* navbar glass */
+.navbar {
+  backdrop-filter: blur(16px);
+  background: rgba(2, 6, 23, 0.75);
+  transition: all 0.3s;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
-.hero{
-min-height:100vh;
-display:flex;
-align-items:center;
-background:linear-gradient(135deg,#0f172a,#1e293b);
+.navbar-brand {
+  font-size: 1.8rem;
+  letter-spacing: -0.5px;
 }
 
-.hero img{
-width:100%;
-border-radius:20px;
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(125deg, #0f172a 0%, #1e293b 100%);
+  padding-top: 80px;
 }
 
-.section-title{
-text-align:center;
-margin-bottom:50px;
-font-weight:700;
+.hero img {
+  width: 100%;
+  border-radius: 32px;
+  box-shadow: 0 25px 40px -12px rgba(0,0,0,0.5);
+  transition: transform 0.4s ease;
 }
 
-.category-card{
-background:#1e293b;
-padding:25px;
-border-radius:15px;
-text-align:center;
-transition:.4s;
-cursor:pointer;
+.hero img:hover {
+  transform: scale(1.02);
 }
 
-.category-card:hover{
-transform:translateY(-8px);
+.section-title {
+  text-align: center;
+  margin-bottom: 3rem;
+  font-weight: 800;
+  font-size: 2.5rem;
+  position: relative;
+  display: inline-block;
+  width: 100%;
 }
 
-.product-card{
-background:#1e293b;
-border:none;
-border-radius:20px;
-overflow:hidden;
-transition:.4s;
-height:100%;
+.section-title:after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, #f59e0b, #ef4444);
+  margin: 12px auto 0;
+  border-radius: 4px;
 }
 
-.product-card:hover{
-transform:translateY(-10px);
+/* category cards */
+.category-card {
+  background: #1e293b;
+  padding: 1.8rem 1rem;
+  border-radius: 28px;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
-.product-card img{
-height:220px;
-object-fit:cover;
+.category-card:hover {
+  transform: translateY(-8px);
+  background: #2d3a4e;
+  border-color: #f59e0b;
 }
 
-.offer{
-background:linear-gradient(45deg,#f59e0b,#ef4444);
-padding:40px;
-border-radius:20px;
-text-align:center;
+.category-card.active {
+  background: #f59e0b;
+  color: #0f172a;
+  box-shadow: 0 12px 24px rgba(245,158,11,0.3);
 }
 
-.stats{
-background:#111827;
+.category-card i {
+  font-size: 2.6rem;
+  margin-bottom: 12px;
 }
 
-.stat-box{
-text-align:center;
-padding:30px;
+/* product cards */
+.product-card {
+  background: #1e293b;
+  border: none;
+  border-radius: 28px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  height: 100%;
+  backdrop-filter: blur(2px);
+  box-shadow: 0 12px 24px -12px rgba(0,0,0,0.4);
 }
 
-footer{
-background:#020617;
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 36px -12px rgba(0,0,0,0.5);
 }
 
-.cart-btn{
-position:fixed;
-right:20px;
-bottom:20px;
-z-index:999;
+.product-card img {
+  height: 210px;
+  object-fit: cover;
+  transition: transform 0.5s;
 }
 
-#cartCount{
-position:absolute;
-top:-8px;
-right:-8px;
-background:red;
-width:22px;
-height:22px;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:12px;
+.product-card:hover img {
+  transform: scale(1.05);
 }
 
-.back-top{
-position:fixed;
-bottom:90px;
-right:20px;
-display:none;
+.card-body h5 {
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.price {
+  font-weight: 700;
+  color: #facc15;
+  font-size: 1.4rem;
+  margin: 12px 0;
+}
+
+.btn-warning {
+  background: #f59e0b;
+  border: none;
+  font-weight: 600;
+  border-radius: 40px;
+  padding: 8px 0;
+  transition: 0.2s;
+}
+
+.btn-warning:hover {
+  background: #eab308;
+  transform: scale(0.97);
+}
+
+.offer {
+  background: linear-gradient(115deg, #f97316, #dc2626);
+  border-radius: 42px;
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: 0 20px 30px -12px rgba(220,38,38,0.4);
+}
+
+.stats {
+  background: #0b1120;
+}
+
+.stat-box h2 {
+  font-weight: 800;
+  font-size: 2.5rem;
+  background: linear-gradient(135deg,#facc15,#f97316);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+footer {
+  background: #020617;
+  border-top: 1px solid #1e293b;
+}
+
+/* cart floating button */
+.cart-btn {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1060;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #f59e0b;
+  border: none;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+  transition: 0.2s;
+}
+
+.cart-btn:hover {
+  background: #eab308;
+  transform: scale(1.05);
+}
+
+#cartCount {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #ef4444;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: bold;
+  border: 2px solid white;
+}
+
+.back-top {
+  position: fixed;
+  bottom: 100px;
+  right: 24px;
+  width: 46px;
+  height: 46px;
+  border-radius: 30px;
+  background: #1e293b;
+  color: white;
+  border: none;
+  display: none;
+  z-index: 1050;
+  box-shadow: 0 4px 12px black;
+}
+
+.back-top:hover {
+  background: #f59e0b;
+  color: #0f172a;
+}
+
+/* cart modal custom */
+.modal-content {
+  background: #111827;
+  border-radius: 32px;
+  border: 1px solid #334155;
+}
+
+.modal-header, .modal-footer {
+  border-color: #334155;
+}
+
+.cart-item-img {
+  width: 55px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.cart-item-name {
+  font-weight: 600;
+}
+
+.quantity-btn {
+  background: #1f2a3e;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 12px;
+  color: white;
+}
+
+.remove-item {
+  color: #f97316;
+  cursor: pointer;
+}
+
+.form-control, .form-control:focus, textarea:focus {
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: white;
+}
+
+.form-control::placeholder {
+  color: #94a3b8;
+}
+
+@media (max-width: 768px) {
+  .hero .display-3 {
+    font-size: 2.4rem;
+  }
+  .section-title {
+    font-size: 1.9rem;
+  }
 }
 </style>
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-<div class="container">
-<a class="navbar-brand fw-bold" href="#">
-🍔 FoodHub
-</a>
-
-<button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
-<span class="navbar-toggler-icon"></span>
-</button>
-
-<div class="collapse navbar-collapse" id="nav">
-<ul class="navbar-nav ms-auto">
-
-<li class="nav-item">
-<a class="nav-link" href="#home">Home</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link" href="#categories">Categories</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link" href="#menu">Menu</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link" href="#offers">Offers</a>
-</li>
-
-<li class="nav-item">
-<a class="nav-link" href="#contact">Contact</a>
-</li>
-
-</ul>
-</div>
-</div>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top py-2">
+  <div class="container">
+    <a class="navbar-brand fw-bold fs-2" href="#">
+      🍔 FoodHub
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ms-auto gap-2">
+        <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#categories">Categories</a></li>
+        <li class="nav-item"><a class="nav-link" href="#menu">Menu</a></li>
+        <li class="nav-item"><a class="nav-link" href="#offers">Offers</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
 </nav>
 
-<!-- Hero -->
+<!-- HERO SECTION -->
 <section class="hero" id="home">
-<div class="container">
-<div class="row align-items-center">
-
-<div class="col-lg-6" data-aos="fade-right">
-<h1 class="display-3 fw-bold">
-Delicious Food Delivered Fast
-</h1>
-
-<p class="lead mt-3">
-Order your favorite meals online and enjoy restaurant-quality food at home.
-</p>
-
-<button class="btn btn-warning btn-lg me-2">
-Order Now
-</button>
-
-<button class="btn btn-outline-light btn-lg">
-View Menu
-</button>
-</div>
-
-<div class="col-lg-6 text-center" data-aos="zoom-in">
-<img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1000" alt="">
-</div>
-
-</div>
-</div>
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6" data-aos="fade-right">
+        <h1 class="display-3 fw-bold">Taste the <span style="color:#facc15;">Crave</span><br>Delivered Fast</h1>
+        <p class="lead mt-3 text-secondary-emphasis">Premium ingredients, chef-inspired recipes, and lightning delivery — straight to your door.</p>
+        <button class="btn btn-warning btn-lg px-4 me-3 mt-2" id="scrollToMenuBtn">Order Now</button>
+        <button class="btn btn-outline-light btn-lg px-4 mt-2" id="exploreMenuBtn">Explore Menu</button>
+      </div>
+      <div class="col-lg-6 text-center" data-aos="zoom-in">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1000" alt="Delicious feast" class="img-fluid">
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- Categories -->
+<!-- CATEGORIES (dynamic filter) -->
 <section class="py-5" id="categories">
-<div class="container">
-
-<h2 class="section-title">
-Food Categories
-</h2>
-
-<div class="row g-4">
-
-<div class="col-md-3">
-<div class="category-card">
-<i class="fa-solid fa-pizza-slice fa-3x mb-3"></i>
-<h5>Pizza</h5>
-</div>
-</div>
-
-<div class="col-md-3">
-<div class="category-card">
-<i class="fa-solid fa-burger fa-3x mb-3"></i>
-<h5>Burger</h5>
-</div>
-</div>
-
-<div class="col-md-3">
-<div class="category-card">
-<i class="fa-solid fa-drumstick-bite fa-3x mb-3"></i>
-<h5>Chicken</h5>
-</div>
-</div>
-
-<div class="col-md-3">
-<div class="category-card">
-<i class="fa-solid fa-ice-cream fa-3x mb-3"></i>
-<h5>Desserts</h5>
-</div>
-</div>
-
-</div>
-</div>
+  <div class="container">
+    <h2 class="section-title">Discover Categories</h2>
+    <div class="row g-4 justify-content-center" id="categoriesContainer"></div>
+  </div>
 </section>
 
-<!-- Menu -->
+<!-- MENU SECTION (Dynamic dishes) -->
 <section class="py-5" id="menu">
-<div class="container">
-
-<h2 class="section-title">
-Popular Dishes
-</h2>
-
-<div class="row" id="productsContainer"></div>
-
-</div>
+  <div class="container">
+    <h2 class="section-title">🔥 Popular Dishes</h2>
+    <div class="row g-4" id="productsContainer"></div>
+  </div>
 </section>
 
-<!-- Offer -->
+<!-- OFFER BANNER -->
 <section class="py-5" id="offers">
-<div class="container">
-
-<div class="offer">
-<h2>🔥 50% OFF This Weekend</h2>
-<p>Use Coupon: FOOD50</p>
-<button class="btn btn-dark">
-Claim Offer
-</button>
-</div>
-
-</div>
+  <div class="container">
+    <div class="offer" data-aos="flip-up">
+      <h2><i class="fa-solid fa-fire-flame-curved"></i> 50% OFF This Weekend</h2>
+      <p class="fs-5">Use promo code: <strong class="bg-dark px-3 py-1 rounded-pill">FOOD50</strong> & enjoy half price on orders above $20</p>
+      <button class="btn btn-dark btn-lg mt-2" id="claimOfferBtn">Claim Offer →</button>
+    </div>
+  </div>
 </section>
 
-<!-- Stats -->
+<!-- STATS -->
 <section class="stats py-5">
-<div class="container">
-<div class="row">
-
-<div class="col-md-3">
-<div class="stat-box">
-<h2>10K+</h2>
-<p>Customers</p>
-</div>
-</div>
-
-<div class="col-md-3">
-<div class="stat-box">
-<h2>50K+</h2>
-<p>Orders</p>
-</div>
-</div>
-
-<div class="col-md-3">
-<div class="stat-box">
-<h2>100+</h2>
-<p>Dishes</p>
-</div>
-</div>
-
-<div class="col-md-3">
-<div class="stat-box">
-<h2>4.9★</h2>
-<p>Rating</p>
-</div>
-</div>
-
-</div>
-</div>
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-3"><div class="stat-box"><h2>10K+</h2><p>Happy Customers</p></div></div>
+      <div class="col-md-3"><div class="stat-box"><h2>50K+</h2><p>Orders Completed</p></div></div>
+      <div class="col-md-3"><div class="stat-box"><h2>100+</h2><p>Signature Dishes</p></div></div>
+      <div class="col-md-3"><div class="stat-box"><h2>4.9★</h2><p>User Rating</p></div></div>
+    </div>
+  </div>
 </section>
 
-<!-- Contact -->
+<!-- CONTACT -->
 <section class="py-5" id="contact">
-<div class="container">
-
-<h2 class="section-title">
-Contact Us
-</h2>
-
-<div class="row">
-
-<div class="col-md-6">
-<input class="form-control mb-3" placeholder="Name">
-<input class="form-control mb-3" placeholder="Email">
-<textarea class="form-control" rows="5" placeholder="Message"></textarea>
-<button class="btn btn-warning mt-3">
-Send Message
-</button>
-</div>
-
-<div class="col-md-6">
-<iframe
-width="100%"
-height="350"
-style="border-radius:20px"
-src="https://maps.google.com/maps?q=lahore&t=&z=13&ie=UTF8&iwloc=&output=embed">
-</iframe>
-</div>
-
-</div>
-
-</div>
+  <div class="container">
+    <h2 class="section-title">Get In Touch</h2>
+    <div class="row g-5">
+      <div class="col-md-6">
+        <input type="text" class="form-control mb-3" placeholder="Your Name" id="contactName">
+        <input type="email" class="form-control mb-3" placeholder="Email Address" id="contactEmail">
+        <textarea class="form-control" rows="5" placeholder="Message / Special request..." id="contactMsg"></textarea>
+        <button class="btn btn-warning mt-3 px-5" id="sendMsgBtn">Send Message</button>
+      </div>
+      <div class="col-md-6">
+        <iframe width="100%" height="320" style="border-radius: 28px; border:0;" src="https://maps.google.com/maps?q=New%20York%20Times%20Square&t=&z=14&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
 </section>
 
 <footer class="py-4 text-center">
-<p>© 2026 FoodHub Restaurant. All Rights Reserved.</p>
+  <p class="mb-0">© 2026 FoodHub Restaurant. All rights reserved. <i class="fa-regular fa-heart text-warning"></i> Fresh & Fast</p>
 </footer>
 
-<!-- Floating Cart -->
-<button class="btn btn-warning rounded-circle cart-btn">
-<i class="fa-solid fa-cart-shopping"></i>
-<span id="cartCount">0</span>
+<!-- FLOATING CART BUTTON -->
+<button class="btn cart-btn" id="cartFloatBtn">
+  <i class="fa-solid fa-bag-shopping fa-xl"></i>
+  <span id="cartCount">0</span>
 </button>
+<button class="btn back-top" id="backTopBtn"><i class="fa-solid fa-arrow-up"></i></button>
 
-<button class="btn btn-light back-top" id="backTop">
-↑
-</button>
+<!-- CART MODAL -->
+<div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title fs-2 fw-bold"><i class="fa-solid fa-cart-shopping text-warning"></i> Your Cart</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="cartItemsList">
+        <div class="text-center py-4 text-muted">Your cart is empty 🍽️</div>
+      </div>
+      <div class="modal-footer d-flex justify-content-between align-items-center">
+        <div><strong class="fs-4">Total: $<span id="cartTotalPrice">0.00</span></strong></div>
+        <div>
+          <button class="btn btn-outline-secondary" id="clearCartBtn">Clear all</button>
+          <button class="btn btn-warning ms-2 px-4" id="checkoutBtn">Checkout 🚀</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
 <script>
-AOS.init({
-duration:1000,
-once:true
-});
+  // ---------- MENU DATA (authentic food) ----------
+  const menuItems = [
+    { id: 1, name: "Margherita Pizza", price: 12.99, category: "Pizza", image: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?w=500" },
+    { id: 2, name: "Classic Cheeseburger", price: 9.99, category: "Burger", image: "https://images.unsplash.com/photo-1551782450-17144efb9c50?w=500" },
+    { id: 3, name: "Spicy Chicken Wings", price: 11.49, category: "Chicken", image: "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=500" },
+    { id: 4, name: "Truffle Fries", price: 5.99, category: "Burger", image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500" },
+    { id: 5, name: "Molten Chocolate Cake", price: 7.49, category: "Desserts", image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500" },
+    { id: 6, name: "Pepperoni Feast Pizza", price: 14.99, category: "Pizza", image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=500" },
+    { id: 7, name: "Double Smash Burger", price: 13.49, category: "Burger", image: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=500" },
+    { id: 8, name: "Honey BBQ Wings", price: 12.79, category: "Chicken", image: "https://images.unsplash.com/photo-1604909052743-94e3cc556247?w=500" },
+    { id: 9, name: "Classic Tiramisu", price: 6.99, category: "Desserts", image: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=500" },
+    { id: 10, name: "Veggie Supreme Pizza", price: 13.49, category: "Pizza", image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500" },
+    { id: 11, name: "Crunchy Fried Chicken", price: 10.99, category: "Chicken", image: "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=500" },
+    { id: 12, name: "Strawberry Cheesecake", price: 8.29, category: "Desserts", image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=500" }
+  ];
 
-let cart = [];
+  // categories + "All"
+  const categories = ["All", "Pizza", "Burger", "Chicken", "Desserts"];
+  let activeCategory = "All";
+  
+  // Cart state: { id, name, price, quantity, image }
+  let cart = [];
 
-async function loadProducts(){
-
-const res = await fetch(
-"https://dummyjson.com/products"
-);
-
-const data = await res.json();
-
-const products = data.products.slice(0,8);
-
-const container =
-document.getElementById("productsContainer");
-
-container.innerHTML = products.map(product => `
-<div class="col-lg-3 col-md-6 mb-4">
-
-<div class="card product-card">
-
-<img src="${product.thumbnail}" class="card-img-top">
-
-<div class="card-body">
-
-<h5>${product.title}</h5>
-
-<p>$${product.price}</p>
-
-<button
-class="btn btn-warning w-100"
-onclick="addToCart('${product.title}')">
-Add To Cart
-</button>
-
-</div>
-
-</div>
-
-</div>
-`).join("");
-
-}
-
-function addToCart(product){
-
-cart.push(product);
-
-document.getElementById("cartCount")
-.innerText = cart.length;
-
-}
-
-loadProducts();
-
-const backTop =
-document.getElementById("backTop");
-
-window.addEventListener("scroll",()=>{
-
-if(window.scrollY > 300){
-backTop.style.display="block";
-}else{
-backTop.style.display="none";
-}
-
-});
-
-backTop.onclick=()=>{
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-};
+  // DOM elements
+  const productsContainer = document.getElementById("productsContainer");
+  const categoriesContainer = document.getElementById("categoriesContainer");
+  const cartCountSpan = document.getElementById("cartCount");
+  const cartModalBody = document.getElementById("cartItemsList");
+  const cartTotalSpan = document.getElementById("cartTotalPrice");
+  const cartFloatBtn = document.getElementById("cartFloatBtn");
+  const clearCartBtn = document.getElementById("clearCartBtn");
+  const checkoutBtn = document.getElementById("checkoutBtn");
+  
+  let cartModalInstance;
+  
+  // Helper: save to localStorage
+  function saveCart() {
+    localStorage.setItem("foodhub_cart", JSON.stringify(cart));
+    updateCartBadge();
+  }
+  
+  function loadCartFromStorage() {
+    const stored = localStorage.getItem("foodhub_cart");
+    if (stored) {
+      cart = JSON.parse(stored);
+    } else {
+      cart = [];
+    }
+    updateCartBadge();
+  }
+  
+  function updateCartBadge() {
+    const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+    cartCountSpan.innerText = totalQty;
+  }
+  
+  // render cart modal UI
+  function renderCartModal() {
+    if (!cartModalBody) return;
+    if (cart.length === 0) {
+      cartModalBody.innerHTML = `<div class="text-center py-5 text-muted"><i class="fa-regular fa-circle-xmark fa-2x mb-3"></i><p>Your cart is empty</p></div>`;
+      cartTotalSpan.innerText = "0.00";
+      return;
+    }
+    
+    let total = 0;
+    let html = `<div class="list-group list-group-flush bg-transparent">`;
+    cart.forEach((item, idx) => {
+      const itemTotal = item.price * item.quantity;
+      total += itemTotal;
+      html += `
+        <div class="list-group-item bg-transparent text-white border-secondary mb-2 rounded-3">
+          <div class="row align-items-center">
+            <div class="col-3 col-md-2">
+              <img src="${item.image}" class="cart-item-img w-100" style="height:60px; object-fit:cover; border-radius: 16px;" alt="${item.name}">
+            </div>
+            <div class="col-5 col-md-5">
+              <div class="cart-item-name">${item.name}</div>
+              <small class="text-warning">$${item.price.toFixed(2)}</small>
+            </div>
+            <div class="col-4 col-md-5 d-flex align-items-center justify-content-end gap-2">
+              <button class="quantity-btn dec-qty" data-id="${item.id}">−</button>
+              <span class="mx-1 fw-bold" style="min-width: 28px; text-align:center;">${item.quantity}</span>
+              <button class="quantity-btn inc-qty" data-id="${item.id}">+</button>
+              <i class="fa-regular fa-trash-can remove-item ms-2" data-id="${item.id}" style="cursor:pointer; font-size: 1.2rem;"></i>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    html += `</div>`;
+    cartModalBody.innerHTML = html;
+    cartTotalSpan.innerText = total.toFixed(2);
+    
+    // attach events inside modal
+    document.querySelectorAll(".dec-qty").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        const id = parseInt(btn.getAttribute("data-id"));
+        updateQuantity(id, -1);
+        renderCartModal();
+        renderMenuCards(); // refresh add-to-cart buttons state optional but keeps consistency
+      });
+    });
+    document.querySelectorAll(".inc-qty").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        const id = parseInt(btn.getAttribute("data-id"));
+        updateQuantity(id, 1);
+        renderCartModal();
+        renderMenuCards();
+      });
+    });
+    document.querySelectorAll(".remove-item").forEach(icon => {
+      icon.addEventListener("click", (e) => {
+        const id = parseInt(icon.getAttribute("data-id"));
+        removeFromCartById(id);
+        renderCartModal();
+        renderMenuCards();
+        saveCart();
+      });
+    });
+  }
+  
+  function updateQuantity(id, delta) {
+    const index = cart.findIndex(i => i.id === id);
+    if (index !== -1) {
+      const newQty = cart[index].quantity + delta;
+      if (newQty <= 0) {
+        cart.splice(index, 1);
+      } else {
+        cart[index].quantity = newQty;
+      }
+      saveCart();
+      updateCartBadge();
+    }
+  }
+  
+  function removeFromCartById(id) {
+    cart = cart.filter(item => item.id !== id);
+    saveCart();
+    updateCartBadge();
+  }
+  
+  function addToCart(product) {
+    const existing = cart.find(item => item.id === product.id);
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      cart.push({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: 1,
+        image: product.image
+      });
+    }
+    saveCart();
+    updateCartBadge();
+    // optional visual feedback
+    const btn = document.querySelector(`button[data-add-id='${product.id}']`);
+    if(btn) {
+      btn.innerText = "✓ Added!";
+      setTimeout(() => {
+        if(btn) btn.innerText = "Add to Cart";
+      }, 800);
+    }
+  }
+  
+  function clearCart() {
+    cart = [];
+    saveCart();
+    updateCartBadge();
+    renderCartModal();
+    renderMenuCards();
+  }
+  
+  // Render menu cards based on active category
+  function renderMenuCards() {
+    let filteredItems = menuItems;
+    if (activeCategory !== "All") {
+      filteredItems = menuItems.filter(item => item.category === activeCategory);
+    }
+    if (filteredItems.length === 0) {
+      productsContainer.innerHTML = `<div class="col-12 text-center py-5"><h4>No dishes in this category 😢</h4></div>`;
+      return;
+    }
+    const cartIds = cart.map(c => c.id);
+    productsContainer.innerHTML = filteredItems.map(item => `
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="50">
+        <div class="card product-card h-100">
+          <img src="${item.image}" class="card-img-top" alt="${item.name}" loading="lazy">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">${item.name}</h5>
+            <div class="price mt-1">$${item.price.toFixed(2)}</div>
+            <button class="btn btn-warning w-100 mt-2 add-to-cart-btn" data-add-id="${item.id}" data-name="${item.name}" data-price="${item.price}" data-img="${item.image}">
+              <i class="fa-solid fa-cart-plus me-1"></i> Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    `).join("");
+    
+    // Attach add-to-cart events
+    document.querySelectorAll(".add-to-cart-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        const id = parseInt(btn.getAttribute("data-add-id"));
+        const name = btn.getAttribute("data-name");
+        const price = parseFloat(btn.getAttribute("data-price"));
+        const image = btn.getAttribute("data-img");
+        addToCart({ id, name, price, image });
+        renderCartModal();  // update modal if open (doesn't matter)
+      });
+    });
+  }
+  
+  // Render category chips
+  function renderCategories() {
+    categoriesContainer.innerHTML = categories.map(cat => `
+      <div class="col-md-2 col-6">
+        <div class="category-card ${activeCategory === cat ? 'active' : ''}" data-category="${cat}">
+          <i class="${getCatIcon(cat)}"></i>
+          <h5 class="mt-2 mb-0">${cat}</h5>
+        </div>
+      </div>
+    `).join("");
+    
+    document.querySelectorAll(".category-card").forEach(card => {
+      card.addEventListener("click", (e) => {
+        const category = card.getAttribute("data-category");
+        activeCategory = category;
+        renderCategories();
+        renderMenuCards();
+        // smooth scroll to menu section
+        document.getElementById("menu").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+  }
+  
+  function getCatIcon(cat) {
+    switch(cat) {
+      case "All": return "fa-solid fa-utensils";
+      case "Pizza": return "fa-solid fa-pizza-slice";
+      case "Burger": return "fa-solid fa-burger";
+      case "Chicken": return "fa-solid fa-drumstick-bite";
+      case "Desserts": return "fa-solid fa-ice-cream";
+      default: return "fa-solid fa-circle-info";
+    }
+  }
+  
+  // Initialize all
+  function init() {
+    AOS.init({ duration: 800, once: true });
+    loadCartFromStorage();
+    renderCategories();
+    renderMenuCards();
+    if (cart.length > 0) renderCartModal();
+    
+    // floating cart button open modal
+    cartFloatBtn.addEventListener("click", () => {
+      renderCartModal();
+      const modalEl = document.getElementById("cartModal");
+      cartModalInstance = new bootstrap.Modal(modalEl);
+      cartModalInstance.show();
+    });
+    
+    clearCartBtn.addEventListener("click", () => {
+      clearCart();
+      renderCartModal();
+      renderMenuCards();
+    });
+    
+    checkoutBtn.addEventListener("click", () => {
+      if (cart.length === 0) {
+        alert("Your cart is empty! Add some delicious food 😋");
+        return;
+      }
+      const total = cart.reduce((s,i)=> s + (i.price * i.quantity),0).toFixed(2);
+      alert(`✅ Order placed successfully! Total: $${total}. Thank you for ordering from FoodHub!`);
+      clearCart();
+      renderCartModal();
+      renderMenuCards();
+      if(cartModalInstance) cartModalInstance.hide();
+    });
+    
+    // scroll to menu buttons
+    document.getElementById("scrollToMenuBtn")?.addEventListener("click", () => {
+      document.getElementById("menu").scrollIntoView({ behavior: "smooth" });
+    });
+    document.getElementById("exploreMenuBtn")?.addEventListener("click", () => {
+      document.getElementById("menu").scrollIntoView({ behavior: "smooth" });
+    });
+    document.getElementById("claimOfferBtn")?.addEventListener("click", () => {
+      alert("🔥 Use code FOOD50 at checkout! 50% off on orders above $20.");
+    });
+    
+    // contact form simulation
+    document.getElementById("sendMsgBtn")?.addEventListener("click", () => {
+      const name = document.getElementById("contactName")?.value.trim();
+      if(name) alert(`Thanks ${name}! Our team will reach out within 24h.`);
+      else alert("Please leave your name & message 😊");
+    });
+    
+    // back to top
+    const backBtn = document.getElementById("backTopBtn");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 400) backBtn.style.display = "flex";
+      else backBtn.style.display = "none";
+    });
+    backBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+    
+    // navbar links smooth
+    document.querySelectorAll(".nav-link").forEach(link => {
+      link.addEventListener("click", function(e) {
+        const targetId = this.getAttribute("href");
+        if(targetId && targetId !== "#") {
+          e.preventDefault();
+          const targetEl = document.querySelector(targetId);
+          if(targetEl) targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    });
+  }
+  
+  init();
 </script>
-
 </body>
 </html>
