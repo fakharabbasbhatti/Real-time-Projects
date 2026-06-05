@@ -4,691 +4,354 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RoyalCoach — Luxury Bus Travel</title>
-  <meta name="description" content="Pakistan's most premium bus travel experience. Book luxury coaches, executive sleepers, and family coaches.">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <meta name="description" content="Pakistan's most premium bus travel experience.">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --gold: #C9A84C;
-      --gold-light: #E8C96B;
-      --gold-pale: #F5E6C0;
-      --navy: #0A1628;
-      --navy-mid: #122040;
-      --navy-light: #1E3160;
-      --cream: #FAF7F0;
-      --cream-dark: #F0EBE0;
-      --white: #FFFFFF;
-      --text: #1A1A2E;
-      --text-muted: #6B7280;
-      --text-light: #9CA3AF;
-      --success: #059669;
-      --danger: #DC2626;
-      --warning: #D97706;
-      --radius: 20px;
-      --radius-sm: 12px;
-      --radius-lg: 32px;
-      --shadow: 0 20px 60px rgba(10,22,40,0.12);
-      --shadow-gold: 0 8px 32px rgba(201,168,76,0.3);
-      --transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --gold:#C8963E;
+      --gold-light:#E2B05A;
+      --gold-pale:#F7EDD8;
+      --gold-glow:rgba(200,150,62,0.25);
+      --navy:#07111F;
+      --navy-2:#0C1A2E;
+      --navy-3:#152238;
+      --navy-4:#1E3254;
+      --cream:#FDFAF4;
+      --cream-2:#F5EDDA;
+      --white:#FFFFFF;
+      --text:#0F1A28;
+      --text-2:#3A4A5C;
+      --text-3:#7A8A9A;
+      --success:#22C55E;
+      --r:16px;
+      --r-lg:28px;
+      --r-xl:40px;
+      --sh:0 8px 40px rgba(7,17,31,0.12);
+      --sh-gold:0 8px 32px rgba(200,150,62,0.3);
+      --tr:all 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;line-height:1.6}
+
+    body.dark{
+      --cream:#07111F;
+      --cream-2:#0C1A2E;
+      --text:#E8DEC8;
+      --text-2:#A8B8C8;
+      --text-3:#6A7A8A;
+      --white:#0C1A2E;
+      background:#07111F;color:#E8DEC8
     }
 
-    html { scroll-behavior: smooth; }
+    /* ── PRELOADER ── */
+    #preloader{position:fixed;inset:0;background:var(--navy);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity 0.7s ease}
+    .pre-inner{text-align:center}
+    .pre-crown{font-size:3rem;color:var(--gold);animation:pre-pulse 1.1s ease-in-out infinite}
+    .pre-name{font-family:'Cormorant Garamond',serif;color:#fff;font-size:2rem;letter-spacing:4px;margin-top:10px}
+    @keyframes pre-pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.15);opacity:0.8}}
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--cream);
-      color: var(--text);
-      overflow-x: hidden;
-    }
+    /* ── NAVBAR ── */
+    nav{position:fixed;top:0;width:100%;z-index:1000;transition:var(--tr);padding:20px 0}
+    nav.scrolled{background:rgba(7,17,31,0.97);backdrop-filter:blur(24px);padding:13px 0;border-bottom:1px solid rgba(200,150,62,0.12)}
+    .nav-wrap{max-width:1280px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.65rem;font-weight:700;color:var(--gold);text-decoration:none;display:flex;align-items:center;gap:9px;white-space:nowrap}
+    .nav-logo i{font-size:1.2rem}
+    .nav-links{display:flex;align-items:center;gap:4px;list-style:none}
+    .nav-links a{color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.875rem;font-weight:500;padding:8px 14px;border-radius:50px;transition:var(--tr)}
+    .nav-links a:hover{color:var(--gold);background:rgba(200,150,62,0.1)}
+    .nav-cta{background:var(--gold)!important;color:var(--navy)!important;font-weight:700!important;border-radius:50px!important}
+    .nav-cta:hover{background:var(--gold-light)!important;box-shadow:var(--sh-gold)!important}
+    .icon-btn{background:none;border:1px solid rgba(200,150,62,0.3);color:var(--gold);width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:var(--tr);font-size:0.9rem;flex-shrink:0}
+    .icon-btn:hover{background:rgba(200,150,62,0.15)}
+    .ham-btn{display:none;background:none;border:none;color:var(--gold);font-size:1.5rem;cursor:pointer}
 
-    body.dark {
-      --cream: #080E1C;
-      --cream-dark: #0D1829;
-      --text: #EEE8D5;
-      --text-muted: #9BA5B4;
-      --white: #0F1D35;
-      background: #080E1C;
-      color: #EEE8D5;
-    }
+    /* ── MOBILE NAV ── */
+    .mob-nav{display:none;position:fixed;inset:0;background:var(--navy);z-index:1500;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+    .mob-nav.open{display:flex}
+    .mob-nav a{font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:var(--gold-pale);text-decoration:none;font-weight:600;letter-spacing:1px;transition:var(--tr)}
+    .mob-nav a:hover{color:var(--gold)}
+    .mob-close{position:absolute;top:22px;right:24px;background:none;border:none;color:var(--gold);font-size:2rem;cursor:pointer}
 
-    /* ── PRELOADER ─────────────────────────────────────── */
-    #preloader {
-      position: fixed; inset: 0; background: var(--navy);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 9999; transition: opacity 0.6s ease;
-    }
-    .preloader-inner { text-align: center; }
-    .preloader-crown {
-      font-size: 3.5rem; color: var(--gold);
-      animation: pulse 1s ease-in-out infinite;
-    }
-    .preloader-text {
-      font-family: 'Playfair Display', serif;
-      color: var(--white); font-size: 1.6rem; margin-top: 12px;
-      letter-spacing: 3px;
-    }
-    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
-
-    /* ── NAVBAR ─────────────────────────────────────────── */
-    nav {
-      position: fixed; top: 0; width: 100%; z-index: 1000;
-      padding: 18px 0;
-      background: rgba(10,22,40,0.92);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(201,168,76,0.15);
-      transition: var(--transition);
-    }
-    nav.scrolled {
-      padding: 12px 0;
-      background: rgba(10,22,40,0.98);
-    }
-    .nav-container {
-      max-width: 1300px; margin: 0 auto; padding: 0 24px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .nav-brand {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.7rem; font-weight: 700;
-      color: var(--gold); text-decoration: none;
-      display: flex; align-items: center; gap: 10px;
-    }
-    .nav-brand i { font-size: 1.4rem; }
-    .nav-links {
-      display: flex; align-items: center; gap: 8px;
-      list-style: none;
-    }
-    .nav-links a {
-      color: rgba(255,255,255,0.75); text-decoration: none;
-      font-size: 0.88rem; font-weight: 500; letter-spacing: 0.5px;
-      padding: 8px 14px; border-radius: 50px;
-      transition: var(--transition);
-    }
-    .nav-links a:hover { color: var(--gold); background: rgba(201,168,76,0.1); }
-    .nav-cta {
-      background: linear-gradient(135deg, var(--gold), #A8792A);
-      color: var(--navy) !important; font-weight: 700 !important;
-      border-radius: 50px; padding: 10px 24px !important;
-    }
-    .nav-cta:hover { background: linear-gradient(135deg, var(--gold-light), var(--gold)) !important; transform: translateY(-2px); box-shadow: var(--shadow-gold) !important; }
-    .dark-btn {
-      background: none; border: 1px solid rgba(201,168,76,0.4);
-      color: var(--gold); width: 38px; height: 38px;
-      border-radius: 50%; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: var(--transition);
-    }
-    .dark-btn:hover { background: rgba(201,168,76,0.15); }
-    .nav-hamburger { display: none; cursor: pointer; color: var(--gold); font-size: 1.4rem; background: none; border: none; }
-    .mobile-nav {
-      display: none; position: fixed; inset: 0; background: var(--navy);
-      z-index: 999; flex-direction: column; align-items: center;
-      justify-content: center; gap: 24px;
-    }
-    .mobile-nav.open { display: flex; }
-    .mobile-nav a { color: var(--gold-pale); font-family: 'Playfair Display', serif; font-size: 2rem; text-decoration: none; }
-    .mobile-nav .close-btn { position: absolute; top: 24px; right: 24px; color: var(--gold); font-size: 2rem; cursor: pointer; background: none; border: none; }
-
-    /* ── HERO ───────────────────────────────────────────── */
-    .hero {
-      min-height: 100vh;
-      background: linear-gradient(to bottom right, #060F1E 0%, #0A1628 50%, #122040 100%);
-      position: relative; overflow: hidden;
-      display: flex; align-items: center; padding-top: 90px;
-    }
-    .hero-bg-art {
-      position: absolute; inset: 0; pointer-events: none;
-    }
-    .hero-bg-art .circle {
-      position: absolute; border-radius: 50%;
-      background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
-    }
-    .hero-bg-art .c1 { width: 700px; height: 700px; top: -200px; right: -100px; }
-    .hero-bg-art .c2 { width: 400px; height: 400px; bottom: 0; left: -100px; }
-    .hero-bg-art .line {
-      position: absolute; background: rgba(201,168,76,0.07);
-      transform-origin: center;
-    }
-    .hero-grid-line {
-      position: absolute; inset: 0; overflow: hidden; pointer-events: none;
-    }
-    .hero-grid-line::before {
-      content: ''; position: absolute; inset: 0;
-      background-image: linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
-      background-size: 60px 60px;
-    }
-    .hero-container {
-      max-width: 1300px; margin: 0 auto; padding: 60px 24px;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
-      align-items: center; position: relative; z-index: 2;
-    }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3);
-      padding: 6px 16px; border-radius: 50px;
-      color: var(--gold); font-size: 0.8rem; font-weight: 600;
-      letter-spacing: 1.5px; text-transform: uppercase;
-      margin-bottom: 24px;
-    }
-    .hero-badge i { font-size: 0.7rem; }
-    .hero-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.8rem, 5vw, 4.5rem);
-      font-weight: 900; line-height: 1.1;
-      color: var(--white); margin-bottom: 20px;
-    }
-    .hero-title .gold-text { color: var(--gold); font-style: italic; }
-    .hero-title .outline-text {
-      -webkit-text-stroke: 2px rgba(201,168,76,0.6);
-      color: transparent;
-    }
-    .hero-desc {
-      color: rgba(255,255,255,0.6); font-size: 1rem;
-      line-height: 1.7; max-width: 460px; margin-bottom: 36px;
-    }
-    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 48px; }
-    .btn-gold {
-      background: linear-gradient(135deg, var(--gold), #A8792A);
-      color: var(--navy); font-weight: 700; font-size: 0.9rem;
-      padding: 14px 30px; border-radius: 50px; border: none;
-      cursor: pointer; letter-spacing: 0.3px; transition: var(--transition);
-      display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
-    }
-    .btn-gold:hover { transform: translateY(-3px); box-shadow: var(--shadow-gold); color: var(--navy); }
-    .btn-ghost {
-      background: transparent; color: rgba(255,255,255,0.7);
-      border: 1px solid rgba(255,255,255,0.2); font-size: 0.9rem;
-      padding: 14px 30px; border-radius: 50px; cursor: pointer;
-      transition: var(--transition); display: inline-flex; align-items: center;
-      gap: 8px; text-decoration: none;
-    }
-    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.05); }
-    .hero-stats {
-      display: flex; gap: 32px;
-    }
-    .hero-stat-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem; font-weight: 700; color: var(--gold);
-    }
-    .hero-stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.8px; }
+    /* ── HERO ── */
+    .hero{min-height:100svh;background:linear-gradient(135deg,#040B15 0%,#07111F 45%,#0C1A2E 100%);position:relative;overflow:hidden;display:flex;align-items:center;padding-top:80px}
+    .hero-art{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+    .hero-art .orb{position:absolute;border-radius:50%;filter:blur(80px)}
+    .hero-art .o1{width:600px;height:600px;background:radial-gradient(circle,rgba(200,150,62,0.12),transparent 70%);top:-150px;right:-150px}
+    .hero-art .o2{width:400px;height:400px;background:radial-gradient(circle,rgba(30,50,84,0.8),transparent 70%);bottom:-100px;left:-100px}
+    .hero-art .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(200,150,62,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(200,150,62,0.04) 1px,transparent 1px);background-size:56px 56px}
+    .hero-wrap{max-width:1280px;margin:0 auto;padding:60px 28px;display:grid;grid-template-columns:1fr 480px;gap:64px;align-items:center;position:relative;z-index:2;width:100%}
+    .hero-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(200,150,62,0.12);border:1px solid rgba(200,150,62,0.25);padding:5px 14px;border-radius:50px;color:var(--gold);font-size:0.78rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:22px}
+    .hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,5.5vw,5rem);font-weight:700;line-height:1.08;color:#fff;margin-bottom:20px}
+    .hero-h1 .accent{color:var(--gold);font-style:italic}
+    .hero-h1 .stroke{-webkit-text-stroke:1.5px rgba(200,150,62,0.55);color:transparent}
+    .hero-p{color:rgba(255,255,255,0.58);font-size:1rem;line-height:1.75;max-width:440px;margin-bottom:34px;font-weight:300}
+    .hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:48px}
+    .btn-primary{background:linear-gradient(135deg,var(--gold),#A0722A);color:var(--navy);font-weight:700;font-size:0.9rem;padding:14px 28px;border-radius:50px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;text-decoration:none;transition:var(--tr);letter-spacing:0.2px}
+    .btn-primary:hover{transform:translateY(-3px);box-shadow:var(--sh-gold);color:var(--navy)}
+    .btn-outline{background:transparent;color:rgba(255,255,255,0.65);border:1px solid rgba(255,255,255,0.18);font-size:0.9rem;padding:14px 28px;border-radius:50px;cursor:pointer;transition:var(--tr);display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+    .btn-outline:hover{border-color:var(--gold);color:var(--gold);background:rgba(200,150,62,0.06)}
+    .hero-stats{display:flex;gap:36px;flex-wrap:wrap}
+    .h-stat-n{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--gold);line-height:1}
+    .h-stat-l{font-size:0.75rem;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
 
     /* Booking Card */
-    .booking-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(201,168,76,0.2);
-      border-radius: var(--radius-lg);
-      padding: 32px;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 40px 80px rgba(0,0,0,0.4);
-    }
-    .booking-card-title {
-      font-family: 'Playfair Display', serif;
-      color: var(--gold); font-size: 1.3rem; margin-bottom: 24px;
-      display: flex; align-items: center; gap: 10px;
-    }
-    .form-group { margin-bottom: 14px; }
-    .form-label {
-      display: block; font-size: 0.75rem; font-weight: 600;
-      color: rgba(255,255,255,0.5); text-transform: uppercase;
-      letter-spacing: 1px; margin-bottom: 6px;
-    }
-    .form-control {
-      width: 100%; padding: 12px 16px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: var(--radius-sm); color: var(--white);
-      font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
-      transition: var(--transition); outline: none;
-    }
-    .form-control:focus { border-color: var(--gold); background: rgba(201,168,76,0.06); }
-    .form-control::placeholder { color: rgba(255,255,255,0.3); }
-    .form-control option { background: var(--navy); color: var(--white); }
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .btn-search {
-      width: 100%; background: linear-gradient(135deg, var(--gold), #A8792A);
-      color: var(--navy); font-weight: 700; font-size: 0.95rem;
-      padding: 15px; border: none; border-radius: var(--radius-sm);
-      cursor: pointer; transition: var(--transition);
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      margin-top: 6px;
-    }
-    .btn-search:hover { transform: translateY(-2px); box-shadow: var(--shadow-gold); }
+    .book-card{background:rgba(255,255,255,0.035);border:1px solid rgba(200,150,62,0.18);border-radius:var(--r-xl);padding:32px;backdrop-filter:blur(24px);box-shadow:0 40px 80px rgba(0,0,0,0.35)}
+    .book-card-title{font-family:'Cormorant Garamond',serif;color:var(--gold);font-size:1.35rem;margin-bottom:22px;display:flex;align-items:center;gap:9px}
+    .f-group{margin-bottom:13px}
+    .f-label{display:block;font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px}
+    .f-ctrl{width:100%;padding:11px 15px;background:rgba(255,255,255,0.055);border:1px solid rgba(255,255,255,0.1);border-radius:var(--r);color:#fff;font-family:'Outfit',sans-serif;font-size:0.9rem;transition:var(--tr);outline:none;-webkit-appearance:none}
+    .f-ctrl:focus{border-color:var(--gold);background:rgba(200,150,62,0.07)}
+    .f-ctrl::placeholder{color:rgba(255,255,255,0.28)}
+    .f-ctrl option{background:#07111F;color:#fff}
+    .f-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+    .btn-search-card{width:100%;background:linear-gradient(135deg,var(--gold),#A0722A);color:var(--navy);font-weight:700;font-size:0.95rem;padding:14px;border:none;border-radius:50px;cursor:pointer;transition:var(--tr);display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px}
+    .btn-search-card:hover{transform:translateY(-2px);box-shadow:var(--sh-gold)}
 
-    /* ── SECTION BASE ────────────────────────────────────── */
-    section { padding: 90px 0; }
-    .container { max-width: 1300px; margin: 0 auto; padding: 0 24px; }
-    .section-label {
-      font-size: 0.75rem; font-weight: 700; letter-spacing: 3px;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
-    }
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 3.5vw, 2.8rem); font-weight: 900;
-      line-height: 1.15; margin-bottom: 16px;
-    }
-    .section-desc { color: var(--text-muted); font-size: 1rem; line-height: 1.7; max-width: 540px; }
+    /* ── SHARED SECTION ── */
+    section{padding:88px 0}
+    .wrap{max-width:1280px;margin:0 auto;padding:0 28px}
+    .sec-tag{font-size:0.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+    .sec-h{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,3.5vw,2.9rem);font-weight:700;line-height:1.15;margin-bottom:14px}
+    .sec-p{color:var(--text-2);font-size:0.97rem;line-height:1.72;max-width:520px;font-weight:300}
+    .divider{width:44px;height:3px;background:var(--gold);border-radius:2px;margin:14px 0 22px}
 
-    /* ── FLEET (BUSES) ───────────────────────────────────── */
-    #buses { background: var(--cream); }
-    body.dark #buses { background: var(--cream); }
-    .buses-header { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px; margin-bottom: 48px; }
-    .search-pill {
-      position: relative;
-    }
-    .search-pill input {
-      background: var(--white); border: 1.5px solid var(--cream-dark);
-      border-radius: 50px; padding: 12px 20px 12px 44px;
-      width: 280px; font-family: 'DM Sans', sans-serif;
-      font-size: 0.88rem; color: var(--text); outline: none;
-      transition: var(--transition);
-    }
-    body.dark .search-pill input { background: var(--white); border-color: rgba(255,255,255,0.1); color: var(--text); }
-    .search-pill input:focus { border-color: var(--gold); }
-    .search-pill i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-    .bus-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 28px; }
-    .bus-card {
-      background: var(--white); border-radius: var(--radius);
-      overflow: hidden; transition: var(--transition);
-      box-shadow: 0 4px 20px rgba(10,22,40,0.06);
-      border: 1px solid rgba(201,168,76,0.1);
-    }
-    body.dark .bus-card { background: var(--white); border-color: rgba(255,255,255,0.05); }
-    .bus-card:hover { transform: translateY(-8px); box-shadow: 0 24px 48px rgba(10,22,40,0.14); }
-    .bus-card-img {
-      height: 190px; position: relative; overflow: hidden;
-      background: var(--navy);
-    }
-    .bus-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-    .bus-card:hover .bus-card-img img { transform: scale(1.06); }
-    .bus-type-badge {
-      position: absolute; top: 14px; left: 14px;
-      background: var(--gold); color: var(--navy);
-      font-size: 0.7rem; font-weight: 700; letter-spacing: 1px;
-      text-transform: uppercase; padding: 5px 12px; border-radius: 50px;
-    }
-    .bus-seats-badge {
-      position: absolute; top: 14px; right: 14px;
-      background: rgba(0,0,0,0.6); color: white;
-      font-size: 0.75rem; font-weight: 600;
-      padding: 5px 12px; border-radius: 50px;
-      backdrop-filter: blur(8px);
-      display: flex; align-items: center; gap: 5px;
-    }
-    .bus-card-body { padding: 22px; }
-    .bus-card-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem; font-weight: 700; margin-bottom: 6px;
-    }
-    .bus-route {
-      font-size: 0.83rem; color: var(--text-muted);
-      display: flex; align-items: center; gap: 6px; margin-bottom: 16px;
-    }
-    .bus-route i { color: var(--gold); }
-    .bus-info-row {
-      display: flex; gap: 16px; margin-bottom: 18px;
-    }
-    .bus-info-item {
-      background: var(--cream); border-radius: 10px;
-      padding: 8px 12px; flex: 1; text-align: center;
-    }
-    body.dark .bus-info-item { background: rgba(255,255,255,0.05); }
-    .bus-info-val { font-weight: 600; font-size: 0.85rem; }
-    .bus-info-key { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
-    .bus-card-footer {
-      display: flex; align-items: center; justify-content: space-between;
-      padding-top: 16px; border-top: 1px solid var(--cream-dark);
-    }
-    body.dark .bus-card-footer { border-color: rgba(255,255,255,0.05); }
-    .bus-price { font-family: 'DM Mono', monospace; }
-    .bus-price-label { font-size: 0.7rem; color: var(--text-muted); }
-    .bus-price-val { font-size: 1.4rem; font-weight: 600; color: var(--navy); }
-    body.dark .bus-price-val { color: var(--gold); }
-    .btn-book {
-      background: var(--navy); color: var(--gold);
-      border: 1.5px solid var(--navy); font-weight: 600; font-size: 0.83rem;
-      padding: 10px 20px; border-radius: 50px; cursor: pointer;
-      transition: var(--transition); display: flex; align-items: center; gap: 6px;
-    }
-    body.dark .btn-book { background: rgba(201,168,76,0.1); border-color: rgba(201,168,76,0.3); }
-    .btn-book:hover { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+    /* ── STATS BAND ── */
+    .stats-band{background:var(--navy);padding:60px 0;border-top:1px solid rgba(200,150,62,0.1);border-bottom:1px solid rgba(200,150,62,0.1)}
+    .stats-row{display:flex;justify-content:space-around;flex-wrap:wrap;gap:28px}
+    .stat-item{text-align:center;padding:8px 20px}
+    .stat-n{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:700;color:var(--gold);line-height:1}
+    .stat-l{font-size:0.75rem;color:rgba(255,255,255,0.42);text-transform:uppercase;letter-spacing:2px;margin-top:6px}
+    .stat-sep{width:1px;background:rgba(255,255,255,0.07);align-self:stretch}
 
-    /* ── STATS BAND ──────────────────────────────────────── */
-    .stats-band {
-      background: var(--navy);
-      padding: 60px 0;
-    }
-    .stats-inner { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 32px; }
-    .stat-item { text-align: center; }
-    .stat-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.8rem; font-weight: 900; color: var(--gold);
-      line-height: 1;
-    }
-    .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 6px; }
-    .stat-divider { width: 1px; background: rgba(255,255,255,0.08); align-self: stretch; }
+    /* ── FLEET ── */
+    #buses{background:var(--cream)}
+    body.dark #buses{background:var(--cream)}
+    .fleet-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px;margin-bottom:44px}
+    .search-box{position:relative}
+    .search-box input{background:var(--white);border:1.5px solid var(--cream-2);border-radius:50px;padding:11px 18px 11px 42px;width:270px;font-family:'Outfit',sans-serif;font-size:0.88rem;color:var(--text);outline:none;transition:var(--tr)}
+    body.dark .search-box input{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.09);color:var(--text)}
+    .search-box input:focus{border-color:var(--gold)}
+    .search-box i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--text-3);font-size:0.85rem}
+    .bus-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:26px}
+    .bus-card{background:var(--white);border-radius:var(--r-lg);overflow:hidden;transition:var(--tr);box-shadow:0 4px 20px rgba(7,17,31,0.07);border:1px solid rgba(200,150,62,0.08)}
+    body.dark .bus-card{background:var(--white);border-color:rgba(255,255,255,0.05)}
+    .bus-card:hover{transform:translateY(-7px);box-shadow:0 20px 48px rgba(7,17,31,0.15)}
+    .bus-img{height:185px;position:relative;overflow:hidden;background:var(--navy)}
+    .bus-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s ease}
+    .bus-card:hover .bus-img img{transform:scale(1.06)}
+    .badge-type{position:absolute;top:14px;left:14px;background:var(--gold);color:var(--navy);font-size:0.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 11px;border-radius:50px}
+    .badge-seats{position:absolute;top:14px;right:14px;background:rgba(0,0,0,0.55);color:#fff;font-size:0.73rem;font-weight:600;padding:4px 11px;border-radius:50px;backdrop-filter:blur(8px);display:flex;align-items:center;gap:5px}
+    .bus-body{padding:20px}
+    .bus-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:700;margin-bottom:5px}
+    .bus-route{font-size:0.82rem;color:var(--text-3);display:flex;align-items:center;gap:5px;margin-bottom:15px}
+    .bus-route i{color:var(--gold);font-size:0.75rem}
+    .bus-info{display:flex;gap:10px;margin-bottom:16px}
+    .bi{background:var(--cream);border-radius:10px;padding:8px 10px;flex:1;text-align:center}
+    body.dark .bi{background:rgba(255,255,255,0.05)}
+    .bi-v{font-weight:600;font-size:0.83rem;color:var(--text)}
+    body.dark .bi-v{color:var(--text)}
+    .bi-k{font-size:0.68rem;color:var(--text-3);margin-top:2px}
+    .bus-foot{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--cream-2)}
+    body.dark .bus-foot{border-color:rgba(255,255,255,0.05)}
+    .bus-price-l{font-size:0.68rem;color:var(--text-3)}
+    .bus-price-v{font-family:'JetBrains Mono',monospace;font-size:1.35rem;font-weight:500;color:var(--navy)}
+    body.dark .bus-price-v{color:var(--gold)}
+    .btn-book{background:var(--navy);color:var(--gold);border:1.5px solid var(--navy);font-weight:600;font-size:0.82rem;padding:9px 18px;border-radius:50px;cursor:pointer;transition:var(--tr);display:flex;align-items:center;gap:6px}
+    body.dark .btn-book{background:rgba(200,150,62,0.08);border-color:rgba(200,150,62,0.25)}
+    .btn-book:hover{background:var(--gold);color:var(--navy);border-color:var(--gold)}
 
-    /* ── SERVICES ────────────────────────────────────────── */
-    #services { background: var(--navy); }
-    .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-    .service-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(201,168,76,0.12);
-      border-radius: var(--radius); padding: 28px 22px;
-      text-align: center; transition: var(--transition);
-    }
-    .service-card:hover { background: rgba(201,168,76,0.07); border-color: rgba(201,168,76,0.3); transform: translateY(-4px); }
-    .service-icon {
-      width: 56px; height: 56px; background: rgba(201,168,76,0.12);
-      border-radius: 16px; display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 16px; color: var(--gold); font-size: 1.4rem;
-      transition: var(--transition);
-    }
-    .service-card:hover .service-icon { background: var(--gold); color: var(--navy); }
-    .service-name { font-weight: 600; font-size: 0.88rem; color: rgba(255,255,255,0.85); }
+    /* ── SERVICES ── */
+    #services{background:var(--navy)}
+    .srv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    .srv-card{background:rgba(255,255,255,0.035);border:1px solid rgba(200,150,62,0.1);border-radius:var(--r-lg);padding:26px 20px;text-align:center;transition:var(--tr)}
+    .srv-card:hover{background:rgba(200,150,62,0.07);border-color:rgba(200,150,62,0.28);transform:translateY(-4px)}
+    .srv-icon{width:52px;height:52px;background:rgba(200,150,62,0.1);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:var(--gold);font-size:1.3rem;transition:var(--tr)}
+    .srv-card:hover .srv-icon{background:var(--gold);color:var(--navy)}
+    .srv-name{font-weight:500;font-size:0.85rem;color:rgba(255,255,255,0.8)}
 
-    /* ── ROUTES ──────────────────────────────────────────── */
-    #routes { background: var(--cream); }
-    body.dark #routes { background: var(--cream); }
-    .routes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; margin-bottom: 70px; }
-    .route-card {
-      background: var(--white); border-radius: var(--radius);
-      padding: 26px; transition: var(--transition);
-      border: 1.5px solid transparent; cursor: pointer;
-      box-shadow: 0 4px 16px rgba(10,22,40,0.05);
-    }
-    body.dark .route-card { background: var(--white); }
-    .route-card:hover { border-color: var(--gold); transform: translateY(-4px); box-shadow: 0 12px 32px rgba(201,168,76,0.12); }
-    .route-from-to {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.05rem; font-weight: 700; margin-bottom: 10px;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .route-arrow { color: var(--gold); font-size: 0.9rem; }
-    .route-meta { font-size: 0.8rem; color: var(--text-muted); display: flex; gap: 12px; margin-bottom: 12px; }
-    .route-fare { font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 600; color: var(--gold); }
-    .why-section { text-align: center; }
-    .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
-    .why-card {
-      background: var(--white); border-radius: var(--radius); padding: 36px 28px;
-      text-align: center; transition: var(--transition);
-      box-shadow: 0 4px 16px rgba(10,22,40,0.05);
-    }
-    body.dark .why-card { background: var(--white); }
-    .why-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
-    .why-icon { font-size: 2rem; color: var(--gold); margin-bottom: 16px; }
-    .why-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
-    .why-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+    /* ── ROUTES ── */
+    #routes{background:var(--cream)}
+    body.dark #routes{background:var(--cream)}
+    .routes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px;margin-bottom:72px}
+    .route-card{background:var(--white);border-radius:var(--r-lg);padding:24px;transition:var(--tr);border:1.5px solid transparent;cursor:pointer;box-shadow:0 3px 14px rgba(7,17,31,0.05)}
+    body.dark .route-card{background:var(--white)}
+    .route-card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 10px 28px rgba(200,150,62,0.1)}
+    .rt-cities{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+    .rt-arrow{color:var(--gold)}
+    .rt-meta{font-size:0.78rem;color:var(--text-3);display:flex;gap:12px;margin-bottom:11px}
+    .rt-fare{font-family:'JetBrains Mono',monospace;font-size:0.98rem;font-weight:500;color:var(--gold)}
+    .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:38px}
+    .why-card{background:var(--white);border-radius:var(--r-lg);padding:34px 26px;text-align:center;transition:var(--tr);box-shadow:0 4px 14px rgba(7,17,31,0.05)}
+    body.dark .why-card{background:var(--white)}
+    .why-card:hover{transform:translateY(-5px);box-shadow:var(--sh)}
+    .why-icon{font-size:1.8rem;color:var(--gold);margin-bottom:14px}
+    .why-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;margin-bottom:8px}
+    .why-desc{font-size:0.83rem;color:var(--text-2);line-height:1.65;font-weight:300}
 
-    /* ── TESTIMONIALS ────────────────────────────────────── */
-    #testimonials { background: var(--navy); overflow: hidden; }
-    .testimonials-track {
-      display: flex; gap: 24px;
-      animation: marquee 30s linear infinite;
-      width: max-content;
-    }
-    .testimonials-track:hover { animation-play-state: paused; }
-    @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-    .testimonial-card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(201,168,76,0.15);
-      border-radius: var(--radius); padding: 28px;
-      width: 320px; flex-shrink: 0;
-    }
-    .testimonial-stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 12px; letter-spacing: 2px; }
-    .testimonial-text { color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px; font-style: italic; }
-    .testimonial-author { display: flex; align-items: center; gap: 12px; }
-    .testimonial-avatar {
-      width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
-      border: 2px solid var(--gold);
-    }
-    .testimonial-name { font-weight: 600; font-size: 0.88rem; color: rgba(255,255,255,0.9); }
-    .testimonial-route { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 2px; }
+    /* ── TESTIMONIALS ── */
+    #testimonials{background:var(--navy);overflow:hidden}
+    .testi-track{display:flex;gap:22px;animation:marquee 32s linear infinite;width:max-content}
+    .testi-track:hover{animation-play-state:paused}
+    @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    .testi-card{background:rgba(255,255,255,0.04);border:1px solid rgba(200,150,62,0.13);border-radius:var(--r-lg);padding:26px;width:310px;flex-shrink:0}
+    .testi-stars{color:var(--gold);font-size:0.85rem;margin-bottom:11px;letter-spacing:2px}
+    .testi-text{color:rgba(255,255,255,0.65);font-size:0.88rem;line-height:1.72;margin-bottom:18px;font-style:italic;font-weight:300}
+    .testi-author{display:flex;align-items:center;gap:11px}
+    .testi-av{width:42px;height:42px;border-radius:50%;border:2px solid var(--gold);object-fit:cover}
+    .testi-name{font-weight:600;font-size:0.86rem;color:rgba(255,255,255,0.88)}
+    .testi-route{font-size:0.72rem;color:rgba(255,255,255,0.38);margin-top:2px}
 
-    /* ── APP PROMO ───────────────────────────────────────── */
-    .app-section {
-      background: linear-gradient(135deg, var(--navy) 0%, #1A3A5C 100%);
-      padding: 80px 0; position: relative; overflow: hidden;
-    }
-    .app-section::before {
-      content: ''; position: absolute;
-      width: 500px; height: 500px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(201,168,76,0.1), transparent 70%);
-      top: -200px; right: -100px; pointer-events: none;
-    }
-    .app-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-    .app-label { font-size: 0.75rem; font-weight: 700; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; }
-    .app-title { font-family: 'Playfair Display', serif; font-size: 2.4rem; color: white; margin-bottom: 16px; line-height: 1.2; }
-    .app-desc { color: rgba(255,255,255,0.6); margin-bottom: 28px; line-height: 1.7; }
-    .app-store-btns { display: flex; gap: 14px; flex-wrap: wrap; }
-    .app-store-btn {
-      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
-      border-radius: var(--radius-sm); padding: 12px 20px;
-      color: white; display: flex; align-items: center; gap: 10px;
-      text-decoration: none; transition: var(--transition);
-    }
-    .app-store-btn:hover { border-color: var(--gold); background: rgba(201,168,76,0.08); color: var(--gold); }
-    .app-store-btn i { font-size: 1.6rem; }
-    .app-store-sub { font-size: 0.65rem; opacity: 0.6; line-height: 1; }
-    .app-store-name { font-weight: 600; font-size: 0.9rem; }
-    .app-features { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 24px; }
-    .app-feat { font-size: 0.8rem; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 6px; }
-    .app-feat i { color: var(--gold); }
-    .app-mockup { position: relative; }
-    .app-mockup-img { width: 100%; max-width: 440px; border-radius: 24px; box-shadow: 0 40px 80px rgba(0,0,0,0.4); }
+    /* ── APP PROMO ── */
+    .app-sec{background:linear-gradient(135deg,#07111F 0%,#152238 100%);padding:80px 0;position:relative;overflow:hidden}
+    .app-sec::before{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(200,150,62,0.09),transparent 70%);top:-200px;right:-100px;pointer-events:none}
+    .app-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+    .app-tag{font-size:0.72rem;font-weight:700;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px}
+    .app-h{font-family:'Cormorant Garamond',serif;font-size:2.5rem;color:#fff;margin-bottom:16px;line-height:1.18;font-weight:700}
+    .app-p{color:rgba(255,255,255,0.55);margin-bottom:28px;line-height:1.72;font-weight:300}
+    .app-btns{display:flex;gap:12px;flex-wrap:wrap}
+    .app-btn{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.13);border-radius:var(--r);padding:12px 18px;color:#fff;display:flex;align-items:center;gap:10px;text-decoration:none;transition:var(--tr)}
+    .app-btn:hover{border-color:var(--gold);background:rgba(200,150,62,0.08);color:var(--gold)}
+    .app-btn i{font-size:1.5rem}
+    .app-btn-sub{font-size:0.62rem;opacity:0.55;line-height:1}
+    .app-btn-name{font-weight:600;font-size:0.87rem}
+    .app-feats{display:flex;gap:18px;flex-wrap:wrap;margin-top:22px}
+    .app-feat{font-size:0.78rem;color:rgba(255,255,255,0.45);display:flex;align-items:center;gap:6px}
+    .app-feat i{color:var(--gold)}
+    .app-img{width:100%;max-width:420px;border-radius:22px;box-shadow:0 40px 80px rgba(0,0,0,0.4)}
 
-    /* ── FAQ ─────────────────────────────────────────────── */
-    #contact { background: var(--cream); }
-    body.dark #contact { background: var(--cream); }
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
-    .accordion-item { border-bottom: 1px solid rgba(201,168,76,0.15); }
-    body.dark .accordion-item { border-color: rgba(255,255,255,0.07); }
-    .accordion-header {
-      width: 100%; background: none; border: none;
-      padding: 18px 0; font-family: 'DM Sans', sans-serif;
-      font-size: 0.95rem; font-weight: 600; text-align: left;
-      color: var(--text); cursor: pointer;
-      display: flex; justify-content: space-between; align-items: center;
-      transition: var(--transition);
-    }
-    .accordion-header:hover { color: var(--gold); }
-    .accordion-header i { color: var(--gold); transition: transform 0.3s; font-size: 0.75rem; }
-    .accordion-header.open i { transform: rotate(180deg); }
-    .accordion-body {
-      max-height: 0; overflow: hidden; transition: max-height 0.35s ease;
-    }
-    .accordion-body-inner { padding: 0 0 18px; font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; }
-    .contact-form-card {
-      background: var(--white); border-radius: var(--radius-lg); padding: 36px;
-      box-shadow: var(--shadow);
-    }
-    body.dark .contact-form-card { background: var(--white); }
-    .input-light {
-      width: 100%; padding: 13px 16px;
-      background: var(--cream); border: 1.5px solid var(--cream-dark);
-      border-radius: var(--radius-sm); color: var(--text);
-      font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
-      outline: none; transition: var(--transition); margin-bottom: 12px;
-    }
-    body.dark .input-light { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); color: var(--text); }
-    .input-light:focus { border-color: var(--gold); }
-    .input-light::placeholder { color: var(--text-muted); }
-    textarea.input-light { height: 110px; resize: none; }
-    .btn-submit {
-      width: 100%; background: linear-gradient(135deg, var(--gold), #A8792A);
-      color: var(--navy); font-weight: 700; padding: 14px;
-      border: none; border-radius: 50px; cursor: pointer;
-      font-size: 0.95rem; display: flex; align-items: center;
-      justify-content: center; gap: 8px; transition: var(--transition);
-    }
-    .btn-submit:hover { transform: translateY(-2px); box-shadow: var(--shadow-gold); }
-    .map-frame { width: 100%; height: 180px; border-radius: var(--radius-sm); border: 0; margin-top: 16px; }
+    /* ── FAQ + CONTACT ── */
+    #contact{background:var(--cream)}
+    body.dark #contact{background:var(--cream)}
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px}
+    .acc-item{border-bottom:1px solid rgba(200,150,62,0.14)}
+    body.dark .acc-item{border-color:rgba(255,255,255,0.06)}
+    .acc-btn{width:100%;background:none;border:none;padding:17px 0;font-family:'Outfit',sans-serif;font-size:0.93rem;font-weight:600;text-align:left;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:var(--tr);gap:12px}
+    .acc-btn:hover{color:var(--gold)}
+    .acc-btn i{color:var(--gold);transition:transform 0.3s;font-size:0.72rem;flex-shrink:0}
+    .acc-btn.open i{transform:rotate(180deg)}
+    .acc-body{max-height:0;overflow:hidden;transition:max-height 0.35s ease}
+    .acc-inner{padding:0 0 16px;font-size:0.86rem;color:var(--text-2);line-height:1.72;font-weight:300}
+    .contact-card{background:var(--white);border-radius:var(--r-xl);padding:34px;box-shadow:var(--sh)}
+    body.dark .contact-card{background:rgba(255,255,255,0.04);border:1px solid rgba(200,150,62,0.1)}
+    .inp{width:100%;padding:12px 15px;background:var(--cream);border:1.5px solid var(--cream-2);border-radius:var(--r);color:var(--text);font-family:'Outfit',sans-serif;font-size:0.88rem;outline:none;transition:var(--tr);margin-bottom:11px}
+    body.dark .inp{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08);color:var(--text)}
+    .inp:focus{border-color:var(--gold)}
+    .inp::placeholder{color:var(--text-3)}
+    textarea.inp{height:108px;resize:none}
+    .btn-send{width:100%;background:linear-gradient(135deg,var(--gold),#A0722A);color:var(--navy);font-weight:700;padding:14px;border:none;border-radius:50px;cursor:pointer;font-size:0.93rem;display:flex;align-items:center;justify-content:center;gap:8px;transition:var(--tr)}
+    .btn-send:hover{transform:translateY(-2px);box-shadow:var(--sh-gold)}
+    .map-frame{width:100%;height:170px;border-radius:var(--r);border:0;margin-top:15px}
 
-    /* ── FOOTER ──────────────────────────────────────────── */
-    footer {
-      background: var(--navy);
-      border-top: 1px solid rgba(201,168,76,0.1);
-      padding: 64px 0 32px;
-    }
-    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 40px; margin-bottom: 48px; }
-    .footer-brand { font-family: 'Playfair Display', serif; font-size: 1.7rem; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
-    .footer-desc { color: rgba(255,255,255,0.4); font-size: 0.85rem; line-height: 1.7; max-width: 260px; }
-    .footer-social { display: flex; gap: 10px; margin-top: 20px; }
-    .social-btn {
-      width: 38px; height: 38px; border-radius: 50%;
-      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-      color: rgba(255,255,255,0.5); display: flex; align-items: center;
-      justify-content: center; text-decoration: none; transition: var(--transition);
-    }
-    .social-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--navy); }
-    .footer-heading { font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
-    .footer-links { list-style: none; }
-    .footer-links li { margin-bottom: 10px; }
-    .footer-links a { color: rgba(255,255,255,0.45); font-size: 0.85rem; text-decoration: none; transition: var(--transition); }
-    .footer-links a:hover { color: var(--gold); }
-    .newsletter-form { display: flex; gap: 8px; margin-top: 6px; }
-    .newsletter-input {
-      flex: 1; padding: 11px 14px;
-      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
-      border-radius: var(--radius-sm); color: white; font-family: 'DM Sans', sans-serif;
-      font-size: 0.85rem; outline: none; transition: var(--transition);
-    }
-    .newsletter-input:focus { border-color: var(--gold); }
-    .newsletter-input::placeholder { color: rgba(255,255,255,0.3); }
-    .btn-newsletter {
-      background: var(--gold); color: var(--navy); border: none;
-      border-radius: var(--radius-sm); padding: 11px 16px;
-      cursor: pointer; font-size: 0.9rem; transition: var(--transition);
-    }
-    .btn-newsletter:hover { background: var(--gold-light); }
-    .footer-bottom {
-      padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.06);
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 12px;
-    }
-    .footer-copy { font-size: 0.8rem; color: rgba(255,255,255,0.3); }
-    .footer-legal { display: flex; gap: 20px; }
-    .footer-legal a { font-size: 0.8rem; color: rgba(255,255,255,0.3); text-decoration: none; transition: var(--transition); }
-    .footer-legal a:hover { color: var(--gold); }
+    /* ── FOOTER ── */
+    footer{background:var(--navy);border-top:1px solid rgba(200,150,62,0.1);padding:60px 0 30px}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.6fr;gap:40px;margin-bottom:44px}
+    .f-brand{font-family:'Cormorant Garamond',serif;font-size:1.65rem;color:var(--gold);margin-bottom:11px;display:flex;align-items:center;gap:9px}
+    .f-desc{color:rgba(255,255,255,0.38);font-size:0.83rem;line-height:1.72;max-width:250px;font-weight:300}
+    .f-social{display:flex;gap:9px;margin-top:18px}
+    .soc-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);color:rgba(255,255,255,0.45);display:flex;align-items:center;justify-content:center;text-decoration:none;transition:var(--tr);font-size:0.85rem}
+    .soc-btn:hover{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+    .f-head{font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+    .f-links{list-style:none}
+    .f-links li{margin-bottom:9px}
+    .f-links a{color:rgba(255,255,255,0.4);font-size:0.83rem;text-decoration:none;transition:var(--tr);font-weight:300}
+    .f-links a:hover{color:var(--gold)}
+    .nl-form{display:flex;gap:7px;margin-top:5px}
+    .nl-inp{flex:1;padding:10px 13px;background:rgba(255,255,255,0.055);border:1px solid rgba(255,255,255,0.1);border-radius:var(--r);color:#fff;font-family:'Outfit',sans-serif;font-size:0.83rem;outline:none;transition:var(--tr)}
+    .nl-inp:focus{border-color:var(--gold)}
+    .nl-inp::placeholder{color:rgba(255,255,255,0.28)}
+    .nl-btn{background:var(--gold);color:var(--navy);border:none;border-radius:var(--r);padding:10px 14px;cursor:pointer;font-size:0.88rem;transition:var(--tr)}
+    .nl-btn:hover{background:var(--gold-light)}
+    .f-bottom{padding-top:24px;border-top:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .f-copy{font-size:0.78rem;color:rgba(255,255,255,0.28);font-weight:300}
+    .f-legal{display:flex;gap:18px}
+    .f-legal a{font-size:0.78rem;color:rgba(255,255,255,0.28);text-decoration:none;transition:var(--tr)}
+    .f-legal a:hover{color:var(--gold)}
 
-    /* ── SEAT MODAL ──────────────────────────────────────── */
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.75);
-      z-index: 2000; display: none; align-items: center;
-      justify-content: center; padding: 20px;
-      backdrop-filter: blur(6px);
-    }
-    .modal-overlay.open { display: flex; }
-    .modal-box {
-      background: var(--white); border-radius: var(--radius-lg);
-      width: 100%; max-width: 680px; max-height: 90vh;
-      overflow-y: auto; box-shadow: 0 40px 80px rgba(0,0,0,0.5);
-      border: 1px solid rgba(201,168,76,0.15);
-    }
-    body.dark .modal-box { background: #0F1D35; }
-    .modal-header {
-      padding: 24px 28px 0; display: flex; justify-content: space-between; align-items: center;
-      position: sticky; top: 0; background: var(--white); z-index: 1;
-      border-bottom: 1px solid var(--cream-dark); padding-bottom: 20px;
-    }
-    body.dark .modal-header { background: #0F1D35; border-color: rgba(255,255,255,0.06); }
-    .modal-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; }
-    .modal-close { background: var(--cream); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; color: var(--text); font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
-    .modal-close:hover { background: var(--gold); color: var(--navy); }
-    .modal-body { padding: 24px 28px; }
-    .seat-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
-    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--text-muted); }
-    .legend-dot { width: 14px; height: 14px; border-radius: 4px; }
-    .seat-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; margin-bottom: 24px; }
-    .seat {
-      aspect-ratio: 1; border-radius: 8px; font-size: 0.65rem; font-weight: 600;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: all 0.15s ease; position: relative;
-    }
-    .seat.available { background: #D1FAE5; color: #065F46; border: 1.5px solid #6EE7B7; }
-    .seat.available:hover { background: #A7F3D0; transform: scale(1.08); }
-    .seat.reserved { background: #F3F4F6; color: #9CA3AF; border: 1.5px solid #E5E7EB; cursor: not-allowed; }
-    .seat.female { background: #FEE2E2; color: #991B1B; border: 1.5px solid #FCA5A5; }
-    .seat.family { background: #FEF3C7; color: #92400E; border: 1.5px solid #FCD34D; }
-    .seat.selected { background: var(--navy); color: var(--gold) !important; border: 2px solid var(--gold) !important; box-shadow: 0 0 0 3px rgba(201,168,76,0.2); transform: scale(1.06); }
-    .modal-footer-bar {
-      padding: 20px 28px; border-top: 1px solid var(--cream-dark);
-      display: flex; justify-content: space-between; align-items: center;
-      background: var(--cream); border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-      position: sticky; bottom: 0;
-    }
-    body.dark .modal-footer-bar { background: rgba(8,14,28,0.95); border-color: rgba(255,255,255,0.06); }
-    .modal-total { font-size: 0.85rem; color: var(--text-muted); }
-    .modal-total strong { font-size: 1.2rem; color: var(--gold); font-family: 'DM Mono', monospace; }
-    .btn-confirm { background: linear-gradient(135deg, var(--gold), #A8792A); color: var(--navy); font-weight: 700; padding: 12px 28px; border-radius: 50px; border: none; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 6px; }
-    .btn-confirm:hover { transform: translateY(-2px); box-shadow: var(--shadow-gold); }
+    /* ── SEAT MODAL ── */
+    .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:2000;display:none;align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(8px)}
+    .modal-bg.open{display:flex}
+    .modal-box{background:var(--white);border-radius:var(--r-xl);width:100%;max-width:660px;max-height:90vh;overflow-y:auto;box-shadow:0 40px 80px rgba(0,0,0,0.5);border:1px solid rgba(200,150,62,0.13)}
+    body.dark .modal-box{background:#0C1A2E}
+    .modal-head{padding:22px 26px 0;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--white);z-index:1;border-bottom:1px solid var(--cream-2);padding-bottom:18px}
+    body.dark .modal-head{background:#0C1A2E;border-color:rgba(255,255,255,0.06)}
+    .modal-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700}
+    .modal-x{background:var(--cream);border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;color:var(--text);font-size:0.95rem;display:flex;align-items:center;justify-content:center;transition:var(--tr)}
+    .modal-x:hover{background:var(--gold);color:var(--navy)}
+    .modal-body{padding:22px 26px}
+    .seat-legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+    .leg-item{display:flex;align-items:center;gap:5px;font-size:0.75rem;color:var(--text-2)}
+    .leg-dot{width:13px;height:13px;border-radius:4px}
+    .seat-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:7px;margin-bottom:20px}
+    .seat{aspect-ratio:1;border-radius:7px;font-size:0.62rem;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.15s ease}
+    .seat.available{background:#D1FAE5;color:#065F46;border:1.5px solid #6EE7B7}
+    .seat.available:hover{background:#A7F3D0;transform:scale(1.08)}
+    .seat.reserved{background:#F3F4F6;color:#9CA3AF;border:1.5px solid #E5E7EB;cursor:not-allowed}
+    .seat.female{background:#FEE2E2;color:#991B1B;border:1.5px solid #FCA5A5}
+    .seat.family{background:#FEF3C7;color:#92400E;border:1.5px solid #FCD34D}
+    .seat.selected{background:var(--navy);color:var(--gold)!important;border:2px solid var(--gold)!important;box-shadow:0 0 0 3px rgba(200,150,62,0.2);transform:scale(1.07)}
+    .modal-foot{padding:18px 26px;border-top:1px solid var(--cream-2);display:flex;justify-content:space-between;align-items:center;background:var(--cream);border-radius:0 0 var(--r-xl) var(--r-xl);position:sticky;bottom:0}
+    body.dark .modal-foot{background:rgba(7,17,31,0.97);border-color:rgba(255,255,255,0.06)}
+    .modal-total{font-size:0.83rem;color:var(--text-2)}
+    .modal-total strong{font-size:1.18rem;color:var(--gold);font-family:'JetBrains Mono',monospace}
+    .btn-confirm{background:linear-gradient(135deg,var(--gold),#A0722A);color:var(--navy);font-weight:700;padding:12px 26px;border-radius:50px;border:none;cursor:pointer;transition:var(--tr);display:flex;align-items:center;gap:6px}
+    .btn-confirm:hover{transform:translateY(-2px);box-shadow:var(--sh-gold)}
 
-    /* Success Toast */
-    .toast {
-      position: fixed; bottom: 30px; right: 24px; z-index: 3000;
-      background: var(--navy); border: 1px solid var(--gold);
-      border-radius: var(--radius); padding: 16px 22px;
-      color: white; display: flex; align-items: center; gap: 12px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-      transform: translateY(100px); opacity: 0; transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
-    }
-    .toast.show { transform: translateY(0); opacity: 1; }
-    .toast-icon { color: var(--gold); font-size: 1.3rem; }
-    .toast-title { font-weight: 600; font-size: 0.9rem; }
-    .toast-sub { font-size: 0.78rem; color: rgba(255,255,255,0.5); }
+    /* ── TOAST ── */
+    .toast{position:fixed;bottom:28px;right:22px;z-index:3000;background:var(--navy);border:1px solid var(--gold);border-radius:var(--r-lg);padding:15px 20px;color:#fff;display:flex;align-items:center;gap:11px;box-shadow:0 20px 40px rgba(0,0,0,0.3);transform:translateY(100px);opacity:0;transition:all 0.4s cubic-bezier(0.4,0,0.2,1)}
+    .toast.show{transform:translateY(0);opacity:1}
+    .toast-icon{color:var(--gold);font-size:1.25rem}
+    .toast-title{font-weight:600;font-size:0.88rem}
+    .toast-sub{font-size:0.75rem;color:rgba(255,255,255,0.45)}
 
-    /* Scroll Top */
-    #scrollTop {
-      position: fixed; bottom: 28px; left: 28px; z-index: 500;
-      background: var(--gold); color: var(--navy); width: 44px; height: 44px;
-      border-radius: 50%; border: none; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: var(--shadow-gold); opacity: 0; transform: scale(0.8);
-      transition: var(--transition);
-    }
-    #scrollTop.show { opacity: 1; transform: scale(1); }
-    #scrollTop:hover { transform: scale(1.1); }
+    /* ── SCROLL TOP ── */
+    #scrollTop{position:fixed;bottom:26px;left:26px;z-index:500;background:var(--gold);color:var(--navy);width:42px;height:42px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh-gold);opacity:0;transform:scale(0.75);transition:var(--tr)}
+    #scrollTop.show{opacity:1;transform:scale(1)}
+    #scrollTop:hover{transform:scale(1.1)}
 
-    /* Divider */
-    .gold-divider { width: 48px; height: 3px; background: var(--gold); border-radius: 2px; margin: 16px 0 24px; }
+    /* ── FADE UP ── */
+    .fade-up{opacity:0;transform:translateY(26px);transition:opacity 0.6s ease,transform 0.6s ease}
+    .fade-up.visible{opacity:1;transform:translateY(0)}
 
-    /* Animations */
-    .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.6s ease, transform 0.6s ease; }
-    .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-    /* ── RESPONSIVE ──────────────────────────────────────── */
-    @media (max-width: 1024px) {
-      .services-grid { grid-template-columns: repeat(3, 1fr); }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
+    /* ── RESPONSIVE ── */
+    @media(max-width:1100px){
+      .srv-grid{grid-template-columns:repeat(3,1fr)}
+      .footer-grid{grid-template-columns:1fr 1fr}
     }
-    @media (max-width: 768px) {
-      .hero-container { grid-template-columns: 1fr; gap: 36px; text-align: center; }
-      .hero-desc { margin: 0 auto 28px; }
-      .hero-btns { justify-content: center; }
-      .hero-stats { justify-content: center; }
-      .buses-header { flex-direction: column; align-items: flex-start; }
-      .search-pill input { width: 100%; }
-      .services-grid { grid-template-columns: repeat(2, 1fr); }
-      .why-grid { grid-template-columns: 1fr 1fr; }
-      .contact-grid { grid-template-columns: 1fr; }
-      .app-inner { grid-template-columns: 1fr; text-align: center; }
-      .app-store-btns { justify-content: center; }
-      .app-features { justify-content: center; }
-      .app-mockup { display: none; }
-      .footer-grid { grid-template-columns: 1fr; }
-      .footer-bottom { flex-direction: column; text-align: center; }
-      .nav-links { display: none; }
-      .nav-hamburger { display: block; }
-      .routes-grid { grid-template-columns: 1fr 1fr; }
-      .why-grid { grid-template-columns: 1fr; }
-      .seat-grid { grid-template-columns: repeat(6, 1fr); }
+    @media(max-width:860px){
+      .hero-wrap{grid-template-columns:1fr;gap:40px;text-align:center}
+      .hero-p{margin:0 auto 28px}
+      .hero-btns{justify-content:center}
+      .hero-stats{justify-content:center}
+      .fleet-head{flex-direction:column;align-items:flex-start}
+      .search-box input{width:100%}
+      .srv-grid{grid-template-columns:repeat(2,1fr)}
+      .why-grid{grid-template-columns:1fr 1fr}
+      .contact-grid{grid-template-columns:1fr}
+      .app-inner{grid-template-columns:1fr;text-align:center}
+      .app-btns{justify-content:center}
+      .app-feats{justify-content:center}
+      .app-img-wrap{display:none}
+      .footer-grid{grid-template-columns:1fr 1fr}
+      .nav-links{display:none}
+      .ham-btn{display:block}
+      .routes-grid{grid-template-columns:1fr 1fr}
+      .seat-grid{grid-template-columns:repeat(6,1fr)}
+      .f-grid{grid-template-columns:1fr}
     }
-    @media (max-width: 480px) {
-      .routes-grid { grid-template-columns: 1fr; }
-      .services-grid { grid-template-columns: 1fr 1fr; }
-      .form-grid { grid-template-columns: 1fr; }
-      .stats-inner { flex-direction: column; align-items: center; gap: 24px; }
-      .stat-divider { display: none; }
+    @media(max-width:560px){
+      .routes-grid{grid-template-columns:1fr}
+      .why-grid{grid-template-columns:1fr}
+      .srv-grid{grid-template-columns:1fr 1fr}
+      .stats-row{flex-direction:column;align-items:center;gap:24px}
+      .stat-sep{display:none}
+      .footer-grid{grid-template-columns:1fr}
+      .f-bottom{flex-direction:column;text-align:center}
+      .bus-grid{grid-template-columns:1fr}
+      .f-grid{grid-template-columns:1fr}
+      .hero-h1{font-size:2.6rem}
+      section{padding:64px 0}
     }
   </style>
 </head>
@@ -696,18 +359,16 @@
 
 <!-- Preloader -->
 <div id="preloader">
-  <div class="preloader-inner">
-    <div class="preloader-crown"><i class="fas fa-crown"></i></div>
-    <div class="preloader-text">RoyalCoach</div>
+  <div class="pre-inner">
+    <div class="pre-crown"><i class="fas fa-crown"></i></div>
+    <div class="pre-name">RoyalCoach</div>
   </div>
 </div>
 
 <!-- Navbar -->
 <nav id="navbar">
-  <div class="nav-container">
-    <a class="nav-brand" href="#home">
-      <i class="fas fa-crown"></i> RoyalCoach
-    </a>
+  <div class="nav-wrap">
+    <a class="nav-logo" href="#home"><i class="fas fa-crown"></i> RoyalCoach</a>
     <ul class="nav-links">
       <li><a href="#home">Home</a></li>
       <li><a href="#buses">Fleet</a></li>
@@ -716,93 +377,62 @@
       <li><a href="#contact">Contact</a></li>
       <li><a href="#buses" class="nav-cta">Book Now</a></li>
     </ul>
-    <div style="display:flex;align-items:center;gap:12px">
-      <button class="dark-btn" id="darkBtn" title="Toggle dark mode">
-        <i class="fas fa-moon" id="darkIcon"></i>
-      </button>
-      <button class="nav-hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="icon-btn" id="darkBtn" title="Toggle dark mode"><i class="fas fa-moon" id="darkIcon"></i></button>
+      <button class="ham-btn" id="hamBtn"><i class="fas fa-bars"></i></button>
     </div>
   </div>
 </nav>
 
 <!-- Mobile Nav -->
-<div class="mobile-nav" id="mobileNav">
-  <button class="close-btn" id="closeNav"><i class="fas fa-times"></i></button>
-  <a href="#home" onclick="closeMobileNav()">Home</a>
-  <a href="#buses" onclick="closeMobileNav()">Fleet</a>
-  <a href="#services" onclick="closeMobileNav()">Services</a>
-  <a href="#routes" onclick="closeMobileNav()">Routes</a>
-  <a href="#contact" onclick="closeMobileNav()">Contact</a>
+<div class="mob-nav" id="mobNav">
+  <button class="mob-close" id="mobClose"><i class="fas fa-times"></i></button>
+  <a href="#home" onclick="closeMob()">Home</a>
+  <a href="#buses" onclick="closeMob()">Fleet</a>
+  <a href="#services" onclick="closeMob()">Services</a>
+  <a href="#routes" onclick="closeMob()">Routes</a>
+  <a href="#contact" onclick="closeMob()">Contact</a>
 </div>
 
 <!-- Hero -->
 <section id="home" class="hero">
-  <div class="hero-bg-art">
-    <div class="circle c1"></div>
-    <div class="circle c2"></div>
+  <div class="hero-art">
+    <div class="orb o1"></div>
+    <div class="orb o2"></div>
+    <div class="grid"></div>
   </div>
-  <div class="hero-grid-line"></div>
-  <div class="hero-container">
+  <div class="hero-wrap">
     <div class="hero-content fade-up">
       <div class="hero-badge"><i class="fas fa-star"></i> Pakistan's #1 Premium Bus Service</div>
-      <h1 class="hero-title">
-        Travel in<br>
-        <span class="gold-text">True Luxury</span><br>
-        <span class="outline-text">Arrive in Style</span>
-      </h1>
-      <p class="hero-desc">Experience first-class road travel with premium coaches, executive lounges, reclining sleeper seats, and live GPS tracking across Pakistan.</p>
+      <h1 class="hero-h1">Travel in<br><span class="accent">True Luxury</span><br><span class="stroke">Arrive in Style</span></h1>
+      <p class="hero-p">First-class road travel with premium coaches, executive lounges, reclining sleeper seats, and live GPS tracking across Pakistan.</p>
       <div class="hero-btns">
-        <a href="#buses" class="btn-gold"><i class="fas fa-ticket-alt"></i> Book Your Seat</a>
-        <a href="#routes" class="btn-ghost"><i class="fas fa-map-marked-alt"></i> View Routes</a>
+        <a href="#buses" class="btn-primary"><i class="fas fa-ticket-alt"></i> Book Your Seat</a>
+        <a href="#routes" class="btn-outline"><i class="fas fa-map-marked-alt"></i> View Routes</a>
       </div>
       <div class="hero-stats">
-        <div class="hero-stat">
-          <div class="hero-stat-num">128+</div>
-          <div class="hero-stat-label">Coaches</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-num">50K+</div>
-          <div class="hero-stat-label">Riders</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-num">35</div>
-          <div class="hero-stat-label">Routes</div>
-        </div>
+        <div><div class="h-stat-n">128+</div><div class="h-stat-l">Coaches</div></div>
+        <div><div class="h-stat-n">50K+</div><div class="h-stat-l">Riders</div></div>
+        <div><div class="h-stat-n">35</div><div class="h-stat-l">Routes</div></div>
       </div>
     </div>
-    <div class="fade-up" style="animation-delay:0.2s">
-      <div class="booking-card">
-        <div class="booking-card-title"><i class="fas fa-search"></i> Find Your Journey</div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">From</label>
-            <input id="fromCity" class="form-control" placeholder="Departure city" value="Lahore">
-          </div>
-          <div class="form-group">
-            <label class="form-label">To</label>
-            <input id="toCity" class="form-control" placeholder="Destination" value="Islamabad">
-          </div>
+    <div class="fade-up" style="animation-delay:0.18s">
+      <div class="book-card">
+        <div class="book-card-title"><i class="fas fa-search"></i> Find Your Journey</div>
+        <div class="f-grid">
+          <div class="f-group"><label class="f-label">From</label><input id="fromCity" class="f-ctrl" placeholder="Departure city" value="Lahore"></div>
+          <div class="f-group"><label class="f-label">To</label><input id="toCity" class="f-ctrl" placeholder="Destination" value="Islamabad"></div>
         </div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">Date</label>
-            <input id="departDate" type="date" class="form-control">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Passengers</label>
-            <input id="passengers" type="number" class="form-control" value="1" min="1">
-          </div>
+        <div class="f-grid">
+          <div class="f-group"><label class="f-label">Date</label><input id="departDate" type="date" class="f-ctrl"></div>
+          <div class="f-group"><label class="f-label">Passengers</label><input id="passengers" type="number" class="f-ctrl" value="1" min="1"></div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Bus Type</label>
-          <select id="busTypeFilter" class="form-control">
-            <option>Any Bus</option>
-            <option>Luxury</option>
-            <option>Executive</option>
-            <option>Sleeper</option>
+        <div class="f-group"><label class="f-label">Bus Type</label>
+          <select id="busTypeFilter" class="f-ctrl">
+            <option>Any Bus</option><option>Luxury</option><option>Executive</option><option>Sleeper</option>
           </select>
         </div>
-        <button id="searchBusBtn" class="btn-search"><i class="fas fa-search"></i> Search Available Buses</button>
+        <button id="searchBusBtn" class="btn-search-card"><i class="fas fa-search"></i> Search Available Buses</button>
       </div>
     </div>
   </div>
@@ -810,33 +440,30 @@
 
 <!-- Stats Band -->
 <div class="stats-band">
-  <div class="container">
-    <div class="stats-inner">
-      <div class="stat-item"><div class="stat-num" data-count="128">0</div><div class="stat-label">Luxury Coaches</div></div>
-      <div class="stat-divider"></div>
-      <div class="stat-item"><div class="stat-num" data-count="50000">0</div><div class="stat-label">Happy Riders</div></div>
-      <div class="stat-divider"></div>
-      <div class="stat-item"><div class="stat-num" data-count="35">0</div><div class="stat-label">Routes Covered</div></div>
-      <div class="stat-divider"></div>
-      <div class="stat-item"><div class="stat-num">24/7</div><div class="stat-label">Customer Support</div></div>
+  <div class="wrap">
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-n" data-count="128">0</div><div class="stat-l">Luxury Coaches</div></div>
+      <div class="stat-sep"></div>
+      <div class="stat-item"><div class="stat-n" data-count="50000">0</div><div class="stat-l">Happy Riders</div></div>
+      <div class="stat-sep"></div>
+      <div class="stat-item"><div class="stat-n" data-count="35">0</div><div class="stat-l">Routes Covered</div></div>
+      <div class="stat-sep"></div>
+      <div class="stat-item"><div class="stat-n">24/7</div><div class="stat-l">Customer Support</div></div>
     </div>
   </div>
 </div>
 
-<!-- Fleet / Buses -->
+<!-- Fleet -->
 <section id="buses">
-  <div class="container">
-    <div class="buses-header fade-up">
+  <div class="wrap">
+    <div class="fleet-head fade-up">
       <div>
-        <div class="section-label">Our Fleet</div>
-        <h2 class="section-title">Premium Coaches</h2>
-        <div class="gold-divider"></div>
-        <p class="section-desc">Choose from executive, luxury, and sleeper coaches — each offering an unmatched travel experience.</p>
+        <div class="sec-tag">Our Fleet</div>
+        <h2 class="sec-h">Premium Coaches</h2>
+        <div class="divider"></div>
+        <p class="sec-p">Executive, luxury, and sleeper coaches — each delivering an unmatched travel experience.</p>
       </div>
-      <div class="search-pill">
-        <i class="fas fa-search"></i>
-        <input type="text" id="liveBusSearch" placeholder="Search buses or routes…">
-      </div>
+      <div class="search-box"><i class="fas fa-search"></i><input type="text" id="liveBusSearch" placeholder="Search buses or routes…"></div>
     </div>
     <div class="bus-grid" id="busCardsContainer"></div>
   </div>
@@ -844,29 +471,29 @@
 
 <!-- Services -->
 <section id="services">
-  <div class="container">
-    <div class="text-center fade-up" style="text-align:center;margin-bottom:52px">
-      <div class="section-label" style="color:var(--gold-light)">What We Offer</div>
-      <h2 class="section-title" style="color:white">Onboard & Terminal<br>Amenities</h2>
-      <div class="gold-divider" style="margin:16px auto 0"></div>
+  <div class="wrap">
+    <div class="fade-up" style="text-align:center;margin-bottom:50px">
+      <div class="sec-tag" style="color:var(--gold-light)">What We Offer</div>
+      <h2 class="sec-h" style="color:#fff">Onboard & Terminal Amenities</h2>
+      <div class="divider" style="margin:14px auto 0"></div>
     </div>
-    <div class="services-grid" id="servicesGrid"></div>
+    <div class="srv-grid" id="servicesGrid"></div>
   </div>
 </section>
 
 <!-- Routes -->
 <section id="routes">
-  <div class="container">
-    <div class="fade-up" style="margin-bottom:48px">
-      <div class="section-label">Destinations</div>
-      <h2 class="section-title">Popular Routes</h2>
-      <div class="gold-divider"></div>
+  <div class="wrap">
+    <div class="fade-up" style="margin-bottom:44px">
+      <div class="sec-tag">Destinations</div>
+      <h2 class="sec-h">Popular Routes</h2>
+      <div class="divider"></div>
     </div>
     <div class="routes-grid" id="routesGrid"></div>
-    <div class="why-section fade-up">
-      <div class="section-label" style="text-align:center">Our Promise</div>
-      <h2 class="section-title" style="text-align:center">Why Travel With Us</h2>
-      <div class="gold-divider" style="margin:12px auto 0"></div>
+    <div class="fade-up" style="text-align:center">
+      <div class="sec-tag" style="text-align:center">Our Promise</div>
+      <h2 class="sec-h" style="text-align:center">Why Travel With Us</h2>
+      <div class="divider" style="margin:12px auto 0"></div>
       <div class="why-grid" id="whyGrid"></div>
     </div>
   </div>
@@ -874,70 +501,60 @@
 
 <!-- Testimonials -->
 <section id="testimonials">
-  <div class="container">
-    <div class="fade-up" style="margin-bottom:48px;text-align:center">
-      <div class="section-label" style="color:var(--gold-light)">Traveler Stories</div>
-      <h2 class="section-title" style="color:white">What Our Passengers Say</h2>
-      <div class="gold-divider" style="margin:12px auto 0"></div>
+  <div class="wrap">
+    <div class="fade-up" style="margin-bottom:44px;text-align:center">
+      <div class="sec-tag" style="color:var(--gold-light)">Traveler Stories</div>
+      <h2 class="sec-h" style="color:#fff">What Our Passengers Say</h2>
+      <div class="divider" style="margin:12px auto 0"></div>
     </div>
   </div>
-  <div style="overflow:hidden">
-    <div class="testimonials-track" id="testimonialTrack"></div>
-  </div>
+  <div style="overflow:hidden"><div class="testi-track" id="testiTrack"></div></div>
 </section>
 
 <!-- App Promo -->
-<div class="app-section">
-  <div class="container">
+<div class="app-sec">
+  <div class="wrap">
     <div class="app-inner">
       <div class="fade-up">
-        <div class="app-label">Mobile App</div>
-        <h2 class="app-title">Book Tickets in<br>Your Pocket</h2>
-        <p class="app-desc">Live bus tracking, digital e-tickets, instant cancellations, and seamless payments — all from the RoyalCoach app.</p>
-        <div class="app-store-btns">
-          <a href="#" class="app-store-btn">
-            <i class="fab fa-apple"></i>
-            <div><div class="app-store-sub">Download on the</div><div class="app-store-name">App Store</div></div>
-          </a>
-          <a href="#" class="app-store-btn">
-            <i class="fab fa-google-play"></i>
-            <div><div class="app-store-sub">Get it on</div><div class="app-store-name">Google Play</div></div>
-          </a>
+        <div class="app-tag">Mobile App</div>
+        <h2 class="app-h">Book Tickets in<br>Your Pocket</h2>
+        <p class="app-p">Live bus tracking, digital e-tickets, instant cancellations, and seamless payments — all from the RoyalCoach app.</p>
+        <div class="app-btns">
+          <a href="#" class="app-btn"><i class="fab fa-apple"></i><div><div class="app-btn-sub">Download on the</div><div class="app-btn-name">App Store</div></div></a>
+          <a href="#" class="app-btn"><i class="fab fa-google-play"></i><div><div class="app-btn-sub">Get it on</div><div class="app-btn-name">Google Play</div></div></a>
         </div>
-        <div class="app-features">
+        <div class="app-feats">
           <div class="app-feat"><i class="fas fa-map-marker-alt"></i> Live Tracking</div>
           <div class="app-feat"><i class="fas fa-qrcode"></i> Digital Tickets</div>
           <div class="app-feat"><i class="fas fa-undo"></i> Easy Cancellation</div>
         </div>
       </div>
-      <div class="app-mockup">
-        <img src="https://placehold.co/440x280?text=RoyalCoach+App" alt="App Mockup" class="app-mockup-img">
-      </div>
+      <div class="app-img-wrap"><img src="https://placehold.co/420x280/07111F/C8963E?text=RoyalCoach+App" alt="App" class="app-img"></div>
     </div>
   </div>
 </div>
 
 <!-- FAQ + Contact -->
 <section id="contact">
-  <div class="container">
+  <div class="wrap">
     <div class="contact-grid">
       <div class="fade-up">
-        <div class="section-label">FAQ</div>
-        <h2 class="section-title">Frequently Asked<br>Questions</h2>
-        <div class="gold-divider"></div>
+        <div class="sec-tag">FAQ</div>
+        <h2 class="sec-h">Frequently Asked Questions</h2>
+        <div class="divider"></div>
         <div id="faqContainer"></div>
       </div>
       <div class="fade-up">
-        <div class="contact-form-card">
-          <div class="section-label">Get In Touch</div>
-          <h3 class="section-title" style="font-size:1.8rem">Send Us a Message</h3>
-          <div class="gold-divider"></div>
+        <div class="contact-card">
+          <div class="sec-tag">Get In Touch</div>
+          <h3 class="sec-h" style="font-size:1.75rem">Send Us a Message</h3>
+          <div class="divider"></div>
           <form id="contactForm">
-            <input type="text" class="input-light" placeholder="Full Name" required>
-            <input type="email" class="input-light" placeholder="Email Address" required>
-            <input type="tel" class="input-light" placeholder="Phone Number">
-            <textarea class="input-light" placeholder="Your Message…"></textarea>
-            <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Send Message</button>
+            <input type="text" class="inp" placeholder="Full Name" required>
+            <input type="email" class="inp" placeholder="Email Address" required>
+            <input type="tel" class="inp" placeholder="Phone Number">
+            <textarea class="inp" placeholder="Your Message…"></textarea>
+            <button type="submit" class="btn-send"><i class="fas fa-paper-plane"></i> Send Message</button>
           </form>
           <iframe class="map-frame" loading="lazy" src="https://maps.google.com/maps?q=lahore+bus+terminal&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
         </div>
@@ -948,90 +565,81 @@
 
 <!-- Footer -->
 <footer>
-  <div class="container">
+  <div class="wrap">
     <div class="footer-grid">
       <div>
-        <div class="footer-brand"><i class="fas fa-crown"></i> RoyalCoach</div>
-        <p class="footer-desc">Luxury redefined since 2005. Pakistan's most trusted premium bus travel experience.</p>
-        <div class="footer-social">
-          <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+        <div class="f-brand"><i class="fas fa-crown"></i> RoyalCoach</div>
+        <p class="f-desc">Luxury redefined since 2005. Pakistan's most trusted premium bus travel experience.</p>
+        <div class="f-social">
+          <a href="#" class="soc-btn"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="soc-btn"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="soc-btn"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="soc-btn"><i class="fab fa-whatsapp"></i></a>
         </div>
       </div>
       <div>
-        <div class="footer-heading">Quick Links</div>
-        <ul class="footer-links">
-          <li><a href="#home">Home</a></li>
-          <li><a href="#buses">Our Fleet</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#routes">Routes</a></li>
+        <div class="f-head">Quick Links</div>
+        <ul class="f-links">
+          <li><a href="#home">Home</a></li><li><a href="#buses">Fleet</a></li>
+          <li><a href="#services">Services</a></li><li><a href="#routes">Routes</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </div>
       <div>
-        <div class="footer-heading">Company</div>
-        <ul class="footer-links">
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#">Press</a></li>
-          <li><a href="#">Blog</a></li>
+        <div class="f-head">Company</div>
+        <ul class="f-links">
+          <li><a href="#">About Us</a></li><li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li><li><a href="#">Blog</a></li>
           <li><a href="#">Privacy Policy</a></li>
         </ul>
       </div>
       <div>
-        <div class="footer-heading">Newsletter</div>
-        <p style="color:rgba(255,255,255,0.4);font-size:0.83rem;margin-bottom:14px;">Get exclusive deals and travel updates.</p>
-        <div class="newsletter-form">
-          <input type="email" class="newsletter-input" placeholder="Your email address">
-          <button class="btn-newsletter"><i class="fas fa-arrow-right"></i></button>
+        <div class="f-head">Newsletter</div>
+        <p style="color:rgba(255,255,255,0.38);font-size:0.82rem;margin-bottom:13px;font-weight:300">Get exclusive deals and travel updates.</p>
+        <div class="nl-form">
+          <input type="email" class="nl-inp" placeholder="Your email">
+          <button class="nl-btn"><i class="fas fa-arrow-right"></i></button>
         </div>
-        <div style="margin-top:20px">
-          <div class="footer-heading">Contact</div>
-          <p style="color:rgba(255,255,255,0.4);font-size:0.83rem;line-height:2">
-            <i class="fas fa-phone" style="color:var(--gold);margin-right:6px"></i> +92 322 9234045<br>
-            <i class="fas fa-envelope" style="color:var(--gold);margin-right:6px"></i> fakharabbasbhatti333@gmail.com<br>
-            <i class="fas fa-map-marker-alt" style="color:var(--gold);margin-right:6px"></i> Main Terminal, Bahawalpur
+        <div style="margin-top:18px">
+          <div class="f-head">Contact</div>
+          <p style="color:rgba(255,255,255,0.38);font-size:0.82rem;line-height:2.1;font-weight:300">
+            <i class="fas fa-phone" style="color:var(--gold);margin-right:6px"></i>+92 322 9234045<br>
+            <i class="fas fa-envelope" style="color:var(--gold);margin-right:6px"></i>info@royalcoach.pk<br>
+            <i class="fas fa-map-marker-alt" style="color:var(--gold);margin-right:6px"></i>Main Terminal, Bahawalpur
           </p>
         </div>
       </div>
     </div>
-    <div class="footer-bottom">
-      <p class="footer-copy">© 2026 RoyalCoach — All rights reserved.</p>
-      <div class="footer-legal">
-        <a href="#">Terms</a>
-        <a href="#">Privacy</a>
-        <a href="#">Cookies</a>
-      </div>
+    <div class="f-bottom">
+      <p class="f-copy">© 2026 RoyalCoach — All rights reserved.</p>
+      <div class="f-legal"><a href="#">Terms</a><a href="#">Privacy</a><a href="#">Cookies</a></div>
     </div>
   </div>
 </footer>
 
-<!-- Scroll Top -->
 <button id="scrollTop"><i class="fas fa-arrow-up"></i></button>
 
 <!-- Seat Modal -->
-<div class="modal-overlay" id="seatModal">
+<div class="modal-bg" id="seatModal">
   <div class="modal-box">
-    <div class="modal-header">
-      <div class="modal-title"><i class="fas fa-chair" style="color:var(--gold);margin-right:8px"></i> Select Your Seats</div>
-      <button class="modal-close" id="closeModal"><i class="fas fa-times"></i></button>
+    <div class="modal-head">
+      <div class="modal-title"><i class="fas fa-chair" style="color:var(--gold);margin-right:8px"></i>Select Your Seats</div>
+      <button class="modal-x" id="closeModal"><i class="fas fa-times"></i></button>
     </div>
     <div class="modal-body">
       <div class="seat-legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#D1FAE5;border:1.5px solid #6EE7B7"></div> Available</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#F3F4F6;border:1.5px solid #E5E7EB"></div> Reserved</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#FEE2E2;border:1.5px solid #FCA5A5"></div> Female Only</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#FEF3C7;border:1.5px solid #FCD34D"></div> Family</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--navy);border:2px solid var(--gold)"></div> Selected</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#D1FAE5;border:1.5px solid #6EE7B7"></div>Available</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#F3F4F6;border:1.5px solid #E5E7EB"></div>Reserved</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#FEE2E2;border:1.5px solid #FCA5A5"></div>Female Only</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#FEF3C7;border:1.5px solid #FCD34D"></div>Family</div>
+        <div class="leg-item"><div class="leg-dot" style="background:var(--navy);border:2px solid var(--gold)"></div>Selected</div>
       </div>
       <div class="seat-grid" id="seatGrid"></div>
-      <p style="font-size:0.78rem;color:var(--text-muted);text-align:center">Click on available seats to select. Female-only seats are reserved for female passengers.</p>
+      <p style="font-size:0.76rem;color:var(--text-3);text-align:center">Click on available seats to select.</p>
     </div>
-    <div class="modal-footer-bar">
+    <div class="modal-foot">
       <div class="modal-total">Selected <strong id="selectedCount">0</strong> seat(s) · PKR <strong id="totalPrice">0</strong></div>
-      <button class="btn-confirm" id="confirmBtn"><i class="fas fa-check"></i> Confirm Booking</button>
+      <button class="btn-confirm" id="confirmBtn"><i class="fas fa-check"></i> Confirm</button>
     </div>
   </div>
 </div>
@@ -1039,193 +647,164 @@
 <!-- Toast -->
 <div class="toast" id="toast">
   <div class="toast-icon"><i class="fas fa-check-circle"></i></div>
-  <div>
-    <div class="toast-title">Booking Confirmed!</div>
-    <div class="toast-sub">E-ticket sent to your email.</div>
-  </div>
+  <div><div class="toast-title" id="toastTitle">Booking Confirmed!</div><div class="toast-sub" id="toastSub">E-ticket sent to your email.</div></div>
 </div>
 
 <script>
-// ── DATA ──────────────────────────────────────────────────
-const busData = [
-  { id:1, name:"Silver Executive", from:"Lahore", to:"Islamabad", depart:"08:00 AM", arrive:"01:30 PM", duration:"5h 30m", seatsAvail:28, price:2500, type:"Executive", img:"https://placehold.co/600x360/0A1628/C9A84C?text=Silver+Executive" },
-  { id:2, name:"Royal Sleeper", from:"Lahore", to:"Karachi", depart:"09:00 PM", arrive:"07:00 AM", duration:"10h", seatsAvail:18, price:4800, type:"Sleeper", img:"https://placehold.co/600x360/0A1628/C9A84C?text=Royal+Sleeper" },
-  { id:3, name:"Green Luxury", from:"Islamabad", to:"Peshawar", depart:"10:30 AM", arrive:"02:15 PM", duration:"3h 45m", seatsAvail:35, price:1800, type:"Luxury", img:"https://placehold.co/600x360/0A1628/C9A84C?text=Green+Luxury" },
-  { id:4, name:"Family Coach", from:"Lahore", to:"Multan", depart:"07:00 AM", arrive:"12:30 PM", duration:"5h 30m", seatsAvail:40, price:2100, type:"Luxury", img:"https://placehold.co/600x360/0A1628/C9A84C?text=Family+Coach" },
-  { id:5, name:"Business Plus", from:"Karachi", to:"Hyderabad", depart:"06:00 PM", arrive:"08:30 PM", duration:"2h 30m", seatsAvail:22, price:1500, type:"Executive", img:"https://placehold.co/600x360/0A1628/C9A84C?text=Business+Plus" },
-  { id:6, name:"VIP Royale", from:"Rawalpindi", to:"Multan", depart:"11:00 AM", arrive:"05:00 PM", duration:"6h", seatsAvail:30, price:3200, type:"Luxury", img:"https://placehold.co/600x360/0A1628/C9A84C?text=VIP+Royale" }
+const busData=[
+  {id:1,name:"Silver Executive",from:"Lahore",to:"Islamabad",depart:"08:00 AM",arrive:"01:30 PM",duration:"5h 30m",seatsAvail:28,price:2500,type:"Executive",img:"https://placehold.co/600x360/07111F/C8963E?text=Silver+Executive"},
+  {id:2,name:"Royal Sleeper",from:"Lahore",to:"Karachi",depart:"09:00 PM",arrive:"07:00 AM",duration:"10h",seatsAvail:18,price:4800,type:"Sleeper",img:"https://placehold.co/600x360/07111F/C8963E?text=Royal+Sleeper"},
+  {id:3,name:"Green Luxury",from:"Islamabad",to:"Peshawar",depart:"10:30 AM",arrive:"02:15 PM",duration:"3h 45m",seatsAvail:35,price:1800,type:"Luxury",img:"https://placehold.co/600x360/07111F/C8963E?text=Green+Luxury"},
+  {id:4,name:"Family Coach",from:"Lahore",to:"Multan",depart:"07:00 AM",arrive:"12:30 PM",duration:"5h 30m",seatsAvail:40,price:2100,type:"Luxury",img:"https://placehold.co/600x360/07111F/C8963E?text=Family+Coach"},
+  {id:5,name:"Business Plus",from:"Karachi",to:"Hyderabad",depart:"06:00 PM",arrive:"08:30 PM",duration:"2h 30m",seatsAvail:22,price:1500,type:"Executive",img:"https://placehold.co/600x360/07111F/C8963E?text=Business+Plus"},
+  {id:6,name:"VIP Royale",from:"Rawalpindi",to:"Multan",depart:"11:00 AM",arrive:"05:00 PM",duration:"6h",seatsAvail:30,price:3200,type:"Luxury",img:"https://placehold.co/600x360/07111F/C8963E?text=VIP+Royale"}
 ];
-const seatMaps = {};
-let activeBus = null, selectedSeats = [];
+const seatMaps={};let activeBus=null,selectedSeats=[];
 
-const services = [
-  { icon:'fa-wifi', name:'Free WiFi' },
-  { icon:'fa-snowflake', name:'AC Luxury' },
-  { icon:'fa-chair', name:'Reclining Seats' },
-  { icon:'fa-charging-station', name:'USB Charging' },
-  { icon:'fa-tv', name:'Entertainment' },
-  { icon:'fa-bottle-water', name:'Complimentary Water' },
-  { icon:'fa-utensils', name:'Refreshments' },
-  { icon:'fa-location-dot', name:'GPS Live Tracking' },
-  { icon:'fa-camera', name:'CCTV Security' },
-  { icon:'fa-users', name:'Family Area' },
-  { icon:'fa-venus', name:'Ladies Reserved' },
-  { icon:'fa-headset', name:'24/7 Support' }
+const services=[
+  {icon:'fa-wifi',name:'Free WiFi'},{icon:'fa-snowflake',name:'AC Luxury'},
+  {icon:'fa-chair',name:'Reclining Seats'},{icon:'fa-charging-station',name:'USB Charging'},
+  {icon:'fa-tv',name:'Entertainment'},{icon:'fa-bottle-water',name:'Complimentary Water'},
+  {icon:'fa-utensils',name:'Refreshments'},{icon:'fa-location-dot',name:'Live GPS Tracking'},
+  {icon:'fa-camera',name:'CCTV Security'},{icon:'fa-users',name:'Family Area'},
+  {icon:'fa-venus',name:'Ladies Reserved'},{icon:'fa-headset',name:'24/7 Support'}
 ];
 
-const routes = [
-  { from:"Lahore", to:"Islamabad", dist:"380 km", time:"5h 30m", fare:"1,800" },
-  { from:"Lahore", to:"Karachi", dist:"1,200 km", time:"14h", fare:"5,000" },
-  { from:"Islamabad", to:"Peshawar", dist:"180 km", time:"2h 30m", fare:"1,200" },
-  { from:"Karachi", to:"Hyderabad", dist:"164 km", time:"2h", fare:"900" },
-  { from:"Lahore", to:"Multan", dist:"340 km", time:"5h", fare:"1,600" },
-  { from:"Rawalpindi", to:"Multan", dist:"490 km", time:"6h", fare:"2,200" },
-  { from:"Faisalabad", to:"Lahore", dist:"130 km", time:"2h", fare:"750" },
-  { from:"Quetta", to:"Karachi", dist:"700 km", time:"9h", fare:"4,000" }
+const routes=[
+  {from:"Lahore",to:"Islamabad",dist:"380 km",time:"5h 30m",fare:"1,800"},
+  {from:"Lahore",to:"Karachi",dist:"1,200 km",time:"14h",fare:"5,000"},
+  {from:"Islamabad",to:"Peshawar",dist:"180 km",time:"2h 30m",fare:"1,200"},
+  {from:"Karachi",to:"Hyderabad",dist:"164 km",time:"2h",fare:"900"},
+  {from:"Lahore",to:"Multan",dist:"340 km",time:"5h",fare:"1,600"},
+  {from:"Rawalpindi",to:"Multan",dist:"490 km",time:"6h",fare:"2,200"},
+  {from:"Faisalabad",to:"Lahore",dist:"130 km",time:"2h",fare:"750"},
+  {from:"Quetta",to:"Karachi",dist:"700 km",time:"9h",fare:"4,000"}
 ];
 
-const whyItems = [
-  { icon:'fa-shield-halved', title:'Safe & Secure', desc:'GPS tracked coaches with trained drivers and CCTV surveillance throughout your journey.' },
-  { icon:'fa-mobile-screen', title:'Easy Online Booking', desc:'Book in seconds via our website or app. Instant confirmation and digital e-tickets.' },
-  { icon:'fa-tag', title:'Best Value Pricing', desc:'Premium comfort at honest prices. No hidden charges, transparent fares guaranteed.' },
-  { icon:'fa-user-tie', title:'Professional Drivers', desc:'All drivers are certified, background-checked, and trained in passenger safety.' },
-  { icon:'fa-clock-rotate-left', title:'Punctual Departures', desc:'We respect your time. Over 96% of our coaches depart and arrive on schedule.' },
-  { icon:'fa-rotate-left', title:'Easy Cancellation', desc:'Cancel up to 4 hours before departure for a full refund. Hassle-free process.' }
+const whyItems=[
+  {icon:'fa-shield-halved',title:'Safe & Secure',desc:'GPS tracked coaches with trained drivers and CCTV surveillance throughout your journey.'},
+  {icon:'fa-mobile-screen',title:'Easy Online Booking',desc:'Book in seconds via website or app. Instant confirmation and digital e-tickets.'},
+  {icon:'fa-tag',title:'Best Value Pricing',desc:'Premium comfort at honest prices. No hidden charges, transparent fares guaranteed.'},
+  {icon:'fa-user-tie',title:'Professional Drivers',desc:'All drivers are certified, background-checked, and trained in passenger safety.'},
+  {icon:'fa-clock-rotate-left',title:'Punctual Departures',desc:'We respect your time. Over 96% of our coaches depart and arrive on schedule.'},
+  {icon:'fa-rotate-left',title:'Easy Cancellation',desc:'Cancel up to 4 hours before departure for a full refund. Hassle-free process.'}
 ];
 
-const testimonials = [
-  { name:"Ahmed Raza", role:"Lahore → Islamabad", stars:5, text:"Absolutely the finest bus travel I've experienced in Pakistan. The reclining seat and chilled air conditioning made the 5-hour ride feel like 2." },
-  { name:"Sara Khan", role:"Lahore → Karachi", stars:5, text:"Booked the sleeper bus for an overnight journey — it was phenomenal. Comfortable, clean, and the WiFi actually worked perfectly." },
-  { name:"Bilal Hussain", role:"Islamabad → Peshawar", stars:5, text:"The app makes booking incredibly easy. Real-time tracking meant my family always knew where I was. Highly recommended!" },
-  { name:"Ayesha Malik", role:"Karachi → Hyderabad", stars:4, text:"Ladies reserved seats are a wonderful feature. Felt very safe and comfortable throughout. RoyalCoach understands what female travelers need." },
-  { name:"Usman Ali", role:"Rawalpindi → Multan", stars:5, text:"VIP Royale is no joke — it truly is VIP. The refreshments, the USB ports, the entertainment system. First class on road!" },
-  { name:"Nadia Farooq", role:"Lahore → Multan", stars:5, text:"Traveled with the whole family and the family seating section was perfect for us. Kids loved the entertainment screens. Will definitely book again." }
+const testimonials=[
+  {name:"Ahmed Raza",role:"Lahore → Islamabad",stars:5,text:"Absolutely the finest bus travel I've experienced in Pakistan. The reclining seat made the 5-hour ride feel like 2."},
+  {name:"Sara Khan",role:"Lahore → Karachi",stars:5,text:"Booked the sleeper bus for an overnight journey — it was phenomenal. Comfortable, clean, and WiFi actually worked."},
+  {name:"Bilal Hussain",role:"Islamabad → Peshawar",stars:5,text:"The app makes booking incredibly easy. Real-time tracking meant my family always knew where I was. Highly recommended!"},
+  {name:"Ayesha Malik",role:"Karachi → Hyderabad",stars:4,text:"Ladies reserved seats are a wonderful feature. Felt very safe and comfortable. RoyalCoach understands female travelers."},
+  {name:"Usman Ali",role:"Rawalpindi → Multan",stars:5,text:"VIP Royale is no joke — it truly is VIP. The refreshments, USB ports, entertainment system. First class on road!"},
+  {name:"Nadia Farooq",role:"Lahore → Multan",stars:5,text:"Traveled with the whole family and the family seating section was perfect. Kids loved the entertainment screens."}
 ];
 
-const faqs = [
-  { q:"How do I book a ticket online?", a:"Simply select your route, departure date, and number of passengers using our search form. Choose your preferred bus, select your seats from the interactive seat map, and complete payment. Your e-ticket will be emailed instantly." },
-  { q:"Can I cancel or change my booking?", a:"Yes, cancellations are accepted up to 4 hours before departure for a full refund. Changes to booking date can be made up to 6 hours before departure subject to availability and a small fee." },
-  { q:"How does live bus tracking work?", a:"Our GPS-enabled coaches broadcast real-time location data. Download the RoyalCoach app and enter your ticket number to see your bus on a live map. Your family can also track using a shared tracking link." },
-  { q:"What payment methods are accepted?", a:"We accept all major debit/credit cards, EasyPaisa, JazzCash, and bank transfers. All transactions are SSL encrypted and fully secure." },
-  { q:"Are there special seats for female passengers?", a:"Yes. Each coach has clearly marked female-only seats (shown in red on the seat map) and a dedicated family seating area. Our staff ensures these are strictly respected." },
-  { q:"What amenities are included in my ticket?", a:"All tickets include air conditioning, free WiFi, USB charging ports, complimentary water, and entertainment. Executive and Sleeper class tickets include additional refreshments and reclining/sleeper seats." }
+const faqs=[
+  {q:"How do I book a ticket online?",a:"Select your route, departure date, and passengers using our search form. Choose your bus, pick your seats from the seat map, and complete payment. E-ticket sent instantly."},
+  {q:"Can I cancel or change my booking?",a:"Yes, cancellations are accepted up to 4 hours before departure for a full refund. Date changes can be made up to 6 hours before departure."},
+  {q:"How does live bus tracking work?",a:"Our GPS-enabled coaches broadcast real-time location data. Download the RoyalCoach app and enter your ticket number to see your bus live on a map."},
+  {q:"What payment methods are accepted?",a:"We accept all major debit/credit cards, EasyPaisa, JazzCash, and bank transfers. All transactions are SSL encrypted."},
+  {q:"Are there special seats for female passengers?",a:"Yes. Each coach has female-only seats (shown in red on the seat map) and a dedicated family seating area, strictly respected by staff."},
+  {q:"What amenities are included?",a:"All tickets include AC, free WiFi, USB charging, complimentary water, and entertainment. Executive/Sleeper tickets include additional refreshments and reclining/sleeper seats."}
 ];
 
-// ── SEAT MAP ─────────────────────────────────────────────
-function generateSeats(busId) {
-  if (seatMaps[busId]) return seatMaps[busId];
-  const seats = [];
-  for (let i = 1; i <= 40; i++) {
-    const row = Math.ceil(i / 8);
-    const col = ((i-1) % 8) + 1;
-    let status = 'available';
-    if (i % 7 === 0) status = 'reserved';
-    if ((row === 3 && col === 4) || (row === 4 && col === 5)) status = 'female';
-    if (row === 6 && (col === 2 || col === 3)) status = 'family';
-    seats.push({ id:i, label:`${String.fromCharCode(64+row)}${col}`, status });
+function generateSeats(busId){
+  if(seatMaps[busId])return seatMaps[busId];
+  const seats=[];
+  for(let i=1;i<=40;i++){
+    const row=Math.ceil(i/8),col=((i-1)%8)+1;
+    let status='available';
+    if(i%7===0)status='reserved';
+    if((row===3&&col===4)||(row===4&&col===5))status='female';
+    if(row===6&&(col===2||col===3))status='family';
+    seats.push({id:i,label:`${String.fromCharCode(64+row)}${col}`,status});
   }
-  return seatMaps[busId] = seats;
+  return seatMaps[busId]=seats;
 }
 
-function renderSeats(bus) {
-  activeBus = bus;
-  selectedSeats = [];
-  updatePriceDisplay();
-  const grid = document.getElementById('seatGrid');
-  const seats = generateSeats(bus.id);
-  grid.innerHTML = seats.map(s => `
-    <div class="seat ${s.status}" data-id="${s.id}" title="${s.status === 'female' ? 'Female Only' : s.status === 'family' ? 'Family' : s.label}">
-      ${s.label}
-    </div>`).join('');
-  grid.querySelectorAll('.seat:not(.reserved)').forEach(el => {
-    el.addEventListener('click', () => toggleSeat(parseInt(el.dataset.id), el));
+function renderSeats(bus){
+  activeBus=bus;selectedSeats=[];updatePrice();
+  const grid=document.getElementById('seatGrid');
+  const seats=generateSeats(bus.id);
+  grid.innerHTML=seats.map(s=>`<div class="seat ${s.status}" data-id="${s.id}" title="${s.status==='female'?'Female Only':s.status==='family'?'Family':s.label}">${s.label}</div>`).join('');
+  grid.querySelectorAll('.seat:not(.reserved)').forEach(el=>{
+    el.addEventListener('click',()=>toggleSeat(parseInt(el.dataset.id),el));
   });
 }
 
-function toggleSeat(id, el) {
-  const seat = seatMaps[activeBus.id].find(s => s.id === id);
-  if (!seat || seat.status === 'reserved') return;
-  const idx = selectedSeats.indexOf(id);
-  if (idx > -1) {
-    selectedSeats.splice(idx, 1);
-    el.classList.remove('selected');
-  } else {
-    selectedSeats.push(id);
-    el.classList.add('selected');
-  }
-  updatePriceDisplay();
+function toggleSeat(id,el){
+  const seat=seatMaps[activeBus.id].find(s=>s.id===id);
+  if(!seat||seat.status==='reserved')return;
+  const idx=selectedSeats.indexOf(id);
+  if(idx>-1){selectedSeats.splice(idx,1);el.classList.remove('selected');}
+  else{selectedSeats.push(id);el.classList.add('selected');}
+  updatePrice();
 }
 
-function updatePriceDisplay() {
-  document.getElementById('selectedCount').textContent = selectedSeats.length;
-  document.getElementById('totalPrice').textContent = (selectedSeats.length * (activeBus?.price||0)).toLocaleString();
+function updatePrice(){
+  document.getElementById('selectedCount').textContent=selectedSeats.length;
+  document.getElementById('totalPrice').textContent=(selectedSeats.length*(activeBus?.price||0)).toLocaleString();
 }
 
-// ── RENDER FUNCTIONS ─────────────────────────────────────
-function renderBuses() {
-  const from = document.getElementById('fromCity').value.toLowerCase();
-  const to = document.getElementById('toCity').value.toLowerCase();
-  const type = document.getElementById('busTypeFilter').value;
-  const term = document.getElementById('liveBusSearch').value.toLowerCase();
-  const filtered = busData.filter(b =>
-    (!from || b.from.toLowerCase().includes(from)) &&
-    (!to || b.to.toLowerCase().includes(to)) &&
-    (type === 'Any Bus' || b.type === type) &&
-    (b.name.toLowerCase().includes(term) || b.from.toLowerCase().includes(term) || b.to.toLowerCase().includes(term))
+function renderBuses(){
+  const from=document.getElementById('fromCity').value.toLowerCase();
+  const to=document.getElementById('toCity').value.toLowerCase();
+  const type=document.getElementById('busTypeFilter').value;
+  const term=document.getElementById('liveBusSearch').value.toLowerCase();
+  const filtered=busData.filter(b=>
+    (!from||b.from.toLowerCase().includes(from))&&
+    (!to||b.to.toLowerCase().includes(to))&&
+    (type==='Any Bus'||b.type===type)&&
+    (b.name.toLowerCase().includes(term)||b.from.toLowerCase().includes(term)||b.to.toLowerCase().includes(term))
   );
-  const c = document.getElementById('busCardsContainer');
-  if (!filtered.length) { c.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--text-muted)"><i class="fas fa-bus fa-3x" style="opacity:0.2;margin-bottom:16px;display:block"></i>No buses found for this route. Try adjusting your search.</div>`; return; }
-  c.innerHTML = filtered.map(b => `
+  const c=document.getElementById('busCardsContainer');
+  if(!filtered.length){c.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--text-3)"><i class="fas fa-bus fa-3x" style="opacity:0.2;margin-bottom:16px;display:block"></i>No buses found. Try adjusting your search.</div>`;return;}
+  c.innerHTML=filtered.map(b=>`
     <div class="bus-card fade-up">
-      <div class="bus-card-img">
+      <div class="bus-img">
         <img src="${b.img}" alt="${b.name}">
-        <div class="bus-type-badge">${b.type}</div>
-        <div class="bus-seats-badge"><i class="fas fa-user-check"></i> ${b.seatsAvail} seats</div>
+        <div class="badge-type">${b.type}</div>
+        <div class="badge-seats"><i class="fas fa-user-check"></i>${b.seatsAvail} seats</div>
       </div>
-      <div class="bus-card-body">
-        <h3 class="bus-card-name">${b.name}</h3>
-        <div class="bus-route"><i class="fas fa-map-marker-alt"></i>${b.from} <span style="margin:0 4px">→</span> ${b.to}</div>
-        <div class="bus-info-row">
-          <div class="bus-info-item"><div class="bus-info-val">${b.depart}</div><div class="bus-info-key">Departs</div></div>
-          <div class="bus-info-item"><div class="bus-info-val">${b.arrive}</div><div class="bus-info-key">Arrives</div></div>
-          <div class="bus-info-item"><div class="bus-info-val">${b.duration}</div><div class="bus-info-key">Duration</div></div>
+      <div class="bus-body">
+        <h3 class="bus-name">${b.name}</h3>
+        <div class="bus-route"><i class="fas fa-map-marker-alt"></i>${b.from} → ${b.to}</div>
+        <div class="bus-info">
+          <div class="bi"><div class="bi-v">${b.depart}</div><div class="bi-k">Departs</div></div>
+          <div class="bi"><div class="bi-v">${b.arrive}</div><div class="bi-k">Arrives</div></div>
+          <div class="bi"><div class="bi-v">${b.duration}</div><div class="bi-k">Duration</div></div>
         </div>
-        <div class="bus-card-footer">
-          <div class="bus-price">
-            <div class="bus-price-label">Per seat</div>
-            <div class="bus-price-val">PKR ${b.price.toLocaleString()}</div>
-          </div>
-          <button class="btn-book book-btn" data-id="${b.id}" ${b.seatsAvail===0?'disabled':''}>
-            ${b.seatsAvail===0?'Sold Out':'Book Now <i class="fas fa-arrow-right"></i>'}
-          </button>
+        <div class="bus-foot">
+          <div><div class="bus-price-l">Per seat</div><div class="bus-price-v">PKR ${b.price.toLocaleString()}</div></div>
+          <button class="btn-book book-btn" data-id="${b.id}" ${b.seatsAvail===0?'disabled':''}>${b.seatsAvail===0?'Sold Out':'Book Now <i class="fas fa-arrow-right"></i>'}</button>
         </div>
       </div>
     </div>`).join('');
-  document.querySelectorAll('.book-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const bus = busData.find(b => b.id === parseInt(btn.dataset.id));
-      if (bus) { renderSeats(bus); document.getElementById('seatModal').classList.add('open'); }
+  document.querySelectorAll('.book-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const bus=busData.find(b=>b.id===parseInt(btn.dataset.id));
+      if(bus){renderSeats(bus);document.getElementById('seatModal').classList.add('open');}
     });
   });
   observeFadeUp();
 }
 
-function renderServices() {
-  document.getElementById('servicesGrid').innerHTML = services.map(s => `
-    <div class="service-card fade-up">
-      <div class="service-icon"><i class="fas ${s.icon}"></i></div>
-      <div class="service-name">${s.name}</div>
+function renderServices(){
+  document.getElementById('servicesGrid').innerHTML=services.map(s=>`
+    <div class="srv-card fade-up">
+      <div class="srv-icon"><i class="fas ${s.icon}"></i></div>
+      <div class="srv-name">${s.name}</div>
     </div>`).join('');
 }
 
-function renderRoutes() {
-  document.getElementById('routesGrid').innerHTML = routes.map(r => `
+function renderRoutes(){
+  document.getElementById('routesGrid').innerHTML=routes.map(r=>`
     <div class="route-card fade-up">
-      <div class="route-from-to">${r.from}<span class="route-arrow">→</span>${r.to}</div>
-      <div class="route-meta"><span><i class="fas fa-road" style="color:var(--gold);margin-right:4px"></i>${r.dist}</span><span><i class="fas fa-clock" style="color:var(--gold);margin-right:4px"></i>${r.time}</span></div>
-      <div class="route-fare">from PKR ${r.fare}</div>
+      <div class="rt-cities">${r.from}<span class="rt-arrow">→</span>${r.to}</div>
+      <div class="rt-meta"><span><i class="fas fa-road" style="color:var(--gold);margin-right:4px"></i>${r.dist}</span><span><i class="fas fa-clock" style="color:var(--gold);margin-right:4px"></i>${r.time}</span></div>
+      <div class="rt-fare">from PKR ${r.fare}</div>
     </div>`).join('');
-  document.getElementById('whyGrid').innerHTML = whyItems.map(w => `
+  document.getElementById('whyGrid').innerHTML=whyItems.map(w=>`
     <div class="why-card fade-up">
       <div class="why-icon"><i class="fas ${w.icon}"></i></div>
       <h4 class="why-title">${w.title}</h4>
@@ -1233,139 +812,120 @@ function renderRoutes() {
     </div>`).join('');
 }
 
-function renderTestimonials() {
-  const cards = [...testimonials, ...testimonials].map(t => `
-    <div class="testimonial-card">
-      <div class="testimonial-stars">${'★'.repeat(t.stars)}</div>
-      <p class="testimonial-text">"${t.text}"</p>
-      <div class="testimonial-author">
-        <img class="testimonial-avatar" src="https://ui-avatars.com/api/?name=${encodeURIComponent(t.name)}&background=C9A84C&color=0A1628&bold=true" alt="${t.name}">
-        <div>
-          <div class="testimonial-name">${t.name}</div>
-          <div class="testimonial-route">${t.role}</div>
-        </div>
+function renderTestimonials(){
+  const cards=[...testimonials,...testimonials].map(t=>`
+    <div class="testi-card">
+      <div class="testi-stars">${'★'.repeat(t.stars)}</div>
+      <p class="testi-text">"${t.text}"</p>
+      <div class="testi-author">
+        <img class="testi-av" src="https://ui-avatars.com/api/?name=${encodeURIComponent(t.name)}&background=C8963E&color=07111F&bold=true" alt="${t.name}">
+        <div><div class="testi-name">${t.name}</div><div class="testi-route">${t.role}</div></div>
       </div>
     </div>`).join('');
-  document.getElementById('testimonialTrack').innerHTML = cards;
+  document.getElementById('testiTrack').innerHTML=cards;
 }
 
-function renderFAQ() {
-  document.getElementById('faqContainer').innerHTML = faqs.map((f, i) => `
-    <div class="accordion-item">
-      <button class="accordion-header" onclick="toggleFaq(${i})">
-        ${f.q} <i class="fas fa-chevron-down" id="faq-icon-${i}"></i>
-      </button>
-      <div class="accordion-body" id="faq-body-${i}">
-        <div class="accordion-body-inner">${f.a}</div>
-      </div>
+function renderFAQ(){
+  document.getElementById('faqContainer').innerHTML=faqs.map((f,i)=>`
+    <div class="acc-item">
+      <button class="acc-btn" onclick="toggleFaq(${i})">${f.q}<i class="fas fa-chevron-down" id="faq-i-${i}"></i></button>
+      <div class="acc-body" id="faq-b-${i}"><div class="acc-inner">${f.a}</div></div>
     </div>`).join('');
 }
 
-function toggleFaq(i) {
-  const body = document.getElementById(`faq-body-${i}`);
-  const icon = document.getElementById(`faq-icon-${i}`);
-  const btn = icon.closest('.accordion-header');
-  const isOpen = body.style.maxHeight && body.style.maxHeight !== '0px';
-  document.querySelectorAll('.accordion-body').forEach(b => b.style.maxHeight = '0px');
-  document.querySelectorAll('.accordion-header').forEach(h => h.classList.remove('open'));
-  if (!isOpen) { body.style.maxHeight = body.scrollHeight + 'px'; btn.classList.add('open'); }
+function toggleFaq(i){
+  const body=document.getElementById(`faq-b-${i}`);
+  const btn=document.getElementById(`faq-i-${i}`).closest('.acc-btn');
+  const isOpen=body.style.maxHeight&&body.style.maxHeight!=='0px';
+  document.querySelectorAll('.acc-body').forEach(b=>b.style.maxHeight='0px');
+  document.querySelectorAll('.acc-btn').forEach(b=>b.classList.remove('open'));
+  if(!isOpen){body.style.maxHeight=body.scrollHeight+'px';btn.classList.add('open');}
 }
 
-// ── COUNTER ANIMATION ─────────────────────────────────────
-function animateCounters() {
-  document.querySelectorAll('[data-count]').forEach(el => {
-    const target = parseInt(el.dataset.count);
-    const duration = 2000;
-    const step = target / (duration / 16);
-    let current = 0;
-    const update = setInterval(() => {
-      current = Math.min(current + step, target);
-      el.textContent = target >= 1000 ? Math.floor(current).toLocaleString() : Math.floor(current);
-      if (current >= target) { el.textContent = target >= 1000 ? target.toLocaleString() : target; clearInterval(update); }
-    }, 16);
+function animateCounters(){
+  document.querySelectorAll('[data-count]').forEach(el=>{
+    const target=parseInt(el.dataset.count),dur=2000,step=target/(dur/16);
+    let cur=0;
+    const t=setInterval(()=>{
+      cur=Math.min(cur+step,target);
+      el.textContent=target>=1000?Math.floor(cur).toLocaleString():Math.floor(cur);
+      if(cur>=target){el.textContent=target>=1000?target.toLocaleString():target;clearInterval(t);}
+    },16);
   });
 }
 
-// ── INTERSECTION OBSERVER ─────────────────────────────────
-function observeFadeUp() {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.fade-up:not(.visible)').forEach(el => obs.observe(el));
+function observeFadeUp(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+  },{threshold:0.1});
+  document.querySelectorAll('.fade-up:not(.visible)').forEach(el=>obs.observe(el));
 }
 
-let counterAnimated = false;
-const statsObs = new IntersectionObserver((entries) => {
-  if (entries[0].isIntersecting && !counterAnimated) { animateCounters(); counterAnimated = true; }
-}, { threshold: 0.3 });
+let counted=false;
+const statsObs=new IntersectionObserver(entries=>{
+  if(entries[0].isIntersecting&&!counted){animateCounters();counted=true;}
+},{threshold:0.3});
 
-// ── EVENTS ────────────────────────────────────────────────
-document.getElementById('searchBusBtn').addEventListener('click', () => { document.getElementById('buses').scrollIntoView({behavior:'smooth'}); renderBuses(); });
-document.getElementById('liveBusSearch').addEventListener('input', renderBuses);
-document.getElementById('busTypeFilter').addEventListener('change', renderBuses);
+function showToast(title,sub){
+  document.getElementById('toastTitle').textContent=title;
+  document.getElementById('toastSub').textContent=sub;
+  const t=document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),4000);
+}
 
-document.getElementById('closeModal').addEventListener('click', () => document.getElementById('seatModal').classList.remove('open'));
-document.getElementById('seatModal').addEventListener('click', (e) => { if (e.target === document.getElementById('seatModal')) document.getElementById('seatModal').classList.remove('open'); });
+document.getElementById('searchBusBtn').addEventListener('click',()=>{
+  document.getElementById('buses').scrollIntoView({behavior:'smooth'});renderBuses();
+});
+document.getElementById('liveBusSearch').addEventListener('input',renderBuses);
+document.getElementById('busTypeFilter').addEventListener('change',renderBuses);
 
-document.getElementById('confirmBtn').addEventListener('click', () => {
-  if (!selectedSeats.length) { return alert('Please select at least one seat.'); }
-  seatMaps[activeBus.id].filter(s => selectedSeats.includes(s.id)).forEach(s => s.status = 'reserved');
-  const bus = busData.find(b => b.id === activeBus.id);
-  if (bus) bus.seatsAvail = Math.max(0, bus.seatsAvail - selectedSeats.length);
+document.getElementById('closeModal').addEventListener('click',()=>document.getElementById('seatModal').classList.remove('open'));
+document.getElementById('seatModal').addEventListener('click',e=>{if(e.target===document.getElementById('seatModal'))document.getElementById('seatModal').classList.remove('open');});
+
+document.getElementById('confirmBtn').addEventListener('click',()=>{
+  if(!selectedSeats.length){alert('Please select at least one seat.');return;}
+  seatMaps[activeBus.id].filter(s=>selectedSeats.includes(s.id)).forEach(s=>s.status='reserved');
+  const bus=busData.find(b=>b.id===activeBus.id);
+  if(bus)bus.seatsAvail=Math.max(0,bus.seatsAvail-selectedSeats.length);
   document.getElementById('seatModal').classList.remove('open');
-  renderBuses();
-  const toast = document.getElementById('toast');
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 4000);
+  renderBuses();showToast('Booking Confirmed!','E-ticket sent to your email.');
 });
 
-document.getElementById('contactForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const toast = document.getElementById('toast');
-  toast.querySelector('.toast-title').textContent = 'Message Sent!';
-  toast.querySelector('.toast-sub').textContent = 'Our team will respond within 24 hours.';
-  toast.classList.add('show');
-  setTimeout(() => { toast.classList.remove('show'); toast.querySelector('.toast-title').textContent = 'Booking Confirmed!'; toast.querySelector('.toast-sub').textContent = 'E-ticket sent to your email.'; }, 4000);
-  e.target.reset();
+document.getElementById('contactForm').addEventListener('submit',e=>{
+  e.preventDefault();showToast('Message Sent!','Our team will respond within 24 hours.');e.target.reset();
 });
 
-document.getElementById('darkBtn').addEventListener('click', () => {
+document.getElementById('darkBtn').addEventListener('click',()=>{
   document.body.classList.toggle('dark');
-  const icon = document.getElementById('darkIcon');
-  icon.className = document.body.classList.contains('dark') ? 'fas fa-sun' : 'fas fa-moon';
-  localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+  document.getElementById('darkIcon').className=document.body.classList.contains('dark')?'fas fa-sun':'fas fa-moon';
+  localStorage.setItem('darkMode',document.body.classList.contains('dark'));
 });
-if (localStorage.getItem('darkMode') === 'true') {
-  document.body.classList.add('dark');
-  document.getElementById('darkIcon').className = 'fas fa-sun';
+if(localStorage.getItem('darkMode')==='true'){
+  document.body.classList.add('dark');document.getElementById('darkIcon').className='fas fa-sun';
 }
 
-window.addEventListener('scroll', () => {
-  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
-  document.getElementById('scrollTop').classList.toggle('show', window.scrollY > 400);
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>50);
+  document.getElementById('scrollTop').classList.toggle('show',window.scrollY>400);
   observeFadeUp();
 });
 
-document.getElementById('scrollTop').addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
+document.getElementById('scrollTop').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+document.getElementById('hamBtn').addEventListener('click',()=>document.getElementById('mobNav').classList.add('open'));
+document.getElementById('mobClose').addEventListener('click',()=>document.getElementById('mobNav').classList.remove('open'));
+function closeMob(){document.getElementById('mobNav').classList.remove('open');}
 
-document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileNav').classList.add('open'));
-document.getElementById('closeNav').addEventListener('click', () => document.getElementById('mobileNav').classList.remove('open'));
-function closeMobileNav() { document.getElementById('mobileNav').classList.remove('open'); }
+const today=new Date(),yyyy=today.getFullYear(),mm=String(today.getMonth()+1).padStart(2,'0'),dd=String(today.getDate()).padStart(2,'0');
+document.getElementById('departDate').value=`${yyyy}-${mm}-${dd}`;
+document.getElementById('departDate').min=`${yyyy}-${mm}-${dd}`;
 
-// ── SET TODAY'S DATE ──────────────────────────────────────
-const today = new Date(); const yyyy = today.getFullYear();
-const mm = String(today.getMonth()+1).padStart(2,'0'); const dd = String(today.getDate()).padStart(2,'0');
-document.getElementById('departDate').value = `${yyyy}-${mm}-${dd}`;
-document.getElementById('departDate').min = `${yyyy}-${mm}-${dd}`;
-
-// ── INIT ─────────────────────────────────────────────────
-window.addEventListener('load', () => {
-  const pre = document.getElementById('preloader');
-  pre.style.opacity = '0';
-  setTimeout(() => pre.style.display = 'none', 600);
-  renderBuses(); renderServices(); renderRoutes(); renderTestimonials(); renderFAQ();
+window.addEventListener('load',()=>{
+  const pre=document.getElementById('preloader');
+  pre.style.opacity='0';setTimeout(()=>pre.style.display='none',700);
+  renderBuses();renderServices();renderRoutes();renderTestimonials();renderFAQ();
   statsObs.observe(document.querySelector('.stats-band'));
-  setTimeout(observeFadeUp, 100);
+  setTimeout(observeFadeUp,100);
 });
 </script>
 </body>
