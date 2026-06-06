@@ -1,367 +1,244 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EduSmart Education System</title>
-
-<!-- Bootstrap -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-<style>
-body{
-    font-family: Arial, sans-serif;
-}
-
-.hero{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    color:white;
-    background:
-    linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
-    url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1600&q=80');
-    background-size:cover;
-    background-position:center;
-}
-
-.card{
-    transition:.3s;
-}
-
-.card:hover{
-    transform:translateY(-8px);
-}
-
-.counter{
-    background:#0d6efd;
-    color:white;
-}
-
-footer{
-    background:#111;
-    color:white;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>EduPrime | Premier Educational Institute</title>
+  <!-- SEO Meta -->
+  <meta name="description" content="EduPrime - A modern university with world-class programs, digital learning, and student success. Admissions open 2026.">
+  <meta name="keywords" content="university, courses, admissions, student portal, online result, education">
+  <!-- Bootstrap 5 CSS + Icons + Font Awesome + Google Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Swiper Slider CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <!-- AOS CSS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    * {
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      background: #ffffff;
+      overflow-x: hidden;
+    }
+    :root {
+      --primary: #0d6efd;
+      --secondary: #198754;
+      --accent: #ffc107;
+      --dark: #1f2a44;
+      --light-bg: #f8f9fc;
+    }
+    /* Dark Mode */
+    body.dark-mode {
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+    body.dark-mode .card, body.dark-mode .navbar, body.dark-mode footer, body.dark-mode .modal-content {
+      background-color: #1e1e1e !important;
+      color: #ddd !important;
+      border-color: #333;
+    }
+    body.dark-mode .bg-light, body.dark-mode .bg-white {
+      background-color: #1e1e1e !important;
+    }
+    body.dark-mode .text-muted {
+      color: #aaa !important;
+    }
+    /* loading animation */
+    #loader {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: white; z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.5s;
+    }
+    body.dark-mode #loader { background: #121212; }
+    .loader-spinner {
+      width: 50px; height: 50px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    /* back to top */
+    .back-to-top {
+      position: fixed; bottom: 30px; right: 30px; width: 45px; height: 45px;
+      background: var(--primary); color: white; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 99; opacity: 0; transition: 0.3s; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .back-to-top.show { opacity: 1; }
+    /* hero */
+    .hero-section {
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.5)), url('https://images.pexels.com/photos/256468/pexels-photo-256468.jpeg?auto=compress&cs=tinysrgb&w=1600');
+      background-size: cover; background-position: center; height: 90vh;
+      display: flex; align-items: center;
+    }
+    .stat-item { transition: transform 0.3s; }
+    .stat-item:hover { transform: translateY(-5px); }
+    .swiper-slide img { height: 250px; object-fit: cover; border-radius: 12px; }
+    .faculty-img { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; margin-bottom: 10px; }
+    .chat-widget {
+      position: fixed; bottom: 90px; right: 30px; z-index: 100;
+      background: var(--primary); border-radius: 40px; padding: 12px 18px;
+      color: white; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      font-weight: 500;
+    }
+    @media (max-width: 768px) {
+      .hero-section { height: 70vh; }
+      .chat-widget { bottom: 80px; right: 15px; font-size: 13px; padding: 8px 14px; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- Navbar -->
+<!-- Loader -->
+<div id="loader"><div class="loader-spinner"></div></div>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
-<div class="container">
-
-<a class="navbar-brand fw-bold" href="#">
-<i class="fas fa-graduation-cap"></i> EduSmart
-</a>
-
-<button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
-<span class="navbar-toggler-icon"></span>
-</button>
-
-<div class="collapse navbar-collapse" id="menu">
-<ul class="navbar-nav ms-auto">
-<li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-<li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-<li class="nav-item"><a class="nav-link" href="#courses">Courses</a></li>
-<li class="nav-item"><a class="nav-link" href="#admission">Admission</a></li>
-<li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-</ul>
+<!-- Chat Widget UI -->
+<div class="chat-widget" data-bs-toggle="modal" data-bs-target="#chatModal">
+  <i class="fas fa-comment-dots me-2"></i> Need Help?
 </div>
 
-</div>
+<!-- Back to top -->
+<div class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></div>
+
+<!-- Sticky Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand fw-bold fs-3" href="#"><i class="fas fa-graduation-cap text-primary me-2"></i>EduPrime</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="#admissions">Admissions</a></li>
+        <li class="nav-item"><a class="nav-link" href="#courses">Courses</a></li>
+        <li class="nav-item"><a class="nav-link" href="#studentPortal">Student Portal</a></li>
+        <li class="nav-item"><a class="nav-link" href="#teacherPortal">Teacher Portal</a></li>
+        <li class="nav-item"><a class="nav-link" href="#results">Results</a></li>
+        <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+      <button class="btn btn-outline-primary ms-3" id="darkModeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </div>
 </nav>
 
-<!-- Hero -->
-
-<section id="home" class="hero">
-
-<div class="container">
-
-<h1 class="display-3 fw-bold">
-Modern Education Management System
-</h1>
-
-<p class="lead">
-Admissions • Courses • Results • Student Portal
-</p>
-
-<a href="#admission" class="btn btn-warning btn-lg m-2">
-Apply Now
-</a>
-
-<a href="#courses" class="btn btn-light btn-lg m-2">
-View Courses
-</a>
-
-</div>
-
-</section>
-
-<!-- About -->
-
-<section id="about" class="py-5">
-<div class="container">
-
-<div class="row align-items-center">
-
-<div class="col-lg-6">
-<h2>About Our Institute</h2>
-<p>
-We provide modern education with online admissions,
-student management, fee management, results, and
-professional faculty.
-</p>
-</div>
-
-<div class="col-lg-6">
-<img
-src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=1200&q=80"
-class="img-fluid rounded shadow">
-</div>
-
-</div>
-
-</div>
-</section>
-
-<!-- Counter -->
-
-<section class="counter py-5">
-<div class="container">
-<div class="row text-center">
-
-<div class="col-md-3">
-<h2>5000+</h2>
-<p>Students</p>
-</div>
-
-<div class="col-md-3">
-<h2>250+</h2>
-<p>Teachers</p>
-</div>
-
-<div class="col-md-3">
-<h2>80+</h2>
-<p>Courses</p>
-</div>
-
-<div class="col-md-3">
-<h2>95%</h2>
-<p>Success Rate</p>
-</div>
-
-</div>
-</div>
-</section>
-
-<!-- Courses -->
-
-<section id="courses" class="py-5">
-<div class="container">
-
-<h2 class="text-center mb-5">Our Programs</h2>
-
-<div class="row g-4">
-
-<div class="col-md-4">
-<div class="card shadow">
-<div class="card-body text-center">
-<i class="fas fa-laptop-code fa-3x text-primary"></i>
-<h4 class="mt-3">Computer Science</h4>
-<p>Modern IT Education Program</p>
-</div>
-</div>
-</div>
-
-<div class="col-md-4">
-<div class="card shadow">
-<div class="card-body text-center">
-<i class="fas fa-chart-line fa-3x text-success"></i>
-<h4 class="mt-3">Business Administration</h4>
-<p>Professional Business Studies</p>
-</div>
-</div>
-</div>
-
-<div class="col-md-4">
-<div class="card shadow">
-<div class="card-body text-center">
-<i class="fas fa-certificate fa-3x text-danger"></i>
-<h4 class="mt-3">Diploma Courses</h4>
-<p>Short Professional Courses</p>
-</div>
-</div>
-</div>
-
-</div>
-
-</div>
-</section>
-
-<!-- Admission -->
-
-<section id="admission" class="py-5 bg-light">
-
-<div class="container">
-
-<h2 class="text-center mb-4">
-Online Admission Form
-</h2>
-
-<form id="admissionForm">
-
-<div class="row">
-
-<div class="col-md-6 mb-3">
-<input type="text" class="form-control" placeholder="Full Name" required>
-</div>
-
-<div class="col-md-6 mb-3">
-<input type="email" class="form-control" placeholder="Email Address" required>
-</div>
-
-<div class="col-md-6 mb-3">
-<input type="text" class="form-control" placeholder="Phone Number" required>
-</div>
-
-<div class="col-md-6 mb-3">
-<select class="form-select">
-<option>Select Program</option>
-<option>BSCS</option>
-<option>BBA</option>
-<option>Diploma</option>
-</select>
-</div>
-
-<div class="col-12 mb-3">
-<textarea class="form-control" rows="4" placeholder="Address"></textarea>
-</div>
-
-<div class="col-12">
-<button class="btn btn-success btn-lg">
-Submit Application
-</button>
-</div>
-
-</div>
-
-</form>
-
-</div>
-
-</section>
-
-<!-- Result Search -->
-
-<section class="py-5">
-
-<div class="container text-center">
-
-<h2>Online Result Search</h2>
-
-<div class="row justify-content-center">
-
-<div class="col-md-6">
-
-<input type="text"
-id="roll"
-class="form-control mb-3"
-placeholder="Enter Roll Number">
-
-<button class="btn btn-primary"
-onclick="searchResult()">
-Check Result
-</button>
-
-<h4 id="result" class="mt-4"></h4>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- Contact -->
-
-<section id="contact" class="py-5 bg-dark text-white">
-
-<div class="container">
-
-<h2 class="text-center mb-4">
-Contact Us
-</h2>
-
-<div class="row">
-
-<div class="col-md-6">
-
-<p><i class="fas fa-location-dot"></i> Your Address Here</p>
-<p><i class="fas fa-phone"></i> +92 300 1234567</p>
-<p><i class="fas fa-envelope"></i> info@edusmart.com</p>
-
-</div>
-
-<div class="col-md-6">
-
-<input class="form-control mb-3" placeholder="Name">
-<input class="form-control mb-3" placeholder="Email">
-<textarea class="form-control mb-3" rows="4" placeholder="Message"></textarea>
-
-<button class="btn btn-warning">
-Send Message
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<footer class="text-center p-3">
-© 2026 EduSmart Education Management System
-</footer>
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
-
-document.getElementById("admissionForm")
-.addEventListener("submit", function(e){
-
-e.preventDefault();
-
-alert("Admission Form Submitted Successfully!");
-
-});
-
-function searchResult(){
-
-let roll =
-document.getElementById("roll").value;
-
-if(roll==="12345"){
-document.getElementById("result").innerHTML =
-"Result: PASS (85%)";
-}
-else{
-document.getElementById("result").innerHTML =
-"No Record Found";
-}
-
-}
-
-</script>
-
+<!-- Main Content (all sections) -->
+<main>
+  <!-- Home Hero -->
+  <section id="home" class="hero-section">
+    <div class="container text-white text-center" data-aos="fade-up">
+      <h1 class="display-3 fw-bold">Shape Your Future at EduPrime</h1>
+      <p class="lead">World-class education, global opportunities, and innovative learning.</p>
+      <a href="#admissions" class="btn btn-primary btn-lg m-2">Apply Now <i class="fas fa-arrow-right"></i></a>
+      <a href="#courses" class="btn btn-outline-light btn-lg m-2">Explore Courses</a>
+    </div>
+  </section>
+
+  <!-- Statistics -->
+  <section class="py-5 bg-light">
+    <div class="container">
+      <div class="row text-center g-4">
+        <div class="col-md-3 col-6 stat-item" data-aos="zoom-in"><i class="fas fa-user-graduate fa-3x text-primary"></i><h2 class="counter mt-2" data-target="5200">0</h2><p>Students</p></div>
+        <div class="col-md-3 col-6 stat-item" data-aos="zoom-in" data-aos-delay="100"><i class="fas fa-chalkboard-user fa-3x text-secondary"></i><h2 class="counter" data-target="380">0</h2><p>Teachers</p></div>
+        <div class="col-md-3 col-6 stat-item" data-aos="zoom-in" data-aos-delay="200"><i class="fas fa-book-open fa-3x text-warning"></i><h2 class="counter" data-target="124">0</h2><p>Courses</p></div>
+        <div class="col-md-3 col-6 stat-item" data-aos="zoom-in" data-aos-delay="300"><i class="fas fa-trophy fa-3x text-danger"></i><h2 class="counter" data-target="45">0</h2><p>Awards</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest Announcements & Featured Courses (simplified) -->
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-md-6" data-aos="fade-right"><div class="card border-0 shadow"><div class="card-body"><h4><i class="fas fa-bullhorn text-primary"></i> Latest Announcements</h4><ul class="list-unstyled"><li><i class="fas fa-check-circle text-success"></i> Spring Admission 2026 open till March 30</li><li><i class="fas fa-check-circle text-success"></i> Online result for fall semester published</li><li><i class="fas fa-check-circle text-success"></i> International conference on AI - April 12</li></ul></div></div></div>
+      <div class="col-md-6" data-aos="fade-left"><div class="card border-0 shadow"><div class="card-body"><h4><i class="fas fa-star text-warning"></i> Featured Course: Data Science</h4><p>Learn Python, ML, AI with industry experts. Duration: 6 months | Fee: $1200</p><a href="#" class="btn btn-sm btn-primary">Enroll now</a></div></div></div>
+    </div>
+  </div>
+
+  <!-- Testimonials Swiper -->
+  <section class="bg-light py-5"><div class="container"><h2 class="text-center mb-4" data-aos="fade-up">What Students Say</h2><div class="swiper testimonialSwiper"><div class="swiper-wrapper"><div class="swiper-slide"><div class="card p-4 text-center shadow-sm"><i class="fas fa-quote-left fa-2x text-primary"></i><p>Excellent faculty and modern labs!</p><h6>- Sarah Khan</h6></div></div><div class="swiper-slide"><div class="card p-4 text-center shadow-sm"><i class="fas fa-quote-left fa-2x text-primary"></i><p>Great placement support. Highly recommended.</p><h6>- Rahul Mehta</h6></div></div><div class="swiper-slide"><div class="card p-4 text-center shadow-sm"><i class="fas fa-quote-left fa-2x text-primary"></i><p>Best decision of my life.</p><h6>- Aisha Noor</h6></div></div></div><div class="swiper-pagination"></div></div></div></section>
+
+  <!-- About Us -->
+  <section id="about" class="py-5"><div class="container"><div class="row align-items-center"><div class="col-lg-6" data-aos="fade-right"><h2>About EduPrime</h2><p>Established in 1998, EduPrime is a premier institute known for academic excellence, cutting-edge research, and holistic development.</p><h5 class="mt-3">Mission & Vision</h5><p>Mission: To empower students with knowledge and skills for global impact. Vision: To be a center of excellence in education and innovation.</p><div class="mt-4"><h5>Chairman's Message</h5><p>“Education is the most powerful weapon. We nurture leaders.” – Dr. S. Verma</p></div></div><div class="col-lg-6" data-aos="fade-left"><img src="https://images.pexels.com/photos/207691/pexels-photo-207691.jpeg" class="img-fluid rounded shadow" alt="campus"></div></div><hr><div class="row mt-4"><div class="col-md-4"><i class="fas fa-award fa-2x text-primary"></i><h5>+50 National Awards</h5></div><div class="col-md-4"><i class="fas fa-globe fa-2x text-primary"></i><h5>Global Collaborations</h5></div><div class="col-md-4"><i class="fas fa-users fa-2x text-primary"></i><h5>100+ Faculty Experts</h5></div></div></div></section>
+
+  <!-- Admissions -->
+  <section id="admissions" class="bg-light py-5"><div class="container"><h2 class="text-center mb-4" data-aos="fade-up">Admissions 2026</h2><div class="row g-4"><div class="col-md-4"><div class="card h-100"><div class="card-body"><h5><i class="fas fa-clipboard-list"></i> Process</h5><p>Online application → Entrance Exam → Interview → Merit List</p></div></div></div><div class="col-md-4"><div class="card h-100"><div class="card-body"><h5><i class="fas fa-check-circle"></i> Eligibility</h5><p>10+2 with 55% for UG; Bachelor's degree for PG programs</p></div></div></div><div class="col-md-4"><div class="card h-100"><div class="card-body"><h5><i class="fas fa-dollar-sign"></i> Fee Structure</h5><p>UG: $2000/sem | PG: $2800/sem | Diploma: $1500</p><button class="btn btn-outline-primary btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#feeModal">View Details</button></div></div></div></div><div class="mt-5"><div class="card shadow"><div class="card-body"><h4>Online Admission Form</h4><form id="admissionForm"><div class="row"><div class="col-md-6 mb-3"><input type="text" id="adName" class="form-control" placeholder="Full Name" required></div><div class="col-md-6 mb-3"><input type="email" id="adEmail" class="form-control" placeholder="Email" required></div><div class="col-12 mb-3"><select class="form-select"><option>Select Program</option><option>B.Tech</option><option>MBA</option><option>BCA</option></select></div><div class="col-12"><button type="submit" class="btn btn-primary">Apply Now <i class="fas fa-paper-plane"></i></button><a href="#" class="btn btn-secondary ms-2">Download Prospectus PDF <i class="fas fa-download"></i></a></div></div></form></div></div></div></div></section>
+
+  <!-- Courses Grid -->
+  <section id="courses" class="py-5"><div class="container"><h2 class="text-center mb-4" data-aos="fade-up">Our Programs</h2><div class="row g-4"><div class="col-lg-4 col-md-6"><div class="card h-100 shadow-sm"><div class="card-body"><h5>BSc Computer Science</h5><p>Duration: 3 years | Fee: $2400/year</p><button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#courseModal1">Syllabus</button></div></div></div><div class="col-lg-4 col-md-6"><div class="card h-100 shadow-sm"><div class="card-body"><h5>MBA</h5><p>Duration: 2 years | Fee: $4000/year</p><button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#courseModal2">Details</button></div></div></div><div class="col-lg-4 col-md-6"><div class="card h-100 shadow-sm"><div class="card-body"><h5>Data Science Diploma</h5><p>Duration: 6 months | Fee: $1500</p></div></div></div></div></div></section>
+
+  <!-- Student Portal (Dashboard UI) -->
+  <section id="studentPortal" class="bg-light py-5"><div class="container"><h2 class="text-center mb-4">Student Portal Preview</h2><div class="card shadow"><div class="card-header bg-primary text-white">Student Dashboard <i class="fas fa-id-card"></i></div><div class="card-body"><div class="row"><div class="col-md-3"><button class="btn btn-outline-primary w-100 mb-2" onclick="alert('Attendance: 85%')"><i class="fas fa-calendar-check"></i> Attendance</button></div><div class="col-md-3"><button class="btn btn-outline-primary w-100 mb-2" onclick="alert('Result: CGPA 3.8/4.0')"><i class="fas fa-chart-line"></i> Results</button></div><div class="col-md-3"><button class="btn btn-outline-primary w-100 mb-2" onclick="alert('Timetable: Mon-Fri 9AM to 4PM')"><i class="fas fa-table"></i> Timetable</button></div><div class="col-md-3"><button class="btn btn-outline-primary w-100 mb-2" onclick="alert('Assignment: Submit by Mar 20')"><i class="fas fa-tasks"></i> Assignments</button></div></div><div class="mt-3 alert alert-info">Notifications: Mid-term exams start from April 5</div><button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#loginModal">Student Login (Demo)</button></div></div></div></section>
+
+  <!-- Teacher Portal -->
+  <section id="teacherPortal" class="py-5"><div class="container"><h2 class="text-center mb-4">Teacher Portal</h2><div class="card shadow"><div class="card-body"><div class="row"><div class="col-md-4"><i class="fas fa-chalkboard"></i> Manage Attendance</div><div class="col-md-4"><i class="fas fa-pen-fancy"></i> Enter Marks</div><div class="col-md-4"><i class="fas fa-cloud-upload-alt"></i> Upload Assignment</div></div><button class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#teacherLoginModal">Teacher Login Demo</button></div></div></div></section>
+
+  <!-- Online Results -->
+  <section id="results" class="bg-light py-5"><div class="container"><h2 class="text-center mb-3">Online Results</h2><div class="row justify-content-center"><div class="col-md-6"><div class="card"><div class="card-body"><input type="text" id="rollNo" class="form-control mb-3" placeholder="Enter Roll Number"><button class="btn btn-primary" id="fetchResult">Get Result</button><div id="resultDisplay" class="mt-3"></div><button id="printResultBtn" class="btn btn-secondary mt-2 d-none">Print Result</button></div></div></div></div></div></section>
+
+  <!-- Gallery Lightbox -->
+  <section id="gallery" class="py-5"><div class="container"><h2 class="text-center mb-4">Campus Gallery</h2><div class="row g-3"><div class="col-md-4"><img src="https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg" class="img-fluid rounded gallery-img" data-bs-toggle="modal" data-bs-target="#imageModal" style="cursor:pointer"></div><div class="col-md-4"><img src="https://images.pexels.com/photos/207692/pexels-photo-207692.jpeg" class="img-fluid rounded gallery-img" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#imageModal"></div><div class="col-md-4"><img src="https://images.pexels.com/photos/256490/pexels-photo-256490.jpeg" class="img-fluid rounded gallery-img" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#imageModal"></div></div></div></section>
+
+  <!-- Faculty Section -->
+  <section class="bg-light py-5"><div class="container"><h2 class="text-center mb-4">Our Faculty</h2><div class="row text-center"><div class="col-md-4"><img src="https://randomuser.me/api/portraits/women/68.jpg" class="faculty-img"><h5>Prof. Neha Sharma</h5><p>HOD Computer Science, PhD (AI)</p></div><div class="col-md-4"><img src="https://randomuser.me/api/portraits/men/32.jpg" class="faculty-img"><h5>Dr. Rajiv Menon</h5><p>Dean of Academics, 20+ yrs exp</p></div><div class="col-md-4"><img src="https://randomuser.me/api/portraits/women/44.jpg" class="faculty-img"><h5>Dr. Anita Verma</h5><p>Professor, Mathematics</p></div></div></div></section>
+
+  <!-- Digital Library & Contact section combined -->
+  <section id="contact" class="py-5"><div class="container"><div class="row"><div class="col-md-6"><h3>Digital Library</h3><div class="input-group mb-3"><input type="text" id="bookSearch" class="form-control" placeholder="Search book..."><button class="btn btn-primary" onclick="alert('Search: ' + document.getElementById('bookSearch').value)"><i class="fas fa-search"></i></button></div><ul><li>Data Structures by Cormen</li><li>AI: Modern Approach</li><li>Machine Learning Yearning</li></ul><p>New Arrivals: Quantum Computing, Blockchain Basics</p></div><div class="col-md-6"><h3>Contact Us</h3><form id="contactForm"><input type="text" placeholder="Name" id="contactName" class="form-control mb-2" required><input type="email" placeholder="Email" id="contactEmail" class="form-control mb-2" required><textarea class="form-control mb-2" rows="2" placeholder="Message"></textarea><button type="submit" class="btn btn-primary">Send Message</button></form><p class="mt-3"><i class="fas fa-phone-alt"></i> +1 234 567 8900<br><i class="fas fa-envelope"></i> info@eduprime.edu<br><i class="fas fa-clock"></i> Mon-Fri 9AM - 6PM</p><div id="map" style="height:200px; background:#e9ecef; border-radius:12px;"><iframe width="100%" height="200" style="border:0; border-radius:12px;" loading="lazy" src="https://maps.google.com/maps?q=New%20York&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe></div></div></div></div></section>
+
+  <!-- FAQ Section -->
+  <section class="bg-light py-4"><div class="container"><h3 class="text-center">Frequently Asked Questions</h3><div class="accordion" id="faqAccordion"><div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">How to apply online?</button></h2><div id="faq1" class="accordion-collapse collapse show">Visit admission portal and fill form.</div></div><div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">Scholarships available?</button></h2><div id="faq2" class="accordion-collapse collapse">Merit-based and need-based scholarships.</div></div></div></div></section>
+  <footer class="bg-dark text-white pt-4 pb-3"><div class="container text-center"><div class="row"><div class="col-md-4"><h5>Quick Links</h5><ul class="list-unstyled"><li>Events</li><li>News & Updates</li><li>Alumni</li></ul></div><div class="col-md-4"><h5>Social Media</h5><i class="fab fa-facebook fa-2x me-2"></i><i class="fab fa-twitter fa-2x me-2"></i><i class="fab fa-instagram fa-2x"></i><p class="mt-2"><input type="email" placeholder="Subscribe Newsletter" class="form-control"><button class="btn btn-sm btn-warning mt-1">Subscribe</button></p></div><div class="col-md-4"><p>&copy; 2026 EduPrime. All rights reserved.</p></div></div></div></footer>
+</main>
+
+<!-- Modals -->
+<div class="modal fade" id="loginModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5>Student Login Demo</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><input class="form-control mb-2" placeholder="Username: student@eduprime"><input type="password" class="form-control" placeholder="Password: demo"><button class="btn btn-primary mt-3" onclick="alert('Welcome Student Dashboard!')">Login</button></div></div></div></div>
+<div class="modal fade" id="teacherLoginModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5>Teacher Login</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><input class="form-control mb-2" placeholder="Teacher ID"><button class="btn btn-success" onclick="alert('Teacher Dashboard - Marks entry demo')">Access</button></div></div></div></div>
+<div class="modal fade" id="chatModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5>Chat Support</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p>Hi 👋 How can we help?</p><textarea class="form-control" rows="2" placeholder="Type message..."></textarea><button class="btn btn-primary mt-2">Send</button></div></div></div></div>
+<div class="modal fade" id="feeModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><h5>Fee Structure</h5><p>UG: $2000/sem, PG: $2800, Hostel:$800</p><button class="btn btn-primary">Pay Online (Demo)</button></div></div></div></div>
+<div class="modal fade" id="courseModal1" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><h5>BSc CS Syllabus</h5><p>Programming, DBMS, OS, Networks</p></div></div></div></div>
+<div class="modal fade" id="courseModal2" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><h5>MBA Syllabus</h5><p>Marketing, Finance, HR, Strategy</p></div></div></div></div>
+<div class="modal fade" id="imageModal" tabindex="-1"><div class="modal-dialog modal-lg"><div class="modal-content"><img src="" id="modalImageSrc" class="w-100"></div></div></div>
 </body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({ duration: 800, once: true });
+  window.addEventListener('load', () => { setTimeout(() => { document.getElementById('loader').style.opacity = '0'; setTimeout(() => document.getElementById('loader').style.display = 'none', 500); }, 400); });
+
+  // Counter animation
+  const counters = document.querySelectorAll('.counter');
+  const startCount = () => { counters.forEach(c => { const update = () => { let target = +c.getAttribute('data-target'), count = +c.innerText; let inc = target / 80; if(count < target){ c.innerText = Math.ceil(count + inc); setTimeout(update, 15); } else c.innerText = target; }; update(); }); };
+  window.addEventListener('scroll', () => { const stats = document.querySelector('.bg-light .stat-item'); if(stats && window.scrollY > stats.offsetTop - 500) startCount(); }, { once: true });
+  
+  // Dark mode toggle
+  const darkToggle = document.getElementById('darkModeToggle'); darkToggle.addEventListener('click', () => { document.body.classList.toggle('dark-mode'); if(document.body.classList.contains('dark-mode')) darkToggle.innerHTML = '<i class="fas fa-sun"></i>'; else darkToggle.innerHTML = '<i class="fas fa-moon"></i>'; });
+  
+  // Result logic
+  document.getElementById('fetchResult')?.addEventListener('click', function(){ let roll = document.getElementById('rollNo').value; if(roll) document.getElementById('resultDisplay').innerHTML = `<div class="alert alert-success">Result for Roll ${roll}: <strong>CGPA 3.75 / 4.0</strong><br>Status: PASS</div><button class="btn btn-outline-secondary" onclick="window.print()">Print Result</button>`; else alert("Enter roll number"); });
+  
+  // Form validation admission + contact
+  document.getElementById('admissionForm')?.addEventListener('submit', (e) => { e.preventDefault(); if(document.getElementById('adName').value && document.getElementById('adEmail').value) alert("Application submitted successfully!"); else alert("Fill required fields"); });
+  document.getElementById('contactForm')?.addEventListener('submit', (e) => { e.preventDefault(); if(document.getElementById('contactName').value && document.getElementById('contactEmail').value) alert("Message sent!"); else alert("Fill name & email"); });
+  
+  // gallery modal set img
+  document.querySelectorAll('.gallery-img').forEach(img => { img.addEventListener('click', () => { document.getElementById('modalImageSrc').src = img.src; }); });
+  
+  // back to top
+  const backBtn = document.getElementById('backToTop'); window.addEventListener('scroll', () => { if(window.scrollY > 300) backBtn.classList.add('show'); else backBtn.classList.remove('show'); }); backBtn.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
+  
+  // swiper testimonial
+  new Swiper('.testimonialSwiper', { loop: true, autoplay: { delay: 3000 }, pagination: { el: '.swiper-pagination', clickable: true }, slidesPerView: 1, breakpoints: { 768: { slidesPerView: 2 } } });
+  
+  // smooth scroll for navbar links
+  document.querySelectorAll('.navbar-nav .nav-link').forEach(link => { link.addEventListener('click', function(e) { e.preventDefault(); const target = this.getAttribute('href'); if(target && target !== '#') document.querySelector(target).scrollIntoView({ behavior: 'smooth' }); }); });
+</script>
 </html>
