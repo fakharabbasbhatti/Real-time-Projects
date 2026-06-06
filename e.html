@@ -2,243 +2,1292 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EduPrime | Premier Educational Institute</title>
-  <!-- SEO Meta -->
   <meta name="description" content="EduPrime - A modern university with world-class programs, digital learning, and student success. Admissions open 2026.">
-  <meta name="keywords" content="university, courses, admissions, student portal, online result, education">
-  <!-- Bootstrap 5 CSS + Icons + Font Awesome + Google Fonts -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <!-- Swiper Slider CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <!-- AOS CSS -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <style>
-    * {
-      font-family: 'Poppins', sans-serif;
-    }
-    body {
-      background: #ffffff;
-      overflow-x: hidden;
-    }
     :root {
-      --primary: #0d6efd;
-      --secondary: #198754;
-      --accent: #ffc107;
-      --dark: #1f2a44;
-      --light-bg: #f8f9fc;
+      --navy:   #0A1628;
+      --royal:  #1B3A6B;
+      --gold:   #C9A84C;
+      --gold2:  #E8C97E;
+      --cream:  #F5F0E8;
+      --white:  #FFFFFF;
+      --slate:  #4A5568;
+      --muted:  #718096;
+      --border: rgba(201,168,76,0.25);
     }
-    /* Dark Mode */
-    body.dark-mode {
-      background-color: #121212;
-      color: #e0e0e0;
-    }
-    body.dark-mode .card, body.dark-mode .navbar, body.dark-mode footer, body.dark-mode .modal-content {
-      background-color: #1e1e1e !important;
-      color: #ddd !important;
-      border-color: #333;
-    }
-    body.dark-mode .bg-light, body.dark-mode .bg-white {
-      background-color: #1e1e1e !important;
-    }
-    body.dark-mode .text-muted {
-      color: #aaa !important;
-    }
-    /* loading animation */
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--navy); overflow-x: hidden; }
+
+    /* ── LOADER ── */
     #loader {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: white; z-index: 9999;
-      display: flex; align-items: center; justify-content: center;
-      transition: opacity 0.5s;
+      position: fixed; inset: 0; background: var(--navy); z-index: 9999;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+      transition: opacity .6s ease;
     }
-    body.dark-mode #loader { background: #121212; }
-    .loader-spinner {
-      width: 50px; height: 50px;
-      border: 5px solid #f3f3f3;
-      border-top: 5px solid var(--primary);
+    #loader .logo-load { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 2rem; letter-spacing: 2px; }
+    #loader .bar { width: 160px; height: 3px; background: rgba(255,255,255,.15); border-radius: 2px; overflow: hidden; }
+    #loader .bar-fill { height: 100%; width: 0; background: var(--gold); border-radius: 2px; animation: barFill 1.2s ease forwards; }
+    @keyframes barFill { to { width: 100%; } }
+
+    /* ── NAVBAR ── */
+    #mainNav {
+      background: rgba(10,22,40,.96) !important;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 !important;
+      transition: all .3s;
+    }
+    #mainNav .container { padding: 14px 24px; }
+    .navbar-brand { font-family: 'Playfair Display', serif; color: var(--gold) !important; font-size: 1.6rem; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
+    .navbar-brand span { font-size: .65rem; color: var(--gold2); letter-spacing: 3px; text-transform: uppercase; display: block; }
+    .nav-link { color: rgba(255,255,255,.75) !important; font-size: .82rem; letter-spacing: .5px; text-transform: uppercase; font-weight: 500; padding: 6px 14px !important; border-radius: 4px; transition: .25s; }
+    .nav-link:hover, .nav-link.active { color: var(--gold) !important; }
+    .navbar-toggler { border-color: var(--border); }
+    .navbar-toggler-icon { filter: invert(1); }
+    .btn-nav-cta {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: var(--navy) !important; font-weight: 700; font-size: .8rem;
+      padding: 8px 22px !important; border-radius: 30px; letter-spacing: .5px;
+      border: none; transition: .3s; box-shadow: 0 4px 14px rgba(201,168,76,.35);
+    }
+    .btn-nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(201,168,76,.45); color: var(--navy) !important; }
+
+    /* ── HERO ── */
+    .hero-section {
+      min-height: 100vh;
+      background: linear-gradient(160deg, rgba(10,22,40,.92) 0%, rgba(27,58,107,.85) 60%, rgba(10,22,40,.95) 100%),
+                  url('https://images.pexels.com/photos/256468/pexels-photo-256468.jpeg?auto=compress&cs=tinysrgb&w=1600') center/cover no-repeat;
+      display: flex; align-items: center; position: relative; overflow: hidden;
+    }
+    .hero-section::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 70% 50%, rgba(201,168,76,.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-pattern {
+      position: absolute; right: -80px; top: 50%; transform: translateY(-50%);
+      width: 600px; height: 600px; opacity: .05;
+      background-image: repeating-linear-gradient(45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%);
+      background-size: 20px 20px;
       border-radius: 50%;
-      animation: spin 1s linear infinite;
     }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    /* back to top */
+    .hero-badge {
+      display: inline-block; background: rgba(201,168,76,.15); border: 1px solid var(--border);
+      color: var(--gold2); font-size: .75rem; letter-spacing: 3px; text-transform: uppercase;
+      padding: 6px 20px; border-radius: 30px; margin-bottom: 28px;
+    }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5.5vw, 4.5rem); font-weight: 800; color: #fff; line-height: 1.1; margin-bottom: 24px; }
+    .hero-title em { color: var(--gold); font-style: normal; }
+    .hero-desc { font-size: 1.05rem; color: rgba(255,255,255,.7); max-width: 520px; line-height: 1.75; margin-bottom: 40px; }
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: var(--navy); font-weight: 700; padding: 14px 36px; border-radius: 4px;
+      border: none; letter-spacing: .5px; transition: .3s; font-size: .95rem;
+      box-shadow: 0 8px 24px rgba(201,168,76,.35);
+    }
+    .btn-gold:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(201,168,76,.45); color: var(--navy); }
+    .btn-outline-hero {
+      background: transparent; border: 1.5px solid rgba(255,255,255,.35); color: #fff;
+      padding: 13px 34px; border-radius: 4px; font-weight: 500; letter-spacing: .5px;
+      transition: .3s; font-size: .95rem;
+    }
+    .btn-outline-hero:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,.08); }
+    .hero-scroll { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); text-align: center; animation: bounce 2s infinite; }
+    .hero-scroll span { display: block; color: rgba(255,255,255,.45); font-size: .7rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+    .hero-scroll i { color: var(--gold); }
+    @keyframes bounce { 0%,100%{ transform: translateX(-50%) translateY(0); } 50%{ transform: translateX(-50%) translateY(8px); } }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--navy);
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-box {
+      padding: 36px 24px; text-align: center; border-right: 1px solid var(--border);
+      transition: background .3s;
+    }
+    .stat-box:last-child { border-right: none; }
+    .stat-box:hover { background: rgba(201,168,76,.05); }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 700; color: var(--gold); line-height: 1; }
+    .stat-label { font-size: .75rem; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: 2px; margin-top: 6px; }
+    .stat-icon { color: var(--gold2); font-size: .85rem; margin-bottom: 6px; opacity: .6; }
+
+    /* ── SECTION HEADING ── */
+    .sec-eyebrow { font-size: .72rem; letter-spacing: 3.5px; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 10px; }
+    .sec-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 700; color: var(--navy); line-height: 1.2; }
+    .sec-title.light { color: #fff; }
+    .sec-divider { width: 50px; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold2)); border-radius: 2px; margin: 18px auto 0; }
+    .sec-divider.left { margin: 18px 0 0; }
+
+    /* ── ANNOUNCEMENTS ── */
+    .announce-card {
+      background: var(--cream); border-left: 4px solid var(--gold);
+      border-radius: 0 12px 12px 0; padding: 28px; height: 100%;
+    }
+    .announce-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,.07); }
+    .announce-item:last-child { border-bottom: none; }
+    .announce-dot { width: 8px; height: 8px; background: var(--gold); border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+    .announce-text { font-size: .9rem; color: var(--slate); line-height: 1.5; }
+    .announce-date { font-size: .72rem; color: var(--muted); margin-top: 3px; }
+    .featured-course-card {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--royal) 100%);
+      border-radius: 12px; padding: 32px; height: 100%; position: relative; overflow: hidden;
+    }
+    .featured-course-card::before {
+      content: ''; position: absolute; top: -40px; right: -40px;
+      width: 180px; height: 180px; border-radius: 50%;
+      border: 40px solid rgba(201,168,76,.12);
+    }
+    .featured-course-card h4 { font-family: 'Playfair Display', serif; color: var(--gold); margin-bottom: 14px; font-size: 1.35rem; }
+    .course-badge { background: rgba(201,168,76,.2); color: var(--gold2); border-radius: 20px; padding: 4px 14px; font-size: .75rem; display: inline-block; margin-right: 6px; margin-bottom: 6px; }
+    .enroll-btn { background: var(--gold); color: var(--navy); font-weight: 700; border: none; padding: 10px 28px; border-radius: 4px; font-size: .85rem; transition: .3s; }
+    .enroll-btn:hover { background: var(--gold2); transform: translateY(-2px); }
+
+    /* ── ABOUT ── */
+    .about-section { background: var(--cream); }
+    .about-img-wrap { position: relative; }
+    .about-img-wrap img { border-radius: 16px; box-shadow: 0 24px 60px rgba(10,22,40,.2); width: 100%; object-fit: cover; }
+    .about-badge-box {
+      position: absolute; bottom: -24px; left: -24px;
+      background: var(--navy); color: #fff; padding: 20px 28px; border-radius: 12px;
+      box-shadow: 0 12px 30px rgba(10,22,40,.3);
+    }
+    .about-badge-box .num { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--gold); font-weight: 700; line-height: 1; }
+    .about-badge-box .lbl { font-size: .72rem; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,.6); }
+    .pillar { display: flex; gap: 16px; align-items: flex-start; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 4px 16px rgba(10,22,40,.06); }
+    .pillar-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--gold), var(--gold2)); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .pillar-icon i { color: var(--navy); font-size: .9rem; }
+    .pillar h6 { font-weight: 600; color: var(--navy); margin-bottom: 4px; font-size: .9rem; }
+    .pillar p { font-size: .82rem; color: var(--muted); margin: 0; }
+
+    /* ── COURSES ── */
+    .courses-section { background: var(--navy); }
+    .course-card {
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px; padding: 32px; transition: .35s; height: 100%; position: relative; overflow: hidden;
+    }
+    .course-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      transform: scaleX(0); transition: .35s; transform-origin: left;
+    }
+    .course-card:hover { background: rgba(255,255,255,.08); border-color: var(--border); transform: translateY(-6px); }
+    .course-card:hover::before { transform: scaleX(1); }
+    .course-icon { width: 52px; height: 52px; background: rgba(201,168,76,.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+    .course-icon i { color: var(--gold); font-size: 1.2rem; }
+    .course-card h5 { color: #fff; font-weight: 600; margin-bottom: 10px; font-size: 1rem; }
+    .course-card p { color: rgba(255,255,255,.55); font-size: .85rem; line-height: 1.65; }
+    .course-meta { display: flex; gap: 16px; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.08); }
+    .course-meta span { font-size: .75rem; color: var(--gold2); }
+    .course-meta span i { margin-right: 5px; }
+    .btn-course { background: transparent; border: 1px solid var(--border); color: var(--gold); border-radius: 4px; padding: 8px 20px; font-size: .8rem; transition: .3s; }
+    .btn-course:hover { background: var(--gold); color: var(--navy); border-color: var(--gold); font-weight: 700; }
+
+    /* ── PORTALS ── */
+    .portal-card {
+      border: none; border-radius: 20px; overflow: hidden;
+      box-shadow: 0 12px 40px rgba(10,22,40,.12);
+    }
+    .portal-header {
+      padding: 28px 32px; display: flex; align-items: center; gap: 16px;
+    }
+    .portal-header.student-hdr { background: linear-gradient(135deg, var(--navy), var(--royal)); }
+    .portal-header.teacher-hdr { background: linear-gradient(135deg, #1a4a2e, #256341); }
+    .portal-icon { width: 48px; height: 48px; background: rgba(255,255,255,.12); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+    .portal-header h5 { color: #fff; font-weight: 600; margin: 0; font-size: 1.05rem; }
+    .portal-header p { color: rgba(255,255,255,.6); margin: 0; font-size: .8rem; }
+    .portal-body { padding: 28px 32px; background: #fff; }
+    .portal-btn { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border: 1.5px solid #eee; border-radius: 10px; margin-bottom: 10px; text-decoration: none; color: var(--navy); transition: .25s; cursor: pointer; background: none; width: 100%; }
+    .portal-btn:hover { border-color: var(--gold); background: rgba(201,168,76,.05); color: var(--navy); }
+    .portal-btn .pb-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .portal-btn span { font-size: .88rem; font-weight: 500; }
+    .portal-btn .pb-arrow { margin-left: auto; color: var(--muted); font-size: .75rem; }
+    .portal-notif { background: linear-gradient(135deg, #fffbeb, #fef3c7); border: 1px solid #fcd34d; border-radius: 10px; padding: 14px 18px; font-size: .84rem; color: #92400e; margin-top: 16px; }
+
+    /* ── RESULTS ── */
+    .results-section { background: var(--cream); }
+    .result-form-card { background: #fff; border-radius: 20px; box-shadow: 0 20px 60px rgba(10,22,40,.1); overflow: hidden; }
+    .result-form-header { background: linear-gradient(135deg, var(--navy), var(--royal)); padding: 36px 40px; }
+    .result-form-body { padding: 40px; }
+    .form-control-custom {
+      border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 14px 18px;
+      font-size: .92rem; color: var(--navy); transition: .25s; background: #f8fafc; width: 100%;
+    }
+    .form-control-custom:focus { outline: none; border-color: var(--gold); background: #fff; box-shadow: 0 0 0 4px rgba(201,168,76,.12); }
+    .result-card {
+      background: linear-gradient(135deg, var(--navy), var(--royal));
+      border-radius: 16px; padding: 28px; color: #fff; margin-top: 24px;
+      border: 1px solid var(--border);
+    }
+    .grade-badge { background: var(--gold); color: var(--navy); font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .result-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.1); font-size: .87rem; }
+    .result-row:last-child { border-bottom: none; }
+    .result-row span:first-child { color: rgba(255,255,255,.6); }
+    .result-row span:last-child { color: #fff; font-weight: 600; }
+
+    /* ── FACULTY ── */
+    .faculty-card {
+      background: #fff; border-radius: 20px; padding: 36px 28px; text-align: center;
+      box-shadow: 0 8px 30px rgba(10,22,40,.08); transition: .35s; border: 1px solid transparent;
+    }
+    .faculty-card:hover { border-color: var(--border); transform: translateY(-8px); box-shadow: 0 20px 50px rgba(10,22,40,.15); }
+    .faculty-img-wrap { position: relative; display: inline-block; margin-bottom: 20px; }
+    .faculty-img-wrap img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 4px solid var(--gold); }
+    .faculty-badge { position: absolute; bottom: 4px; right: 4px; width: 24px; height: 24px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .faculty-badge i { font-size: .6rem; color: var(--navy); }
+    .faculty-card h5 { font-weight: 700; color: var(--navy); font-size: .97rem; margin-bottom: 4px; }
+    .faculty-card .role { font-size: .78rem; color: var(--gold); font-weight: 600; letter-spacing: .5px; margin-bottom: 6px; }
+    .faculty-card .dept { font-size: .8rem; color: var(--muted); }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-section { background: var(--navy); }
+    .testi-card { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 32px; text-align: center; margin: 4px; }
+    .testi-stars { color: var(--gold); font-size: .85rem; margin-bottom: 14px; }
+    .testi-text { color: rgba(255,255,255,.8); font-size: .92rem; line-height: 1.75; font-style: italic; margin-bottom: 20px; }
+    .testi-name { color: var(--gold2); font-weight: 600; font-size: .88rem; }
+    .testi-role { color: rgba(255,255,255,.4); font-size: .78rem; }
+
+    /* ── GALLERY ── */
+    .gallery-item { position: relative; overflow: hidden; border-radius: 12px; cursor: pointer; }
+    .gallery-item img { width: 100%; height: 240px; object-fit: cover; transition: transform .5s; display: block; }
+    .gallery-overlay { position: absolute; inset: 0; background: linear-gradient(rgba(10,22,40,0), rgba(10,22,40,.75)); opacity: 0; transition: .35s; display: flex; align-items: flex-end; padding: 20px; }
+    .gallery-item:hover img { transform: scale(1.08); }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-label { color: #fff; font-size: .85rem; font-weight: 500; }
+
+    /* ── LIBRARY ── */
+    .library-section { background: var(--cream); }
+    .book-item { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid rgba(10,22,40,.08); }
+    .book-icon { width: 42px; height: 42px; background: var(--navy); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .book-icon i { color: var(--gold); font-size: .85rem; }
+    .book-title { font-size: .88rem; font-weight: 600; color: var(--navy); }
+    .book-author { font-size: .77rem; color: var(--muted); }
+
+    /* ── CONTACT ── */
+    .contact-info-card { background: linear-gradient(135deg, var(--navy), var(--royal)); border-radius: 20px; padding: 40px; }
+    .contact-method { display: flex; gap: 16px; align-items: flex-start; padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,.1); }
+    .contact-method:last-child { border-bottom: none; }
+    .cm-icon { width: 44px; height: 44px; background: rgba(201,168,76,.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .cm-icon i { color: var(--gold); }
+    .cm-label { color: rgba(255,255,255,.55); font-size: .75rem; text-transform: uppercase; letter-spacing: 1.5px; }
+    .cm-value { color: #fff; font-size: .9rem; font-weight: 500; margin-top: 2px; }
+    .contact-form-card { background: #fff; border-radius: 20px; padding: 40px; box-shadow: 0 20px 60px rgba(10,22,40,.1); }
+    .form-label-custom { font-size: .8rem; font-weight: 600; color: var(--navy); letter-spacing: .5px; text-transform: uppercase; margin-bottom: 8px; }
+
+    /* ── FAQ ── */
+    .faq-section { background: var(--white); }
+    .accordion-button { font-weight: 600; color: var(--navy) !important; background: #fff !important; font-size: .9rem; }
+    .accordion-button::after { filter: none; }
+    .accordion-button:not(.collapsed) { color: var(--gold) !important; box-shadow: none !important; }
+    .accordion-item { border: 1px solid #eee; border-radius: 10px !important; margin-bottom: 10px; overflow: hidden; }
+    .accordion-body { font-size: .88rem; color: var(--muted); line-height: 1.7; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--navy); border-top: 1px solid var(--border); }
+    .footer-brand { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.6rem; margin-bottom: 12px; }
+    .footer-desc { color: rgba(255,255,255,.5); font-size: .84rem; line-height: 1.7; max-width: 280px; }
+    .footer-heading { color: #fff; font-size: .8rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 18px; }
+    .footer-link { color: rgba(255,255,255,.5); font-size: .85rem; display: block; margin-bottom: 10px; text-decoration: none; transition: .2s; }
+    .footer-link:hover { color: var(--gold); padding-left: 6px; }
+    .social-icon { width: 38px; height: 38px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; color: rgba(255,255,255,.5); margin-right: 8px; transition: .25s; }
+    .social-icon:hover { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+    .newsletter-input { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.15); color: #fff; padding: 10px 16px; border-radius: 8px 0 0 8px; font-size: .85rem; flex: 1; }
+    .newsletter-input::placeholder { color: rgba(255,255,255,.35); }
+    .newsletter-input:focus { outline: none; border-color: var(--gold); }
+    .newsletter-btn { background: var(--gold); color: var(--navy); border: none; padding: 10px 18px; border-radius: 0 8px 8px 0; font-weight: 700; font-size: .82rem; transition: .25s; }
+    .newsletter-btn:hover { background: var(--gold2); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,.08); padding: 20px 0; margin-top: 40px; }
+    .footer-bottom p { color: rgba(255,255,255,.35); font-size: .8rem; margin: 0; }
+
+    /* ── BACK TO TOP ── */
     .back-to-top {
-      position: fixed; bottom: 30px; right: 30px; width: 45px; height: 45px;
-      background: var(--primary); color: white; border-radius: 50%;
+      position: fixed; bottom: 30px; right: 30px; width: 46px; height: 46px;
+      background: var(--gold); color: var(--navy); border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
-      cursor: pointer; z-index: 99; opacity: 0; transition: 0.3s; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      cursor: pointer; z-index: 99; opacity: 0; transition: .3s; box-shadow: 0 6px 20px rgba(201,168,76,.4);
     }
     .back-to-top.show { opacity: 1; }
-    /* hero */
-    .hero-section {
-      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.5)), url('https://images.pexels.com/photos/256468/pexels-photo-256468.jpeg?auto=compress&cs=tinysrgb&w=1600');
-      background-size: cover; background-position: center; height: 90vh;
-      display: flex; align-items: center;
-    }
-    .stat-item { transition: transform 0.3s; }
-    .stat-item:hover { transform: translateY(-5px); }
-    .swiper-slide img { height: 250px; object-fit: cover; border-radius: 12px; }
-    .faculty-img { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; margin-bottom: 10px; }
+    .back-to-top:hover { background: var(--gold2); transform: translateY(-3px); }
+
+    /* ── CHAT ── */
     .chat-widget {
-      position: fixed; bottom: 90px; right: 30px; z-index: 100;
-      background: var(--primary); border-radius: 40px; padding: 12px 18px;
-      color: white; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      font-weight: 500;
+      position: fixed; bottom: 88px; right: 30px; z-index: 100;
+      background: linear-gradient(135deg, var(--navy), var(--royal));
+      border: 1px solid var(--border); border-radius: 40px;
+      padding: 12px 22px; color: #fff; cursor: pointer;
+      box-shadow: 0 8px 24px rgba(10,22,40,.3); font-size: .85rem; font-weight: 500;
+      transition: .3s;
     }
-    @media (max-width: 768px) {
-      .hero-section { height: 70vh; }
-      .chat-widget { bottom: 80px; right: 15px; font-size: 13px; padding: 8px 14px; }
+    .chat-widget:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(10,22,40,.4); }
+    .chat-dot { width: 9px; height: 9px; background: #10b981; border-radius: 50%; display: inline-block; margin-right: 8px; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{ opacity:1; } 50%{ opacity:.4; } }
+
+    /* ── DARK MODE ── */
+    body.dark-mode { background: #0d0d0d; color: #e0e0e0; }
+    body.dark-mode .about-section, body.dark-mode .results-section, body.dark-mode .library-section { background: #111; }
+    body.dark-mode .pillar, body.dark-mode .result-form-card, body.dark-mode .faculty-card, body.dark-mode .contact-form-card, body.dark-mode .accordion-button, body.dark-mode .accordion-item { background: #1a1a1a !important; border-color: #333 !important; }
+    body.dark-mode .sec-title { color: #f0f0f0; }
+    body.dark-mode .portal-body { background: #1a1a1a; }
+    body.dark-mode .faq-section { background: #0d0d0d; }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:768px){
+      .hero-title { font-size: 2.2rem; }
+      .stat-box { border-right: none; border-bottom: 1px solid var(--border); }
+      .about-badge-box { left: 0; bottom: -16px; }
+      .result-form-body { padding: 24px; }
+      .contact-info-card, .contact-form-card { padding: 28px 20px; }
+    }
+    @media(max-width:576px){
+      .chat-widget { bottom: 80px; right: 16px; padding: 10px 16px; font-size: .8rem; }
+      .back-to-top { right: 16px; bottom: 24px; }
     }
   </style>
 </head>
 <body>
 
 <!-- Loader -->
-<div id="loader"><div class="loader-spinner"></div></div>
-
-<!-- Chat Widget UI -->
-<div class="chat-widget" data-bs-toggle="modal" data-bs-target="#chatModal">
-  <i class="fas fa-comment-dots me-2"></i> Need Help?
+<div id="loader">
+  <div class="logo-load">EduPrime</div>
+  <div class="bar"><div class="bar-fill"></div></div>
 </div>
 
-<!-- Back to top -->
+<!-- Chat Widget -->
+<div class="chat-widget" data-bs-toggle="modal" data-bs-target="#chatModal">
+  <span class="chat-dot"></span> Live Support
+</div>
+
+<!-- Back to Top -->
 <div class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></div>
 
-<!-- Sticky Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm" id="mainNav">
+<!-- ════ NAVBAR ════ -->
+<nav class="navbar navbar-expand-lg sticky-top" id="mainNav">
   <div class="container">
-    <a class="navbar-brand fw-bold fs-3" href="#"><i class="fas fa-graduation-cap text-primary me-2"></i>EduPrime</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <a class="navbar-brand" href="#">
+      <i class="fas fa-graduation-cap" style="color:var(--gold)"></i>
+      <div>EduPrime <span>Est. 1998</span></div>
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-lg-1">
+        <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
         <li class="nav-item"><a class="nav-link" href="#admissions">Admissions</a></li>
         <li class="nav-item"><a class="nav-link" href="#courses">Courses</a></li>
-        <li class="nav-item"><a class="nav-link" href="#studentPortal">Student Portal</a></li>
-        <li class="nav-item"><a class="nav-link" href="#teacherPortal">Teacher Portal</a></li>
+        <li class="nav-item"><a class="nav-link" href="#portals">Portals</a></li>
         <li class="nav-item"><a class="nav-link" href="#results">Results</a></li>
         <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
         <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        <li class="nav-item ms-lg-2"><a class="btn-nav-cta nav-link" href="#admissions">Apply 2026</a></li>
       </ul>
-      <button class="btn btn-outline-primary ms-3" id="darkModeToggle"><i class="fas fa-moon"></i></button>
+      <button class="btn btn-link ms-3 text-decoration-none" id="darkModeToggle" style="color:rgba(255,255,255,.5); font-size:.9rem;"><i class="fas fa-moon"></i></button>
     </div>
   </div>
 </nav>
 
-<!-- Main Content (all sections) -->
-<main>
-  <!-- Home Hero -->
-  <section id="home" class="hero-section">
-    <div class="container text-white text-center" data-aos="fade-up">
-      <h1 class="display-3 fw-bold">Shape Your Future at EduPrime</h1>
-      <p class="lead">World-class education, global opportunities, and innovative learning.</p>
-      <a href="#admissions" class="btn btn-primary btn-lg m-2">Apply Now <i class="fas fa-arrow-right"></i></a>
-      <a href="#courses" class="btn btn-outline-light btn-lg m-2">Explore Courses</a>
-    </div>
-  </section>
-
-  <!-- Statistics -->
-  <section class="py-5 bg-light">
-    <div class="container">
-      <div class="row text-center g-4">
-        <div class="col-md-3 col-6 stat-item" data-aos="zoom-in"><i class="fas fa-user-graduate fa-3x text-primary"></i><h2 class="counter mt-2" data-target="5200">0</h2><p>Students</p></div>
-        <div class="col-md-3 col-6 stat-item" data-aos="zoom-in" data-aos-delay="100"><i class="fas fa-chalkboard-user fa-3x text-secondary"></i><h2 class="counter" data-target="380">0</h2><p>Teachers</p></div>
-        <div class="col-md-3 col-6 stat-item" data-aos="zoom-in" data-aos-delay="200"><i class="fas fa-book-open fa-3x text-warning"></i><h2 class="counter" data-target="124">0</h2><p>Courses</p></div>
-        <div class="col-md-3 col-6 stat-item" data-aos="zoom-in" data-aos-delay="300"><i class="fas fa-trophy fa-3x text-danger"></i><h2 class="counter" data-target="45">0</h2><p>Awards</p></div>
+<!-- ════ HERO ════ -->
+<section id="home" class="hero-section">
+  <div class="hero-pattern"></div>
+  <div class="container" data-aos="fade-up">
+    <div class="row">
+      <div class="col-lg-7">
+        <div class="hero-badge">Admissions Open — Spring 2026</div>
+        <h1 class="hero-title">Shape Your <em>Future</em> at EduPrime</h1>
+        <p class="hero-desc">World-class education, global opportunities, and a campus culture that inspires. Join 5,200+ students building tomorrow's world.</p>
+        <div class="d-flex flex-wrap gap-3">
+          <a href="#admissions" class="btn-gold">Apply Now <i class="fas fa-arrow-right ms-2"></i></a>
+          <a href="#courses" class="btn-outline-hero">Explore Programs</a>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <i class="fas fa-chevron-down"></i>
+  </div>
+</section>
 
-  <!-- Latest Announcements & Featured Courses (simplified) -->
-  <div class="container py-5">
-    <div class="row">
-      <div class="col-md-6" data-aos="fade-right"><div class="card border-0 shadow"><div class="card-body"><h4><i class="fas fa-bullhorn text-primary"></i> Latest Announcements</h4><ul class="list-unstyled"><li><i class="fas fa-check-circle text-success"></i> Spring Admission 2026 open till March 30</li><li><i class="fas fa-check-circle text-success"></i> Online result for fall semester published</li><li><i class="fas fa-check-circle text-success"></i> International conference on AI - April 12</li></ul></div></div></div>
-      <div class="col-md-6" data-aos="fade-left"><div class="card border-0 shadow"><div class="card-body"><h4><i class="fas fa-star text-warning"></i> Featured Course: Data Science</h4><p>Learn Python, ML, AI with industry experts. Duration: 6 months | Fee: $1200</p><a href="#" class="btn btn-sm btn-primary">Enroll now</a></div></div></div>
+<!-- ════ STATS BAR ════ -->
+<section class="stats-bar">
+  <div class="container-fluid px-0">
+    <div class="row g-0">
+      <div class="col-6 col-md-3 stat-box" data-aos="fade-up">
+        <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
+        <div class="stat-num counter" data-target="5200">0</div>
+        <div class="stat-label">Active Students</div>
+      </div>
+      <div class="col-6 col-md-3 stat-box" data-aos="fade-up" data-aos-delay="80">
+        <div class="stat-icon"><i class="fas fa-chalkboard-user"></i></div>
+        <div class="stat-num counter" data-target="380">0</div>
+        <div class="stat-label">Expert Faculty</div>
+      </div>
+      <div class="col-6 col-md-3 stat-box" data-aos="fade-up" data-aos-delay="160">
+        <div class="stat-icon"><i class="fas fa-book-open"></i></div>
+        <div class="stat-num counter" data-target="124">0</div>
+        <div class="stat-label">Programs</div>
+      </div>
+      <div class="col-6 col-md-3 stat-box" data-aos="fade-up" data-aos-delay="240">
+        <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+        <div class="stat-num counter" data-target="45">0</div>
+        <div class="stat-label">Awards Won</div>
+      </div>
     </div>
   </div>
+</section>
 
-  <!-- Testimonials Swiper -->
-  <section class="bg-light py-5"><div class="container"><h2 class="text-center mb-4" data-aos="fade-up">What Students Say</h2><div class="swiper testimonialSwiper"><div class="swiper-wrapper"><div class="swiper-slide"><div class="card p-4 text-center shadow-sm"><i class="fas fa-quote-left fa-2x text-primary"></i><p>Excellent faculty and modern labs!</p><h6>- Sarah Khan</h6></div></div><div class="swiper-slide"><div class="card p-4 text-center shadow-sm"><i class="fas fa-quote-left fa-2x text-primary"></i><p>Great placement support. Highly recommended.</p><h6>- Rahul Mehta</h6></div></div><div class="swiper-slide"><div class="card p-4 text-center shadow-sm"><i class="fas fa-quote-left fa-2x text-primary"></i><p>Best decision of my life.</p><h6>- Aisha Noor</h6></div></div></div><div class="swiper-pagination"></div></div></div></section>
+<!-- ════ ANNOUNCEMENTS ════ -->
+<section class="py-5">
+  <div class="container">
+    <div class="row g-4 align-items-stretch">
+      <div class="col-lg-6" data-aos="fade-right">
+        <p class="sec-eyebrow">Announcements</p>
+        <h2 class="sec-title mb-4">Latest Updates</h2>
+        <div class="announce-card">
+          <div class="announce-item">
+            <div class="announce-dot"></div>
+            <div><div class="announce-text">Spring Admission 2026 is now open — deadline March 30</div><div class="announce-date">Feb 15, 2026</div></div>
+          </div>
+          <div class="announce-item">
+            <div class="announce-dot"></div>
+            <div><div class="announce-text">Fall semester results now available in the student portal</div><div class="announce-date">Feb 10, 2026</div></div>
+          </div>
+          <div class="announce-item">
+            <div class="announce-dot"></div>
+            <div><div class="announce-text">International Conference on AI & Future Tech — April 12</div><div class="announce-date">Feb 5, 2026</div></div>
+          </div>
+          <div class="announce-item">
+            <div class="announce-dot"></div>
+            <div><div class="announce-text">Merit-based scholarships for top 50 applicants announced</div><div class="announce-date">Jan 28, 2026</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6" data-aos="fade-left">
+        <p class="sec-eyebrow">Featured Program</p>
+        <h2 class="sec-title mb-4">Data Science</h2>
+        <div class="featured-course-card">
+          <h4>Data Science & Machine Learning</h4>
+          <p style="color:rgba(255,255,255,.65); font-size:.88rem; line-height:1.7; margin-bottom:20px;">Master Python, AI, ML and real-world data pipelines with guidance from industry-leading faculty and live projects.</p>
+          <div class="mb-24" style="margin-bottom:24px;">
+            <span class="course-badge">6 Months</span>
+            <span class="course-badge">$1,200</span>
+            <span class="course-badge">Placement Support</span>
+          </div>
+          <button class="enroll-btn" data-bs-toggle="modal" data-bs-target="#courseModal1">Enroll Now <i class="fas fa-arrow-right ms-2"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- About Us -->
-  <section id="about" class="py-5"><div class="container"><div class="row align-items-center"><div class="col-lg-6" data-aos="fade-right"><h2>About EduPrime</h2><p>Established in 1998, EduPrime is a premier institute known for academic excellence, cutting-edge research, and holistic development.</p><h5 class="mt-3">Mission & Vision</h5><p>Mission: To empower students with knowledge and skills for global impact. Vision: To be a center of excellence in education and innovation.</p><div class="mt-4"><h5>Chairman's Message</h5><p>“Education is the most powerful weapon. We nurture leaders.” – Dr. S. Verma</p></div></div><div class="col-lg-6" data-aos="fade-left"><img src="https://images.pexels.com/photos/207691/pexels-photo-207691.jpeg" class="img-fluid rounded shadow" alt="campus"></div></div><hr><div class="row mt-4"><div class="col-md-4"><i class="fas fa-award fa-2x text-primary"></i><h5>+50 National Awards</h5></div><div class="col-md-4"><i class="fas fa-globe fa-2x text-primary"></i><h5>Global Collaborations</h5></div><div class="col-md-4"><i class="fas fa-users fa-2x text-primary"></i><h5>100+ Faculty Experts</h5></div></div></div></section>
+<!-- ════ ABOUT ════ -->
+<section id="about" class="about-section py-5">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-5" data-aos="fade-right">
+        <div class="about-img-wrap" style="padding-bottom:30px;">
+          <img src="https://images.pexels.com/photos/207691/pexels-photo-207691.jpeg" alt="EduPrime Campus" style="height:420px;">
+          <div class="about-badge-box">
+            <div class="num">28+</div>
+            <div class="lbl">Years of Excellence</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7" data-aos="fade-left">
+        <p class="sec-eyebrow">About EduPrime</p>
+        <h2 class="sec-title">A Legacy of Academic Excellence</h2>
+        <div class="sec-divider left mb-4"></div>
+        <p style="color:var(--slate); line-height:1.8; margin-bottom:28px;">Established in 1998, EduPrime has been at the forefront of higher education — nurturing critical thinkers, innovators, and global leaders. Our research-driven environment and world-class faculty set us apart.</p>
+        <blockquote style="border-left:3px solid var(--gold); padding-left:20px; margin-bottom:32px; font-style:italic; color:var(--slate);">
+          "Education is the most powerful weapon we can use to change the world. At EduPrime, we don't just teach — we transform." <br><strong style="color:var(--navy); font-style:normal;">— Dr. S. Verma, Chairman</strong>
+        </blockquote>
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <div class="pillar">
+              <div class="pillar-icon"><i class="fas fa-award"></i></div>
+              <div><h6>50+ National Awards</h6><p>Recognized for academic innovation and research output</p></div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="pillar">
+              <div class="pillar-icon"><i class="fas fa-globe"></i></div>
+              <div><h6>Global Partnerships</h6><p>Collaborations with top universities across 20 countries</p></div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="pillar">
+              <div class="pillar-icon"><i class="fas fa-flask"></i></div>
+              <div><h6>Research Centers</h6><p>12 dedicated centers advancing frontier research</p></div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="pillar">
+              <div class="pillar-icon"><i class="fas fa-briefcase"></i></div>
+              <div><h6>95% Placement Rate</h6><p>Industry partnerships ensuring career-ready graduates</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- Admissions -->
-  <section id="admissions" class="bg-light py-5"><div class="container"><h2 class="text-center mb-4" data-aos="fade-up">Admissions 2026</h2><div class="row g-4"><div class="col-md-4"><div class="card h-100"><div class="card-body"><h5><i class="fas fa-clipboard-list"></i> Process</h5><p>Online application → Entrance Exam → Interview → Merit List</p></div></div></div><div class="col-md-4"><div class="card h-100"><div class="card-body"><h5><i class="fas fa-check-circle"></i> Eligibility</h5><p>10+2 with 55% for UG; Bachelor's degree for PG programs</p></div></div></div><div class="col-md-4"><div class="card h-100"><div class="card-body"><h5><i class="fas fa-dollar-sign"></i> Fee Structure</h5><p>UG: $2000/sem | PG: $2800/sem | Diploma: $1500</p><button class="btn btn-outline-primary btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#feeModal">View Details</button></div></div></div></div><div class="mt-5"><div class="card shadow"><div class="card-body"><h4>Online Admission Form</h4><form id="admissionForm"><div class="row"><div class="col-md-6 mb-3"><input type="text" id="adName" class="form-control" placeholder="Full Name" required></div><div class="col-md-6 mb-3"><input type="email" id="adEmail" class="form-control" placeholder="Email" required></div><div class="col-12 mb-3"><select class="form-select"><option>Select Program</option><option>B.Tech</option><option>MBA</option><option>BCA</option></select></div><div class="col-12"><button type="submit" class="btn btn-primary">Apply Now <i class="fas fa-paper-plane"></i></button><a href="#" class="btn btn-secondary ms-2">Download Prospectus PDF <i class="fas fa-download"></i></a></div></div></form></div></div></div></div></section>
+<!-- ════ ADMISSIONS ════ -->
+<section id="admissions" class="py-5">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <p class="sec-eyebrow">Admissions 2026</p>
+      <h2 class="sec-title">Your Journey Begins Here</h2>
+      <div class="sec-divider mx-auto mt-3"></div>
+    </div>
+    <div class="row g-4 mb-5">
+      <div class="col-md-4" data-aos="fade-up">
+        <div class="pillar flex-column align-items-start h-100" style="padding:28px;">
+          <div class="pillar-icon mb-16" style="margin-bottom:16px;"><i class="fas fa-clipboard-list"></i></div>
+          <h5 style="font-weight:700; margin-bottom:10px;">Application Process</h5>
+          <p style="color:var(--muted); font-size:.87rem; line-height:1.7;">Online Application → Entrance Exam → Personal Interview → Merit List → Enrollment</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="pillar flex-column align-items-start h-100" style="padding:28px;">
+          <div class="pillar-icon mb-16" style="margin-bottom:16px;"><i class="fas fa-check-circle"></i></div>
+          <h5 style="font-weight:700; margin-bottom:10px;">Eligibility</h5>
+          <p style="color:var(--muted); font-size:.87rem; line-height:1.7;">Undergraduate: 10+2 with 55% minimum. Postgraduate: Bachelor's degree in relevant field. Diploma: 10+2 any stream.</p>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="pillar flex-column align-items-start h-100" style="padding:28px;">
+          <div class="pillar-icon mb-16" style="margin-bottom:16px;"><i class="fas fa-dollar-sign"></i></div>
+          <h5 style="font-weight:700; margin-bottom:10px;">Fee Structure</h5>
+          <p style="color:var(--muted); font-size:.87rem; line-height:1.7;">UG: $2,000/semester | PG: $2,800/semester | Diploma: $1,500 total</p>
+          <button class="btn-course mt-12" style="margin-top:12px;" data-bs-toggle="modal" data-bs-target="#feeModal">View Details</button>
+        </div>
+      </div>
+    </div>
+    <div class="result-form-card" data-aos="fade-up">
+      <div class="result-form-header">
+        <p class="sec-eyebrow" style="color:var(--gold2);">Online Application</p>
+        <h3 style="font-family:'Playfair Display',serif; color:#fff; margin:0;">Apply for Admission</h3>
+      </div>
+      <div class="result-form-body">
+        <form id="admissionForm">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label-custom">Full Name</label>
+              <input type="text" id="adName" class="form-control-custom" placeholder="Enter your full name" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-custom">Email Address</label>
+              <input type="email" id="adEmail" class="form-control-custom" placeholder="your@email.com" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-custom">Phone Number</label>
+              <input type="tel" class="form-control-custom" placeholder="+1 234 567 8900">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label-custom">Select Program</label>
+              <select class="form-control-custom" style="cursor:pointer;">
+                <option value="">Choose a program</option>
+                <option>BSc Computer Science</option>
+                <option>MBA</option>
+                <option>BCA</option>
+                <option>Data Science Diploma</option>
+              </select>
+            </div>
+            <div class="col-12 d-flex flex-wrap gap-3 mt-2">
+              <button type="submit" class="btn-gold" style="border:none;">Submit Application <i class="fas fa-paper-plane ms-2"></i></button>
+              <a href="#" class="btn-outline-hero" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none; padding:13px 28px; border-radius:4px;">Download Prospectus <i class="fas fa-download"></i></a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- Courses Grid -->
-  <section id="courses" class="py-5"><div class="container"><h2 class="text-center mb-4" data-aos="fade-up">Our Programs</h2><div class="row g-4"><div class="col-lg-4 col-md-6"><div class="card h-100 shadow-sm"><div class="card-body"><h5>BSc Computer Science</h5><p>Duration: 3 years | Fee: $2400/year</p><button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#courseModal1">Syllabus</button></div></div></div><div class="col-lg-4 col-md-6"><div class="card h-100 shadow-sm"><div class="card-body"><h5>MBA</h5><p>Duration: 2 years | Fee: $4000/year</p><button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#courseModal2">Details</button></div></div></div><div class="col-lg-4 col-md-6"><div class="card h-100 shadow-sm"><div class="card-body"><h5>Data Science Diploma</h5><p>Duration: 6 months | Fee: $1500</p></div></div></div></div></div></section>
+<!-- ════ COURSES ════ -->
+<section id="courses" class="courses-section py-5">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <p class="sec-eyebrow">Academic Programs</p>
+      <h2 class="sec-title light">World-Class Programs</h2>
+      <div class="sec-divider mx-auto mt-3"></div>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6" data-aos="fade-up">
+        <div class="course-card">
+          <div class="course-icon"><i class="fas fa-laptop-code"></i></div>
+          <h5>BSc Computer Science</h5>
+          <p>Deep dive into algorithms, software engineering, AI, and modern computing paradigms with hands-on project work.</p>
+          <div class="course-meta">
+            <span><i class="fas fa-clock"></i> 3 Years</span>
+            <span><i class="fas fa-dollar-sign"></i> $2,400/year</span>
+          </div>
+          <button class="btn-course mt-3" data-bs-toggle="modal" data-bs-target="#courseModal1">View Syllabus</button>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="course-card">
+          <div class="course-icon"><i class="fas fa-chart-line"></i></div>
+          <h5>Master of Business Administration</h5>
+          <p>Strategic management, finance, marketing, and leadership for tomorrow's business executives.</p>
+          <div class="course-meta">
+            <span><i class="fas fa-clock"></i> 2 Years</span>
+            <span><i class="fas fa-dollar-sign"></i> $4,000/year</span>
+          </div>
+          <button class="btn-course mt-3" data-bs-toggle="modal" data-bs-target="#courseModal2">View Syllabus</button>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="course-card">
+          <div class="course-icon"><i class="fas fa-brain"></i></div>
+          <h5>Data Science Diploma</h5>
+          <p>Python, Machine Learning, Data Visualization, and AI with real-world datasets and capstone projects.</p>
+          <div class="course-meta">
+            <span><i class="fas fa-clock"></i> 6 Months</span>
+            <span><i class="fas fa-dollar-sign"></i> $1,500</span>
+          </div>
+          <button class="btn-course mt-3" data-bs-toggle="modal" data-bs-target="#courseModal1">View Syllabus</button>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="course-card">
+          <div class="course-icon"><i class="fas fa-heartbeat"></i></div>
+          <h5>BSc Biomedical Engineering</h5>
+          <p>Merging healthcare and engineering to develop life-saving technologies and medical devices.</p>
+          <div class="course-meta">
+            <span><i class="fas fa-clock"></i> 4 Years</span>
+            <span><i class="fas fa-dollar-sign"></i> $3,200/year</span>
+          </div>
+          <button class="btn-course mt-3">View Syllabus</button>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+        <div class="course-card">
+          <div class="course-icon"><i class="fas fa-balance-scale"></i></div>
+          <h5>LLB — Law</h5>
+          <p>Constitutional, corporate, and international law curriculum with moot court practice.</p>
+          <div class="course-meta">
+            <span><i class="fas fa-clock"></i> 3 Years</span>
+            <span><i class="fas fa-dollar-sign"></i> $2,800/year</span>
+          </div>
+          <button class="btn-course mt-3">View Syllabus</button>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+        <div class="course-card">
+          <div class="course-icon"><i class="fas fa-microscope"></i></div>
+          <h5>MSc Quantum Computing</h5>
+          <p>Cutting-edge research in quantum algorithms, cryptography, and next-generation computing.</p>
+          <div class="course-meta">
+            <span><i class="fas fa-clock"></i> 2 Years</span>
+            <span><i class="fas fa-dollar-sign"></i> $5,000/year</span>
+          </div>
+          <button class="btn-course mt-3">View Syllabus</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- Student Portal (Dashboard UI) -->
-  <section id="studentPortal" class="bg-light py-5"><div class="container"><h2 class="text-center mb-4">Student Portal Preview</h2><div class="card shadow"><div class="card-header bg-primary text-white">Student Dashboard <i class="fas fa-id-card"></i></div><div class="card-body"><div class="row"><div class="col-md-3"><button class="btn btn-outline-primary w-100 mb-2" onclick="alert('Attendance: 85%')"><i class="fas fa-calendar-check"></i> Attendance</button></div><div class="col-md-3"><button class="btn btn-outline-primary w-100 mb-2" onclick="alert('Result: CGPA 3.8/4.0')"><i class="fas fa-chart-line"></i> Results</button></div><div class="col-md-3"><button class="btn btn-outline-primary w-100 mb-2" onclick="alert('Timetable: Mon-Fri 9AM to 4PM')"><i class="fas fa-table"></i> Timetable</button></div><div class="col-md-3"><button class="btn btn-outline-primary w-100 mb-2" onclick="alert('Assignment: Submit by Mar 20')"><i class="fas fa-tasks"></i> Assignments</button></div></div><div class="mt-3 alert alert-info">Notifications: Mid-term exams start from April 5</div><button class="btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#loginModal">Student Login (Demo)</button></div></div></div></section>
+<!-- ════ PORTALS ════ -->
+<section id="portals" class="py-5">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <p class="sec-eyebrow">Digital Access</p>
+      <h2 class="sec-title">Student & Teacher Portals</h2>
+      <div class="sec-divider mx-auto mt-3"></div>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-6" data-aos="fade-right">
+        <div class="portal-card">
+          <div class="portal-header student-hdr">
+            <div class="portal-icon"><i class="fas fa-user-graduate" style="color:var(--gold)"></i></div>
+            <div><h5>Student Portal</h5><p>Access your academic dashboard</p></div>
+          </div>
+          <div class="portal-body">
+            <button class="portal-btn" onclick="alert('Attendance: 85% — Current Month')">
+              <div class="pb-icon" style="background:#dbeafe;"><i class="fas fa-calendar-check" style="color:#1d4ed8;"></i></div>
+              <span>View Attendance</span>
+              <i class="fas fa-chevron-right pb-arrow"></i>
+            </button>
+            <button class="portal-btn" onclick="alert('CGPA: 3.8 / 4.0 — Current Semester')">
+              <div class="pb-icon" style="background:#dcfce7;"><i class="fas fa-chart-line" style="color:#16a34a;"></i></div>
+              <span>Check Results</span>
+              <i class="fas fa-chevron-right pb-arrow"></i>
+            </button>
+            <button class="portal-btn" onclick="alert('Mon–Fri: 9AM–4PM | Sat: 9AM–12PM')">
+              <div class="pb-icon" style="background:#fef3c7;"><i class="fas fa-table" style="color:#d97706;"></i></div>
+              <span>View Timetable</span>
+              <i class="fas fa-chevron-right pb-arrow"></i>
+            </button>
+            <button class="portal-btn" onclick="alert('Pending Assignment: Submit by March 20')">
+              <div class="pb-icon" style="background:#fce7f3;"><i class="fas fa-tasks" style="color:#be185d;"></i></div>
+              <span>Assignments</span>
+              <i class="fas fa-chevron-right pb-arrow"></i>
+            </button>
+            <div class="portal-notif"><i class="fas fa-bell me-2"></i> <strong>Reminder:</strong> Mid-term exams begin April 5, 2026</div>
+            <button class="btn-gold w-100 mt-4" style="border:none;" data-bs-toggle="modal" data-bs-target="#loginModal">Student Login <i class="fas fa-sign-in-alt ms-2"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6" data-aos="fade-left">
+        <div class="portal-card">
+          <div class="portal-header teacher-hdr">
+            <div class="portal-icon"><i class="fas fa-chalkboard-user" style="color:#86efac;"></i></div>
+            <div><h5>Teacher Portal</h5><p>Manage your classroom digitally</p></div>
+          </div>
+          <div class="portal-body">
+            <button class="portal-btn" onclick="alert('Attendance Management — Demo Mode')">
+              <div class="pb-icon" style="background:#dcfce7;"><i class="fas fa-chalkboard" style="color:#16a34a;"></i></div>
+              <span>Manage Attendance</span>
+              <i class="fas fa-chevron-right pb-arrow"></i>
+            </button>
+            <button class="portal-btn" onclick="alert('Marks Entry Portal — Demo Mode')">
+              <div class="pb-icon" style="background:#dbeafe;"><i class="fas fa-pen-fancy" style="color:#1d4ed8;"></i></div>
+              <span>Enter & Update Marks</span>
+              <i class="fas fa-chevron-right pb-arrow"></i>
+            </button>
+            <button class="portal-btn" onclick="alert('Assignment Upload Portal — Demo Mode')">
+              <div class="pb-icon" style="background:#fef3c7;"><i class="fas fa-cloud-upload-alt" style="color:#d97706;"></i></div>
+              <span>Upload Assignments</span>
+              <i class="fas fa-chevron-right pb-arrow"></i>
+            </button>
+            <button class="portal-btn" onclick="alert('Student Feedback Reports — Demo Mode')">
+              <div class="pb-icon" style="background:#fce7f3;"><i class="fas fa-file-alt" style="color:#be185d;"></i></div>
+              <span>Student Reports</span>
+              <i class="fas fa-chevron-right pb-arrow"></i>
+            </button>
+            <div class="portal-notif" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7); border-color:#86efac; color:#14532d;"><i class="fas fa-info-circle me-2"></i> <strong>New:</strong> Digital gradebook now supports bulk CSV import</div>
+            <button class="btn-gold w-100 mt-4" style="border:none; background:linear-gradient(135deg,#16a34a,#15803d);" data-bs-toggle="modal" data-bs-target="#teacherLoginModal">Teacher Login <i class="fas fa-sign-in-alt ms-2"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- Teacher Portal -->
-  <section id="teacherPortal" class="py-5"><div class="container"><h2 class="text-center mb-4">Teacher Portal</h2><div class="card shadow"><div class="card-body"><div class="row"><div class="col-md-4"><i class="fas fa-chalkboard"></i> Manage Attendance</div><div class="col-md-4"><i class="fas fa-pen-fancy"></i> Enter Marks</div><div class="col-md-4"><i class="fas fa-cloud-upload-alt"></i> Upload Assignment</div></div><button class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#teacherLoginModal">Teacher Login Demo</button></div></div></div></section>
+<!-- ════ RESULTS ════ -->
+<section id="results" class="results-section py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-7" data-aos="fade-up">
+        <div class="result-form-card">
+          <div class="result-form-header text-center">
+            <i class="fas fa-search" style="color:var(--gold); font-size:2rem; margin-bottom:12px; display:block;"></i>
+            <p class="sec-eyebrow" style="color:var(--gold2); text-align:center;">Online Portal</p>
+            <h3 style="font-family:'Playfair Display',serif; color:#fff; margin:0;">Check Your Result</h3>
+          </div>
+          <div class="result-form-body">
+            <label class="form-label-custom">Roll Number</label>
+            <input type="text" id="rollNo" class="form-control-custom" placeholder="e.g. EP-2024-1234" style="margin-bottom:16px;">
+            <div class="d-flex gap-3">
+              <button class="btn-gold" style="border:none; flex:1;" id="fetchResult">Search Result <i class="fas fa-search ms-2"></i></button>
+            </div>
+            <div id="resultDisplay" class="mt-4"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- Online Results -->
-  <section id="results" class="bg-light py-5"><div class="container"><h2 class="text-center mb-3">Online Results</h2><div class="row justify-content-center"><div class="col-md-6"><div class="card"><div class="card-body"><input type="text" id="rollNo" class="form-control mb-3" placeholder="Enter Roll Number"><button class="btn btn-primary" id="fetchResult">Get Result</button><div id="resultDisplay" class="mt-3"></div><button id="printResultBtn" class="btn btn-secondary mt-2 d-none">Print Result</button></div></div></div></div></div></section>
+<!-- ════ FACULTY ════ -->
+<section class="py-5">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <p class="sec-eyebrow">Our Team</p>
+      <h2 class="sec-title">Distinguished Faculty</h2>
+      <div class="sec-divider mx-auto mt-3"></div>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-3 col-md-6" data-aos="fade-up">
+        <div class="faculty-card">
+          <div class="faculty-img-wrap">
+            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Prof. Neha Sharma">
+            <div class="faculty-badge"><i class="fas fa-star"></i></div>
+          </div>
+          <h5>Prof. Neha Sharma</h5>
+          <div class="role">HOD Computer Science</div>
+          <div class="dept">PhD in Artificial Intelligence | MIT</div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="faculty-card">
+          <div class="faculty-img-wrap">
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Dr. Rajiv Menon">
+            <div class="faculty-badge"><i class="fas fa-star"></i></div>
+          </div>
+          <h5>Dr. Rajiv Menon</h5>
+          <div class="role">Dean of Academics</div>
+          <div class="dept">20+ Years Experience | Stanford</div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="faculty-card">
+          <div class="faculty-img-wrap">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Dr. Anita Verma">
+            <div class="faculty-badge"><i class="fas fa-star"></i></div>
+          </div>
+          <h5>Dr. Anita Verma</h5>
+          <div class="role">Professor, Mathematics</div>
+          <div class="dept">Research Lead — Applied Math</div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="faculty-card">
+          <div class="faculty-img-wrap">
+            <img src="https://randomuser.me/api/portraits/men/54.jpg" alt="Dr. Arjun Bhat">
+            <div class="faculty-badge"><i class="fas fa-star"></i></div>
+          </div>
+          <h5>Dr. Arjun Bhat</h5>
+          <div class="role">Professor, Physics</div>
+          <div class="dept">Quantum Research Fellow | CERN</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- Gallery Lightbox -->
-  <section id="gallery" class="py-5"><div class="container"><h2 class="text-center mb-4">Campus Gallery</h2><div class="row g-3"><div class="col-md-4"><img src="https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg" class="img-fluid rounded gallery-img" data-bs-toggle="modal" data-bs-target="#imageModal" style="cursor:pointer"></div><div class="col-md-4"><img src="https://images.pexels.com/photos/207692/pexels-photo-207692.jpeg" class="img-fluid rounded gallery-img" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#imageModal"></div><div class="col-md-4"><img src="https://images.pexels.com/photos/256490/pexels-photo-256490.jpeg" class="img-fluid rounded gallery-img" style="cursor:pointer" data-bs-toggle="modal" data-bs-target="#imageModal"></div></div></div></section>
+<!-- ════ TESTIMONIALS ════ -->
+<section class="testimonials-section py-5">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <p class="sec-eyebrow" style="color:var(--gold2);">Student Voices</p>
+      <h2 class="sec-title light">What Our Students Say</h2>
+      <div class="sec-divider mx-auto mt-3"></div>
+    </div>
+    <div class="swiper testimonialSwiper" data-aos="fade-up">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide"><div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"The faculty here are truly world-class. The hands-on projects and labs gave me the skills to land my dream job at Google."</p><div class="testi-name">Sarah Khan</div><div class="testi-role">BSc CS, 2024 | Software Engineer, Google</div></div></div>
+        <div class="swiper-slide"><div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"EduPrime's MBA program completely changed my perspective on business. The placement support is unmatched — I had 3 offers before graduation."</p><div class="testi-name">Rahul Mehta</div><div class="testi-role">MBA 2023 | Product Manager, Amazon</div></div></div>
+        <div class="swiper-slide"><div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Joining EduPrime was the single best decision of my academic life. The campus culture, mentors, and opportunities are extraordinary."</p><div class="testi-name">Aisha Noor</div><div class="testi-role">Data Science, 2024 | ML Engineer, Meta</div></div></div>
+        <div class="swiper-slide"><div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"The research facilities and international collaborations opened doors I never imagined. My paper was published in Nature during my final year."</p><div class="testi-name">James Okonkwo</div><div class="testi-role">MSc Physics, 2023 | Researcher, CERN</div></div></div>
+      </div>
+      <div class="swiper-pagination" style="margin-top:24px; position:relative;"></div>
+    </div>
+  </div>
+</section>
 
-  <!-- Faculty Section -->
-  <section class="bg-light py-5"><div class="container"><h2 class="text-center mb-4">Our Faculty</h2><div class="row text-center"><div class="col-md-4"><img src="https://randomuser.me/api/portraits/women/68.jpg" class="faculty-img"><h5>Prof. Neha Sharma</h5><p>HOD Computer Science, PhD (AI)</p></div><div class="col-md-4"><img src="https://randomuser.me/api/portraits/men/32.jpg" class="faculty-img"><h5>Dr. Rajiv Menon</h5><p>Dean of Academics, 20+ yrs exp</p></div><div class="col-md-4"><img src="https://randomuser.me/api/portraits/women/44.jpg" class="faculty-img"><h5>Dr. Anita Verma</h5><p>Professor, Mathematics</p></div></div></div></section>
+<!-- ════ GALLERY ════ -->
+<section id="gallery" class="py-5">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <p class="sec-eyebrow">Campus Life</p>
+      <h2 class="sec-title">Gallery</h2>
+      <div class="sec-divider mx-auto mt-3"></div>
+    </div>
+    <div class="row g-3">
+      <div class="col-md-4" data-aos="fade-up">
+        <div class="gallery-item">
+          <img src="https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg" alt="Library" data-bs-toggle="modal" data-bs-target="#imageModal">
+          <div class="gallery-overlay"><div class="gallery-label"><i class="fas fa-expand-alt me-2"></i>Main Library</div></div>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="gallery-item">
+          <img src="https://images.pexels.com/photos/207692/pexels-photo-207692.jpeg" alt="Campus" data-bs-toggle="modal" data-bs-target="#imageModal">
+          <div class="gallery-overlay"><div class="gallery-label"><i class="fas fa-expand-alt me-2"></i>Main Campus</div></div>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="gallery-item">
+          <img src="https://images.pexels.com/photos/256490/pexels-photo-256490.jpeg" alt="Lecture Hall" data-bs-toggle="modal" data-bs-target="#imageModal">
+          <div class="gallery-overlay"><div class="gallery-label"><i class="fas fa-expand-alt me-2"></i>Lecture Hall</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- Digital Library & Contact section combined -->
-  <section id="contact" class="py-5"><div class="container"><div class="row"><div class="col-md-6"><h3>Digital Library</h3><div class="input-group mb-3"><input type="text" id="bookSearch" class="form-control" placeholder="Search book..."><button class="btn btn-primary" onclick="alert('Search: ' + document.getElementById('bookSearch').value)"><i class="fas fa-search"></i></button></div><ul><li>Data Structures by Cormen</li><li>AI: Modern Approach</li><li>Machine Learning Yearning</li></ul><p>New Arrivals: Quantum Computing, Blockchain Basics</p></div><div class="col-md-6"><h3>Contact Us</h3><form id="contactForm"><input type="text" placeholder="Name" id="contactName" class="form-control mb-2" required><input type="email" placeholder="Email" id="contactEmail" class="form-control mb-2" required><textarea class="form-control mb-2" rows="2" placeholder="Message"></textarea><button type="submit" class="btn btn-primary">Send Message</button></form><p class="mt-3"><i class="fas fa-phone-alt"></i> +1 234 567 8900<br><i class="fas fa-envelope"></i> info@eduprime.edu<br><i class="fas fa-clock"></i> Mon-Fri 9AM - 6PM</p><div id="map" style="height:200px; background:#e9ecef; border-radius:12px;"><iframe width="100%" height="200" style="border:0; border-radius:12px;" loading="lazy" src="https://maps.google.com/maps?q=New%20York&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe></div></div></div></div></section>
+<!-- ════ LIBRARY + CONTACT ════ -->
+<section id="contact" class="py-5">
+  <div class="container">
+    <div class="row g-5">
+      <!-- Library -->
+      <div class="col-lg-5" data-aos="fade-right">
+        <p class="sec-eyebrow">Resources</p>
+        <h2 class="sec-title mb-4">Digital Library</h2>
+        <div class="input-group mb-4" style="border-radius:10px; overflow:hidden; border:1.5px solid #e2e8f0;">
+          <input type="text" id="bookSearch" style="border:none; padding:14px 18px; flex:1; font-family:'DM Sans',sans-serif; font-size:.9rem;" placeholder="Search books, papers, journals...">
+          <button style="background:var(--navy); border:none; padding:0 20px; color:var(--gold);" onclick="alert('Searching: ' + document.getElementById('bookSearch').value)"><i class="fas fa-search"></i></button>
+        </div>
+        <p style="font-size:.78rem; text-transform:uppercase; letter-spacing:2px; color:var(--muted); margin-bottom:12px; font-weight:600;">Recommended Reads</p>
+        <div class="book-item">
+          <div class="book-icon"><i class="fas fa-book"></i></div>
+          <div><div class="book-title">Introduction to Algorithms</div><div class="book-author">Cormen, Leiserson, Rivest</div></div>
+        </div>
+        <div class="book-item">
+          <div class="book-icon"><i class="fas fa-book"></i></div>
+          <div><div class="book-title">Artificial Intelligence: A Modern Approach</div><div class="book-author">Russell & Norvig</div></div>
+        </div>
+        <div class="book-item">
+          <div class="book-icon"><i class="fas fa-book"></i></div>
+          <div><div class="book-title">Machine Learning Yearning</div><div class="book-author">Andrew Ng</div></div>
+        </div>
+        <div class="book-item">
+          <div class="book-icon"><i class="fas fa-book"></i></div>
+          <div><div class="book-title">Quantum Computing: An Applied Approach</div><div class="book-author">Jack Hidary</div></div>
+        </div>
+      </div>
+      <!-- Contact -->
+      <div class="col-lg-7" data-aos="fade-left">
+        <p class="sec-eyebrow">Get In Touch</p>
+        <h2 class="sec-title mb-5">Contact Us</h2>
+        <div class="row g-4">
+          <div class="col-md-5">
+            <div class="contact-info-card h-100">
+              <div class="contact-method">
+                <div class="cm-icon"><i class="fas fa-phone-alt"></i></div>
+                <div><div class="cm-label">Phone</div><div class="cm-value">+1 234 567 8900</div></div>
+              </div>
+              <div class="contact-method">
+                <div class="cm-icon"><i class="fas fa-envelope"></i></div>
+                <div><div class="cm-label">Email</div><div class="cm-value">info@eduprime.edu</div></div>
+              </div>
+              <div class="contact-method">
+                <div class="cm-icon"><i class="fas fa-clock"></i></div>
+                <div><div class="cm-label">Office Hours</div><div class="cm-value">Mon–Fri, 9AM–6PM</div></div>
+              </div>
+              <div class="contact-method">
+                <div class="cm-icon"><i class="fas fa-map-marker-alt"></i></div>
+                <div><div class="cm-label">Location</div><div class="cm-value">42 Academic Ave, New York, NY</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-7">
+            <div class="contact-form-card h-100">
+              <form id="contactForm">
+                <div class="mb-3">
+                  <label class="form-label-custom">Your Name</label>
+                  <input type="text" id="contactName" class="form-control-custom" placeholder="John Smith" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label-custom">Email</label>
+                  <input type="email" id="contactEmail" class="form-control-custom" placeholder="you@email.com" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label-custom">Message</label>
+                  <textarea class="form-control-custom" rows="4" placeholder="How can we help you?" style="resize:none;"></textarea>
+                </div>
+                <button type="submit" class="btn-gold w-100" style="border:none; display:block;">Send Message <i class="fas fa-paper-plane ms-2"></i></button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- FAQ Section -->
-  <section class="bg-light py-4"><div class="container"><h3 class="text-center">Frequently Asked Questions</h3><div class="accordion" id="faqAccordion"><div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">How to apply online?</button></h2><div id="faq1" class="accordion-collapse collapse show">Visit admission portal and fill form.</div></div><div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">Scholarships available?</button></h2><div id="faq2" class="accordion-collapse collapse">Merit-based and need-based scholarships.</div></div></div></div></section>
-  <footer class="bg-dark text-white pt-4 pb-3"><div class="container text-center"><div class="row"><div class="col-md-4"><h5>Quick Links</h5><ul class="list-unstyled"><li>Events</li><li>News & Updates</li><li>Alumni</li></ul></div><div class="col-md-4"><h5>Social Media</h5><i class="fab fa-facebook fa-2x me-2"></i><i class="fab fa-twitter fa-2x me-2"></i><i class="fab fa-instagram fa-2x"></i><p class="mt-2"><input type="email" placeholder="Subscribe Newsletter" class="form-control"><button class="btn btn-sm btn-warning mt-1">Subscribe</button></p></div><div class="col-md-4"><p>&copy; 2026 EduPrime. All rights reserved.</p></div></div></div></footer>
-</main>
+<!-- ════ FAQ ════ -->
+<section class="faq-section py-5" style="background:var(--cream);">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+        <div class="text-center mb-5" data-aos="fade-up">
+          <p class="sec-eyebrow">Help Center</p>
+          <h2 class="sec-title">Frequently Asked Questions</h2>
+          <div class="sec-divider mx-auto mt-3"></div>
+        </div>
+        <div class="accordion" id="faqAccordion" data-aos="fade-up">
+          <div class="accordion-item mb-3">
+            <h2 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">How do I apply online?</button></h2>
+            <div id="faq1" class="accordion-collapse collapse show"><div class="accordion-body">Visit the Admissions section on this page, fill out the online application form with your details, and submit. You'll receive a confirmation email within 24 hours. Our admissions team will then guide you through the entrance exam and interview process.</div></div>
+          </div>
+          <div class="accordion-item mb-3">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">What scholarships are available?</button></h2>
+            <div id="faq2" class="accordion-collapse collapse"><div class="accordion-body">EduPrime offers merit-based scholarships for top 50 applicants (covering up to 50% of tuition), need-based financial aid, and research fellowships for postgraduate students. International students may also apply for our Global Excellence Award.</div></div>
+          </div>
+          <div class="accordion-item mb-3">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">Is hostel accommodation available?</button></h2>
+            <div id="faq3" class="accordion-collapse collapse"><div class="accordion-body">Yes, EduPrime provides on-campus hostel accommodation for both male and female students. Rooms are fully furnished with WiFi. Hostel fees are $800/semester. Apply early as spots fill quickly.</div></div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">What is the placement record?</button></h2>
+            <div id="faq4" class="accordion-collapse collapse"><div class="accordion-body">EduPrime maintains a 95% placement rate. Our Career Development Center partners with 200+ companies including Google, Amazon, Deloitte, and leading research institutions worldwide. Average package for engineering graduates: $72,000/year.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<!-- Modals -->
-<div class="modal fade" id="loginModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5>Student Login Demo</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><input class="form-control mb-2" placeholder="Username: student@eduprime"><input type="password" class="form-control" placeholder="Password: demo"><button class="btn btn-primary mt-3" onclick="alert('Welcome Student Dashboard!')">Login</button></div></div></div></div>
-<div class="modal fade" id="teacherLoginModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5>Teacher Login</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><input class="form-control mb-2" placeholder="Teacher ID"><button class="btn btn-success" onclick="alert('Teacher Dashboard - Marks entry demo')">Access</button></div></div></div></div>
-<div class="modal fade" id="chatModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5>Chat Support</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p>Hi 👋 How can we help?</p><textarea class="form-control" rows="2" placeholder="Type message..."></textarea><button class="btn btn-primary mt-2">Send</button></div></div></div></div>
-<div class="modal fade" id="feeModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><h5>Fee Structure</h5><p>UG: $2000/sem, PG: $2800, Hostel:$800</p><button class="btn btn-primary">Pay Online (Demo)</button></div></div></div></div>
-<div class="modal fade" id="courseModal1" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><h5>BSc CS Syllabus</h5><p>Programming, DBMS, OS, Networks</p></div></div></div></div>
-<div class="modal fade" id="courseModal2" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"><h5>MBA Syllabus</h5><p>Marketing, Finance, HR, Strategy</p></div></div></div></div>
-<div class="modal fade" id="imageModal" tabindex="-1"><div class="modal-dialog modal-lg"><div class="modal-content"><img src="" id="modalImageSrc" class="w-100"></div></div></div>
-</body>
+<!-- ════ FOOTER ════ -->
+<footer class="pt-5 pb-0">
+  <div class="container pb-4">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="footer-brand"><i class="fas fa-graduation-cap me-2" style="color:var(--gold);"></i>EduPrime</div>
+        <p class="footer-desc">Empowering minds, shaping futures. A premier institution committed to academic excellence and global impact since 1998.</p>
+        <div class="mt-4">
+          <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4">
+        <div class="footer-heading">Quick Links</div>
+        <a href="#home" class="footer-link">Home</a>
+        <a href="#about" class="footer-link">About Us</a>
+        <a href="#admissions" class="footer-link">Admissions</a>
+        <a href="#courses" class="footer-link">Programs</a>
+        <a href="#results" class="footer-link">Results</a>
+      </div>
+      <div class="col-lg-2 col-md-4">
+        <div class="footer-heading">Resources</div>
+        <a href="#" class="footer-link">Digital Library</a>
+        <a href="#" class="footer-link">Research Papers</a>
+        <a href="#" class="footer-link">Alumni Network</a>
+        <a href="#" class="footer-link">Career Center</a>
+        <a href="#" class="footer-link">News & Events</a>
+      </div>
+      <div class="col-lg-4 col-md-4">
+        <div class="footer-heading">Newsletter</div>
+        <p style="color:rgba(255,255,255,.45); font-size:.83rem; margin-bottom:16px;">Stay updated with admissions, events, and university news.</p>
+        <div class="d-flex">
+          <input type="email" class="newsletter-input" placeholder="Enter your email">
+          <button class="newsletter-btn">Subscribe</button>
+        </div>
+        <p style="color:rgba(255,255,255,.3); font-size:.75rem; margin-top:10px;"><i class="fas fa-shield-alt me-1"></i>No spam, ever. Unsubscribe anytime.</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <p>&copy; 2026 EduPrime Institute. All rights reserved.</p>
+      <p>Privacy Policy &nbsp;·&nbsp; Terms of Use &nbsp;·&nbsp; Accessibility</p>
+    </div>
+  </div>
+</footer>
 
+<!-- ════ MODALS ════ -->
+<div class="modal fade" id="loginModal" tabindex="-1">
+  <div class="modal-dialog"><div class="modal-content border-0 rounded-4 overflow-hidden">
+    <div class="modal-header" style="background:linear-gradient(135deg,var(--navy),var(--royal)); border:none; padding:28px 32px;">
+      <h5 class="modal-title text-white" style="font-family:'Playfair Display',serif;">Student Login</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body p-4">
+      <div class="mb-3"><label class="form-label-custom">Student ID / Email</label><input class="form-control-custom" placeholder="student@eduprime.edu"></div>
+      <div class="mb-4"><label class="form-label-custom">Password</label><input type="password" class="form-control-custom" placeholder="••••••••"></div>
+      <button class="btn-gold w-100" style="border:none;" onclick="alert('Welcome to Student Dashboard!')">Login <i class="fas fa-sign-in-alt ms-2"></i></button>
+    </div>
+  </div></div>
+</div>
+
+<div class="modal fade" id="teacherLoginModal" tabindex="-1">
+  <div class="modal-dialog"><div class="modal-content border-0 rounded-4 overflow-hidden">
+    <div class="modal-header" style="background:linear-gradient(135deg,#1a4a2e,#256341); border:none; padding:28px 32px;">
+      <h5 class="modal-title text-white" style="font-family:'Playfair Display',serif;">Teacher Portal</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body p-4">
+      <div class="mb-3"><label class="form-label-custom">Teacher ID</label><input class="form-control-custom" placeholder="TCH-2024-XXX"></div>
+      <div class="mb-4"><label class="form-label-custom">Password</label><input type="password" class="form-control-custom" placeholder="••••••••"></div>
+      <button class="btn-gold w-100" style="border:none; background:linear-gradient(135deg,#16a34a,#15803d);" onclick="alert('Welcome to Teacher Dashboard!')">Access Portal <i class="fas fa-sign-in-alt ms-2"></i></button>
+    </div>
+  </div></div>
+</div>
+
+<div class="modal fade" id="chatModal" tabindex="-1">
+  <div class="modal-dialog"><div class="modal-content border-0 rounded-4 overflow-hidden">
+    <div class="modal-header" style="background:linear-gradient(135deg,var(--navy),var(--royal)); border:none; padding:24px 28px;">
+      <h5 class="modal-title text-white d-flex align-items-center gap-2" style="font-family:'Playfair Display',serif;"><span class="chat-dot"></span>Live Support Chat</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body p-4">
+      <div style="background:var(--cream); border-radius:12px; padding:16px; margin-bottom:16px; font-size:.88rem;">👋 Hi there! Welcome to EduPrime. How can we help you today?</div>
+      <textarea class="form-control-custom" rows="3" placeholder="Type your message..."></textarea>
+      <button class="btn-gold w-100 mt-3" style="border:none;">Send Message <i class="fas fa-paper-plane ms-2"></i></button>
+    </div>
+  </div></div>
+</div>
+
+<div class="modal fade" id="feeModal" tabindex="-1">
+  <div class="modal-dialog"><div class="modal-content border-0 rounded-4 overflow-hidden">
+    <div class="modal-header" style="background:linear-gradient(135deg,var(--navy),var(--royal)); border:none; padding:28px 32px;">
+      <h5 class="modal-title text-white" style="font-family:'Playfair Display',serif;">Fee Structure 2026</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body p-4">
+      <table class="table table-borderless" style="font-size:.88rem;">
+        <tr><td style="color:var(--muted);">Undergraduate (per semester)</td><td class="fw-bold">$2,000</td></tr>
+        <tr><td style="color:var(--muted);">Postgraduate (per semester)</td><td class="fw-bold">$2,800</td></tr>
+        <tr><td style="color:var(--muted);">Diploma Programs (total)</td><td class="fw-bold">$1,500</td></tr>
+        <tr><td style="color:var(--muted);">Hostel (per semester)</td><td class="fw-bold">$800</td></tr>
+        <tr><td style="color:var(--muted);">Registration Fee (one-time)</td><td class="fw-bold">$150</td></tr>
+      </table>
+      <button class="btn-gold w-100" style="border:none;">Pay Online (Demo)</button>
+    </div>
+  </div></div>
+</div>
+
+<div class="modal fade" id="courseModal1" tabindex="-1">
+  <div class="modal-dialog"><div class="modal-content border-0 rounded-4 overflow-hidden">
+    <div class="modal-header" style="background:linear-gradient(135deg,var(--navy),var(--royal)); border:none; padding:28px 32px;">
+      <h5 class="modal-title text-white" style="font-family:'Playfair Display',serif;">BSc CS — Syllabus</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body p-4">
+      <p style="color:var(--muted); font-size:.87rem;">Core subjects across 3 years:</p>
+      <div class="d-flex flex-wrap gap-2">
+        <span class="course-badge" style="background:rgba(10,22,40,.08); color:var(--navy);">Programming Fundamentals</span>
+        <span class="course-badge" style="background:rgba(10,22,40,.08); color:var(--navy);">Data Structures</span>
+        <span class="course-badge" style="background:rgba(10,22,40,.08); color:var(--navy);">DBMS</span>
+        <span class="course-badge" style="background:rgba(10,22,40,.08); color:var(--navy);">Operating Systems</span>
+        <span class="course-badge" style="background:rgba(10,22,40,.08); color:var(--navy);">Computer Networks</span>
+        <span class="course-badge" style="background:rgba(10,22,40,.08); color:var(--navy);">Artificial Intelligence</span>
+        <span class="course-badge" style="background:rgba(10,22,40,.08); color:var(--navy);">Software Engineering</span>
+        <span class="course-badge" style="background:rgba(10,22,40,.08); color:var(--navy);">Capstone Project</span>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<div class="modal fade" id="courseModal2" tabindex="-1">
+  <div class="modal-dialog"><div class="modal-content border-0 rounded-4 overflow-hidden">
+    <div class="modal-header" style="background:linear-gradient(135deg,var(--navy),var(--royal)); border:none; padding:28px 32px;">
+      <h5 class="modal-title text-white" style="font-family:'Playfair Display',serif;">MBA — Syllabus</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body p-4">
+      <div class="d-flex flex-wrap gap-2">
+        <span class="course-badge" style="background:rgba(10,22,40,.08); color:var(--navy);">Strategic Management</span>
+        <span class="course-badge" style="background:rgba(10,22,40,.08); color:var(--navy);">Corporate Finance</span>
+        <span class="course-badge" style="background:rgba(10,22,40,.08); color:var(--navy);">Marketing Management</span>
+        <span class="course-badge" style="background:rgba(10,22,40,.08); color:var(--navy);">Human Resources</span>
+        <span class="course-badge" style="background:rgba(10,22,40,.08); color:var(--navy);">Business Analytics</span>
+        <span class="course-badge" style="background:rgba(10,22,40,.08); color:var(--navy);">Entrepreneurship</span>
+        <span class="course-badge" style="background:rgba(10,22,40,.08); color:var(--navy);">International Business</span>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<div class="modal fade" id="imageModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 bg-transparent">
+      <img src="" id="modalImageSrc" class="w-100 rounded-4">
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-  AOS.init({ duration: 800, once: true });
-  window.addEventListener('load', () => { setTimeout(() => { document.getElementById('loader').style.opacity = '0'; setTimeout(() => document.getElementById('loader').style.display = 'none', 500); }, 400); });
+  AOS.init({ duration: 700, once: true, offset: 60 });
 
-  // Counter animation
-  const counters = document.querySelectorAll('.counter');
-  const startCount = () => { counters.forEach(c => { const update = () => { let target = +c.getAttribute('data-target'), count = +c.innerText; let inc = target / 80; if(count < target){ c.innerText = Math.ceil(count + inc); setTimeout(update, 15); } else c.innerText = target; }; update(); }); };
-  window.addEventListener('scroll', () => { const stats = document.querySelector('.bg-light .stat-item'); if(stats && window.scrollY > stats.offsetTop - 500) startCount(); }, { once: true });
-  
-  // Dark mode toggle
-  const darkToggle = document.getElementById('darkModeToggle'); darkToggle.addEventListener('click', () => { document.body.classList.toggle('dark-mode'); if(document.body.classList.contains('dark-mode')) darkToggle.innerHTML = '<i class="fas fa-sun"></i>'; else darkToggle.innerHTML = '<i class="fas fa-moon"></i>'; });
-  
-  // Result logic
-  document.getElementById('fetchResult')?.addEventListener('click', function(){ let roll = document.getElementById('rollNo').value; if(roll) document.getElementById('resultDisplay').innerHTML = `<div class="alert alert-success">Result for Roll ${roll}: <strong>CGPA 3.75 / 4.0</strong><br>Status: PASS</div><button class="btn btn-outline-secondary" onclick="window.print()">Print Result</button>`; else alert("Enter roll number"); });
-  
-  // Form validation admission + contact
-  document.getElementById('admissionForm')?.addEventListener('submit', (e) => { e.preventDefault(); if(document.getElementById('adName').value && document.getElementById('adEmail').value) alert("Application submitted successfully!"); else alert("Fill required fields"); });
-  document.getElementById('contactForm')?.addEventListener('submit', (e) => { e.preventDefault(); if(document.getElementById('contactName').value && document.getElementById('contactEmail').value) alert("Message sent!"); else alert("Fill name & email"); });
-  
-  // gallery modal set img
-  document.querySelectorAll('.gallery-img').forEach(img => { img.addEventListener('click', () => { document.getElementById('modalImageSrc').src = img.src; }); });
-  
-  // back to top
-  const backBtn = document.getElementById('backToTop'); window.addEventListener('scroll', () => { if(window.scrollY > 300) backBtn.classList.add('show'); else backBtn.classList.remove('show'); }); backBtn.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
-  
-  // swiper testimonial
-  new Swiper('.testimonialSwiper', { loop: true, autoplay: { delay: 3000 }, pagination: { el: '.swiper-pagination', clickable: true }, slidesPerView: 1, breakpoints: { 768: { slidesPerView: 2 } } });
-  
-  // smooth scroll for navbar links
-  document.querySelectorAll('.navbar-nav .nav-link').forEach(link => { link.addEventListener('click', function(e) { e.preventDefault(); const target = this.getAttribute('href'); if(target && target !== '#') document.querySelector(target).scrollIntoView({ behavior: 'smooth' }); }); });
+  // Loader
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const l = document.getElementById('loader');
+      l.style.opacity = '0';
+      setTimeout(() => l.style.display = 'none', 600);
+    }, 1000);
+  });
+
+  // Counter
+  let counted = false;
+  function startCount() {
+    if (counted) return; counted = true;
+    document.querySelectorAll('.counter').forEach(c => {
+      const target = +c.getAttribute('data-target');
+      const inc = target / 80;
+      const update = () => {
+        const val = +c.innerText;
+        if (val < target) { c.innerText = Math.ceil(val + inc); setTimeout(update, 14); }
+        else c.innerText = target;
+      };
+      update();
+    });
+  }
+  window.addEventListener('scroll', () => { if (window.scrollY > 400) startCount(); }, { once: true });
+
+  // Dark mode
+  document.getElementById('darkModeToggle').addEventListener('click', function () {
+    document.body.classList.toggle('dark-mode');
+    this.innerHTML = document.body.classList.contains('dark-mode') ? '<i class="fas fa-sun" style="color:var(--gold)"></i>' : '<i class="fas fa-moon"></i>';
+  });
+
+  // Result
+  document.getElementById('fetchResult').addEventListener('click', function () {
+    const roll = document.getElementById('rollNo').value.trim();
+    if (!roll) { alert('Please enter a roll number'); return; }
+    document.getElementById('resultDisplay').innerHTML = `
+      <div class="result-card">
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <div class="grade-badge">A+</div>
+          <div><div style="color:rgba(255,255,255,.6); font-size:.78rem; text-transform:uppercase; letter-spacing:1.5px;">Academic Result</div><div style="color:#fff; font-size:1.1rem; font-weight:700; margin-top:4px;">Roll No: ${roll}</div></div>
+        </div>
+        <div class="result-row"><span>Student Name</span><span>Demo Student</span></div>
+        <div class="result-row"><span>Program</span><span>BSc Computer Science</span></div>
+        <div class="result-row"><span>Semester</span><span>5th — Fall 2025</span></div>
+        <div class="result-row"><span>CGPA</span><span>3.75 / 4.0</span></div>
+        <div class="result-row"><span>Status</span><span style="color:#86efac;">✓ PASS</span></div>
+        <button class="btn-gold mt-4 w-100" style="border:none;" onclick="window.print()">Print Result <i class="fas fa-print ms-2"></i></button>
+      </div>`;
+  });
+
+  // Forms
+  document.getElementById('admissionForm').addEventListener('submit', e => {
+    e.preventDefault();
+    if (document.getElementById('adName').value && document.getElementById('adEmail').value)
+      alert('✅ Application submitted successfully! Check your email for confirmation.');
+    else alert('Please fill in all required fields.');
+  });
+  document.getElementById('contactForm').addEventListener('submit', e => {
+    e.preventDefault();
+    if (document.getElementById('contactName').value && document.getElementById('contactEmail').value)
+      alert('✅ Message sent! We will respond within 24 hours.');
+    else alert('Please fill in your name and email.');
+  });
+
+  // Gallery modal
+  document.querySelectorAll('.gallery-item img').forEach(img => {
+    img.addEventListener('click', () => { document.getElementById('modalImageSrc').src = img.src; });
+  });
+
+  // Back to top
+  const btn = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => btn.classList.toggle('show', window.scrollY > 300));
+  btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // Swiper
+  new Swiper('.testimonialSwiper', {
+    loop: true,
+    autoplay: { delay: 3500, disableOnInteraction: false },
+    pagination: { el: '.swiper-pagination', clickable: true },
+    slidesPerView: 1,
+    spaceBetween: 20,
+    breakpoints: { 768: { slidesPerView: 2 } }
+  });
+
+  // Smooth scroll
+  document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+    link.addEventListener('click', e => {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('#') && document.querySelector(href)) {
+        e.preventDefault();
+        document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('navbarNav').classList.remove('show');
+      }
+    });
+  });
 </script>
+</body>
 </html>
