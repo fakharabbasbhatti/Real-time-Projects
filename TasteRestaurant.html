@@ -1,462 +1,658 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Royal Taste Restaurant</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Ambrosia | Modern Luxury Restaurant</title>
 
-<!-- Bootstrap -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap 5 CSS + Icons + Font Awesome + Google Fonts + AOS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Custom CSS -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0a0a0a;
+      color: #f5f5f5;
+      overflow-x: hidden;
+    }
 
-<!-- AOS Animation -->
-<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    /* Custom Scroll */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1a1a1a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D4AF37;
+      border-radius: 10px;
+    }
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
-}
+    /* Gold accents */
+    .gold-text {
+      color: #D4AF37;
+    }
+    .gold-bg {
+      background-color: #D4AF37;
+      color: #0a0a0a;
+    }
+    .gold-border {
+      border-color: #D4AF37;
+    }
+    .btn-gold {
+      background-color: #D4AF37;
+      color: #0a0a0a;
+      font-weight: 600;
+      padding: 12px 32px;
+      border-radius: 40px;
+      transition: all 0.4s ease;
+      border: none;
+    }
+    .btn-gold:hover {
+      background-color: #c5a028;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+      color: #000;
+    }
+    .btn-outline-gold {
+      border: 2px solid #D4AF37;
+      background: transparent;
+      color: #D4AF37;
+      padding: 10px 28px;
+      border-radius: 40px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    .btn-outline-gold:hover {
+      background: #D4AF37;
+      color: #0a0a0a;
+      transform: scale(1.02);
+    }
 
-html{
-    scroll-behavior:smooth;
-}
+    /* Navbar Sticky + Glassmorphism */
+    .navbar {
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(8px);
+      transition: all 0.4s ease;
+      padding: 15px 0;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+    .navbar.scrolled {
+      padding: 8px 0;
+      background: #0a0a0aee;
+    }
+    .navbar-brand {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #D4AF37 !important;
+    }
+    .nav-link {
+      color: #f0f0f0 !important;
+      font-weight: 500;
+      margin: 0 8px;
+      transition: 0.3s;
+      position: relative;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: #D4AF37 !important;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: #D4AF37;
+      transition: 0.3s;
+    }
+    .nav-link:hover::after, .nav-link.active::after {
+      width: 100%;
+    }
 
-body{
-    background:#111;
-    color:#fff;
-}
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.7)), url('https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=1600') center/cover no-repeat fixed;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
+    .hero-content h1 {
+      font-size: 4.5rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+    .hero-content p {
+      font-size: 1.3rem;
+      margin-bottom: 30px;
+    }
+    @media (max-width: 768px) {
+      .hero-content h1 { font-size: 2.5rem; }
+      .hero-content p { font-size: 1rem; }
+    }
 
-:root{
-    --gold:#d4af37;
-}
+    /* Sections */
+    section {
+      padding: 100px 0;
+    }
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .section-title:after {
+      content: '';
+      width: 80px;
+      height: 3px;
+      background: #D4AF37;
+      display: block;
+      margin: 15px auto;
+    }
 
-.navbar{
-    background:rgba(0,0,0,.9);
-}
+    /* Menu Cards */
+    .menu-card {
+      background: #141414;
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      margin-bottom: 30px;
+    }
+    .menu-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 25px 35px rgba(212,175,55,0.15);
+    }
+    .menu-img {
+      height: 220px;
+      object-fit: cover;
+      transition: 0.5s;
+    }
+    .menu-card:hover .menu-img {
+      transform: scale(1.05);
+    }
+    .menu-price {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #D4AF37;
+    }
+    .badge-offer {
+      background: #D4AF37;
+      color: #000;
+      font-weight: 600;
+    }
 
-.navbar-brand{
-    color:var(--gold)!important;
-    font-size:28px;
-    font-weight:700;
-}
+    /* Gallery Lightbox */
+    .gallery-item {
+      overflow: hidden;
+      border-radius: 16px;
+      cursor: pointer;
+      margin-bottom: 25px;
+    }
+    .gallery-img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      transition: all 0.5s ease;
+    }
+    .gallery-item:hover .gallery-img {
+      transform: scale(1.08);
+    }
 
-.nav-link{
-    color:#fff!important;
-    margin-left:15px;
-}
+    /* Glassmorphism Testimonial */
+    .testimonial-card {
+      background: rgba(20,20,20,0.7);
+      backdrop-filter: blur(5px);
+      border-radius: 25px;
+      padding: 35px 25px;
+      margin: 20px;
+      border: 1px solid rgba(212,175,55,0.3);
+    }
+    .star-rating {
+      color: #D4AF37;
+      margin-bottom: 15px;
+    }
+    .customer-img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #D4AF37;
+    }
 
-.nav-link:hover{
-    color:var(--gold)!important;
-}
+    /* Reservation Form */
+    .reservation-form {
+      background: #111;
+      padding: 40px;
+      border-radius: 28px;
+      box-shadow: 0 20px 35px rgba(0,0,0,0.5);
+    }
+    .form-control, .form-select {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      color: white;
+      padding: 12px;
+    }
+    .form-control:focus, .form-select:focus {
+      background: #2a2a2a;
+      border-color: #D4AF37;
+      box-shadow: 0 0 0 0.2rem rgba(212,175,55,0.25);
+      color: white;
+    }
 
-.hero{
-    height:100vh;
-    background:url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600')
-    center/cover no-repeat;
-    position:relative;
-}
+    /* Back to top */
+    #backToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 48px;
+      height: 48px;
+      background: #D4AF37;
+      color: #0a0a0a;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.3s;
+      z-index: 1000;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    #backToTop.show {
+      opacity: 1;
+      visibility: visible;
+    }
 
-.hero::before{
-    content:'';
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,.65);
-}
+    /* Loading Animation */
+    #loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0a0a0a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s;
+    }
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 5px solid #2c2c2c;
+      border-top: 5px solid #D4AF37;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
 
-.hero-content{
-    position:relative;
-    z-index:2;
-    height:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    flex-direction:column;
-}
-
-.hero h1{
-    font-size:60px;
-    font-weight:700;
-}
-
-.hero span{
-    color:var(--gold);
-}
-
-.btn-gold{
-    background:var(--gold);
-    color:#000;
-    font-weight:600;
-}
-
-.section-title{
-    text-align:center;
-    margin-bottom:50px;
-}
-
-.section-title h2{
-    color:var(--gold);
-    font-weight:700;
-}
-
-.about img,
-.gallery img{
-    width:100%;
-    border-radius:10px;
-}
-
-.menu-card{
-    background:#1b1b1b;
-    border:none;
-    transition:.4s;
-}
-
-.menu-card:hover{
-    transform:translateY(-10px);
-}
-
-.menu-card img{
-    height:220px;
-    object-fit:cover;
-}
-
-.price{
-    color:var(--gold);
-    font-size:20px;
-    font-weight:700;
-}
-
-.gallery img{
-    transition:.4s;
-}
-
-.gallery img:hover{
-    transform:scale(1.05);
-}
-
-.contact-box{
-    background:#1b1b1b;
-    padding:30px;
-    border-radius:10px;
-}
-
-footer{
-    background:#000;
-    padding:25px 0;
-    text-align:center;
-}
-
-.social a{
-    color:white;
-    margin:0 10px;
-    font-size:22px;
-}
-
-.social a:hover{
-    color:var(--gold);
-}
-
-.back-top{
-    position:fixed;
-    right:20px;
-    bottom:20px;
-    background:var(--gold);
-    color:#000;
-    width:45px;
-    height:45px;
-    border-radius:50%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-decoration:none;
-    font-size:20px;
-}
-
-@media(max-width:768px){
-.hero h1{
-    font-size:38px;
-}
-}
-</style>
+    footer {
+      background: #050505;
+      padding: 50px 0 20px;
+      border-top: 1px solid #1f1f1f;
+    }
+    .social-icons a {
+      color: #D4AF37;
+      font-size: 1.8rem;
+      margin: 0 12px;
+      transition: 0.3s;
+    }
+    .social-icons a:hover {
+      transform: translateY(-5px);
+      color: white;
+    }
+    .newsletter-input {
+      background: #1a1a1a;
+      border: 1px solid #D4AF37;
+      padding: 10px 15px;
+      border-radius: 40px;
+      color: white;
+    }
+  </style>
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-<div class="container">
-<a class="navbar-brand" href="#">Royal Taste</a>
-
-<button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
-<span class="navbar-toggler-icon"></span>
-</button>
-
-<div class="collapse navbar-collapse" id="menu">
-<ul class="navbar-nav ms-auto">
-<li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-<li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-<li class="nav-item"><a class="nav-link" href="#menu-section">Menu</a></li>
-<li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
-<li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-</ul>
+<!-- Loading Spinner -->
+<div id="loading">
+  <div class="loader"></div>
 </div>
+
+<!-- Back to Top -->
+<div id="backToTop">
+  <i class="fas fa-arrow-up"></i>
 </div>
+
+<!-- Sticky Navbar -->
+<nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="#">AMBROSIA</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="#menu">Menu</a></li>
+        <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+        <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
+        <li class="nav-item"><a class="nav-link" href="#reservation">Reservation</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
 </nav>
 
-<!-- Hero -->
-<section class="hero" id="home">
-<div class="hero-content">
-<h1 data-aos="zoom-in">
-Welcome To <span>Royal Taste</span>
-</h1>
-
-<p class="lead my-3" data-aos="fade-up">
-Experience the best food in town.
-</p>
-
-<div data-aos="fade-up">
-<a href="#menu-section" class="btn btn-gold btn-lg me-2">
-View Menu
-</a>
-
-<a href="#contact" class="btn btn-outline-light btn-lg">
-Book Table
-</a>
-</div>
-</div>
+<!-- Hero Section -->
+<section id="home" class="hero">
+  <div class="container hero-content" data-aos="fade-up" data-aos-duration="1200">
+    <h1>Exquisite <span class="gold-text">Dining</span> Experience</h1>
+    <p>Where flavors meet elegance & luxury</p>
+    <div>
+      <a href="#menu" class="btn btn-gold me-3">View Menu</a>
+      <a href="#reservation" class="btn btn-outline-gold">Book Table</a>
+    </div>
+  </div>
 </section>
 
-<!-- About -->
-<section class="about py-5" id="about">
-<div class="container">
-<div class="section-title">
-<h2>About Us</h2>
-</div>
-
-<div class="row align-items-center">
-
-<div class="col-md-6" data-aos="fade-right">
-<img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=900">
-</div>
-
-<div class="col-md-6" data-aos="fade-left">
-<h3>Fine Dining Experience</h3>
-
-<p>
-Royal Taste offers delicious meals prepared by
-expert chefs using premium ingredients.
-Enjoy a luxurious dining atmosphere with
-exceptional service.
-</p>
-
-<div class="row mt-4">
-
-<div class="col-4 text-center">
-<h2 class="text-warning">10+</h2>
-<p>Years</p>
-</div>
-
-<div class="col-4 text-center">
-<h2 class="text-warning">50+</h2>
-<p>Dishes</p>
-</div>
-
-<div class="col-4 text-center">
-<h2 class="text-warning">5000+</h2>
-<p>Customers</p>
-</div>
-
-</div>
-</div>
-
-</div>
-</div>
+<!-- About Section + Counters -->
+<section id="about">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 mb-4" data-aos="fade-right">
+        <img src="https://images.pexels.com/photos/1199957/pexels-photo-1199957.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Restaurant interior" class="img-fluid rounded-4 shadow-lg">
+      </div>
+      <div class="col-lg-6" data-aos="fade-left">
+        <h2 class="section-title text-start" style="text-align:left;">Our Story</h2>
+        <p class="lead">Since 2012, Ambrosia has been a sanctuary for culinary artistry. Using finest ingredients, Michelin-star inspired techniques, and an ambiance that whispers romance.</p>
+        <div class="row mt-5">
+          <div class="col-4 text-center">
+            <h2 class="gold-text counter" data-target="15">0</h2>
+            <p>Years of Excellence</p>
+          </div>
+          <div class="col-4 text-center">
+            <h2 class="gold-text counter" data-target="128">0</h2>
+            <p>Signature Dishes</p>
+          </div>
+          <div class="col-4 text-center">
+            <h2 class="gold-text counter" data-target="5000">0</h2>
+            <p>Happy Guests</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- Menu -->
-<section class="py-5" id="menu-section">
-<div class="container">
-
-<div class="section-title">
-<h2>Our Menu</h2>
-</div>
-
-<div class="row g-4">
-
-<div class="col-md-4" data-aos="zoom-in">
-<div class="card menu-card text-white">
-<img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=900">
-<div class="card-body">
-<h5>Special Pizza</h5>
-<p>Cheesy and delicious pizza.</p>
-<div class="price">$12</div>
-</div>
-</div>
-</div>
-
-<div class="col-md-4" data-aos="zoom-in">
-<div class="card menu-card text-white">
-<img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=900">
-<div class="card-body">
-<h5>Beef Burger</h5>
-<p>Juicy grilled burger.</p>
-<div class="price">$10</div>
-</div>
-</div>
-</div>
-
-<div class="col-md-4" data-aos="zoom-in">
-<div class="card menu-card text-white">
-<img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=900">
-<div class="card-body">
-<h5>Steak</h5>
-<p>Premium quality steak.</p>
-<div class="price">$18</div>
-</div>
-</div>
-</div>
-
-</div>
-</div>
+<!-- Menu Section -->
+<section id="menu" class="bg-dark">
+  <div class="container">
+    <h2 class="section-title">Signature Menu</h2>
+    <div class="row">
+      <!-- Starters -->
+      <div class="col-md-6 col-lg-3" data-aos="zoom-in">
+        <div class="menu-card">
+          <img src="https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=600" class="menu-img w-100" alt="Starter">
+          <div class="p-3">
+            <h5>Truffle Arancini</h5>
+            <p>Crispy risotto balls, mozzarella, black truffle aioli</p>
+            <div class="d-flex justify-content-between align-items-center"><span class="menu-price">$18</span><span class="badge bg-warning text-dark">Starters</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3" data-aos="zoom-in" data-aos-delay="100">
+        <div class="menu-card">
+          <img src="https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=600" class="menu-img w-100" alt="Main">
+          <div class="p-3">
+            <h5>Wagyu Striploin</h5>
+            <p>Grass-fed, roasted garlic mash, red wine jus</p>
+            <div class="d-flex justify-content-between"><span class="menu-price">$58</span><span class="badge bg-secondary">Main</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3" data-aos="zoom-in" data-aos-delay="200">
+        <div class="menu-card">
+          <img src="https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=600" class="menu-img w-100" alt="Dessert">
+          <div class="p-3">
+            <h5>Molten Chocolate</h5>
+            <p>Valrhona chocolate, vanilla bean ice cream, gold flakes</p>
+            <div class="d-flex justify-content-between"><span class="menu-price">$14</span><span class="badge bg-secondary">Desserts</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3" data-aos="zoom-in" data-aos-delay="300">
+        <div class="menu-card">
+          <img src="https://images.pexels.com/photos/3020919/pexels-photo-3020919.jpeg?auto=compress&cs=tinysrgb&w=600" class="menu-img w-100" alt="Drink">
+          <div class="p-3">
+            <h5>Golden Negroni</h5>
+            <p>Botanical gin, campari, sweet vermouth, edible gold</p>
+            <div class="d-flex justify-content-between"><span class="menu-price">$22</span><span class="badge bg-secondary">Drinks</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- Gallery -->
-<section class="gallery py-5" id="gallery">
-<div class="container">
-
-<div class="section-title">
-<h2>Gallery</h2>
-</div>
-
-<div class="row g-4">
-
-<div class="col-md-4" data-aos="fade-up">
-<img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=800">
-</div>
-
-<div class="col-md-4" data-aos="fade-up">
-<img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800">
-</div>
-
-<div class="col-md-4" data-aos="fade-up">
-<img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800">
-</div>
-
-</div>
-</div>
+<!-- Special Offers Section -->
+<section id="offers">
+  <div class="container">
+    <h2 class="section-title">Weekly Specials</h2>
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5" data-aos="flip-left">
+        <div class="menu-card d-flex flex-row p-3 align-items-center">
+          <img src="https://images.pexels.com/photos/842571/pexels-photo-842571.jpeg?auto=compress&cs=tinysrgb&w=400" style="width:120px; height:120px; object-fit:cover; border-radius:20px;">
+          <div class="ms-3"><h5>Lobster Thermidor</h5><p>30% OFF | Chef's special</p><span class="menu-price">$42 <del class="text-muted">$60</del></span><span class="badge-offer ms-2 badge">🔥LIMITED</span></div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-5" data-aos="flip-right">
+        <div class="menu-card d-flex flex-row p-3 align-items-center">
+          <img src="https://images.pexels.com/photos/1146760/pexels-photo-1146760.jpeg?auto=compress&cs=tinysrgb&w=400" style="width:120px; height:120px; object-fit:cover; border-radius:20px;">
+          <div class="ms-3"><h5>Seafood Paella</h5><p>Free glass of wine</p><span class="menu-price">$36</span><span class="badge-offer ms-2 badge">🍷INCLUDED</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- Contact -->
-<section class="py-5" id="contact">
-<div class="container">
-
-<div class="section-title">
-<h2>Book A Table</h2>
-</div>
-
-<div class="row">
-
-<div class="col-md-6">
-<div class="contact-box">
-
-<form id="bookingForm">
-
-<input type="text" class="form-control mb-3"
-placeholder="Your Name" required>
-
-<input type="email" class="form-control mb-3"
-placeholder="Email" required>
-
-<input type="tel" class="form-control mb-3"
-placeholder="Phone" required>
-
-<input type="date" class="form-control mb-3"
-required>
-
-<button class="btn btn-gold w-100">
-Reserve Table
-</button>
-
-</form>
-
-</div>
-</div>
-
-<div class="col-md-6">
-<div class="contact-box">
-
-<h4>Contact Information</h4>
-
-<p>
-<i class="fas fa-map-marker-alt text-warning"></i>
- Main City Road
-</p>
-
-<p>
-<i class="fas fa-phone text-warning"></i>
- +92 300 1234567
-</p>
-
-<p>
-<i class="fas fa-envelope text-warning"></i>
- info@royaltaste.com
-</p>
-
-</div>
-</div>
-
-</div>
-</div>
+<!-- Gallery Lightbox -->
+<section id="gallery" class="bg-dark">
+  <div class="container">
+    <h2 class="section-title">Visual Delights</h2>
+    <div class="row g-3">
+      <div class="col-md-4"><div class="gallery-item"><img src="https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=600" class="gallery-img" data-lightbox="gallery"></div></div>
+      <div class="col-md-4"><div class="gallery-item"><img src="https://images.pexels.com/photos/2983101/pexels-photo-2983101.jpeg?auto=compress&cs=tinysrgb&w=600" class="gallery-img"></div></div>
+      <div class="col-md-4"><div class="gallery-item"><img src="https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=600" class="gallery-img"></div></div>
+      <div class="col-md-4"><div class="gallery-item"><img src="https://images.pexels.com/photos/2098085/pexels-photo-2098085.jpeg?auto=compress&cs=tinysrgb&w=600" class="gallery-img"></div></div>
+      <div class="col-md-4"><div class="gallery-item"><img src="https://images.pexels.com/photos/3771815/pexels-photo-3771815.jpeg?auto=compress&cs=tinysrgb&w=600" class="gallery-img"></div></div>
+      <div class="col-md-4"><div class="gallery-item"><img src="https://images.pexels.com/photos/67468/pexels-photo-67468.jpeg?auto=compress&cs=tinysrgb&w=600" class="gallery-img"></div></div>
+    </div>
+  </div>
 </section>
 
-<!-- Footer -->
+<!-- Testimonials Carousel -->
+<section id="testimonials">
+  <div class="container">
+    <h2 class="section-title">Guest Love</h2>
+    <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="testimonial-card text-center mx-auto" style="max-width:600px;">
+            <div class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+            <p>"Exquisite service, divine flavors. The wagyu melted like butter. Absolute perfection."</p>
+            <img src="https://randomuser.me/api/portraits/women/68.jpg" class="customer-img mb-2"><h5 class="mt-2">Victoria Chen</h5>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="testimonial-card text-center mx-auto" style="max-width:600px;">
+            <div class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+            <p>"Best dining experience in town. Gold decor and ambience is breathtaking."</p>
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" class="customer-img mb-2"><h5 class="mt-2">James Rodriguez</h5>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="testimonial-card text-center mx-auto" style="max-width:600px;">
+            <div class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+            <p>"The cocktails and desserts are art. Will return for special offers!"</p>
+            <img src="https://randomuser.me/api/portraits/women/45.jpg" class="customer-img mb-2"><h5 class="mt-2">Amira Hassan</h5>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+      <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+    </div>
+  </div>
+</section>
+
+<!-- Reservation + Validation -->
+<section id="reservation">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-6" data-aos="fade-right">
+        <h2 class="section-title text-start" style="text-align:left;">Secure Your Table</h2>
+        <div class="reservation-form">
+          <form id="reserveForm">
+            <div class="mb-3"><input type="text" id="name" class="form-control" placeholder="Full Name" required></div>
+            <div class="mb-3"><input type="email" id="email" class="form-control" placeholder="Email Address" required></div>
+            <div class="mb-3"><input type="tel" id="phone" class="form-control" placeholder="Phone Number" required></div>
+            <div class="row"><div class="col-md-6 mb-3"><input type="date" id="date" class="form-control" required></div><div class="col-md-6 mb-3"><input type="time" id="time" class="form-control" required></div></div>
+            <div class="mb-3"><select id="guests" class="form-select"><option>1 Guest</option><option>2 Guests</option><option>3 Guests</option><option>4 Guests</option><option>5+ Guests</option></select></div>
+            <button type="submit" class="btn btn-gold w-100">Reserve Now</button>
+            <div id="formMessage" class="mt-3 text-center"></div>
+          </form>
+        </div>
+      </div>
+      <div class="col-lg-6" data-aos="fade-left">
+        <h2 class="section-title text-start" style="text-align:left;">Contact Info</h2>
+        <div class="bg-dark p-4 rounded-4"><i class="fas fa-map-marker-alt gold-text fa-2x"></i><p class="mt-2">123 Culinary Street, Foodie District, NY 10001</p><i class="fas fa-phone-alt gold-text fa-2x"></i><p>+1 (212) 555-9876</p><i class="fas fa-envelope gold-text fa-2x"></i><p>hello@ambrosia.com</p>
+        <div class="mt-4"><iframe src="https://maps.google.com/maps?q=New%20York%2C%20NY&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="200" style="border:0; border-radius:20px;" allowfullscreen></iframe></div>
+        <div class="social-icons mt-4"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-twitter"></i></a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer + Newsletter -->
 <footer>
-<div class="social mb-3">
-
-<a href="#"><i class="fab fa-facebook"></i></a>
-<a href="#"><i class="fab fa-instagram"></i></a>
-<a href="#"><i class="fab fa-twitter"></i></a>
-
-</div>
-
-<p>
-© 2025 Royal Taste Restaurant. All Rights Reserved.
-</p>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-4"><h4 class="gold-text">AMBROSIA</h4><p>Modern elegance meets culinary excellence. A fine dining journey since 2012.</p></div>
+      <div class="col-md-4 mb-4"><h5>Opening Hours</h5><p>Mon-Thu: 6pm-11pm<br>Fri-Sun: 5pm-12am</p></div>
+      <div class="col-md-4 mb-4"><h5>Newsletter</h5><div class="input-group"><input type="email" id="newsEmail" class="newsletter-input form-control" placeholder="Your email"><button class="btn btn-gold" id="newsBtn">Subscribe</button></div><small id="newsMsg"></small></div>
+    </div>
+    <hr class="bg-secondary"><div class="text-center"><p>&copy; 2025 Ambrosia Restaurant. All rights reserved.</p></div>
+  </div>
 </footer>
 
-<!-- Back To Top -->
-<a href="#home" class="back-top">
-<i class="fas fa-arrow-up"></i>
-</a>
-
-<!-- Bootstrap -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- AOS -->
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-
+<!-- SCRIPTS: Bootstrap JS, AOS, Custom JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-AOS.init({
-duration:1000,
-once:true
-});
+  // Initialize AOS
+  AOS.init({ duration: 1000, once: true, offset: 50 });
+  
+  // Loading hide
+  window.addEventListener('load', () => { document.getElementById('loading').style.display = 'none'; });
 
-document
-.getElementById('bookingForm')
-.addEventListener('submit',function(e){
+  // Sticky navbar + active link highlight
+  const nav = document.querySelector('#mainNav');
+  window.addEventListener('scroll', () => { if(window.scrollY > 50) nav.classList.add('scrolled'); else nav.classList.remove('scrolled'); updateActiveLink(); });
+  function updateActiveLink() {
+    let sections = document.querySelectorAll('section');
+    let scrollPos = window.scrollY + 150;
+    document.querySelectorAll('.nav-link').forEach(link => { link.classList.remove('active'); });
+    sections.forEach(section => {
+      if(scrollPos >= section.offsetTop && scrollPos < section.offsetTop + section.offsetHeight) {
+        let id = section.getAttribute('id');
+        document.querySelector(`.nav-link[href="#${id}"]`)?.classList.add('active');
+      }
+    });
+  }
+  updateActiveLink();
 
-e.preventDefault();
+  // Counter animation
+  const counters = document.querySelectorAll('.counter');
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) {
+        const counter = entry.target;
+        const target = parseInt(counter.getAttribute('data-target'));
+        let count = 0;
+        let update = setInterval(() => { if(count >= target) clearInterval(update); else { count += Math.ceil(target/50); if(count>target)count=target; counter.innerText = count; } }, 35);
+        counterObserver.unobserve(counter);
+      }
+    });
+  }, { threshold: 0.6 });
+  counters.forEach(c => counterObserver.observe(c));
 
-alert('Table Reserved Successfully!');
-});
+  // Smooth scroll navigation
+  document.querySelectorAll('.nav-link').forEach(anchor => {
+    anchor.addEventListener('click', function(e){
+      e.preventDefault();
+      const targetId = this.getAttribute('href').substring(1);
+      const targetElem = document.getElementById(targetId);
+      if(targetElem) targetElem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+  document.querySelectorAll('.btn-gold, .btn-outline-gold').forEach(btn => {
+    if(btn.getAttribute('href')?.startsWith('#')){
+      btn.addEventListener('click', function(e){ e.preventDefault(); const id = this.getAttribute('href').substring(1); if(id) document.getElementById(id)?.scrollIntoView({behavior:'smooth'}); });
+    }
+  });
+
+  // Back to top
+  let backBtn = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => { if(window.scrollY > 500) backBtn.classList.add('show'); else backBtn.classList.remove('show'); });
+  backBtn.addEventListener('click', () => { window.scrollTo({top:0, behavior:'smooth'}); });
+
+  // Form validation & booking success
+  const form = document.getElementById('reserveForm');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    let name = document.getElementById('name').value.trim();
+    let email = document.getElementById('email').value.trim();
+    let phone = document.getElementById('phone').value.trim();
+    let date = document.getElementById('date').value;
+    let time = document.getElementById('time').value;
+    if(!name || !email || !phone || !date || !time) { document.getElementById('formMessage').innerHTML = '<div class="alert alert-danger">All fields required!</div>'; return; }
+    if(!email.includes('@')) { document.getElementById('formMessage').innerHTML = '<div class="alert alert-danger">Valid email required</div>'; return; }
+    document.getElementById('formMessage').innerHTML = '<div class="alert alert-success">✨ Table reserved! We\'ll contact you shortly.</div>';
+    form.reset();
+  });
+
+  // Newsletter
+  document.getElementById('newsBtn').addEventListener('click', () => {
+    let mail = document.getElementById('newsEmail').value;
+    if(mail && mail.includes('@')) document.getElementById('newsMsg').innerHTML = '<span class="text-success">Thanks for subscribing!</span>';
+    else document.getElementById('newsMsg').innerHTML = '<span class="text-danger">Valid email please</span>';
+  });
+
+  // Simple Lightbox effect for gallery: just alert but we open high-res via alert? but modern way: we can open new tab for demo
+  let galleryImgs = document.querySelectorAll('.gallery-img');
+  galleryImgs.forEach(img => {
+    img.addEventListener('click', () => { window.open(img.src, '_blank'); });
+  });
 </script>
-
 </body>
 </html>
