@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>CGPA Architect | Smart Multi-Country Calculator</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: linear-gradient(145deg, #f0f4ff 0%, #e9edf5 100%);
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+/* MAIN CONTAINER - ROUNDED EVERYWHERE */
+.wrapper {
+  max-width: 1000px;
+  margin: auto;
+  background: rgba(255,255,255,0.97);
+  padding: 2rem 2rem 2.5rem;
+  border-radius: 2.5rem;   /* Increased rounded */
+  box-shadow: 0 25px 45px -12px rgba(0,0,0,0.18), 0 1px 3px rgba(0,0,0,0.05);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+
+/* Title */
+.calculator-title {
+  font-weight: 800;
+  font-size: 2rem;
+  letter-spacing: -0.3px;
+  background: linear-gradient(135deg, #1e293b, #2d3a5e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.calculator-title i { color: #4f46e5; font-size: 2rem; background: none; }
+
+/* Country selector row - fully rounded */
+.country-selector-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding: 0 4px;
+}
+
+#country-selector {
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  font-weight: 500;
+  padding: 0.7rem 2rem 0.7rem 1.4rem;
+  border-radius: 80px;      /* extra rounded */
+  min-width: 240px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+#country-selector:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.2); outline: none; }
+
+.req-link {
+  background: #f1f5f9;
+  padding: 8px 20px;
+  border-radius: 80px;      /* rounded pill */
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #2563eb;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: 0.2s;
+  cursor: pointer;
+}
+.req-link:hover { background: #e2e8f0; color: #1e40af; transform: translateY(-2px); }
+
+/* Country info card - rounded corners */
+.country-info-card {
+  background: linear-gradient(115deg, #4f46e5 0%, #7c3aed 100%);
+  border-radius: 32px;      /* more rounded */
+  padding: 1.4rem 1.8rem;
+  margin-bottom: 24px;
+  box-shadow: 0 12px 20px -12px rgba(79,70,229,0.4);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  transition: all 0.3s ease;
+}
+
+.ci-item { display: flex; flex-direction: column; gap: 4px; }
+.ci-label { font-size: 11px; color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 0.8px; }
+.ci-value { font-size: 14px; font-weight: 600; color: #fff; }
+.ci-value.small { font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.85); line-height: 1.5; }
+.ci-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 60px; padding: 3px 14px; font-size: 12px; font-weight: 600; color: #fff; width: fit-content;
+}
+
+/* How-to section - fully rounded panels */
+.howto-section {
+  background: #f8fafc;
+  border-radius: 28px;      /* rounded */
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  border: 1px solid #e2e8f0;
+}
+.ht-box { font-size: 13px; color: #475569; line-height: 1.6; }
+.ht-box strong { color: #1e293b; font-weight: 600; display: block; margin-bottom: 2px; }
+
+/* Table container & table rows rounded */
+.table-wrap { overflow-x: auto; margin-bottom: 10px; }
+.cgpa-table { width: 100%; border-collapse: separate; border-spacing: 0 12px; }
+.cgpa-table thead th {
+  background: #1e293b; color: white; font-weight: 600; font-size: 0.95rem;
+  padding: 14px 16px; border: none; text-align: center; border-radius: 28px 28px 20px 20px; /* rounded header */
+}
+.cgpa-table tbody tr {
+  background: #fff; 
+  border-radius: 24px;      /* each row rounded */
+  box-shadow: 0 3px 10px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.04);
+  transition: all 0.1s;
+}
+.cgpa-table tbody td { 
+  padding: 10px 12px; 
+  vertical-align: middle; 
+  background: #ffffff; 
+}
+/* Rounded corners for each row's first and last td */
+.cgpa-table tbody tr:first-child td:first-child { border-top-left-radius: 24px; }
+.cgpa-table tbody tr:first-child td:last-child { border-top-right-radius: 24px; }
+.cgpa-table tbody tr:last-child td:first-child { border-bottom-left-radius: 24px; }
+.cgpa-table tbody tr:last-child td:last-child { border-bottom-right-radius: 24px; }
+
+/* Form controls more rounded */
+.form-control {
+  border-radius: 20px;      /* extra rounded inputs */
+  padding: 11px 16px;
+  border: 1.5px solid #e2e8f0;
+  background: #fff;
+  font-weight: 500;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+.form-control:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.2); outline: none; }
+.form-control.err { border-color: #ef4444 !important; background-color: #fff5f5; }
+
+/* Buttons rounded big */
+.action-buttons { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin: 18px 0; }
+.btn {
+  border-radius: 60px;      /* fully rounded */
+  padding: 11px 28px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: all 0.25s ease;
+  border: none;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  font-family: 'Inter', sans-serif;
+}
+.btn-add { background: #10b981; color: white; }
+.btn-add:hover { background: #059669; transform: translateY(-3px); box-shadow: 0 10px 20px -8px #10b98180; }
+.btn-delete { background: #ef4444; color: white; }
+.btn-delete:hover { background: #dc2626; transform: translateY(-3px); box-shadow: 0 10px 20px -8px #ef444480; }
+.btn-calculate { background: #4f46e5; color: white; }
+.btn-calculate:hover { background: #4338ca; transform: translateY(-3px); box-shadow: 0 12px 22px -12px #4f46e5; }
+.btn-reset { background: #f1f5f9; border-radius: 60px; font-weight: 600; color: #475569; border: 1px solid #e2e8f0; }
+.btn-reset:hover { background: #e2e8f0; transform: translateY(-2px); }
+
+/* Validation message rounded */
+.validation-msg {
+  background: #fff7ed; border: 1px solid #fed7aa; border-radius: 28px;
+  padding: 10px 18px; font-size: 13px; color: #c2410c;
+  display: none; align-items: center; gap: 8px; margin-bottom: 12px;
+}
+
+/* Result card all rounded */
+.result-section { margin-top: 30px; animation: fadeUp 0.4s ease; display: none; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+.result-card {
+  background: linear-gradient(125deg, #0f172a, #1e293b);
+  border-radius: 36px;      /* large rounded */
+  padding: 28px 24px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 20px 30px -12px rgba(0,0,0,0.25);
+}
+.cgpa-value {
+  font-size: 68px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #facc15, #ffb347);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  letter-spacing: -1px;
+  line-height: 1.1;
+}
+.cgpa-grade-label { font-size: 1.1rem; font-weight: 500; color: rgba(255,255,255,0.85); margin-top: 6px; }
+
+.result-stats {
+  background: rgba(255,255,255,0.08);
+  border-radius: 28px;
+  padding: 18px;
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+}
+.rs-item { text-align: center; }
+.rs-label { font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.rs-val { font-size: 18px; font-weight: 700; color: #facc15; }
+
+.grade-ref {
+  background: rgba(255,255,255,0.06); border-radius: 24px;
+  padding: 16px;
+  margin-top: 14px;
+  text-align: left;
+}
+.grade-ref h6 { font-size: 12px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+.grade-ref-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.grade-pill {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 60px;      /* pill rounded */
+  padding: 4px 14px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.85);
+}
+.grade-pill.active { background: rgba(250,204,21,0.25); border-color: rgba(250,204,21,0.5); color: #facc15; font-weight: 600; }
+
+/* Responsive fine-tune */
+@media (max-width: 680px) {
+  body { padding: 20px 12px; }
+  .wrapper { padding: 1.4rem; border-radius: 2rem; }
+  .cgpa-value { font-size: 50px; }
+  .btn { padding: 9px 18px; font-size: 0.83rem; }
+  .country-selector-section { flex-direction: column; align-items: stretch; }
+  #country-selector { width: 100%; }
+  .result-stats { grid-template-columns: 1fr 1fr; }
+  .country-info-card { padding: 1rem 1.2rem; border-radius: 28px; }
+  .howto-section { border-radius: 24px; }
+  .cgpa-table thead th { border-radius: 20px 20px 16px 16px; padding: 12px; }
+}
+
+/* additional tiny fixes */
+.semester-row td:first-child, .semester-row td:last-child {
+  background-color: inherit;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-inner-spin-button, 
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 0.5;
+}
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <div class="calculator-title">
+    <i class="fa-solid fa-chart-line"></i>
+    <span>CGPA Architect</span>
+  </div>
+
+  <!-- Country Selector with Rounded look -->
+  <div class="country-selector-section">
+    <select id="country-selector">
+      <option value="pk">🇵🇰 Pakistan (4.0 Scale)</option>
+      <option value="in">🇮🇳 India (10.0 Scale)</option>
+      <option value="us">🇺🇸 USA (4.0 Scale)</option>
+      <option value="uk">🇬🇧 UK (Honours)</option>
+      <option value="ca">🇨🇦 Canada (4.3 Scale)</option>
+      <option value="au">🇦🇺 Australia (7.0 Scale)</option>
+      <option value="de">🇩🇪 Germany (1–5 Scale)</option>
+      <option value="ae">🇦🇪 UAE (4.0 Scale)</option>
+    </select>
+    <a class="req-link" id="reqBtn">
+      <i class="fa-regular fa-envelope"></i> Request grading system
+    </a>
+  </div>
+
+  <!-- Dynamic Country Info Card -->
+  <div class="country-info-card" id="countryInfoCard"></div>
+
+  <!-- How to use (rounded everywhere) -->
+  <div class="howto-section">
+    <div class="ht-box">
+      <strong><i class="fa-regular fa-star me-1"></i> Semester GPA</strong>
+      Enter GPA for each semester per your country's scale
+    </div>
+    <div class="ht-box" id="htCredits">
+      <strong><i class="fa-regular fa-clock me-1"></i> Credit Hours</strong>
+      Total credits for that semester
+    </div>
+    <div class="ht-box">
+      <strong><i class="fa-solid fa-calculator me-1"></i> Formula</strong>
+      Σ (GPA × Credits) ÷ Σ Credits
+    </div>
+  </div>
+
+  <!-- Table with fully rounded rows -->
+  <div class="table-wrap">
+    <table class="cgpa-table">
+      <thead>
+        <tr>
+          <th id="thGpa"><i class="fa-solid fa-chart-simple me-2"></i> Semester GPA</th>
+          <th><i class="fa-regular fa-hourglass-half me-2"></i> Credit Hours</th>
+        </tr>
+      </thead>
+      <tbody id="semesterRows"></tbody>
+    </table>
+  </div>
+
+  <!-- Validation message rounded -->
+  <div class="validation-msg" id="valMsg">
+    <i class="fa-regular fa-circle-exclamation"></i>
+    <span id="valText"></span>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <button class="btn btn-add" id="addBtn">
+      <i class="fa-regular fa-plus me-1"></i> Add Semester
+    </button>
+    <button class="btn btn-delete" id="delBtn">
+      <i class="fa-regular fa-trash-can me-1"></i> Remove Last
+    </button>
+    <button class="btn btn-calculate" id="calcBtn">
+      <i class="fa-regular fa-calculator me-1"></i> Compute CGPA
+    </button>
+    <button class="btn btn-reset" id="resetBtn">
+      <i class="fa-regular fa-arrow-rotate-right me-1"></i> Reset
+    </button>
+  </div>
+
+  <!-- Result Section rounded -->
+  <div class="result-section" id="resultSection">
+    <div class="result-card">
+      <i class="fa-regular fa-circle-check fa-2x mb-2" style="color:#facc15"></i>
+      <h2 style="font-weight:600;letter-spacing:-0.3px">Overall CGPA</h2>
+      <div class="cgpa-value" id="cgpaVal">0.000</div>
+      <div class="cgpa-grade-label" id="cgpaGrade"></div>
+      <div class="result-stats">
+        <div class="rs-item"><div class="rs-label">Total Credits</div><div class="rs-val" id="totalCred">0</div></div>
+        <div class="rs-item"><div class="rs-label">Quality Points</div><div class="rs-val" id="qualPts">0.00</div></div>
+        <div class="rs-item"><div class="rs-label">Semesters</div><div class="rs-val" id="semCount">0</div></div>
+        <div class="rs-item"><div class="rs-label">Scale</div><div class="rs-val" id="scaleDisplay">4.0</div></div>
+      </div>
+      <div class="grade-ref">
+        <h6>Grade Reference</h6>
+        <div class="grade-ref-grid" id="gradeRefGrid"></div>
+      </div>
+      <div class="mt-3" style="font-size:12px;opacity:0.5">Weighted average of semester GPAs</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+
+  /* ── Country Data ── (preserved & enhanced) */
+  const COUNTRIES = {
+    pk: {
+      name: "Pakistan", flag: "🇵🇰", scale: 4.0,
+      scaleLabel: "4.0 GPA Scale",
+      system: "HEC-affiliated universities use 4.0 GPA scale",
+      creditsInfo: "Typical credits per semester: 15–18",
+      gpaRange: "0.0 – 4.0",
+      gradeMap: [
+        { min: 3.7,  max: 4.0,  grade: "A / A+",  remark: "Excellent" },
+        { min: 3.3,  max: 3.69, grade: "A-",       remark: "Very Good" },
+        { min: 3.0,  max: 3.29, grade: "B+",       remark: "Good" },
+        { min: 2.7,  max: 2.99, grade: "B",        remark: "Above Average" },
+        { min: 2.3,  max: 2.69, grade: "B-",       remark: "Average" },
+        { min: 2.0,  max: 2.29, grade: "C+ / C",   remark: "Satisfactory" },
+        { min: 0,    max: 1.99, grade: "D / F",    remark: "Fail" }
+      ],
+      demos: [{ gpa: 3.50, credits: 16 }, { gpa: 3.80, credits: 18 }, { gpa: 3.90, credits: 15 }]
+    },
+    in: {
+      name: "India", flag: "🇮🇳", scale: 10.0,
+      scaleLabel: "10.0 CGPA Scale",
+      system: "10-point scale per UGC guidelines for Indian universities",
+      creditsInfo: "Typical credits per semester: 20–25",
+      gpaRange: "0.0 – 10.0",
+      gradeMap: [
+        { min: 9.0,  max: 10.0, grade: "O – Outstanding",   remark: "Excellent" },
+        { min: 8.0,  max: 8.99, grade: "A+ – Excellent",    remark: "Very Good" },
+        { min: 7.0,  max: 7.99, grade: "A – Very Good",     remark: "Good" },
+        { min: 6.0,  max: 6.99, grade: "B+ – Good",         remark: "Above Average" },
+        { min: 5.5,  max: 5.99, grade: "B – Average",       remark: "Satisfactory" },
+        { min: 5.0,  max: 5.49, grade: "C – Pass",          remark: "Pass" },
+        { min: 0,    max: 4.99, grade: "F – Fail",          remark: "Fail" }
+      ],
+      demos: [{ gpa: 8.5, credits: 22 }, { gpa: 8.9, credits: 20 }, { gpa: 9.1, credits: 22 }]
+    },
+    us: {
+      name: "USA", flag: "🇺🇸", scale: 4.0,
+      scaleLabel: "4.0 GPA Scale",
+      system: "Standard 4.0 scale used by most US colleges",
+      creditsInfo: "Typical credits per semester: 12–18",
+      gpaRange: "0.0 – 4.0",
+      gradeMap: [
+        { min: 3.7,  max: 4.0,  grade: "A",  remark: "Excellent" },
+        { min: 3.3,  max: 3.69, grade: "A-", remark: "Very Good" },
+        { min: 3.0,  max: 3.29, grade: "B+", remark: "Good" },
+        { min: 2.7,  max: 2.99, grade: "B",  remark: "Above Average" },
+        { min: 2.0,  max: 2.69, grade: "C",  remark: "Average" },
+        { min: 1.0,  max: 1.99, grade: "D",  remark: "Below Average" },
+        { min: 0,    max: 0.99, grade: "F",  remark: "Fail" }
+      ],
+      demos: [{ gpa: 3.6, credits: 15 }, { gpa: 3.8, credits: 16 }, { gpa: 3.5, credits: 14 }]
+    },
+    uk: {
+      name: "UK", flag: "🇬🇧", scale: 4.0,
+      scaleLabel: "UK Honours Classification",
+      system: "Honours degree classification; 4.0 scale equivalent",
+      creditsInfo: "120 UK credits per academic year",
+      gpaRange: "0.0 – 4.0 (equiv.)",
+      gradeMap: [
+        { min: 3.5,  max: 4.0,  grade: "First Class (1st)",       remark: "70%+" },
+        { min: 3.0,  max: 3.49, grade: "Upper Second (2:1)",      remark: "60–69%" },
+        { min: 2.0,  max: 2.99, grade: "Lower Second (2:2)",      remark: "50–59%" },
+        { min: 1.0,  max: 1.99, grade: "Third Class (3rd)",       remark: "40–49%" },
+        { min: 0,    max: 0.99, grade: "Fail",                    remark: "Below 40%" }
+      ],
+      demos: [{ gpa: 3.7, credits: 120 }, { gpa: 3.5, credits: 120 }, { gpa: 3.6, credits: 120 }]
+    },
+    ca: {
+      name: "Canada", flag: "🇨🇦", scale: 4.3,
+      scaleLabel: "4.3 GPA Scale",
+      system: "Most Canadian universities use 4.0 or 4.3 scale (A+ = 4.3)",
+      creditsInfo: "Typical credits per semester: 15–18",
+      gpaRange: "0.0 – 4.3",
+      gradeMap: [
+        { min: 4.0,  max: 4.3,  grade: "A+", remark: "Exceptional" },
+        { min: 3.7,  max: 3.99, grade: "A",  remark: "Excellent" },
+        { min: 3.3,  max: 3.69, grade: "A-", remark: "Very Good" },
+        { min: 3.0,  max: 3.29, grade: "B+", remark: "Good" },
+        { min: 2.7,  max: 2.99, grade: "B",  remark: "Satisfactory" },
+        { min: 2.0,  max: 2.69, grade: "C",  remark: "Adequate" },
+        { min: 0,    max: 1.99, grade: "F",  remark: "Fail" }
+      ],
+      demos: [{ gpa: 3.8, credits: 15 }, { gpa: 4.0, credits: 18 }, { gpa: 3.7, credits: 15 }]
+    },
+    au: {
+      name: "Australia", flag: "🇦🇺", scale: 7.0,
+      scaleLabel: "7-Point GPA Scale",
+      system: "Australian 7-point scale: HD=7, D=6, C=5, P=4, F=0",
+      creditsInfo: "4 units per semester (each = 6 credit points)",
+      gpaRange: "0.0 – 7.0",
+      gradeMap: [
+        { min: 6.5,  max: 7.0,  grade: "High Distinction (HD)", remark: "85%+" },
+        { min: 5.5,  max: 6.49, grade: "Distinction (D)",       remark: "75–84%" },
+        { min: 4.5,  max: 5.49, grade: "Credit (C)",            remark: "65–74%" },
+        { min: 3.5,  max: 4.49, grade: "Pass (P)",              remark: "50–64%" },
+        { min: 0,    max: 3.49, grade: "Fail (F)",              remark: "Below 50%" }
+      ],
+      demos: [{ gpa: 6.2, credits: 24 }, { gpa: 6.5, credits: 24 }, { gpa: 5.8, credits: 24 }]
+    },
+    de: {
+      name: "Germany", flag: "🇩🇪", scale: 5.0,
+      scaleLabel: "German 1–5 Scale (inverted)",
+      system: "1.0 best (Sehr Gut), 5.0 fail. Weighted GPA inverted for calculation (normalized)",
+      creditsInfo: "30 ECTS credits per semester",
+      gpaRange: "1.0 – 5.0 (1.0 = best)",
+      inverted: true,
+      gradeMap: [
+        { min: 1.0,  max: 1.5,  grade: "Sehr Gut (Very Good)",         remark: "1.0–1.5" },
+        { min: 1.6,  max: 2.5,  grade: "Gut (Good)",                   remark: "1.6–2.5" },
+        { min: 2.6,  max: 3.5,  grade: "Befriedigend (Satisfactory)",  remark: "2.6–3.5" },
+        { min: 3.6,  max: 4.0,  grade: "Ausreichend (Sufficient)",     remark: "3.6–4.0" },
+        { min: 4.1,  max: 5.0,  grade: "Nicht Bestanden (Fail)",       remark: "4.1–5.0" }
+      ],
+      demos: [{ gpa: 1.5, credits: 30 }, { gpa: 1.8, credits: 30 }, { gpa: 2.1, credits: 30 }]
+    },
+    ae: {
+      name: "UAE", flag: "🇦🇪", scale: 4.0,
+      scaleLabel: "4.0 GPA Scale",
+      system: "UAE universities follow 4.0 scale similar to US system",
+      creditsInfo: "Typical credit hours per semester: 15–18",
+      gpaRange: "0.0 – 4.0",
+      gradeMap: [
+        { min: 3.7,  max: 4.0,  grade: "A",  remark: "Excellent" },
+        { min: 3.3,  max: 3.69, grade: "A-", remark: "Very Good" },
+        { min: 3.0,  max: 3.29, grade: "B+", remark: "Good" },
+        { min: 2.7,  max: 2.99, grade: "B",  remark: "Above Average" },
+        { min: 2.0,  max: 2.69, grade: "C",  remark: "Average" },
+        { min: 1.0,  max: 1.99, grade: "D",  remark: "Below Average" },
+        { min: 0,    max: 0.99, grade: "F",  remark: "Fail" }
+      ],
+      demos: [{ gpa: 3.5, credits: 16 }, { gpa: 3.7, credits: 15 }, { gpa: 3.9, credits: 18 }]
+    }
+  };
+
+  let currentKey = 'pk';
+
+  function getGradeObj(cgpa, key) {
+    const map = COUNTRIES[key].gradeMap;
+    for (const g of map) if (cgpa >= g.min && cgpa <= g.max) return g;
+    return map[map.length - 1];
+  }
+
+  function showVal(msg, duration = 3000) {
+    const v = document.getElementById('valMsg');
+    document.getElementById('valText').textContent = msg;
+    v.style.display = 'flex';
+    clearTimeout(v._t);
+    v._t = setTimeout(() => v.style.display = 'none', duration);
+  }
+
+  function renderCountryInfo(key) {
+    const c = COUNTRIES[key];
+    document.getElementById('countryInfoCard').innerHTML = `
+      <div class="ci-item">
+        <div class="ci-label">Country</div>
+        <div class="ci-value">${c.flag} ${c.name}</div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-label">Grading Scale</div>
+        <div class="ci-value"><span class="ci-badge"><i class="fa-solid fa-sliders fa-xs me-1"></i>${c.scaleLabel}</span></div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-label">GPA Range</div>
+        <div class="ci-value">${c.gpaRange}</div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-label">System Info</div>
+        <div class="ci-value small">${c.system}</div>
+      </div>
+    `;
+    const thGpa = document.getElementById('thGpa');
+    thGpa.innerHTML = `<i class="fa-solid fa-chart-simple me-2"></i>Semester GPA <span style="font-weight:400;font-size:0.8rem;opacity:0.75">(${c.gpaRange})</span>`;
+    document.getElementById('htCredits').innerHTML = `<strong><i class="fa-regular fa-clock me-1"></i> Credit Hours</strong>${c.creditsInfo}`;
+  }
+
+  function makeRow(gpa, credits, idx) {
+    const c = COUNTRIES[currentKey];
+    const tr = document.createElement('tr');
+    tr.className = 'semester-row';
+    tr.innerHTML = `
+      <td><input type="number" class="form-control sem-gpa"
+            placeholder="Sem ${idx} GPA (${c.gpaRange})"
+            ${c.inverted ? `min="1" max="${c.scale}"` : `min="0" max="${c.scale}"`} step="0.01"
+            value="${gpa !== undefined ? gpa : ''}"></td>
+      <td><input type="number" class="form-control sem-cred"
+            placeholder="Sem ${idx} Credits"
+            min="0" step="1"
+            value="${credits !== undefined ? credits : ''}"></td>
+    `;
+    return tr;
+  }
+
+  function loadDemoData(key) {
+    const tbody = document.getElementById('semesterRows');
+    tbody.innerHTML = '';
+    COUNTRIES[key].demos.forEach((d, i) => tbody.appendChild(makeRow(d.gpa, d.credits, i + 1)));
+  }
+
+  function refreshNums() {
+    document.querySelectorAll('.semester-row').forEach((r, i) => {
+      const g = r.querySelector('.sem-gpa');
+      const c = COUNTRIES[currentKey];
+      if (!g.value) g.placeholder = `Sem ${i+1} GPA (${c.gpaRange})`;
+    });
+  }
+
+  document.getElementById('country-selector').addEventListener('change', e => {
+    currentKey = e.target.value;
+    renderCountryInfo(currentKey);
+    loadDemoData(currentKey);
+    document.getElementById('resultSection').style.display = 'none';
+    document.getElementById('valMsg').style.display = 'none';
+  });
+
+  document.getElementById('addBtn').addEventListener('click', () => {
+    const rows = document.querySelectorAll('.semester-row');
+    const tr = makeRow(undefined, undefined, rows.length + 1);
+    document.getElementById('semesterRows').appendChild(tr);
+    tr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.getElementById('valMsg').style.display = 'none';
+  });
+
+  document.getElementById('delBtn').addEventListener('click', () => {
+    const rows = document.querySelectorAll('.semester-row');
+    if (rows.length > 1) rows[rows.length - 1].remove();
+    else showVal('Minimum one semester is required. You can edit the values.');
+    refreshNums();
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    loadDemoData(currentKey);
+    document.getElementById('resultSection').style.display = 'none';
+    document.getElementById('valMsg').style.display = 'none';
+  });
+
+  document.getElementById('semesterRows').addEventListener('input', e => {
+    if (e.target.classList.contains('sem-gpa') || e.target.classList.contains('sem-cred')) {
+      e.target.classList.remove('err');
+      document.getElementById('valMsg').style.display = 'none';
+    }
+  });
+
+  document.getElementById('calcBtn').addEventListener('click', () => {
+    const gpas   = document.querySelectorAll('.sem-gpa');
+    const creds  = document.querySelectorAll('.sem-cred');
+    const c      = COUNTRIES[currentKey];
+    let totalQ = 0, totalC = 0, valid = true;
+    gpas.forEach(g => g.classList.remove('err'));
+    creds.forEach(cr => cr.classList.remove('err'));
+
+    for (let i = 0; i < gpas.length; i++) {
+      const gv = gpas[i].value.trim(), cv = creds[i].value.trim();
+      if (!gv || !cv || isNaN(+gv) || isNaN(+cv)) {
+        if (!gv) gpas[i].classList.add('err');
+        if (!cv) creds[i].classList.add('err');
+        valid = false; continue;
+      }
+      let gn = +gv, cn = +cv;
+      const minGpa = c.inverted ? 1.0 : 0;
+      if (gn < minGpa || gn > c.scale) { gpas[i].classList.add('err'); valid = false; continue; }
+      if (cn < 0) { creds[i].classList.add('err'); valid = false; continue; }
+      totalQ += gn * cn;
+      totalC += cn;
+    }
+
+    if (!valid) { showVal('Please fill all fields. Highlighted fields have invalid values.'); return; }
+    if (totalC === 0) { showVal('Total credit hours cannot be zero.'); return; }
+
+    const cgpa = totalQ / totalC;
+    const gradeObj = getGradeObj(cgpa, currentKey);
+
+    document.getElementById('cgpaVal').textContent = cgpa.toFixed(3);
+    document.getElementById('cgpaGrade').textContent = gradeObj ? `${gradeObj.grade}  ·  ${gradeObj.remark}` : '';
+    document.getElementById('totalCred').textContent = totalC;
+    document.getElementById('qualPts').textContent = totalQ.toFixed(2);
+    document.getElementById('semCount').textContent = gpas.length;
+    document.getElementById('scaleDisplay').textContent = c.scaleLabel;
+
+    const grid = document.getElementById('gradeRefGrid');
+    grid.innerHTML = '';
+    c.gradeMap.forEach(g => {
+      const pill = document.createElement('span');
+      pill.className = 'grade-pill' + (gradeObj && g.grade === gradeObj.grade ? ' active' : '');
+      pill.textContent = g.grade;
+      grid.appendChild(pill);
+    });
+
+    const rs = document.getElementById('resultSection');
+    rs.style.display = 'block';
+    rs.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    const cv = document.getElementById('cgpaVal');
+    cv.style.transform = 'scale(1.04)';
+    setTimeout(() => { cv.style.transform = 'scale(1)'; }, 200);
+  });
+
+  document.getElementById('reqBtn').addEventListener('click', e => {
+    e.preventDefault();
+    alert('📩 Thanks for your request! We will consider adding more grading systems in future updates.');
+  });
+
+  renderCountryInfo('pk');
+  loadDemoData('pk');
+})();
+</script>
+</body>
+</html>
