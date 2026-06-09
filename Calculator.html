@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Smart CGPA Calculator | Multi-Semester, Real-Time Validation</title>
+
+<!-- Bootstrap 5 + Icons + Font -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(145deg, #f0f4ff 0%, #e9edf5 100%);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+/* smooth card effect */
+.cgpa-calculator-wrapper {
+    max-width: 1100px;
+    margin: auto;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(0px);
+    padding: 2rem 2rem 2.5rem;
+    border-radius: 2rem;
+    box-shadow: 0 25px 45px -12px rgba(0,0,0,0.2), 0 1px 3px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+    border: 1px solid rgba(255,255,255,0.5);
+}
+
+.calculator-title {
+    font-weight: 800;
+    font-size: 2rem;
+    letter-spacing: -0.3px;
+    background: linear-gradient(135deg, #1e293b, #2d3a5e);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.calculator-title i {
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    color: #4f46e5;
+    font-size: 2rem;
+}
+
+/* country + link row */
+.country-selector-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 28px;
+    padding: 0 6px;
+}
+
+#country-selector {
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    font-weight: 500;
+    padding: 0.6rem 2rem 0.6rem 1.2rem;
+    border-radius: 60px;
+    width: auto;
+    min-width: 160px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#country-selector:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79,70,229,0.2);
+}
+
+.add-country-link {
+    background: #f1f5f9;
+    padding: 8px 18px;
+    border-radius: 40px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: #2563eb;
+    text-decoration: none;
+    transition: 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.add-country-link:hover {
+    background: #e2e8f0;
+    color: #1e40af;
+    transform: translateY(-2px);
+}
+
+/* example modern glassmorph */
+.usage-example-section {
+    background: linear-gradient(115deg, #4f46e5 0%, #7c3aed 100%);
+    border-radius: 28px;
+    padding: 1.5rem;
+    margin-bottom: 30px;
+    box-shadow: 0 12px 20px -12px rgba(79,70,229,0.4);
+}
+
+.example-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1rem;
+    color: white;
+}
+
+.example-header h4 {
+    font-weight: 600;
+    letter-spacing: -0.2px;
+}
+
+.example-boxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 16px;
+}
+
+.example-box {
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 14px 18px;
+    font-weight: 500;
+    border: 1px solid rgba(255,255,255,0.25);
+    transition: 0.2s;
+    color: white;
+}
+
+.example-box strong {
+    font-weight: 700;
+}
+
+/* table styling modern */
+.table-responsive-custom {
+    overflow-x: auto;
+    margin-bottom: 10px;
+}
+
+.cgpa-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px;
+    margin-bottom: 0;
+}
+
+.cgpa-table thead th {
+    background: #1e293b;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 14px 16px;
+    border: none;
+    text-align: center;
+    border-radius: 20px 20px 12px 12px;
+}
+
+.cgpa-table tbody tr {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03), 0 1px 2px rgba(0,0,0,0.05);
+    transition: all 0.2s;
+}
+
+.cgpa-table tbody td {
+    padding: 10px 12px;
+    vertical-align: middle;
+    background: #fefefe;
+    border-bottom: 1px solid #eef2ff;
+}
+
+.cgpa-table tbody tr:first-child td:first-child { border-top-left-radius: 18px; }
+.cgpa-table tbody tr:first-child td:last-child { border-top-right-radius: 18px; }
+.cgpa-table tbody tr:last-child td:first-child { border-bottom-left-radius: 18px; }
+.cgpa-table tbody tr:last-child td:last-child { border-bottom-right-radius: 18px; }
+
+.form-control {
+    border-radius: 16px;
+    padding: 12px 14px;
+    border: 1.5px solid #e2e8f0;
+    background-color: #ffffff;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.form-control:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79,70,229,0.2);
+    outline: none;
+}
+
+/* action buttons modern */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.btn {
+    border-radius: 50px;
+    padding: 12px 28px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    transition: all 0.25s ease;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.btn-add {
+    background: #10b981;
+    color: white;
+}
+
+.btn-add:hover {
+    background: #059669;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px -8px #10b98180;
+}
+
+.btn-delete {
+    background: #ef4444;
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #dc2626;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px -8px #ef444480;
+}
+
+.btn-calculate {
+    background: #4f46e5;
+    color: white;
+}
+
+.btn-calculate:hover {
+    background: #4338ca;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 22px -12px #4f46e5;
+}
+
+/* result card premium */
+.result-section {
+    margin-top: 35px;
+    animation: fadeUp 0.5s ease;
+}
+
+.result-card {
+    background: linear-gradient(125deg, #0f172a, #1e293b);
+    border-radius: 32px;
+    padding: 32px 24px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 20px 30px -12px rgba(0,0,0,0.25);
+}
+
+.cgpa-value {
+    font-size: 70px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #facc15, #ffb347);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.result-details {
+    background: rgba(255,255,255,0.1);
+    border-radius: 28px;
+    padding: 20px;
+    margin-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+    backdrop-filter: blur(5px);
+}
+
+.result-details p {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 500;
+    flex: 1;
+}
+
+.result-details span {
+    font-weight: 800;
+    color: #facc15;
+    background: rgba(0,0,0,0.2);
+    padding: 4px 12px;
+    border-radius: 40px;
+    margin-left: 8px;
+}
+
+/* empty state hint */
+.empty-hint {
+    text-align: center;
+    padding: 18px;
+    background: #f1f5f9;
+    border-radius: 40px;
+    font-size: 0.9rem;
+    color: #475569;
+    margin-top: 8px;
+}
+
+/* animations */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* responsive */
+@media (max-width: 700px) {
+    .cgpa-calculator-wrapper {
+        padding: 1.5rem;
+    }
+    .cgpa-value {
+        font-size: 52px;
+    }
+    .btn {
+        padding: 10px 18px;
+        font-size: 0.85rem;
+    }
+    .result-details {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .country-selector-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    #country-selector {
+        width: 100%;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="cgpa-calculator-wrapper">
+
+    <div class="calculator-title">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>CGPA Architect</span>
+    </div>
+
+    <!-- Country Selector with dynamic tip -->
+    <div class="country-selector-section">
+        <select id="country-selector" class="form-select">
+            <option value="4.0">Pakistan (4.0 Scale)</option>
+            <option value="4.0">India (4.0 Scale)</option>
+            <option value="4.0">USA (4.0 Scale)</option>
+            <option value="4.0">UK (Honours Scale)</option>
+            <option value="4.0">Canada (4.0 Scale)</option>
+            <option value="4.0">Australia (4.0 Scale)</option>
+        </select>
+
+        <a href="#" class="add-country-link" id="requestCountryBtn">
+            <i class="fa-regular fa-envelope"></i> Request new grading system
+        </a>
+    </div>
+
+    <!-- Usage Example Redesigned -->
+    <div class="usage-example-section">
+        <div class="example-header">
+            <i class="fa-regular fa-lightbulb fa-xl"></i>
+            <h4 class="mb-0">How to use</h4>
+        </div>
+        <div class="example-boxes">
+            <div class="example-box">
+                <i class="fa-regular fa-star me-1"></i> <strong>Semester GPA</strong><br>
+                Enter GPA (0-4) — e.g., 3.65<br>
+                <small>Use '.' decimal</small>
+            </div>
+            <div class="example-box">
+                <i class="fa-regular fa-clock me-1"></i> <strong>Credit Hours</strong><br>
+                Total credits for semester<br>
+                Example: 16, 18, 22
+            </div>
+            <div class="example-box">
+                <i class="fa-solid fa-chart-simple me-1"></i> <strong>CGPA Formula</strong><br>
+                Σ (GPA × Credits) / Σ Credits
+            </div>
+        </div>
+    </div>
+
+    <!-- Dynamic Table Wrapper -->
+    <div class="table-responsive-custom">
+        <table class="table cgpa-table">
+            <thead>
+                <tr>
+                    <th><i class="fa-solid fa-chart-simple me-2"></i> Semester GPA (0–4.0)</th>
+                    <th><i class="fa-regular fa-hourglass-half me-2"></i> Credit Hours</th>
+                </tr>
+            </thead>
+            <tbody id="semester-rows">
+                <!-- default 3 rows with better placeholders and step -->
+                <tr class="semester-row">
+                    <td><input type="number" class="form-control semester-gpa" placeholder="e.g., 3.75" min="0" max="4" step="0.01" value="3.50"></td>
+                    <td><input type="number" class="form-control semester-credits" placeholder="Credits" min="0" step="1" value="16"></td>
+                </tr>
+                <tr class="semester-row">
+                    <td><input type="number" class="form-control semester-gpa" placeholder="e.g., 3.80" min="0" max="4" step="0.01" value="3.80"></td>
+                    <td><input type="number" class="form-control semester-credits" placeholder="Credits" min="0" step="1" value="18"></td>
+                </tr>
+                <tr class="semester-row">
+                    <td><input type="number" class="form-control semester-gpa" placeholder="e.g., 3.90" min="0" max="4" step="0.01" value="3.90"></td>
+                    <td><input type="number" class="form-control semester-credits" placeholder="Credits" min="0" step="1" value="15"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- interactive reminder -->
+    <div id="validationMessage" class="empty-hint" style="display: none;">
+        <i class="fa-regular fa-circle-exclamation"></i> Please fill in both GPA and credits for all semesters.
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <button id="add-semester-btn" class="btn btn-add">
+            <i class="fa-regular fa-plus me-1"></i> Add Semester
+        </button>
+        <button id="delete-semester-btn" class="btn btn-delete">
+            <i class="fa-regular fa-trash-can me-1"></i> Remove Last
+        </button>
+        <button id="calculate-cgpa-btn" class="btn btn-calculate">
+            <i class="fa-regular fa-calculator me-1"></i> Compute CGPA
+        </button>
+        <button id="reset-all-btn" class="btn btn-outline-secondary" style="background:#f1f5f9; border-radius:50px; font-weight:600;">
+            <i class="fa-regular fa-arrow-rotate-right"></i> Reset
+        </button>
+    </div>
+
+    <!-- Result Section -->
+    <div id="result-section" class="result-section" style="display: none;">
+        <div class="result-card">
+            <i class="fa-regular fa-circle-check fa-2x mb-2" style="color: #facc15;"></i>
+            <h2 style="font-weight: 600; letter-spacing:-0.3px;">Overall CGPA</h2>
+            <div class="cgpa-value" id="cgpa-result">0.00</div>
+            <div class="result-details">
+                <p><i class="fa-regular fa-layer-group me-1"></i> <strong>Total Credit Hours</strong> <span id="total-credits">0</span></p>
+                <p><i class="fa-regular fa-chart-line me-1"></i> <strong>Total Quality Points</strong> <span id="quality-points">0.00</span></p>
+                <p><i class="fa-regular fa-flag-checkered me-1"></i> <strong>Grading Scale</strong> <span id="scale-badge">4.0</span></p>
+            </div>
+            <div class="mt-3 small opacity-75">Based on weighted average of semester GPAs</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        const semesterContainer = document.getElementById('semester-rows');
+        const addBtn = document.getElementById('add-semester-btn');
+        const deleteBtn = document.getElementById('delete-semester-btn');
+        const calcBtn = document.getElementById('calculate-cgpa-btn');
+        const resetBtn = document.getElementById('reset-all-btn');
+        const resultDiv = document.getElementById('result-section');
+        const validationMsg = document.getElementById('validationMessage');
+        const countrySelector = document.getElementById('country-selector');
+        const scaleSpan = document.getElementById('scale-badge');
+
+        // Helper: update scale display based on selected country
+        function updateScaleDisplay() {
+            const selectedOption = countrySelector.options[countrySelector.selectedIndex];
+            let scaleText = "4.0 Scale";
+            if (selectedOption.text.includes("UK")) scaleText = "UK Honours (4.0 equivalent)";
+            else scaleText = "4.0 GPA Scale";
+            scaleSpan.innerText = scaleText;
+        }
+        
+        countrySelector.addEventListener('change', updateScaleDisplay);
+        updateScaleDisplay();
+
+        // Request country interaction (smooth alert)
+        document.getElementById('requestCountryBtn')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert("📩 Thanks for your request! We’ll consider adding more grading systems (like 10-point, percentage, etc.) in future updates.");
+        });
+
+        // Helper: update all semester placeholder indices for better UX
+        function updateSemesterNumbers() {
+            const rows = document.querySelectorAll('.semester-row');
+            rows.forEach((row, idx) => {
+                const gpaInput = row.querySelector('.semester-gpa');
+                const creditInput = row.querySelector('.semester-credits');
+                if (gpaInput && !gpaInput.getAttribute('data-custom-placeholder')) {
+                    gpaInput.placeholder = `Sem ${idx+1} GPA`;
+                } else if (gpaInput) {
+                    if(!gpaInput.value) gpaInput.placeholder = `Sem ${idx+1} GPA`;
+                }
+                if (creditInput && !creditInput.getAttribute('data-custom-placeholder')) {
+                    creditInput.placeholder = `Sem ${idx+1} Credits`;
+                } else if(creditInput){
+                    if(!creditInput.value) creditInput.placeholder = `Sem ${idx+1} Credits`;
+                }
+                // safer: refresh placeholders
+                if (gpaInput && !gpaInput.value) gpaInput.placeholder = `Semester ${idx+1} GPA`;
+                if (creditInput && !creditInput.value) creditInput.placeholder = `Semester ${idx+1} Credits`;
+            });
+        }
+
+        // Add semester with enhanced validation and smooth count
+        addBtn.addEventListener('click', () => {
+            const rows = document.querySelectorAll('.semester-row');
+            const newIndex = rows.length + 1;
+            const newRow = document.createElement('tr');
+            newRow.classList.add('semester-row');
+            newRow.innerHTML = `
+                <td><input type="number" class="form-control semester-gpa" placeholder="Semester ${newIndex} GPA" min="0" max="4" step="0.01"></td>
+                <td><input type="number" class="form-control semester-credits" placeholder="Semester ${newIndex} Credits" min="0" step="1"></td>
+            `;
+            semesterContainer.appendChild(newRow);
+            // Auto-scroll to new row
+            newRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            validationMsg.style.display = 'none';
+            // add micro animation
+            newRow.style.transition = "all 0.2s";
+            newRow.style.backgroundColor = "#f8fafc";
+            setTimeout(() => { newRow.style.backgroundColor = ""; }, 300);
+            updateSemesterNumbers();
+        });
+
+        // Delete semester but keep at least 1 row
+        deleteBtn.addEventListener('click', () => {
+            const rows = document.querySelectorAll('.semester-row');
+            if (rows.length > 1) {
+                rows[rows.length - 1].remove();
+                updateSemesterNumbers();
+                validationMsg.style.display = 'none';
+                // also hide result if it was showing? keep consistency
+                if(resultDiv.style.display === 'block') {
+                    // optional: user might want fresh calculation, we don't auto hide but fine.
+                }
+            } else {
+                // gentle warning: can't delete last semester row
+                validationMsg.innerHTML = '<i class="fa-regular fa-circle-info"></i> Minimum one semester required. You can edit values.';
+                validationMsg.style.display = 'block';
+                setTimeout(() => {
+                    if(validationMsg.innerHTML.includes('Minimum one semester')) 
+                        validationMsg.style.display = 'none';
+                }, 2200);
+            }
+        });
+
+        // Reset all: clear inputs to default example BUT keep 3 rows clean with demo data? we set default demo values.
+        resetBtn.addEventListener('click', () => {
+            // remove all rows then create 3 fresh rows with defaults
+            while(semesterContainer.firstChild) {
+                semesterContainer.removeChild(semesterContainer.firstChild);
+            }
+            // recreate 3 clean demo rows
+            const demos = [
+                { gpa: "3.50", credits: "16" },
+                { gpa: "3.80", credits: "18" },
+                { gpa: "3.90", credits: "15" }
+            ];
+            demos.forEach((demo, idx) => {
+                const row = document.createElement('tr');
+                row.classList.add('semester-row');
+                row.innerHTML = `
+                    <td><input type="number" class="form-control semester-gpa" placeholder="Semester ${idx+1} GPA" min="0" max="4" step="0.01" value="${demo.gpa}"></td>
+                    <td><input type="number" class="form-control semester-credits" placeholder="Semester ${idx+1} Credits" min="0" step="1" value="${demo.credits}"></td>
+                `;
+                semesterContainer.appendChild(row);
+            });
+            updateSemesterNumbers();
+            validationMsg.style.display = 'none';
+            resultDiv.style.display = 'none';
+        });
+
+        // Core CGPA calculation with robust validation
+        function computeCGPA() {
+            const gpaInputs = document.querySelectorAll('.semester-gpa');
+            const creditInputs = document.querySelectorAll('.semester-credits');
+            
+            let totalCredits = 0;
+            let totalQuality = 0;
+            let hasEmpty = false;
+            let invalidGPA = false;
+
+            for (let i = 0; i < gpaInputs.length; i++) {
+                let gpaVal = gpaInputs[i].value.trim();
+                let creditVal = creditInputs[i].value.trim();
+                
+                const gpa = parseFloat(gpaVal);
+                const credit = parseFloat(creditVal);
+                
+                // check emptiness or NaN
+                if (gpaVal === "" || creditVal === "" || isNaN(gpa) || isNaN(credit)) {
+                    hasEmpty = true;
+                    gpaInputs[i].style.borderColor = "#f97316";
+                    creditInputs[i].style.borderColor = "#f97316";
+                } else {
+                    gpaInputs[i].style.borderColor = "#e2e8f0";
+                    creditInputs[i].style.borderColor = "#e2e8f0";
+                    if (gpa < 0 || gpa > 4) {
+                        invalidGPA = true;
+                        gpaInputs[i].style.borderColor = "#ef4444";
+                    } else {
+                        totalQuality += gpa * credit;
+                        totalCredits += credit;
+                    }
+                }
+            }
+            
+            // revalidate for border reset on valid fields
+            if (hasEmpty) {
+                validationMsg.innerHTML = '<i class="fa-regular fa-circle-exclamation"></i> Please fill in all GPA & Credit fields before calculating.';
+                validationMsg.style.display = 'block';
+                resultDiv.style.display = 'none';
+                return false;
+            }
+            if (invalidGPA) {
+                validationMsg.innerHTML = '<i class="fa-regular fa-triangle-exclamation"></i> GPA must be between 0 and 4.0. Please adjust red fields.';
+                validationMsg.style.display = 'block';
+                resultDiv.style.display = 'none';
+                return false;
+            }
+            if (totalCredits === 0) {
+                validationMsg.innerHTML = '<i class="fa-regular fa-circle-exclamation"></i> Total credit hours cannot be zero. Add valid credits.';
+                validationMsg.style.display = 'block';
+                resultDiv.style.display = 'none';
+                return false;
+            }
+            
+            const cgpa = totalQuality / totalCredits;
+            document.getElementById('cgpa-result').textContent = cgpa.toFixed(3);
+            document.getElementById('total-credits').textContent = totalCredits;
+            document.getElementById('quality-points').textContent = totalQuality.toFixed(2);
+            validationMsg.style.display = 'none';
+            return true;
+        }
+        
+        calculateHandler = () => {
+            const success = computeCGPA();
+            if (success) {
+                resultDiv.style.display = 'block';
+                // Add confetti effect gentle? just fun improvement: micro scale animation
+                const cgpaElem = document.getElementById('cgpa-result');
+                cgpaElem.style.transform = "scale(1.03)";
+                setTimeout(() => { cgpaElem.style.transform = "scale(1)"; }, 200);
+            } else {
+                resultDiv.style.display = 'none';
+            }
+        };
+        
+        calcBtn.addEventListener('click', calculateHandler);
+        
+        // Real-time clear validation on input
+        const clearValidationBorder = (e) => {
+            if(e.target.classList.contains('semester-gpa') || e.target.classList.contains('semester-credits')) {
+                e.target.style.borderColor = "#e2e8f0";
+                if(validationMsg.style.display === 'block') 
+                    validationMsg.style.display = 'none';
+            }
+        };
+        semesterContainer.addEventListener('input', clearValidationBorder);
+        
+        // final initial numbering
+        updateSemesterNumbers();
+        
+        // optional: recalc on country change? not mandatory but smooth message
+        countrySelector.addEventListener('change', () => {
+            if(resultDiv.style.display === 'block') {
+                // show subtle note that scale changed but calc remains same formula
+                const toastMsg = document.createElement('div');
+                toastMsg.className = 'alert alert-info mt-2 p-2 small text-center';
+                toastMsg.innerHTML = '<i class="fa-regular fa-info-circle"></i> Grading scale reference updated, but calculation stays on 4.0 weighting.';
+                document.querySelector('.cgpa-calculator-wrapper').appendChild(toastMsg);
+                setTimeout(() => toastMsg.remove(), 1800);
+            }
+        });
+    })();
+</script>
+</body>
+</html>
