@@ -1,0 +1,453 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Advanced Color Picker Pro</title>
+
+<style>
+body{
+    width:400px;
+    font-family:Arial,sans-serif;
+    padding:15px;
+    margin:0;
+}
+
+#preview{
+    height:80px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    margin-bottom:15px;
+}
+
+button{
+    padding:8px 12px;
+    cursor:pointer;
+}
+
+.row{
+    display:flex;
+    margin-bottom:8px;
+    gap:8px;
+}
+
+.row input{
+    flex:1;
+}
+
+.color-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:5px;
+    border:1px solid #ddd;
+    margin-bottom:5px;
+}
+
+.box{
+    width:20px;
+    height:20px;
+    border:1px solid #000;
+}
+</style>
+
+</head>
+<body>
+
+<h2>Advanced Color Picker Pro</h2>
+
+<div id="preview"></div>
+
+<button id="pickBtn">
+Pick Color
+</button>
+
+<hr>
+
+<div class="row">
+<input id="hex" readonly>
+<button onclick="copyValue('hex')">Copy</button>
+</div>
+
+<div class="row">
+<input id="rgb" readonly>
+<button onclick="copyValue('rgb')">Copy</button>
+</div>
+
+<div class="row">
+<input id="rgba" readonly>
+<button onclick="copyValue('rgba')">Copy</button>
+</div>
+
+<div class="row">
+<input id="hsl" readonly>
+<button onclick="copyValue('hsl')">Copy</button>
+</div>
+
+<div class="row">
+<input id="hsv" readonly>
+<button onclick="copyValue('hsv')">Copy</button>
+</div>
+
+<button id="favBtn">
+Add Favorite
+</button>
+
+<button id="clearBtn">
+Clear History
+</button>
+
+<button id="exportBtn">
+Export JSON
+</button>
+
+<input type="file" id="importFile" hidden>
+
+<button onclick="document.getElementById('importFile').click()">
+Import JSON
+</button>
+
+<h3>Favorites</h3>
+<div id="favorites"></div>
+
+<h3>History</h3>
+<div id="history"></div>
+
+<script>
+
+const preview=document.getElementById('preview');
+
+let currentColor=null;
+
+loadData();
+
+document.getElementById('pickBtn')
+.addEventListener('click',async()=>{
+
+    if(!window.EyeDropper){
+        alert('EyeDropper API not supported');
+        return;
+    }
+
+    try{
+
+        const eyeDropper=new EyeDropper();
+
+        const result=
+        await eyeDropper.open();
+
+        currentColor=result.sRGBHex;
+
+        updateUI(currentColor);
+
+        saveHistory(currentColor);
+
+    }catch(e){
+        console.log(e);
+    }
+});
+
+document.getElementById('favBtn')
+.addEventListener('click',()=>{
+
+    if(!currentColor) return;
+
+    chrome.storage.local.get(
+        ['favorites'],
+        result=>{
+
+            let favorites=
+            result.favorites||[];
+
+            if(!favorites.includes(currentColor))
+                favorites.push(currentColor);
+
+            chrome.storage.local.set({
+                favorites
+            },loadFavorites);
+        }
+    );
+});
+
+document.getElementById('clearBtn')
+.addEventListener('click',()=>{
+
+    chrome.storage.local.set({
+        history:[]
+    },loadHistory);
+});
+
+document.getElementById('exportBtn')
+.addEventListener('click',()=>{
+
+    chrome.storage.local.get(
+        null,
+        data=>{
+
+            const blob=
+            new Blob(
+                [JSON.stringify(data,null,2)],
+                {type:'application/json'}
+            );
+
+            const url=
+            URL.createObjectURL(blob);
+
+            const a=
+            document.createElement('a');
+
+            a.href=url;
+            a.download='colors.json';
+            a.click();
+        }
+    );
+});
+
+document.getElementById('importFile')
+.addEventListener('change',e=>{
+
+    const file=e.target.files[0];
+
+    if(!file) return;
+
+    const reader=
+    new FileReader();
+
+    reader.onload=function(event){
+
+        const data=
+        JSON.parse(event.target.result);
+
+        chrome.storage.local.set(
+            data,
+            loadData
+        );
+    };
+
+    reader.readAsText(file);
+});
+
+function updateUI(hex){
+
+    preview.style.background=hex;
+
+    const rgb=
+    hexToRgb(hex);
+
+    document.getElementById('hex').value=hex;
+
+    document.getElementById('rgb').value=
+    `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+
+    document.getElementById('rgba').value=
+    `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 1)`;
+
+    document.getElementById('hsl').value=
+    rgbToHsl(rgb.r,rgb.g,rgb.b);
+
+    document.getElementById('hsv').value=
+    rgbToHsv(rgb.r,rgb.g,rgb.b);
+}
+
+function saveHistory(color){
+
+    chrome.storage.local.get(
+        ['history'],
+        result=>{
+
+            let history=
+            result.history||[];
+
+            history.unshift(color);
+
+            history=
+            [...new Set(history)]
+            .slice(0,100);
+
+            chrome.storage.local.set({
+                history,
+                lastColor:color
+            });
+
+            loadHistory();
+        }
+    );
+}
+
+function loadData(){
+
+    chrome.storage.local.get(
+        ['lastColor'],
+        result=>{
+
+            if(result.lastColor)
+                updateUI(result.lastColor);
+        }
+    );
+
+    loadHistory();
+    loadFavorites();
+}
+
+function loadHistory(){
+
+    chrome.storage.local.get(
+        ['history'],
+        result=>{
+
+            render(
+                'history',
+                result.history||[]
+            );
+        }
+    );
+}
+
+function loadFavorites(){
+
+    chrome.storage.local.get(
+        ['favorites'],
+        result=>{
+
+            render(
+                'favorites',
+                result.favorites||[]
+            );
+        }
+    );
+}
+
+function render(id,colors){
+
+    const container=
+    document.getElementById(id);
+
+    container.innerHTML='';
+
+    colors.forEach(color=>{
+
+        const div=
+        document.createElement('div');
+
+        div.className='color-item';
+
+        div.innerHTML=`
+            <div class="box"
+            style="background:${color}">
+            </div>
+            <span>${color}</span>
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+function copyValue(id){
+
+    navigator.clipboard.writeText(
+        document.getElementById(id).value
+    );
+}
+
+function hexToRgb(hex){
+
+    const bigint=
+    parseInt(hex.slice(1),16);
+
+    return{
+        r:(bigint>>16)&255,
+        g:(bigint>>8)&255,
+        b:bigint&255
+    };
+}
+
+function rgbToHsl(r,g,b){
+
+    r/=255;
+    g/=255;
+    b/=255;
+
+    let max=Math.max(r,g,b);
+    let min=Math.min(r,g,b);
+
+    let h,s,l=(max+min)/2;
+
+    if(max===min){
+
+        h=s=0;
+
+    }else{
+
+        let d=max-min;
+
+        s=l>0.5
+        ? d/(2-max-min)
+        : d/(max+min);
+
+        switch(max){
+
+            case r:
+                h=(g-b)/d+(g<b?6:0);
+                break;
+
+            case g:
+                h=(b-r)/d+2;
+                break;
+
+            case b:
+                h=(r-g)/d+4;
+                break;
+        }
+
+        h/=6;
+    }
+
+    return `hsl(${Math.round(h*360)}, ${Math.round(s*100)}%, ${Math.round(l*100)}%)`;
+}
+
+function rgbToHsv(r,g,b){
+
+    r/=255;
+    g/=255;
+    b/=255;
+
+    let max=Math.max(r,g,b);
+    let min=Math.min(r,g,b);
+
+    let h,s,v=max;
+
+    let d=max-min;
+
+    s=max===0?0:d/max;
+
+    if(max===min){
+
+        h=0;
+
+    }else{
+
+        switch(max){
+
+            case r:
+                h=(g-b)/d+(g<b?6:0);
+                break;
+
+            case g:
+                h=(b-r)/d+2;
+                break;
+
+            case b:
+                h=(r-g)/d+4;
+                break;
+        }
+
+        h/=6;
+    }
+
+    return `hsv(${Math.round(h*360)}, ${Math.round(s*100)}%, ${Math.round(v*100)}%)`;
+}
+
+</script>
+
+</body>
+</html>
