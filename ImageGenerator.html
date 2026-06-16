@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Image Generator</title>
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<!-- AOS -->
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+<style>
+*{
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background: linear-gradient(135deg,#0f172a,#111827,#1e1b4b);
+}
+
+.glass{
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(16px);
+    border:1px solid rgba(255,255,255,0.1);
+}
+
+.toast{
+    animation: slideIn .3s ease;
+}
+
+@keyframes slideIn{
+    from{
+        opacity:0;
+        transform:translateX(100%);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+.image-card:hover img{
+    transform:scale(1.05);
+}
+</style>
+</head>
+<body class="text-white min-h-screen">
+
+<!-- Navbar -->
+<nav class="glass sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-wand-magic-sparkles text-cyan-400 text-2xl"></i>
+            <h1 class="font-bold text-2xl">AI Generator</h1>
+        </div>
+
+        <div class="hidden md:flex gap-8">
+            <a href="#" class="hover:text-cyan-400 transition">Home</a>
+            <a href="#" class="hover:text-cyan-400 transition">Gallery</a>
+            <a href="#" class="hover:text-cyan-400 transition">Features</a>
+            <a href="#" class="hover:text-cyan-400 transition">Contact</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="max-w-7xl mx-auto px-6 py-20 text-center">
+    <div data-aos="fade-up">
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-6">
+            AI Image Generator
+        </h1>
+
+        <p class="text-gray-300 max-w-2xl mx-auto text-lg">
+            Generate stunning AI-inspired images with a modern and beautiful interface.
+        </p>
+    </div>
+</section>
+
+<!-- Generator -->
+<section class="max-w-6xl mx-auto px-6 pb-20">
+    <div class="glass rounded-3xl p-8" data-aos="zoom-in">
+
+        <div class="mb-6">
+            <label class="block mb-2 font-medium">
+                Enter Prompt
+            </label>
+
+            <textarea
+                id="prompt"
+                rows="5"
+                placeholder="A futuristic city at sunset..."
+                class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 outline-none focus:border-cyan-500"
+            ></textarea>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-5">
+
+            <div>
+                <label class="block mb-2">Style</label>
+                <select class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3">
+                    <option>Realistic</option>
+                    <option>Anime</option>
+                    <option>Cyberpunk</option>
+                    <option>Fantasy</option>
+                    <option>3D Render</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block mb-2">Image Size</label>
+                <select class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3">
+                    <option>512 x 512</option>
+                    <option>768 x 768</option>
+                    <option>1024 x 1024</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block mb-2">Action</label>
+                <button
+                    id="generateBtn"
+                    class="w-full bg-cyan-500 hover:bg-cyan-600 transition rounded-xl p-3 font-semibold"
+                >
+                    <i class="fa-solid fa-image mr-2"></i>
+                    Generate Image
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- Preview -->
+<section class="max-w-6xl mx-auto px-6 pb-20">
+    <div class="glass rounded-3xl p-8" data-aos="fade-up">
+
+        <h2 class="text-3xl font-bold mb-6">
+            Preview
+        </h2>
+
+        <div id="previewContainer" class="hidden">
+
+            <div class="overflow-hidden rounded-2xl">
+                <img
+                    id="previewImage"
+                    class="w-full h-[500px] object-cover"
+                    src=""
+                    alt=""
+                >
+            </div>
+
+            <div class="mt-5 flex gap-3">
+                <button
+                    onclick="downloadImage()"
+                    class="bg-green-500 px-5 py-3 rounded-xl"
+                >
+                    <i class="fa-solid fa-download"></i>
+                    Download
+                </button>
+
+                <button
+                    onclick="copyPrompt()"
+                    class="bg-indigo-500 px-5 py-3 rounded-xl"
+                >
+                    <i class="fa-solid fa-copy"></i>
+                    Copy Prompt
+                </button>
+            </div>
+
+        </div>
+
+        <div id="emptyState" class="text-center py-20 text-gray-400">
+            <i class="fa-solid fa-image text-6xl mb-4"></i>
+            <p>No image generated yet.</p>
+        </div>
+
+    </div>
+</section>
+
+<!-- Gallery -->
+<section class="max-w-7xl mx-auto px-6 pb-24">
+
+    <div class="flex justify-between items-center mb-10">
+        <h2 class="text-4xl font-bold">
+            Generated Gallery
+        </h2>
+    </div>
+
+    <div
+        id="gallery"
+        class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8"
+    ></div>
+
+</section>
+
+<!-- Footer -->
+<footer class="glass">
+    <div class="max-w-7xl mx-auto px-6 py-8">
+
+        <div class="flex justify-center gap-6 text-2xl">
+
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+
+        </div>
+
+        <p class="text-center text-gray-400 mt-5">
+            © 2025 AI Image Generator. All Rights Reserved.
+        </p>
+
+    </div>
+</footer>
+
+<!-- Toast -->
+<div
+    id="toastContainer"
+    class="fixed top-5 right-5 z-50 space-y-3"
+></div>
+
+<!-- AOS -->
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+<script>
+AOS.init({
+    duration:1000,
+    once:true
+});
+
+const images = [
+"https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200",
+"https://images.unsplash.com/photo-1519608487953-e999c86e7455?w=1200",
+"https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200",
+"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200",
+"https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=1200",
+"https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200"
+];
+
+const generateBtn = document.getElementById("generateBtn");
+const gallery = document.getElementById("gallery");
+
+generateBtn.addEventListener("click",()=>{
+
+    const prompt = document.getElementById("prompt").value.trim();
+
+    if(!prompt){
+        showToast("Please enter a prompt.","red");
+        return;
+    }
+
+    generateBtn.innerHTML =
+    `<i class="fa-solid fa-spinner fa-spin"></i> Generating...`;
+
+    setTimeout(()=>{
+
+        const randomImage =
+        images[Math.floor(Math.random()*images.length)];
+
+        document.getElementById("previewImage").src = randomImage;
+
+        document.getElementById("previewContainer")
+        .classList.remove("hidden");
+
+        document.getElementById("emptyState")
+        .classList.add("hidden");
+
+        addToGallery(randomImage,prompt);
+
+        generateBtn.innerHTML =
+        `<i class="fa-solid fa-image"></i> Generate Image`;
+
+        showToast("Image generated successfully!","green");
+
+    },1800);
+
+});
+
+function addToGallery(image,prompt){
+
+    const card = document.createElement("div");
+
+    card.className =
+    "glass rounded-3xl overflow-hidden image-card";
+
+    card.innerHTML = `
+        <div class="overflow-hidden">
+            <img
+            src="${image}"
+            class="w-full h-64 object-cover duration-500">
+        </div>
+
+        <div class="p-5">
+            <p class="text-sm text-gray-300 line-clamp-2">
+                ${prompt}
+            </p>
+
+            <button
+            class="mt-4 bg-cyan-500 w-full py-3 rounded-xl">
+            Download
+            </button>
+        </div>
+    `;
+
+    gallery.prepend(card);
+}
+
+function copyPrompt(){
+
+    const prompt =
+    document.getElementById("prompt").value;
+
+    navigator.clipboard.writeText(prompt);
+
+    showToast("Prompt copied!","blue");
+}
+
+function downloadImage(){
+
+    const img =
+    document.getElementById("previewImage").src;
+
+    const a = document.createElement("a");
+
+    a.href = img;
+    a.download = "ai-image.jpg";
+    a.click();
+
+    showToast("Download started!","green");
+}
+
+function showToast(message,color){
+
+    const toast =
+    document.createElement("div");
+
+    const colors = {
+        green:"bg-green-500",
+        red:"bg-red-500",
+        blue:"bg-blue-500"
+    };
+
+    toast.className =
+    `${colors[color]} toast px-5 py-3 rounded-xl shadow-xl`;
+
+    toast.innerText = message;
+
+    document
+    .getElementById("toastContainer")
+    .appendChild(toast);
+
+    setTimeout(()=>{
+        toast.remove();
+    },3000);
+}
+</script>
+
+</body>
+</html>
