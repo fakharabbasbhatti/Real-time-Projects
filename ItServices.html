@@ -2,354 +2,1548 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
-  <meta name="description" content="Premium IT Services & Software Development | 15+ years transforming businesses with web, mobile, AI & cloud solutions." />
-  <title>IT Nova | Premium IT Services</title>
-  <!-- Tailwind via CDN + base layer -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="NexaTech Solutions – 15+ years of IT Services, Web Development, Mobile Apps, Cloud, AI, and Cyber Security for businesses worldwide." />
+  <meta name="keywords" content="IT services, web development, mobile app, cloud solutions, AI, cyber security, software development" />
+  <title>NexaTech Solutions | Premium IT Services & Software Development</title>
+
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome 6 (free) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary:   '#2563EB',
+            navy:      '#0F172A',
+            accent:    '#06B6D4',
+            success:   '#10B981',
+            bglight:   '#F8FAFC',
+          },
+          fontFamily: {
+            sans:    ['Inter', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
   <style>
-    /* custom micro-interactions, glassmorphism, scroll reveal base */
-    body { scroll-behavior: smooth; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
-    .glass-card { background: rgba(255,255,255,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); }
-    .hover-scale { transition: all 0.25s ease-in-out; }
-    .hover-scale:hover { transform: scale(1.02); box-shadow: 0 20px 30px -10px rgba(0,0,0,0.15); }
-    .service-card { transition: all 0.3s ease; }
-    .service-card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(37,99,235,0.15); }
-    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.3s ease; }
-    .faq-answer.open { max-height: 300px; padding-top: 0.75rem; }
-    .counter { font-variant-numeric: tabular-nums; }
-    /* mobile hamburger */
-    #mobile-menu { transition: transform 0.25s ease, opacity 0.2s ease; transform: scaleY(0); transform-origin: top; opacity: 0; }
-    #mobile-menu.open { transform: scaleY(1); opacity: 1; }
-    /* scroll reveal (simple) */
-    .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.2, 0.9, 0.3, 1); }
+    /* ── Base ── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: #0F172A; background: #fff; overflow-x: hidden; }
+
+    /* ── Glass Card ── */
+    .glass {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    /* ── Gradient Text ── */
+    .grad-text {
+      background: linear-gradient(135deg, #2563EB 0%, #06B6D4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Gradient BG ── */
+    .grad-bg  { background: linear-gradient(135deg, #0F172A 0%, #1e3a5f 60%, #0F172A 100%); }
+    .grad-btn { background: linear-gradient(135deg, #2563EB 0%, #06B6D4 100%); }
+
+    /* ── Section fade-up ── */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
-    /* active nav link style */
-    .nav-link.active { color: #2563EB; font-weight: 600; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* ── Nav ── */
+    #navbar { transition: background 0.35s, box-shadow 0.35s; }
+    #navbar.scrolled { background: rgba(15,23,42,0.97) !important; box-shadow: 0 2px 24px rgba(0,0,0,0.35); }
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position:absolute; bottom:-3px; left:0; width:0; height:2px; background: linear-gradient(90deg,#2563EB,#06B6D4); transition: width 0.3s; border-radius:2px; }
+    .nav-link:hover::after { width:100%; }
+
+    /* ── Hero ── */
+    .hero-grid-bg {
+      background-image: linear-gradient(rgba(37,99,235,0.07) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(37,99,235,0.07) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    .hero-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.18;
+      animation: blobFloat 8s ease-in-out infinite;
+    }
+    @keyframes blobFloat { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-28px) scale(1.04)} }
+
+    /* ── Stat counter ── */
+    .stat-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    /* ── Service Cards ── */
+    .service-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::before {
+      content:'';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(37,99,235,0.06) 0%, rgba(6,182,212,0.06) 100%);
+      opacity: 0;
+      transition: opacity 0.35s;
+      border-radius: 20px;
+    }
+    .service-card:hover { transform: translateY(-8px); box-shadow: 0 24px 48px rgba(37,99,235,0.14); border-color: #2563EB; }
+    .service-card:hover::before { opacity: 1; }
+    .service-icon {
+      width: 60px; height: 60px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, rgba(37,99,235,0.12), rgba(6,182,212,0.12));
+      font-size: 1.6rem;
+      transition: transform 0.3s;
+    }
+    .service-card:hover .service-icon { transform: scale(1.12) rotate(-4deg); }
+
+    /* ── Why Choose Us ── */
+    .feature-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      transition: all 0.3s;
+      background: #fff;
+    }
+    .feature-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(37,99,235,0.12); border-color: #06B6D4; }
+
+    /* ── Portfolio ── */
+    .portfolio-card { border-radius: 18px; overflow: hidden; }
+    .portfolio-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(37,99,235,0.88), rgba(6,182,212,0.88));
+      opacity: 0;
+      transition: opacity 0.35s;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .portfolio-card:hover .portfolio-overlay { opacity: 1; }
+    .filter-btn { transition: all 0.25s; }
+    .filter-btn.active { background: linear-gradient(135deg,#2563EB,#06B6D4); color:#fff; }
+
+    /* ── Process Timeline ── */
+    .process-step { position: relative; }
+    .process-line {
+      position: absolute; top: 32px; left: 50%;
+      transform: translateX(-50%);
+      width: 2px; height: calc(100% - 32px);
+      background: linear-gradient(180deg, #2563EB 0%, transparent 100%);
+    }
+
+    /* ── Testimonial Slider ── */
+    .testimonial-slide { display: none; animation: fadeSlide 0.5s ease; }
+    .testimonial-slide.active { display: block; }
+    @keyframes fadeSlide { from{opacity:0;transform:translateX(24px)} to{opacity:1;transform:translateX(0)} }
+
+    /* ── Pricing Cards ── */
+    .pricing-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 24px;
+      transition: all 0.35s;
+      background: #fff;
+    }
+    .pricing-card:hover { transform: translateY(-8px); box-shadow: 0 24px 48px rgba(37,99,235,0.14); }
+    .pricing-featured {
+      background: linear-gradient(135deg, #0F172A 0%, #1e3a5f 100%);
+      border-color: #2563EB;
+      color: #fff;
+    }
+
+    /* ── FAQ Accordion ── */
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.3s; }
+    .faq-answer.open { max-height: 400px; }
+    .faq-icon { transition: transform 0.3s; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+    /* ── Team Cards ── */
+    .team-card { border-radius: 20px; overflow: hidden; }
+    .team-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(37,99,235,0.9), rgba(6,182,212,0.9));
+      opacity: 0;
+      transition: opacity 0.35s;
+      display: flex; align-items: flex-end; justify-content: center;
+      padding-bottom: 24px;
+    }
+    .team-card:hover .team-overlay { opacity: 1; }
+
+    /* ── Scroll to top ── */
+    #scrollTop {
+      position: fixed; bottom: 32px; right: 32px; z-index: 999;
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg,#2563EB,#06B6D4);
+      color: #fff; font-size: 1.1rem;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.3s, transform 0.3s;
+      cursor: pointer; box-shadow: 0 8px 24px rgba(37,99,235,0.35);
+    }
+    #scrollTop.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Mobile Menu ── */
+    #mobile-menu { transition: max-height 0.4s ease, opacity 0.3s; max-height: 0; opacity: 0; overflow: hidden; }
+    #mobile-menu.open { max-height: 600px; opacity: 1; }
+
+    /* ── Map embed ── */
+    .map-wrapper { border-radius: 18px; overflow: hidden; }
+
+    /* ── Loading Overlay ── */
+    #loader {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #0F172A;
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.6s, visibility 0.6s;
+    }
+    #loader.hidden { opacity: 0; visibility: hidden; }
+    .loader-ring {
+      width: 56px; height: 56px;
+      border: 4px solid rgba(255,255,255,0.1);
+      border-top-color: #2563EB;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Misc ── */
+    .section-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(37,99,235,0.09);
+      color: #2563EB;
+      font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 100px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .hero-blob, .loader-ring { animation: none !important; transition: none !important; }
+    }
   </style>
 </head>
-<body class="bg-[#F8FAFC] text-[#0F172A] antialiased">
+<body class="bg-white">
 
-<!-- ===== STICKY HEADER ===== -->
-<header id="header" class="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-200/50 transition-all">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16 md:h-20">
-    <!-- Logo -->
-    <div class="flex items-center gap-2">
-      <i class="fas fa-cubes text-2xl text-[#2563EB]"></i>
-      <span class="font-bold text-xl tracking-tight text-[#0F172A]">IT<span class="text-[#2563EB]">Nova</span></span>
+<!-- ════════ LOADER ════════ -->
+<div id="loader">
+  <div class="text-center">
+    <div class="loader-ring mx-auto mb-4"></div>
+    <p class="text-white/50 text-sm font-display">NexaTech Solutions</p>
+  </div>
+</div>
+
+<!-- ════════ SCROLL TO TOP ════════ -->
+<button id="scrollTop" aria-label="Scroll to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <i class="fa-solid fa-arrow-up"></i>
+</button>
+
+<!-- ════════════════════════════════ NAVBAR ════════════════════════════════ -->
+<nav id="navbar" class="fixed top-0 inset-x-0 z-50 grad-bg">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 lg:h-20">
+
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-2.5 group">
+        <div class="w-9 h-9 rounded-xl grad-btn flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+          <i class="fa-solid fa-bolt text-white text-sm"></i>
+        </div>
+        <span class="font-display font-700 text-white text-xl tracking-tight">Nexa<span class="grad-text font-bold">Tech</span></span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <div class="hidden lg:flex items-center gap-7">
+        <a href="#about"      class="nav-link text-white/80 hover:text-white text-sm font-medium transition-colors">About</a>
+        <a href="#services"   class="nav-link text-white/80 hover:text-white text-sm font-medium transition-colors">Services</a>
+        <a href="#portfolio"  class="nav-link text-white/80 hover:text-white text-sm font-medium transition-colors">Portfolio</a>
+        <a href="#team"       class="nav-link text-white/80 hover:text-white text-sm font-medium transition-colors">Team</a>
+        <a href="#pricing"    class="nav-link text-white/80 hover:text-white text-sm font-medium transition-colors">Pricing</a>
+        <a href="#contact"    class="nav-link text-white/80 hover:text-white text-sm font-medium transition-colors">Contact</a>
+      </div>
+
+      <!-- CTA + Hamburger -->
+      <div class="flex items-center gap-3">
+        <a href="#contact" class="hidden sm:inline-flex items-center gap-2 grad-btn text-white text-sm font-semibold px-5 py-2.5 rounded-xl hover:opacity-90 hover:shadow-lg hover:shadow-blue-500/25 transition-all">
+          <i class="fa-solid fa-calendar-check text-xs"></i>
+          Free Consultation
+        </a>
+        <button id="menu-btn" class="lg:hidden text-white p-2 rounded-lg hover:bg-white/10 transition-colors" aria-label="Toggle menu">
+          <i class="fa-solid fa-bars text-lg"></i>
+        </button>
+      </div>
     </div>
-    <!-- Desktop nav -->
-    <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
-      <a href="#hero" class="nav-link hover:text-[#2563EB] transition">Home</a>
-      <a href="#about" class="nav-link hover:text-[#2563EB] transition">About</a>
-      <a href="#services" class="nav-link hover:text-[#2563EB] transition">Services</a>
-      <a href="#portfolio" class="nav-link hover:text-[#2563EB] transition">Portfolio</a>
-      <a href="#pricing" class="nav-link hover:text-[#2563EB] transition">Pricing</a>
-      <a href="#contact" class="nav-link hover:text-[#2563EB] transition">Contact</a>
-    </nav>
-    <!-- CTA + mobile toggle -->
-    <div class="flex items-center gap-3">
-      <a href="#contact" class="hidden md:inline-block bg-[#2563EB] text-white px-5 py-2 rounded-full text-sm font-semibold shadow-md hover:bg-[#1d4ed8] transition-all hover:shadow-lg">Get Free Consultation</a>
-      <button id="menu-btn" class="md:hidden text-2xl focus:outline-none" aria-label="menu">
-        <i class="fas fa-bars"></i>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="lg:hidden pb-4">
+      <div class="flex flex-col gap-1 pt-2 border-t border-white/10">
+        <a href="#about"     class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-3 rounded-lg text-sm font-medium transition-all">About</a>
+        <a href="#services"  class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-3 rounded-lg text-sm font-medium transition-all">Services</a>
+        <a href="#portfolio" class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-3 rounded-lg text-sm font-medium transition-all">Portfolio</a>
+        <a href="#team"      class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-3 rounded-lg text-sm font-medium transition-all">Team</a>
+        <a href="#pricing"   class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-3 rounded-lg text-sm font-medium transition-all">Pricing</a>
+        <a href="#contact"   class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-3 rounded-lg text-sm font-medium transition-all">Contact</a>
+        <a href="#contact"   class="mt-2 grad-btn text-white text-sm font-semibold px-4 py-3 rounded-xl text-center">Get Free Consultation</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════ HERO ════════════════════════════════ -->
+<section class="relative grad-bg hero-grid-bg min-h-screen flex items-center overflow-hidden pt-20">
+  <!-- Blobs -->
+  <div class="hero-blob w-96 h-96 bg-primary top-16 -left-24" style="animation-delay:0s"></div>
+  <div class="hero-blob w-80 h-80 bg-accent bottom-24 right-0" style="animation-delay:3s"></div>
+  <div class="hero-blob w-64 h-64 bg-primary top-1/2 right-1/4" style="animation-delay:1.5s"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+      <!-- Copy -->
+      <div>
+        <div class="section-tag mb-6 text-accent bg-accent/10">
+          <i class="fa-solid fa-star text-accent"></i>
+          15+ Years of IT Excellence
+        </div>
+        <h1 class="font-display text-4xl sm:text-5xl xl:text-6xl font-bold text-white leading-[1.1] mb-6">
+          Transforming Businesses<br/>
+          <span class="grad-text">Through Technology</span>
+        </h1>
+        <p class="text-white/60 text-lg leading-relaxed mb-10 max-w-lg">
+          We build high-performance software, apps, and digital products that help businesses scale, compete, and grow in today's fast-moving world.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 mb-16">
+          <a href="#contact" class="grad-btn text-white font-semibold px-8 py-4 rounded-xl hover:opacity-90 hover:shadow-xl hover:shadow-blue-500/30 transition-all text-center flex items-center justify-center gap-2">
+            Get Started <i class="fa-solid fa-arrow-right text-sm"></i>
+          </a>
+          <a href="#services" class="border border-white/20 text-white font-semibold px-8 py-4 rounded-xl hover:bg-white/10 transition-all text-center flex items-center justify-center gap-2">
+            <i class="fa-solid fa-play text-xs"></i> View Services
+          </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div class="stat-card p-4 text-center">
+            <div class="font-display text-2xl font-bold text-white" data-count="15">0</div>
+            <div class="text-white/50 text-xs mt-1">Years Exp.</div>
+          </div>
+          <div class="stat-card p-4 text-center">
+            <div class="font-display text-2xl font-bold text-white" data-count="500">0</div>
+            <div class="text-white/50 text-xs mt-1">Projects Done</div>
+          </div>
+          <div class="stat-card p-4 text-center">
+            <div class="font-display text-2xl font-bold text-white" data-count="300">0</div>
+            <div class="text-white/50 text-xs mt-1">Happy Clients</div>
+          </div>
+          <div class="stat-card p-4 text-center">
+            <div class="font-display text-2xl font-bold text-white" data-count="99">0</div>
+            <div class="text-white/50 text-xs mt-1">% Satisfaction</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Illustration -->
+      <div class="relative hidden lg:flex items-center justify-center">
+        <div class="relative w-full max-w-lg">
+          <!-- Decorative rings -->
+          <div class="absolute inset-0 rounded-full border border-accent/20 scale-110 animate-pulse"></div>
+          <div class="absolute inset-0 rounded-full border border-primary/20 scale-125"></div>
+
+          <div class="glass rounded-3xl p-8 relative z-10">
+            <div class="grid grid-cols-3 gap-4 mb-6">
+              <div class="glass rounded-2xl p-4 text-center col-span-3">
+                <div class="text-accent font-display font-bold text-2xl mb-1">AI-Powered Development</div>
+                <div class="text-white/50 text-xs">Next-generation software solutions</div>
+              </div>
+            </div>
+            <!-- Tech stack icons grid -->
+            <div class="grid grid-cols-4 gap-3">
+              <div class="glass rounded-xl p-3 flex items-center justify-center hover:scale-105 transition-transform cursor-default" title="React">
+                <i class="fa-brands fa-react text-cyan-400 text-2xl"></i>
+              </div>
+              <div class="glass rounded-xl p-3 flex items-center justify-center hover:scale-105 transition-transform cursor-default" title="Node.js">
+                <i class="fa-brands fa-node-js text-green-400 text-2xl"></i>
+              </div>
+              <div class="glass rounded-xl p-3 flex items-center justify-center hover:scale-105 transition-transform cursor-default" title="Python">
+                <i class="fa-brands fa-python text-yellow-400 text-2xl"></i>
+              </div>
+              <div class="glass rounded-xl p-3 flex items-center justify-center hover:scale-105 transition-transform cursor-default" title="AWS">
+                <i class="fa-brands fa-aws text-orange-400 text-2xl"></i>
+              </div>
+              <div class="glass rounded-xl p-3 flex items-center justify-center hover:scale-105 transition-transform cursor-default" title="Android">
+                <i class="fa-brands fa-android text-green-300 text-2xl"></i>
+              </div>
+              <div class="glass rounded-xl p-3 flex items-center justify-center hover:scale-105 transition-transform cursor-default" title="Docker">
+                <i class="fa-brands fa-docker text-sky-400 text-2xl"></i>
+              </div>
+              <div class="glass rounded-xl p-3 flex items-center justify-center hover:scale-105 transition-transform cursor-default" title="Git">
+                <i class="fa-brands fa-git-alt text-red-400 text-2xl"></i>
+              </div>
+              <div class="glass rounded-xl p-3 flex items-center justify-center hover:scale-105 transition-transform cursor-default" title="Linux">
+                <i class="fa-brands fa-linux text-yellow-300 text-2xl"></i>
+              </div>
+            </div>
+
+            <!-- Live indicator -->
+            <div class="flex items-center gap-2 mt-6 glass rounded-xl px-4 py-3">
+              <span class="w-2.5 h-2.5 rounded-full bg-success animate-pulse"></span>
+              <span class="text-white/70 text-xs">12 active projects running</span>
+              <span class="ml-auto text-accent text-xs font-semibold">Live</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Wave divider -->
+  <div class="absolute bottom-0 inset-x-0">
+    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#ffffff"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ ABOUT ════════════════════════════════ -->
+<section id="about" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+      <!-- Visual -->
+      <div class="reveal relative">
+        <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-navy to-primary aspect-[4/3]">
+          <div class="absolute inset-0 hero-grid-bg opacity-30"></div>
+          <div class="absolute inset-0 flex flex-col items-center justify-center p-10 text-center">
+            <div class="w-20 h-20 rounded-2xl grad-btn flex items-center justify-center mb-6 shadow-xl">
+              <i class="fa-solid fa-microchip text-white text-3xl"></i>
+            </div>
+            <h3 class="font-display text-white text-2xl font-bold mb-3">Built on Innovation</h3>
+            <p class="text-white/60 text-sm leading-relaxed max-w-xs">Over 15 years of delivering measurable outcomes through technology — from startups to Fortune 500.</p>
+          </div>
+          <!-- Achievement badges -->
+          <div class="absolute top-5 right-5 glass rounded-xl px-3 py-2 text-center">
+            <div class="font-bold text-white text-lg">ISO</div>
+            <div class="text-white/60 text-xs">9001:2015</div>
+          </div>
+          <div class="absolute bottom-5 left-5 glass rounded-xl px-3 py-2">
+            <div class="flex items-center gap-1.5">
+              <i class="fa-solid fa-award text-accent text-sm"></i>
+              <span class="text-white text-xs font-semibold">Top IT Agency 2024</span>
+            </div>
+          </div>
+        </div>
+        <!-- Floating metric -->
+        <div class="absolute -right-6 top-1/3 bg-white shadow-xl rounded-2xl px-5 py-4 border border-slate-100">
+          <div class="text-3xl font-display font-bold text-primary">15+</div>
+          <div class="text-slate-500 text-xs mt-0.5">Years of Excellence</div>
+        </div>
+      </div>
+
+      <!-- Copy -->
+      <div>
+        <div class="section-tag mb-5 reveal">About NexaTech</div>
+        <h2 class="font-display text-4xl font-bold text-navy mb-5 reveal reveal-delay-1">
+          We Don't Just Build Software.<br/>
+          <span class="grad-text">We Engineer Growth.</span>
+        </h2>
+        <p class="text-slate-600 leading-relaxed mb-6 reveal reveal-delay-2">
+          Founded in 2009, NexaTech Solutions has been at the forefront of digital transformation. We partner with businesses — from seed-stage startups to global enterprises — to design, build, and scale technology that actually moves the needle.
+        </p>
+        <p class="text-slate-600 leading-relaxed mb-8 reveal reveal-delay-3">
+          Our team of 120+ engineers, designers, and strategists operates across 3 continents, delivering projects with precision, transparency, and a relentless focus on outcomes.
+        </p>
+
+        <!-- Mission / Vision -->
+        <div class="grid sm:grid-cols-2 gap-4 mb-8 reveal reveal-delay-4">
+          <div class="bg-bglight rounded-2xl p-5">
+            <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
+              <i class="fa-solid fa-bullseye text-primary"></i>
+            </div>
+            <h4 class="font-semibold text-navy mb-1">Our Mission</h4>
+            <p class="text-slate-500 text-sm leading-relaxed">Empower businesses with technology that is fast, reliable, and built to last.</p>
+          </div>
+          <div class="bg-bglight rounded-2xl p-5">
+            <div class="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center mb-3">
+              <i class="fa-solid fa-eye text-accent"></i>
+            </div>
+            <h4 class="font-semibold text-navy mb-1">Our Vision</h4>
+            <p class="text-slate-500 text-sm leading-relaxed">To be the most trusted technology partner for ambitious companies worldwide.</p>
+          </div>
+        </div>
+
+        <!-- Key achievements -->
+        <div class="flex flex-wrap gap-3 reveal reveal-delay-5">
+          <span class="flex items-center gap-2 bg-success/10 text-success text-sm font-medium px-4 py-2 rounded-xl"><i class="fa-solid fa-check"></i> 500+ Projects Delivered</span>
+          <span class="flex items-center gap-2 bg-primary/10 text-primary text-sm font-medium px-4 py-2 rounded-xl"><i class="fa-solid fa-check"></i> 40+ Countries Served</span>
+          <span class="flex items-center gap-2 bg-accent/10 text-accent text-sm font-medium px-4 py-2 rounded-xl"><i class="fa-solid fa-check"></i> 120+ Expert Engineers</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ SERVICES ════════════════════════════════ -->
+<section id="services" class="py-24 bg-bglight">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <div class="section-tag mb-5 reveal">What We Do</div>
+      <h2 class="font-display text-4xl font-bold text-navy mb-4 reveal reveal-delay-1">End-to-End <span class="grad-text">IT Services</span></h2>
+      <p class="text-slate-500 reveal reveal-delay-2">From concept to deployment, we cover every layer of the technology stack your business needs.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
+
+      <!-- Web Dev -->
+      <div class="service-card p-6 reveal reveal-delay-1">
+        <div class="service-icon bg-blue-50 text-primary mb-4"><i class="fa-solid fa-code"></i></div>
+        <h3 class="font-display font-bold text-navy mb-2">Web Development</h3>
+        <p class="text-slate-500 text-sm leading-relaxed mb-4">Scalable, high-performance web apps using React, Next.js, and Node.js.</p>
+        <a href="#contact" class="text-primary text-sm font-semibold hover:gap-2 flex items-center gap-1 transition-all">Learn More <i class="fa-solid fa-arrow-right text-xs"></i></a>
+      </div>
+
+      <!-- Mobile App -->
+      <div class="service-card p-6 reveal reveal-delay-2">
+        <div class="service-icon text-accent mb-4"><i class="fa-solid fa-mobile-screen"></i></div>
+        <h3 class="font-display font-bold text-navy mb-2">Mobile Apps</h3>
+        <p class="text-slate-500 text-sm leading-relaxed mb-4">Native iOS & Android apps — and cross-platform with Flutter or React Native.</p>
+        <a href="#contact" class="text-primary text-sm font-semibold flex items-center gap-1">Learn More <i class="fa-solid fa-arrow-right text-xs"></i></a>
+      </div>
+
+      <!-- UI/UX -->
+      <div class="service-card p-6 reveal reveal-delay-3">
+        <div class="service-icon text-violet-500 mb-4"><i class="fa-solid fa-pen-ruler"></i></div>
+        <h3 class="font-display font-bold text-navy mb-2">UI/UX Design</h3>
+        <p class="text-slate-500 text-sm leading-relaxed mb-4">Research-led product design that converts visitors into loyal customers.</p>
+        <a href="#contact" class="text-primary text-sm font-semibold flex items-center gap-1">Learn More <i class="fa-solid fa-arrow-right text-xs"></i></a>
+      </div>
+
+      <!-- E-commerce -->
+      <div class="service-card p-6 reveal reveal-delay-4">
+        <div class="service-icon text-orange-500 mb-4"><i class="fa-solid fa-cart-shopping"></i></div>
+        <h3 class="font-display font-bold text-navy mb-2">E-Commerce</h3>
+        <p class="text-slate-500 text-sm leading-relaxed mb-4">Shopify, WooCommerce, and custom platforms built for scale and conversion.</p>
+        <a href="#contact" class="text-primary text-sm font-semibold flex items-center gap-1">Learn More <i class="fa-solid fa-arrow-right text-xs"></i></a>
+      </div>
+
+      <!-- Cloud -->
+      <div class="service-card p-6 reveal reveal-delay-5">
+        <div class="service-icon text-sky-500 mb-4"><i class="fa-solid fa-cloud"></i></div>
+        <h3 class="font-display font-bold text-navy mb-2">Cloud Solutions</h3>
+        <p class="text-slate-500 text-sm leading-relaxed mb-4">AWS, GCP, and Azure architecture, migration, and managed operations.</p>
+        <a href="#contact" class="text-primary text-sm font-semibold flex items-center gap-1">Learn More <i class="fa-solid fa-arrow-right text-xs"></i></a>
+      </div>
+
+      <!-- Digital Marketing -->
+      <div class="service-card p-6 reveal">
+        <div class="service-icon text-pink-500 mb-4"><i class="fa-solid fa-chart-line"></i></div>
+        <h3 class="font-display font-bold text-navy mb-2">Digital Marketing</h3>
+        <p class="text-slate-500 text-sm leading-relaxed mb-4">PPC, social, and content strategies that drive qualified pipeline.</p>
+        <a href="#contact" class="text-primary text-sm font-semibold flex items-center gap-1">Learn More <i class="fa-solid fa-arrow-right text-xs"></i></a>
+      </div>
+
+      <!-- SEO -->
+      <div class="service-card p-6 reveal reveal-delay-1">
+        <div class="service-icon text-green-500 mb-4"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+        <h3 class="font-display font-bold text-navy mb-2">SEO Optimization</h3>
+        <p class="text-slate-500 text-sm leading-relaxed mb-4">Technical SEO, content strategy, and authority building that delivers rankings.</p>
+        <a href="#contact" class="text-primary text-sm font-semibold flex items-center gap-1">Learn More <i class="fa-solid fa-arrow-right text-xs"></i></a>
+      </div>
+
+      <!-- Custom Software -->
+      <div class="service-card p-6 reveal reveal-delay-2">
+        <div class="service-icon text-indigo-500 mb-4"><i class="fa-solid fa-gears"></i></div>
+        <h3 class="font-display font-bold text-navy mb-2">Custom Software</h3>
+        <p class="text-slate-500 text-sm leading-relaxed mb-4">Bespoke ERP, CRM, and SaaS products engineered to your exact requirements.</p>
+        <a href="#contact" class="text-primary text-sm font-semibold flex items-center gap-1">Learn More <i class="fa-solid fa-arrow-right text-xs"></i></a>
+      </div>
+
+      <!-- AI Solutions -->
+      <div class="service-card p-6 reveal reveal-delay-3">
+        <div class="service-icon text-yellow-500 mb-4"><i class="fa-solid fa-brain"></i></div>
+        <h3 class="font-display font-bold text-navy mb-2">AI Solutions</h3>
+        <p class="text-slate-500 text-sm leading-relaxed mb-4">LLM integration, computer vision, predictive analytics, and ML pipelines.</p>
+        <a href="#contact" class="text-primary text-sm font-semibold flex items-center gap-1">Learn More <i class="fa-solid fa-arrow-right text-xs"></i></a>
+      </div>
+
+      <!-- Cyber Security -->
+      <div class="service-card p-6 reveal reveal-delay-4">
+        <div class="service-icon text-red-500 mb-4"><i class="fa-solid fa-shield-halved"></i></div>
+        <h3 class="font-display font-bold text-navy mb-2">Cyber Security</h3>
+        <p class="text-slate-500 text-sm leading-relaxed mb-4">Penetration testing, VAPT, compliance audits, and 24/7 SOC monitoring.</p>
+        <a href="#contact" class="text-primary text-sm font-semibold flex items-center gap-1">Learn More <i class="fa-solid fa-arrow-right text-xs"></i></a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ WHY CHOOSE US ════════════════════════════════ -->
+<section class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <div class="section-tag mb-5 reveal">Why NexaTech</div>
+      <h2 class="font-display text-4xl font-bold text-navy mb-4 reveal reveal-delay-1">The Advantage of <span class="grad-text">15 Years</span> in the Field</h2>
+      <p class="text-slate-500 reveal reveal-delay-2">Experience isn't just tenure — it's pattern recognition, deep toolchains, and the hard-won ability to avoid costly mistakes.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <div class="feature-card p-7 reveal">
+        <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-5">
+          <i class="fa-solid fa-medal text-primary text-xl"></i>
+        </div>
+        <h3 class="font-display font-bold text-navy text-lg mb-2">15+ Years of Mastery</h3>
+        <p class="text-slate-500 text-sm leading-relaxed">Deep domain expertise across every major technology stack, platform, and industry vertical.</p>
+      </div>
+
+      <div class="feature-card p-7 reveal reveal-delay-1">
+        <div class="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center mb-5">
+          <i class="fa-solid fa-users text-accent text-xl"></i>
+        </div>
+        <h3 class="font-display font-bold text-navy text-lg mb-2">Expert Team</h3>
+        <p class="text-slate-500 text-sm leading-relaxed">120+ certified engineers, architects, and designers — each handpicked for their domain depth.</p>
+      </div>
+
+      <div class="feature-card p-7 reveal reveal-delay-2">
+        <div class="w-12 h-12 rounded-2xl bg-success/10 flex items-center justify-center mb-5">
+          <i class="fa-solid fa-arrows-rotate text-success text-xl"></i>
+        </div>
+        <h3 class="font-display font-bold text-navy text-lg mb-2">Agile Development</h3>
+        <p class="text-slate-500 text-sm leading-relaxed">Two-week sprint cycles, live dashboards, and weekly demos — you always know what's happening.</p>
+      </div>
+
+      <div class="feature-card p-7 reveal reveal-delay-3">
+        <div class="w-12 h-12 rounded-2xl bg-orange-50 flex items-center justify-center mb-5">
+          <i class="fa-solid fa-tag text-orange-500 text-xl"></i>
+        </div>
+        <h3 class="font-display font-bold text-navy text-lg mb-2">Transparent Pricing</h3>
+        <p class="text-slate-500 text-sm leading-relaxed">No surprise invoices. Fixed-price projects and time-and-material engagement options with full billing visibility.</p>
+      </div>
+
+      <div class="feature-card p-7 reveal reveal-delay-4">
+        <div class="w-12 h-12 rounded-2xl bg-violet-50 flex items-center justify-center mb-5">
+          <i class="fa-solid fa-headset text-violet-500 text-xl"></i>
+        </div>
+        <h3 class="font-display font-bold text-navy text-lg mb-2">24/7 Support</h3>
+        <p class="text-slate-500 text-sm leading-relaxed">Around-the-clock monitoring, incident response, and a dedicated account manager for every client.</p>
+      </div>
+
+      <div class="feature-card p-7 reveal reveal-delay-5">
+        <div class="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center mb-5">
+          <i class="fa-solid fa-circle-check text-red-500 text-xl"></i>
+        </div>
+        <h3 class="font-display font-bold text-navy text-lg mb-2">Quality Assurance</h3>
+        <p class="text-slate-500 text-sm leading-relaxed">ISO-certified QA processes, automated testing suites, and zero-defect policies before every release.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ PORTFOLIO ════════════════════════════════ -->
+<section id="portfolio" class="py-24 bg-bglight">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <div class="section-tag mb-5 reveal">Portfolio</div>
+      <h2 class="font-display text-4xl font-bold text-navy mb-4 reveal reveal-delay-1">Work That <span class="grad-text">Speaks for Itself</span></h2>
+      <p class="text-slate-500 reveal reveal-delay-2">A selection of projects spanning fintech, health, retail, and SaaS.</p>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="flex flex-wrap gap-3 justify-center mb-10 reveal reveal-delay-3">
+      <button class="filter-btn active px-5 py-2 rounded-xl text-sm font-semibold border border-slate-200 bg-white" data-filter="all">All</button>
+      <button class="filter-btn px-5 py-2 rounded-xl text-sm font-semibold border border-slate-200 bg-white text-slate-600" data-filter="web">Web</button>
+      <button class="filter-btn px-5 py-2 rounded-xl text-sm font-semibold border border-slate-200 bg-white text-slate-600" data-filter="mobile">Mobile</button>
+      <button class="filter-btn px-5 py-2 rounded-xl text-sm font-semibold border border-slate-200 bg-white text-slate-600" data-filter="ai">AI</button>
+      <button class="filter-btn px-5 py-2 rounded-xl text-sm font-semibold border border-slate-200 bg-white text-slate-600" data-filter="ecommerce">E-Commerce</button>
+    </div>
+
+    <div id="portfolio-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <div class="portfolio-card relative group reveal" data-category="web">
+        <div class="aspect-video bg-gradient-to-br from-blue-600 to-cyan-500 rounded-2xl flex items-center justify-center">
+          <i class="fa-solid fa-building-columns text-white text-5xl opacity-30"></i>
+        </div>
+        <div class="portfolio-overlay rounded-2xl">
+          <div class="text-center px-6">
+            <span class="text-white/70 text-xs uppercase tracking-wider">Web Platform</span>
+            <h4 class="font-display font-bold text-white text-lg mt-1 mb-3">FinanceHub Dashboard</h4>
+            <a href="#" class="inline-flex items-center gap-2 bg-white text-primary text-sm font-semibold px-4 py-2 rounded-xl hover:bg-accent hover:text-white transition-colors">
+              <i class="fa-solid fa-external-link"></i> Live Preview
+            </a>
+          </div>
+        </div>
+        <div class="mt-3 px-1">
+          <span class="text-xs font-semibold text-accent uppercase tracking-wide">Web</span>
+          <h4 class="font-display font-semibold text-navy mt-0.5">FinanceHub Dashboard</h4>
+        </div>
+      </div>
+
+      <div class="portfolio-card relative group reveal reveal-delay-1" data-category="mobile">
+        <div class="aspect-video bg-gradient-to-br from-violet-600 to-pink-500 rounded-2xl flex items-center justify-center">
+          <i class="fa-solid fa-heart-pulse text-white text-5xl opacity-30"></i>
+        </div>
+        <div class="portfolio-overlay rounded-2xl">
+          <div class="text-center px-6">
+            <span class="text-white/70 text-xs uppercase tracking-wider">Mobile App</span>
+            <h4 class="font-display font-bold text-white text-lg mt-1 mb-3">MedTrack Health App</h4>
+            <a href="#" class="inline-flex items-center gap-2 bg-white text-primary text-sm font-semibold px-4 py-2 rounded-xl hover:bg-accent hover:text-white transition-colors">
+              <i class="fa-solid fa-external-link"></i> Live Preview
+            </a>
+          </div>
+        </div>
+        <div class="mt-3 px-1">
+          <span class="text-xs font-semibold text-accent uppercase tracking-wide">Mobile</span>
+          <h4 class="font-display font-semibold text-navy mt-0.5">MedTrack Health App</h4>
+        </div>
+      </div>
+
+      <div class="portfolio-card relative group reveal reveal-delay-2" data-category="ai">
+        <div class="aspect-video bg-gradient-to-br from-yellow-500 to-orange-500 rounded-2xl flex items-center justify-center">
+          <i class="fa-solid fa-robot text-white text-5xl opacity-30"></i>
+        </div>
+        <div class="portfolio-overlay rounded-2xl">
+          <div class="text-center px-6">
+            <span class="text-white/70 text-xs uppercase tracking-wider">AI Platform</span>
+            <h4 class="font-display font-bold text-white text-lg mt-1 mb-3">SmartAssist AI Engine</h4>
+            <a href="#" class="inline-flex items-center gap-2 bg-white text-primary text-sm font-semibold px-4 py-2 rounded-xl hover:bg-accent hover:text-white transition-colors">
+              <i class="fa-solid fa-external-link"></i> Live Preview
+            </a>
+          </div>
+        </div>
+        <div class="mt-3 px-1">
+          <span class="text-xs font-semibold text-accent uppercase tracking-wide">AI</span>
+          <h4 class="font-display font-semibold text-navy mt-0.5">SmartAssist AI Engine</h4>
+        </div>
+      </div>
+
+      <div class="portfolio-card relative group reveal reveal-delay-3" data-category="ecommerce">
+        <div class="aspect-video bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center">
+          <i class="fa-solid fa-store text-white text-5xl opacity-30"></i>
+        </div>
+        <div class="portfolio-overlay rounded-2xl">
+          <div class="text-center px-6">
+            <span class="text-white/70 text-xs uppercase tracking-wider">E-Commerce</span>
+            <h4 class="font-display font-bold text-white text-lg mt-1 mb-3">LuxeShop Marketplace</h4>
+            <a href="#" class="inline-flex items-center gap-2 bg-white text-primary text-sm font-semibold px-4 py-2 rounded-xl hover:bg-accent hover:text-white transition-colors">
+              <i class="fa-solid fa-external-link"></i> Live Preview
+            </a>
+          </div>
+        </div>
+        <div class="mt-3 px-1">
+          <span class="text-xs font-semibold text-accent uppercase tracking-wide">E-Commerce</span>
+          <h4 class="font-display font-semibold text-navy mt-0.5">LuxeShop Marketplace</h4>
+        </div>
+      </div>
+
+      <div class="portfolio-card relative group reveal reveal-delay-4" data-category="web">
+        <div class="aspect-video bg-gradient-to-br from-slate-700 to-slate-900 rounded-2xl flex items-center justify-center">
+          <i class="fa-solid fa-chart-pie text-white text-5xl opacity-30"></i>
+        </div>
+        <div class="portfolio-overlay rounded-2xl">
+          <div class="text-center px-6">
+            <span class="text-white/70 text-xs uppercase tracking-wider">SaaS Web App</span>
+            <h4 class="font-display font-bold text-white text-lg mt-1 mb-3">Analytics Pro SaaS</h4>
+            <a href="#" class="inline-flex items-center gap-2 bg-white text-primary text-sm font-semibold px-4 py-2 rounded-xl hover:bg-accent hover:text-white transition-colors">
+              <i class="fa-solid fa-external-link"></i> Live Preview
+            </a>
+          </div>
+        </div>
+        <div class="mt-3 px-1">
+          <span class="text-xs font-semibold text-accent uppercase tracking-wide">Web</span>
+          <h4 class="font-display font-semibold text-navy mt-0.5">Analytics Pro SaaS</h4>
+        </div>
+      </div>
+
+      <div class="portfolio-card relative group reveal reveal-delay-5" data-category="mobile">
+        <div class="aspect-video bg-gradient-to-br from-rose-500 to-red-600 rounded-2xl flex items-center justify-center">
+          <i class="fa-solid fa-truck-fast text-white text-5xl opacity-30"></i>
+        </div>
+        <div class="portfolio-overlay rounded-2xl">
+          <div class="text-center px-6">
+            <span class="text-white/70 text-xs uppercase tracking-wider">Mobile App</span>
+            <h4 class="font-display font-bold text-white text-lg mt-1 mb-3">DeliverNow Logistics</h4>
+            <a href="#" class="inline-flex items-center gap-2 bg-white text-primary text-sm font-semibold px-4 py-2 rounded-xl hover:bg-accent hover:text-white transition-colors">
+              <i class="fa-solid fa-external-link"></i> Live Preview
+            </a>
+          </div>
+        </div>
+        <div class="mt-3 px-1">
+          <span class="text-xs font-semibold text-accent uppercase tracking-wide">Mobile</span>
+          <h4 class="font-display font-semibold text-navy mt-0.5">DeliverNow Logistics</h4>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ PROCESS ════════════════════════════════ -->
+<section class="py-24 grad-bg relative overflow-hidden">
+  <div class="absolute inset-0 hero-grid-bg opacity-30"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <div class="section-tag mb-5 reveal text-accent bg-accent/10">How We Work</div>
+      <h2 class="font-display text-4xl font-bold text-white mb-4 reveal reveal-delay-1">Our Proven <span class="grad-text">7-Step Process</span></h2>
+      <p class="text-white/60 reveal reveal-delay-2">A repeatable system refined over 15 years and 500+ projects.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+      <div class="glass rounded-2xl p-6 reveal">
+        <div class="w-10 h-10 rounded-xl grad-btn flex items-center justify-center text-white font-bold font-display mb-4 text-sm">01</div>
+        <h3 class="font-display font-bold text-white mb-2">Discovery</h3>
+        <p class="text-white/55 text-sm leading-relaxed">We deep-dive into your business goals, users, and constraints to define what success looks like.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-6 reveal reveal-delay-1">
+        <div class="w-10 h-10 rounded-xl grad-btn flex items-center justify-center text-white font-bold font-display mb-4 text-sm">02</div>
+        <h3 class="font-display font-bold text-white mb-2">Planning</h3>
+        <p class="text-white/55 text-sm leading-relaxed">Detailed project roadmap, tech stack selection, risk analysis, and resource allocation.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-6 reveal reveal-delay-2">
+        <div class="w-10 h-10 rounded-xl grad-btn flex items-center justify-center text-white font-bold font-display mb-4 text-sm">03</div>
+        <h3 class="font-display font-bold text-white mb-2">Design</h3>
+        <p class="text-white/55 text-sm leading-relaxed">Wireframes, prototypes, and pixel-perfect UI designs reviewed and approved before any code is written.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-6 reveal reveal-delay-3">
+        <div class="w-10 h-10 rounded-xl grad-btn flex items-center justify-center text-white font-bold font-display mb-4 text-sm">04</div>
+        <h3 class="font-display font-bold text-white mb-2">Development</h3>
+        <p class="text-white/55 text-sm leading-relaxed">Agile sprints, clean code standards, and continuous integration keep delivery fast and stable.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-6 reveal reveal-delay-1">
+        <div class="w-10 h-10 rounded-xl grad-btn flex items-center justify-center text-white font-bold font-display mb-4 text-sm">05</div>
+        <h3 class="font-display font-bold text-white mb-2">Testing</h3>
+        <p class="text-white/55 text-sm leading-relaxed">Automated unit, integration, and E2E tests plus manual QA and load testing before release.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-6 reveal reveal-delay-2">
+        <div class="w-10 h-10 rounded-xl grad-btn flex items-center justify-center text-white font-bold font-display mb-4 text-sm">06</div>
+        <h3 class="font-display font-bold text-white mb-2">Deployment</h3>
+        <p class="text-white/55 text-sm leading-relaxed">Zero-downtime releases via CI/CD pipelines to cloud infrastructure with real-time monitoring.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-6 reveal reveal-delay-3">
+        <div class="w-10 h-10 rounded-xl grad-btn flex items-center justify-center text-white font-bold font-display mb-4 text-sm">07</div>
+        <h3 class="font-display font-bold text-white mb-2">Support</h3>
+        <p class="text-white/55 text-sm leading-relaxed">Ongoing maintenance, feature additions, and 24/7 SLA-backed support to keep you running.</p>
+      </div>
+
+      <div class="glass rounded-2xl p-6 flex flex-col items-center justify-center text-center reveal reveal-delay-4">
+        <i class="fa-solid fa-trophy text-accent text-4xl mb-3"></i>
+        <p class="text-white font-display font-bold">99% Client Satisfaction</p>
+        <p class="text-white/50 text-sm mt-1">Across 500+ projects</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ TESTIMONIALS ════════════════════════════════ -->
+<section class="py-24 bg-white">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <div class="section-tag mb-5 reveal">Client Stories</div>
+      <h2 class="font-display text-4xl font-bold text-navy mb-4 reveal reveal-delay-1">What Our Clients <span class="grad-text">Say About Us</span></h2>
+    </div>
+
+    <div id="testimonials" class="relative">
+
+      <div class="testimonial-slide active">
+        <div class="bg-bglight rounded-3xl p-8 md:p-12 text-center">
+          <div class="flex justify-center mb-4">
+            <div class="flex gap-1 text-yellow-400">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            </div>
+          </div>
+          <blockquote class="text-navy text-lg md:text-xl font-medium leading-relaxed mb-8 max-w-2xl mx-auto">
+            "NexaTech transformed our legacy banking system into a modern cloud-native platform in under 6 months. The team's expertise and professionalism are unmatched."
+          </blockquote>
+          <div class="flex items-center justify-center gap-4">
+            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-lg">JM</div>
+            <div class="text-left">
+              <div class="font-semibold text-navy">James Mitchell</div>
+              <div class="text-slate-500 text-sm">CTO, Meridian Bank</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-slide">
+        <div class="bg-bglight rounded-3xl p-8 md:p-12 text-center">
+          <div class="flex justify-center mb-4">
+            <div class="flex gap-1 text-yellow-400">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            </div>
+          </div>
+          <blockquote class="text-navy text-lg md:text-xl font-medium leading-relaxed mb-8 max-w-2xl mx-auto">
+            "Our e-commerce platform saw a 340% increase in conversion rate after NexaTech's complete redesign and performance overhaul. Worth every penny."
+          </blockquote>
+          <div class="flex items-center justify-center gap-4">
+            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center text-white font-bold text-lg">SC</div>
+            <div class="text-left">
+              <div class="font-semibold text-navy">Sarah Chen</div>
+              <div class="text-slate-500 text-sm">CEO, LuxeThread Fashion</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-slide">
+        <div class="bg-bglight rounded-3xl p-8 md:p-12 text-center">
+          <div class="flex justify-center mb-4">
+            <div class="flex gap-1 text-yellow-400">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            </div>
+          </div>
+          <blockquote class="text-navy text-lg md:text-xl font-medium leading-relaxed mb-8 max-w-2xl mx-auto">
+            "The AI recommendation engine NexaTech built for us reduced our customer churn by 28% in the first quarter. Truly a world-class team."
+          </blockquote>
+          <div class="flex items-center justify-center gap-4">
+            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold text-lg">AK</div>
+            <div class="text-left">
+              <div class="font-semibold text-navy">Arjun Kumar</div>
+              <div class="text-slate-500 text-sm">VP Product, StreamFlow SaaS</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="flex items-center justify-center gap-4 mt-8">
+        <button id="prev-slide" class="w-10 h-10 rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all flex items-center justify-center">
+          <i class="fa-solid fa-chevron-left text-sm"></i>
+        </button>
+        <div id="slide-dots" class="flex gap-2">
+          <button class="slide-dot w-2.5 h-2.5 rounded-full bg-primary transition-all"></button>
+          <button class="slide-dot w-2.5 h-2.5 rounded-full bg-slate-300 transition-all"></button>
+          <button class="slide-dot w-2.5 h-2.5 rounded-full bg-slate-300 transition-all"></button>
+        </div>
+        <button id="next-slide" class="w-10 h-10 rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all flex items-center justify-center">
+          <i class="fa-solid fa-chevron-right text-sm"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ TEAM ════════════════════════════════ -->
+<section id="team" class="py-24 bg-bglight">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <div class="section-tag mb-5 reveal">Our Team</div>
+      <h2 class="font-display text-4xl font-bold text-navy mb-4 reveal reveal-delay-1">The People Behind <span class="grad-text">Every Success</span></h2>
+      <p class="text-slate-500 reveal reveal-delay-2">Senior leaders with deep expertise across technology, design, and business strategy.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      <div class="team-card relative bg-white shadow-sm border border-slate-100 reveal">
+        <div class="aspect-[3/4] bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+          <div class="text-center text-white">
+            <div class="w-20 h-20 rounded-full bg-white/20 mx-auto flex items-center justify-center text-3xl mb-2 font-bold font-display">AZ</div>
+          </div>
+        </div>
+        <div class="team-overlay">
+          <div class="flex gap-3 text-white text-xl">
+            <a href="#" class="hover:text-accent transition-colors"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#" class="hover:text-accent transition-colors"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#" class="hover:text-accent transition-colors"><i class="fa-brands fa-github"></i></a>
+          </div>
+        </div>
+        <div class="p-5">
+          <h3 class="font-display font-bold text-navy">Ali Zaidi</h3>
+          <p class="text-slate-500 text-sm">CEO & Co-Founder</p>
+        </div>
+      </div>
+
+      <div class="team-card relative bg-white shadow-sm border border-slate-100 reveal reveal-delay-1">
+        <div class="aspect-[3/4] bg-gradient-to-br from-violet-600 to-pink-500 flex items-center justify-center">
+          <div class="text-center text-white">
+            <div class="w-20 h-20 rounded-full bg-white/20 mx-auto flex items-center justify-center text-3xl mb-2 font-bold font-display">SR</div>
+          </div>
+        </div>
+        <div class="team-overlay">
+          <div class="flex gap-3 text-white text-xl">
+            <a href="#" class="hover:text-accent transition-colors"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#" class="hover:text-accent transition-colors"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#" class="hover:text-accent transition-colors"><i class="fa-brands fa-github"></i></a>
+          </div>
+        </div>
+        <div class="p-5">
+          <h3 class="font-display font-bold text-navy">Sara Rauf</h3>
+          <p class="text-slate-500 text-sm">CTO & Lead Architect</p>
+        </div>
+      </div>
+
+      <div class="team-card relative bg-white shadow-sm border border-slate-100 reveal reveal-delay-2">
+        <div class="aspect-[3/4] bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+          <div class="text-center text-white">
+            <div class="w-20 h-20 rounded-full bg-white/20 mx-auto flex items-center justify-center text-3xl mb-2 font-bold font-display">MK</div>
+          </div>
+        </div>
+        <div class="team-overlay">
+          <div class="flex gap-3 text-white text-xl">
+            <a href="#" class="hover:text-accent transition-colors"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#" class="hover:text-accent transition-colors"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#" class="hover:text-accent transition-colors"><i class="fa-brands fa-dribbble"></i></a>
+          </div>
+        </div>
+        <div class="p-5">
+          <h3 class="font-display font-bold text-navy">Maya Khan</h3>
+          <p class="text-slate-500 text-sm">Head of Design</p>
+        </div>
+      </div>
+
+      <div class="team-card relative bg-white shadow-sm border border-slate-100 reveal reveal-delay-3">
+        <div class="aspect-[3/4] bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
+          <div class="text-center text-white">
+            <div class="w-20 h-20 rounded-full bg-white/20 mx-auto flex items-center justify-center text-3xl mb-2 font-bold font-display">OB</div>
+          </div>
+        </div>
+        <div class="team-overlay">
+          <div class="flex gap-3 text-white text-xl">
+            <a href="#" class="hover:text-accent transition-colors"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#" class="hover:text-accent transition-colors"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#" class="hover:text-accent transition-colors"><i class="fa-brands fa-github"></i></a>
+          </div>
+        </div>
+        <div class="p-5">
+          <h3 class="font-display font-bold text-navy">Omar Baig</h3>
+          <p class="text-slate-500 text-sm">VP Engineering</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ PRICING ════════════════════════════════ -->
+<section id="pricing" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <div class="section-tag mb-5 reveal">Pricing</div>
+      <h2 class="font-display text-4xl font-bold text-navy mb-4 reveal reveal-delay-1">Simple, <span class="grad-text">Transparent Plans</span></h2>
+      <p class="text-slate-500 reveal reveal-delay-2">No hidden fees. All plans include a dedicated account manager and 30-day money-back guarantee.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 items-stretch">
+
+      <!-- Starter -->
+      <div class="pricing-card p-8 reveal">
+        <div class="mb-6">
+          <h3 class="font-display text-lg font-bold text-navy">Starter</h3>
+          <p class="text-slate-500 text-sm mt-1">For early-stage startups and MVPs</p>
+        </div>
+        <div class="mb-6">
+          <span class="text-4xl font-display font-bold text-navy">$2,500</span>
+          <span class="text-slate-400 text-sm">/month</span>
+        </div>
+        <ul class="space-y-3 mb-8 text-sm">
+          <li class="flex items-center gap-3 text-slate-600"><i class="fa-solid fa-check text-success"></i> Up to 3 projects/month</li>
+          <li class="flex items-center gap-3 text-slate-600"><i class="fa-solid fa-check text-success"></i> Web or Mobile development</li>
+          <li class="flex items-center gap-3 text-slate-600"><i class="fa-solid fa-check text-success"></i> Basic UI/UX design</li>
+          <li class="flex items-center gap-3 text-slate-600"><i class="fa-solid fa-check text-success"></i> Email support</li>
+          <li class="flex items-center gap-3 text-slate-400"><i class="fa-solid fa-xmark text-slate-300"></i> 24/7 priority support</li>
+          <li class="flex items-center gap-3 text-slate-400"><i class="fa-solid fa-xmark text-slate-300"></i> AI/ML integrations</li>
+        </ul>
+        <a href="#contact" class="block text-center border-2 border-primary text-primary font-semibold py-3 rounded-xl hover:bg-primary hover:text-white transition-all">Get Started</a>
+      </div>
+
+      <!-- Professional (featured) -->
+      <div class="pricing-card pricing-featured p-8 reveal reveal-delay-1 relative shadow-2xl shadow-blue-900/30">
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-accent text-white text-xs font-bold px-4 py-1.5 rounded-full">Most Popular</div>
+        <div class="mb-6">
+          <h3 class="font-display text-lg font-bold text-white">Professional</h3>
+          <p class="text-white/60 text-sm mt-1">For growing businesses and scale-ups</p>
+        </div>
+        <div class="mb-6">
+          <span class="text-4xl font-display font-bold text-white">$7,500</span>
+          <span class="text-white/50 text-sm">/month</span>
+        </div>
+        <ul class="space-y-3 mb-8 text-sm">
+          <li class="flex items-center gap-3 text-white/80"><i class="fa-solid fa-check text-accent"></i> Up to 8 projects/month</li>
+          <li class="flex items-center gap-3 text-white/80"><i class="fa-solid fa-check text-accent"></i> Web + Mobile + Cloud</li>
+          <li class="flex items-center gap-3 text-white/80"><i class="fa-solid fa-check text-accent"></i> Premium UI/UX design</li>
+          <li class="flex items-center gap-3 text-white/80"><i class="fa-solid fa-check text-accent"></i> 24/7 Priority support</li>
+          <li class="flex items-center gap-3 text-white/80"><i class="fa-solid fa-check text-accent"></i> SEO + Digital Marketing</li>
+          <li class="flex items-center gap-3 text-white/60"><i class="fa-solid fa-xmark text-white/30"></i> Dedicated AI engineer</li>
+        </ul>
+        <a href="#contact" class="block text-center grad-btn text-white font-semibold py-3 rounded-xl hover:opacity-90 transition-all shadow-lg shadow-blue-500/30">Get Started</a>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="pricing-card p-8 reveal reveal-delay-2">
+        <div class="mb-6">
+          <h3 class="font-display text-lg font-bold text-navy">Enterprise</h3>
+          <p class="text-slate-500 text-sm mt-1">For large-scale enterprises and agencies</p>
+        </div>
+        <div class="mb-6">
+          <span class="text-4xl font-display font-bold text-navy">Custom</span>
+        </div>
+        <ul class="space-y-3 mb-8 text-sm">
+          <li class="flex items-center gap-3 text-slate-600"><i class="fa-solid fa-check text-success"></i> Unlimited projects</li>
+          <li class="flex items-center gap-3 text-slate-600"><i class="fa-solid fa-check text-success"></i> Full-stack development</li>
+          <li class="flex items-center gap-3 text-slate-600"><i class="fa-solid fa-check text-success"></i> Dedicated dev team</li>
+          <li class="flex items-center gap-3 text-slate-600"><i class="fa-solid fa-check text-success"></i> AI & ML integrations</li>
+          <li class="flex items-center gap-3 text-slate-600"><i class="fa-solid fa-check text-success"></i> SLA with uptime guarantee</li>
+          <li class="flex items-center gap-3 text-slate-600"><i class="fa-solid fa-check text-success"></i> Custom integrations</li>
+        </ul>
+        <a href="#contact" class="block text-center border-2 border-primary text-primary font-semibold py-3 rounded-xl hover:bg-primary hover:text-white transition-all">Contact Sales</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ FAQ ════════════════════════════════ -->
+<section class="py-24 bg-bglight">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <div class="section-tag mb-5 reveal">FAQs</div>
+      <h2 class="font-display text-4xl font-bold text-navy mb-4 reveal reveal-delay-1">Common <span class="grad-text">Questions</span></h2>
+    </div>
+
+    <div class="space-y-4" id="faq-list">
+
+      <div class="faq-item bg-white rounded-2xl border border-slate-100 overflow-hidden reveal">
+        <button class="faq-trigger w-full flex items-center justify-between p-6 text-left">
+          <span class="font-semibold text-navy pr-4">How long does a typical project take?</span>
+          <i class="faq-icon fa-solid fa-plus text-primary flex-shrink-0"></i>
+        </button>
+        <div class="faq-answer px-6 text-slate-500 text-sm leading-relaxed">
+          <div class="pb-5">It depends on scope. A simple website takes 3–4 weeks; a full mobile app with backend takes 3–4 months; enterprise platforms typically run 6–18 months. We provide a detailed timeline after the discovery phase.</div>
+        </div>
+      </div>
+
+      <div class="faq-item bg-white rounded-2xl border border-slate-100 overflow-hidden reveal reveal-delay-1">
+        <button class="faq-trigger w-full flex items-center justify-between p-6 text-left">
+          <span class="font-semibold text-navy pr-4">Do you work with international clients?</span>
+          <i class="faq-icon fa-solid fa-plus text-primary flex-shrink-0"></i>
+        </button>
+        <div class="faq-answer px-6 text-slate-500 text-sm leading-relaxed">
+          <div class="pb-5">Absolutely. We work with clients across 40+ countries. We use Slack, Zoom, and Jira for collaboration, and structure our working hours to overlap with your timezone wherever possible.</div>
+        </div>
+      </div>
+
+      <div class="faq-item bg-white rounded-2xl border border-slate-100 overflow-hidden reveal reveal-delay-2">
+        <button class="faq-trigger w-full flex items-center justify-between p-6 text-left">
+          <span class="font-semibold text-navy pr-4">What technologies do you specialize in?</span>
+          <i class="faq-icon fa-solid fa-plus text-primary flex-shrink-0"></i>
+        </button>
+        <div class="faq-answer px-6 text-slate-500 text-sm leading-relaxed">
+          <div class="pb-5">React, Next.js, Node.js, Python, Django, Flutter, React Native, AWS, GCP, Azure, PostgreSQL, MongoDB, Docker, Kubernetes, and more. We recommend the right stack based on your specific needs — not our preferences.</div>
+        </div>
+      </div>
+
+      <div class="faq-item bg-white rounded-2xl border border-slate-100 overflow-hidden reveal reveal-delay-3">
+        <button class="faq-trigger w-full flex items-center justify-between p-6 text-left">
+          <span class="font-semibold text-navy pr-4">Who owns the code and IP at the end?</span>
+          <i class="faq-icon fa-solid fa-plus text-primary flex-shrink-0"></i>
+        </button>
+        <div class="faq-answer px-6 text-slate-500 text-sm leading-relaxed">
+          <div class="pb-5">You do — 100%. All code, assets, databases, and intellectual property are transferred to you upon final payment. We sign an NDA at the start of every engagement.</div>
+        </div>
+      </div>
+
+      <div class="faq-item bg-white rounded-2xl border border-slate-100 overflow-hidden reveal reveal-delay-4">
+        <button class="faq-trigger w-full flex items-center justify-between p-6 text-left">
+          <span class="font-semibold text-navy pr-4">Can you take over a project started by another team?</span>
+          <i class="faq-icon fa-solid fa-plus text-primary flex-shrink-0"></i>
+        </button>
+        <div class="faq-answer px-6 text-slate-500 text-sm leading-relaxed">
+          <div class="pb-5">Yes, we rescue projects regularly. We start with a thorough code audit, document what exists, create a remediation plan, and take over development — typically within 2 weeks of engagement start.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ CONTACT ════════════════════════════════ -->
+<section id="contact" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-16">
+
+      <!-- Info -->
+      <div>
+        <div class="section-tag mb-5 reveal">Get In Touch</div>
+        <h2 class="font-display text-4xl font-bold text-navy mb-5 reveal reveal-delay-1">Let's Build Something <span class="grad-text">Remarkable</span></h2>
+        <p class="text-slate-500 leading-relaxed mb-10 reveal reveal-delay-2">
+          Whether you have a detailed brief or just an idea on a napkin, we'd love to hear from you. Our team typically responds within 4 business hours.
+        </p>
+
+        <div class="space-y-5 mb-10 reveal reveal-delay-3">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-phone text-primary"></i>
+            </div>
+            <div>
+              <div class="text-xs text-slate-400 mb-0.5">Phone</div>
+              <a href="tel:+922134567890" class="font-semibold text-navy hover:text-primary transition-colors">+92 (21) 3456-7890</a>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-envelope text-accent"></i>
+            </div>
+            <div>
+              <div class="text-xs text-slate-400 mb-0.5">Email</div>
+              <a href="mailto:hello@nexatech.io" class="font-semibold text-navy hover:text-primary transition-colors">hello@nexatech.io</a>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-success/10 flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-location-dot text-success"></i>
+            </div>
+            <div>
+              <div class="text-xs text-slate-400 mb-0.5">Address</div>
+              <span class="font-semibold text-navy">12 Tech Avenue, Gulberg III, Lahore, Pakistan</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Map embed -->
+        <div class="map-wrapper shadow-lg reveal reveal-delay-4">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3401.7!2d74.3587!3d31.5204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzHCsDMxJzEzLjYiTiA3NMKwMjEnMzEuMyJF!5e0!3m2!1sen!2spk!4v1"
+            width="100%" height="220" style="border:0; display:block;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="reveal reveal-delay-2">
+        <div class="bg-bglight rounded-3xl p-8">
+          <h3 class="font-display font-bold text-navy text-xl mb-6">Send Us a Message</h3>
+          <div id="contact-form" class="space-y-4">
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">First Name *</label>
+                <input id="fname" type="text" placeholder="John"
+                  class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-navy placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">Last Name *</label>
+                <input id="lname" type="text" placeholder="Doe"
+                  class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-navy placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm" />
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1.5">Email Address *</label>
+              <input id="email" type="email" placeholder="john@company.com"
+                class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-navy placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1.5">Service Interested In</label>
+              <select id="service"
+                class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-navy focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm appearance-none">
+                <option value="">Select a service...</option>
+                <option>Web Development</option>
+                <option>Mobile App Development</option>
+                <option>UI/UX Design</option>
+                <option>Cloud Solutions</option>
+                <option>AI Solutions</option>
+                <option>Cyber Security</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1.5">Message *</label>
+              <textarea id="message" rows="4" placeholder="Tell us about your project..."
+                class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-navy placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm resize-none"></textarea>
+            </div>
+            <div id="form-error" class="text-red-500 text-sm hidden"></div>
+            <div id="form-success" class="text-success text-sm bg-success/10 rounded-xl px-4 py-3 hidden">
+              <i class="fa-solid fa-circle-check mr-2"></i>Message sent! We'll be in touch within 4 business hours.
+            </div>
+            <button onclick="submitForm()" class="w-full grad-btn text-white font-semibold py-4 rounded-xl hover:opacity-90 hover:shadow-lg hover:shadow-blue-500/30 transition-all flex items-center justify-center gap-2">
+              Send Message <i class="fa-solid fa-paper-plane text-sm"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ NEWSLETTER ════════════════════════════════ -->
+<section class="py-16 bg-bglight border-t border-slate-100">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 text-center">
+    <div class="section-tag mb-4 mx-auto w-fit reveal">Newsletter</div>
+    <h2 class="font-display text-3xl font-bold text-navy mb-3 reveal reveal-delay-1">Stay Ahead in Tech</h2>
+    <p class="text-slate-500 text-sm mb-8 reveal reveal-delay-2">Monthly insights on software trends, AI, and growth strategies — no spam, ever.</p>
+    <div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto reveal reveal-delay-3">
+      <input id="newsletter-email" type="email" placeholder="your@email.com"
+        class="flex-1 px-5 py-3.5 rounded-xl border border-slate-200 bg-white text-navy placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary text-sm" />
+      <button onclick="subscribeNewsletter()" class="grad-btn text-white font-semibold px-6 py-3.5 rounded-xl hover:opacity-90 transition-all text-sm whitespace-nowrap">
+        Subscribe
       </button>
     </div>
+    <div id="nl-success" class="text-success text-sm mt-3 hidden"><i class="fa-solid fa-check mr-1"></i> You're subscribed!</div>
   </div>
-  <!-- Mobile menu -->
-  <div id="mobile-menu" class="md:hidden bg-white/95 backdrop-blur-sm border-b border-gray-200 px-4 pb-4 flex flex-col space-y-3 text-base font-medium">
-    <a href="#hero" class="py-1 hover:text-[#2563EB]">Home</a>
-    <a href="#about" class="py-1 hover:text-[#2563EB]">About</a>
-    <a href="#services" class="py-1 hover:text-[#2563EB]">Services</a>
-    <a href="#portfolio" class="py-1 hover:text-[#2563EB]">Portfolio</a>
-    <a href="#pricing" class="py-1 hover:text-[#2563EB]">Pricing</a>
-    <a href="#contact" class="py-1 hover:text-[#2563EB]">Contact</a>
-    <a href="#contact" class="bg-[#2563EB] text-white text-center px-4 py-2 rounded-full font-semibold">Get Free Consultation</a>
+</section>
+
+<!-- ════════════════════════════════ FOOTER ════════════════════════════════ -->
+<footer class="grad-bg pt-16 pb-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+
+      <!-- Brand -->
+      <div class="lg:col-span-1">
+        <div class="flex items-center gap-2.5 mb-4">
+          <div class="w-9 h-9 rounded-xl grad-btn flex items-center justify-center">
+            <i class="fa-solid fa-bolt text-white text-sm"></i>
+          </div>
+          <span class="font-display font-700 text-white text-xl tracking-tight">Nexa<span class="text-accent font-bold">Tech</span></span>
+        </div>
+        <p class="text-white/50 text-sm leading-relaxed mb-5">15+ years of building technology that drives business growth — from Lahore to the world.</p>
+        <div class="flex gap-3">
+          <a href="#" class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-white/70 hover:bg-primary hover:text-white transition-all"><i class="fa-brands fa-linkedin text-sm"></i></a>
+          <a href="#" class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-white/70 hover:bg-primary hover:text-white transition-all"><i class="fa-brands fa-twitter text-sm"></i></a>
+          <a href="#" class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-white/70 hover:bg-primary hover:text-white transition-all"><i class="fa-brands fa-github text-sm"></i></a>
+          <a href="#" class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-white/70 hover:bg-primary hover:text-white transition-all"><i class="fa-brands fa-instagram text-sm"></i></a>
+        </div>
+      </div>
+
+      <!-- Services -->
+      <div>
+        <h4 class="font-display font-bold text-white mb-4">Services</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="#services" class="text-white/50 hover:text-white transition-colors">Web Development</a></li>
+          <li><a href="#services" class="text-white/50 hover:text-white transition-colors">Mobile App Development</a></li>
+          <li><a href="#services" class="text-white/50 hover:text-white transition-colors">UI/UX Design</a></li>
+          <li><a href="#services" class="text-white/50 hover:text-white transition-colors">Cloud Solutions</a></li>
+          <li><a href="#services" class="text-white/50 hover:text-white transition-colors">AI Solutions</a></li>
+          <li><a href="#services" class="text-white/50 hover:text-white transition-colors">Cyber Security</a></li>
+        </ul>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h4 class="font-display font-bold text-white mb-4">Company</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="#about"     class="text-white/50 hover:text-white transition-colors">About Us</a></li>
+          <li><a href="#portfolio" class="text-white/50 hover:text-white transition-colors">Portfolio</a></li>
+          <li><a href="#team"      class="text-white/50 hover:text-white transition-colors">Our Team</a></li>
+          <li><a href="#pricing"   class="text-white/50 hover:text-white transition-colors">Pricing</a></li>
+          <li><a href="#contact"   class="text-white/50 hover:text-white transition-colors">Contact</a></li>
+          <li><a href="#"          class="text-white/50 hover:text-white transition-colors">Careers</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div>
+        <h4 class="font-display font-bold text-white mb-4">Contact</h4>
+        <ul class="space-y-3 text-sm">
+          <li class="flex items-start gap-3 text-white/50">
+            <i class="fa-solid fa-location-dot text-accent mt-0.5"></i>
+            12 Tech Avenue, Gulberg III, Lahore, Pakistan
+          </li>
+          <li class="flex items-center gap-3 text-white/50">
+            <i class="fa-solid fa-phone text-accent"></i>
+            <a href="tel:+922134567890" class="hover:text-white transition-colors">+92 (21) 3456-7890</a>
+          </li>
+          <li class="flex items-center gap-3 text-white/50">
+            <i class="fa-solid fa-envelope text-accent"></i>
+            <a href="mailto:hello@nexatech.io" class="hover:text-white transition-colors">hello@nexatech.io</a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/40">
+      <p>&copy; 2024 NexaTech Solutions. All rights reserved.</p>
+      <div class="flex gap-5">
+        <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+        <a href="#" class="hover:text-white transition-colors">Sitemap</a>
+      </div>
+    </div>
   </div>
-</header>
-
-<main class="pt-16 md:pt-20">
-  <!-- ===== HERO ===== -->
-  <section id="hero" class="relative bg-gradient-to-br from-[#F8FAFC] via-white to-[#eef2ff] py-12 md:py-20 overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-10 items-center">
-      <div class="space-y-6 reveal">
-        <span class="inline-block bg-[#2563EB]/10 text-[#2563EB] px-4 py-1.5 rounded-full text-sm font-semibold tracking-wide"><i class="fas fa-bolt mr-2"></i> 15+ years of excellence</span>
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight text-[#0F172A]">Transforming Businesses Through <span class="text-[#2563EB]">Technology</span> For Over 15 Years</h1>
-        <p class="text-lg text-gray-600 max-w-lg">Future-ready digital solutions for startups, enterprises, and global brands. Built with precision, powered by innovation.</p>
-        <div class="flex flex-wrap gap-4 pt-2">
-          <a href="#contact" class="bg-[#2563EB] text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:bg-[#1d4ed8] transition-all hover:shadow-xl"><i class="fas fa-rocket mr-2"></i>Get Started</a>
-          <a href="#services" class="bg-white text-[#0F172A] px-8 py-3 rounded-full font-semibold border border-gray-300 shadow-sm hover:bg-gray-50 transition-all"><i class="fas fa-eye mr-2"></i>View Services</a>
-        </div>
-        <!-- stats -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-gray-200/80">
-          <div><span class="counter text-2xl font-bold text-[#2563EB]">15+</span><p class="text-sm text-gray-500">Years Experience</p></div>
-          <div><span class="counter text-2xl font-bold text-[#2563EB]">500+</span><p class="text-sm text-gray-500">Projects</p></div>
-          <div><span class="counter text-2xl font-bold text-[#2563EB]">300+</span><p class="text-sm text-gray-500">Happy Clients</p></div>
-          <div><span class="counter text-2xl font-bold text-[#2563EB]">99%</span><p class="text-sm text-gray-500">Satisfaction</p></div>
-        </div>
-      </div>
-      <div class="relative flex justify-center md:justify-end reveal">
-        <div class="w-full max-w-md aspect-square bg-gradient-to-tr from-[#2563EB]/20 to-[#06B6D4]/20 rounded-3xl flex items-center justify-center glass-card shadow-2xl p-6">
-          <i class="fas fa-code text-8xl text-[#2563EB]/60"></i>
-          <div class="absolute -top-4 -right-4 w-20 h-20 bg-[#06B6D4]/30 rounded-full blur-2xl"></div>
-          <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-[#2563EB]/20 rounded-full blur-3xl"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== ABOUT ===== -->
-  <section id="about" class="py-16 md:py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12 items-center">
-      <div class="order-2 md:order-1 reveal">
-        <span class="text-[#2563EB] font-semibold text-sm tracking-wider"><i class="fas fa-flag mr-2"></i> ABOUT US</span>
-        <h2 class="text-3xl md:text-4xl font-bold mt-2">Driven by innovation, <span class="text-[#2563EB]">trusted for 15+ years</span></h2>
-        <p class="text-gray-600 mt-4 leading-relaxed">IT Nova is a full-cycle software development company with a passion for crafting digital experiences that drive growth. Our mission is to deliver future-ready solutions with agility and transparency.</p>
-        <div class="grid grid-cols-2 gap-4 mt-6">
-          <div><i class="fas fa-check-circle text-[#10B981] mr-2"></i> 500+ successful deliveries</div>
-          <div><i class="fas fa-check-circle text-[#10B981] mr-2"></i> 24/7 dedicated support</div>
-          <div><i class="fas fa-check-circle text-[#10B981] mr-2"></i> Agile & DevOps driven</div>
-          <div><i class="fas fa-check-circle text-[#10B981] mr-2"></i> ISO 27001 compliant</div>
-        </div>
-        <a href="#services" class="inline-block mt-6 text-[#2563EB] font-semibold hover:underline">Explore our story <i class="fas fa-arrow-right ml-1"></i></a>
-      </div>
-      <div class="order-1 md:order-2 flex justify-center reveal">
-        <div class="bg-[#eef2ff] w-full max-w-sm aspect-square rounded-3xl flex items-center justify-center shadow-lg"><i class="fas fa-users text-7xl text-[#2563EB]/40"></i></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== SERVICES ===== -->
-  <section id="services" class="py-16 md:py-24 bg-[#F8FAFC]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <span class="text-[#2563EB] font-semibold text-sm tracking-wider"><i class="fas fa-cogs mr-2"></i> SERVICES</span>
-      <h2 class="text-3xl md:text-4xl font-bold mt-2">What we deliver</h2>
-      <p class="text-gray-500 max-w-2xl mx-auto mt-3">End-to-end IT solutions tailored to your business needs.</p>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-        <!-- cards generated from array via JS below, but we'll place static fallback + dynamic -->
-        <div id="service-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== WHY CHOOSE US ===== -->
-  <section class="py-16 md:py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <span class="text-[#2563EB] font-semibold text-sm tracking-wider"><i class="fas fa-medal mr-2"></i> WHY US</span>
-      <h2 class="text-3xl md:text-4xl font-bold mt-2">Built to deliver excellence</h2>
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mt-10">
-        <div class="bg-[#F8FAFC] p-6 rounded-2xl shadow-sm hover:shadow-md transition-all hover:scale-[1.02]"><i class="fas fa-clock text-3xl text-[#2563EB]"></i><h4 class="font-bold mt-3">15+ Years</h4><p class="text-sm text-gray-500">Proven track record</p></div>
-        <div class="bg-[#F8FAFC] p-6 rounded-2xl shadow-sm hover:shadow-md transition-all hover:scale-[1.02]"><i class="fas fa-users text-3xl text-[#2563EB]"></i><h4 class="font-bold mt-3">Expert Team</h4><p class="text-sm text-gray-500">Top 1% developers</p></div>
-        <div class="bg-[#F8FAFC] p-6 rounded-2xl shadow-sm hover:shadow-md transition-all hover:scale-[1.02]"><i class="fas fa-sync-alt text-3xl text-[#2563EB]"></i><h4 class="font-bold mt-3">Agile Process</h4><p class="text-sm text-gray-500">Iterative & transparent</p></div>
-        <div class="bg-[#F8FAFC] p-6 rounded-2xl shadow-sm hover:shadow-md transition-all hover:scale-[1.02]"><i class="fas fa-tag text-3xl text-[#2563EB]"></i><h4 class="font-bold mt-3">Transparent Pricing</h4><p class="text-sm text-gray-500">No hidden fees</p></div>
-        <div class="bg-[#F8FAFC] p-6 rounded-2xl shadow-sm hover:shadow-md transition-all hover:scale-[1.02]"><i class="fas fa-headset text-3xl text-[#2563EB]"></i><h4 class="font-bold mt-3">24/7 Support</h4><p class="text-sm text-gray-500">Always available</p></div>
-        <div class="bg-[#F8FAFC] p-6 rounded-2xl shadow-sm hover:shadow-md transition-all hover:scale-[1.02]"><i class="fas fa-shield-alt text-3xl text-[#2563EB]"></i><h4 class="font-bold mt-3">Quality Assurance</h4><p class="text-sm text-gray-500">Secure & robust</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== PORTFOLIO (filterable) ===== -->
-  <section id="portfolio" class="py-16 md:py-24 bg-[#F8FAFC]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <span class="text-[#2563EB] font-semibold text-sm tracking-wider"><i class="fas fa-folder-open mr-2"></i> PORTFOLIO</span>
-      <h2 class="text-3xl md:text-4xl font-bold mt-2">Recent work</h2>
-      <div class="flex flex-wrap justify-center gap-3 mt-6">
-        <button class="filter-btn px-4 py-1.5 rounded-full bg-[#2563EB] text-white text-sm" data-filter="all">All</button>
-        <button class="filter-btn px-4 py-1.5 rounded-full bg-white border border-gray-300 text-sm hover:bg-gray-100" data-filter="web">Web</button>
-        <button class="filter-btn px-4 py-1.5 rounded-full bg-white border border-gray-300 text-sm hover:bg-gray-100" data-filter="mobile">Mobile</button>
-        <button class="filter-btn px-4 py-1.5 rounded-full bg-white border border-gray-300 text-sm hover:bg-gray-100" data-filter="ai">AI</button>
-      </div>
-      <div id="portfolio-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8"></div>
-    </div>
-  </section>
-
-  <!-- ===== TESTIMONIALS (auto slider) ===== -->
-  <section class="py-16 md:py-20 bg-white">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <span class="text-[#2563EB] font-semibold text-sm tracking-wider"><i class="fas fa-quote-right mr-2"></i> TESTIMONIALS</span>
-      <h2 class="text-3xl md:text-4xl font-bold mt-2">What clients say</h2>
-      <div id="testimonial-slider" class="relative mt-10 overflow-hidden h-48">
-        <div id="testimonial-track" class="flex transition-transform duration-500 ease-in-out"></div>
-      </div>
-      <div class="flex justify-center gap-2 mt-4">
-        <button id="prev-testi" class="w-8 h-8 rounded-full bg-gray-200 hover:bg-[#2563EB] hover:text-white transition"><i class="fas fa-chevron-left"></i></button>
-        <button id="next-testi" class="w-8 h-8 rounded-full bg-gray-200 hover:bg-[#2563EB] hover:text-white transition"><i class="fas fa-chevron-right"></i></button>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== PRICING ===== -->
-  <section id="pricing" class="py-16 md:py-24 bg-[#F8FAFC]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <span class="text-[#2563EB] font-semibold text-sm tracking-wider"><i class="fas fa-tags mr-2"></i> PRICING</span>
-      <h2 class="text-3xl md:text-4xl font-bold mt-2">Choose your plan</h2>
-      <div class="grid md:grid-cols-3 gap-6 mt-10">
-        <div class="bg-white p-8 rounded-3xl shadow-md hover:shadow-xl transition-all"><h3 class="text-xl font-bold">Starter</h3><p class="text-3xl font-extrabold mt-2">$29<span class="text-sm font-light text-gray-500">/mo</span></p><ul class="mt-4 space-y-2 text-left"><li><i class="fas fa-check text-[#10B981] mr-2"></i> 5 pages</li><li><i class="fas fa-check text-[#10B981] mr-2"></i> Basic SEO</li><li><i class="fas fa-check text-[#10B981] mr-2"></i> 24/7 support</li></ul><a href="#contact" class="mt-6 inline-block w-full bg-gray-200 py-2 rounded-full font-semibold hover:bg-[#2563EB] hover:text-white transition">Get started</a></div>
-        <div class="bg-white p-8 rounded-3xl shadow-xl border-2 border-[#2563EB] relative"><span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#2563EB] text-white px-4 py-0.5 rounded-full text-xs">Popular</span><h3 class="text-xl font-bold">Professional</h3><p class="text-3xl font-extrabold mt-2">$79<span class="text-sm font-light text-gray-500">/mo</span></p><ul class="mt-4 space-y-2 text-left"><li><i class="fas fa-check text-[#10B981] mr-2"></i> 20 pages</li><li><i class="fas fa-check text-[#10B981] mr-2"></i> Advanced SEO</li><li><i class="fas fa-check text-[#10B981] mr-2"></i> Priority support</li></ul><a href="#contact" class="mt-6 inline-block w-full bg-[#2563EB] text-white py-2 rounded-full font-semibold hover:bg-[#1d4ed8] transition">Start now</a></div>
-        <div class="bg-white p-8 rounded-3xl shadow-md hover:shadow-xl transition-all"><h3 class="text-xl font-bold">Enterprise</h3><p class="text-3xl font-extrabold mt-2">Custom</p><ul class="mt-4 space-y-2 text-left"><li><i class="fas fa-check text-[#10B981] mr-2"></i> Unlimited pages</li><li><i class="fas fa-check text-[#10B981] mr-2"></i> Full customization</li><li><i class="fas fa-check text-[#10B981] mr-2"></i> Dedicated team</li></ul><a href="#contact" class="mt-6 inline-block w-full bg-gray-200 py-2 rounded-full font-semibold hover:bg-[#2563EB] hover:text-white transition">Contact sales</a></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== FAQ ===== -->
-  <section class="py-16 md:py-20 bg-white">
-    <div class="max-w-3xl mx-auto px-4">
-      <h2 class="text-3xl font-bold text-center">Frequently asked questions</h2>
-      <div class="mt-8 space-y-4" id="faq-container"></div>
-    </div>
-  </section>
-
-  <!-- ===== CONTACT + MAP ===== -->
-  <section id="contact" class="py-16 md:py-24 bg-[#F8FAFC]">
-    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-10">
-      <div class="bg-white p-8 rounded-3xl shadow-lg"><h3 class="text-2xl font-bold">Let's talk</h3><p class="text-gray-500 mt-1">We respond within 24 hours.</p>
-        <form id="contactForm" class="mt-6 space-y-4"><input type="text" placeholder="Full name" class="w-full border border-gray-300 rounded-xl px-4 py-3" required/><input type="email" placeholder="Email address" class="w-full border border-gray-300 rounded-xl px-4 py-3" required/><textarea rows="3" placeholder="Message" class="w-full border border-gray-300 rounded-xl px-4 py-3"></textarea><button type="submit" class="bg-[#2563EB] text-white px-8 py-3 rounded-full font-semibold hover:bg-[#1d4ed8] transition">Send message <i class="fas fa-arrow-right ml-1"></i></button></form>
-        <div class="mt-4 flex gap-4 text-sm"><i class="fas fa-phone text-[#2563EB]"></i> +1 (800) 555-0199 <i class="fas fa-envelope ml-4 text-[#2563EB]"></i> hello@itnova.com</div>
-      </div>
-      <div class="h-64 md:h-auto bg-gray-200 rounded-3xl overflow-hidden shadow-lg"><iframe class="w-full h-full" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.15830913655!2d-74.11976353808986!3d40.69766374874175!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY!5e0!3m2!1sen!2sus!4v1710000000000" style="border:0;" allowfullscreen loading="lazy"></iframe></div>
-    </div>
-  </section>
-
-  <!-- ===== NEWSLETTER ===== -->
-  <section class="bg-[#0F172A] text-white py-12">
-    <div class="max-w-2xl mx-auto px-4 text-center"><h3 class="text-2xl font-bold">Join our newsletter</h3><p class="text-gray-300 mb-4">Get the latest tech insights</p><form class="flex flex-col sm:flex-row gap-3"><input type="email" placeholder="Your email" class="flex-1 px-4 py-3 rounded-full text-black"/><button class="bg-[#2563EB] px-6 py-3 rounded-full font-semibold hover:bg-[#1d4ed8] transition">Subscribe</button></form></div>
-  </section>
-</main>
-
-<!-- ===== FOOTER ===== -->
-<footer class="bg-[#0F172A]/95 text-white/80 border-t border-white/10 py-10">
-  <div class="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 text-sm"><div><span class="font-bold text-white">ITNova</span><p class="mt-2">Premium IT services since 2010</p></div><div><h5 class="text-white font-semibold">Services</h5><ul class="mt-2 space-y-1"><li>Web Dev</li><li>Mobile</li><li>AI</li></ul></div><div><h5 class="text-white font-semibold">Quick Links</h5><ul class="mt-2 space-y-1"><li>About</li><li>Portfolio</li><li>Contact</li></ul></div><div><h5 class="text-white font-semibold">Social</h5><div class="flex gap-3 mt-2 text-xl"><i class="fab fa-linkedin"></i><i class="fab fa-twitter"></i><i class="fab fa-github"></i></div></div></div>
-  <div class="text-center text-xs text-white/50 border-t border-white/10 mt-8 pt-6">© 2026 ITNova. All rights reserved.</div>
 </footer>
 
+<!-- ════════════════════════════════ JAVASCRIPT ════════════════════════════════ -->
 <script>
-  (function() {
-    // ---- MOBILE MENU ----
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  /* ── Loader ── */
+  window.addEventListener('load', () => {
+    setTimeout(() => document.getElementById('loader').classList.add('hidden'), 600);
+  });
 
-    // ---- SERVICES DATA ----
-    const services = [
-      "Web Development","Mobile App Development","UI/UX Design","E-Commerce Solutions",
-      "Cloud Solutions","Digital Marketing","SEO Optimization","Custom Software Development",
-      "AI Solutions","Cyber Security"
-    ];
-    const icons = ["fa-globe","fa-mobile-alt","fa-paint-brush","fa-shopping-cart","fa-cloud",
-      "fa-bullhorn","fa-search","fa-code","fa-robot","fa-shield-alt"];
-    const container = document.getElementById('service-container');
-    if(container) {
-      container.innerHTML = services.map((s,i) => `
-        <div class="service-card bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all">
-          <i class="fas ${icons[i] || 'fa-cog'} text-3xl text-[#2563EB]"></i>
-          <h4 class="font-bold text-lg mt-3">${s}</h4>
-          <p class="text-sm text-gray-500">Lorem ipsum dolor sit amet.</p>
-          <a href="#" class="inline-block mt-3 text-[#2563EB] font-medium text-sm hover:underline">Learn More <i class="fas fa-arrow-right ml-1"></i></a>
-        </div>
-      `).join('');
-    }
+  /* ── Navbar Scroll ── */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+    document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 400);
+  });
 
-    // ---- PORTFOLIO (filterable) ----
-    const portfolioItems = [
-      { title: "Fintech Dashboard", category: "web", img: "fa-chart-line" },
-      { title: "Health App", category: "mobile", img: "fa-heartbeat" },
-      { title: "AI chatbot", category: "ai", img: "fa-brain" },
-      { title: "E-commerce platform", category: "web", img: "fa-store" },
-      { title: "Fitness tracker", category: "mobile", img: "fa-running" },
-      { title: "Predictive analytics", category: "ai", img: "fa-chart-pie" }
-    ];
-    const portfolioGrid = document.getElementById('portfolio-grid');
-    function renderPortfolio(filter = 'all') {
-      const filtered = filter === 'all' ? portfolioItems : portfolioItems.filter(p => p.category === filter);
-      portfolioGrid.innerHTML = filtered.map((p, idx) => `
-        <div class="bg-white p-5 rounded-2xl shadow hover:shadow-xl transition-all flex flex-col items-center">
-          <i class="fas ${p.img} text-5xl text-[#2563EB]/70"></i>
-          <h4 class="font-bold mt-3">${p.title}</h4>
-          <span class="text-xs bg-gray-200 px-3 py-0.5 rounded-full mt-1">${p.category}</span>
-          <a href="#" class="mt-2 text-[#2563EB] text-sm">Live preview <i class="fas fa-external-link-alt ml-1"></i></a>
-        </div>
-      `).join('');
-    }
-    renderPortfolio('all');
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('bg-[#2563EB]','text-white'));
-        this.classList.add('bg-[#2563EB]','text-white');
-        renderPortfolio(this.dataset.filter);
+  /* ── Mobile Menu ── */
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  menuBtn.addEventListener('click', () => {
+    const open = mobileMenu.classList.toggle('open');
+    menuBtn.innerHTML = open
+      ? '<i class="fa-solid fa-xmark text-lg"></i>'
+      : '<i class="fa-solid fa-bars text-lg"></i>';
+  });
+  // Close on link click
+  document.querySelectorAll('#mobile-menu a').forEach(a => a.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    menuBtn.innerHTML = '<i class="fa-solid fa-bars text-lg"></i>';
+  }));
+
+  /* ── Scroll Reveal ── */
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  /* ── Counter Animation ── */
+  function animateCounter(el) {
+    const target = +el.dataset.count;
+    const duration = 1800;
+    const step = target / (duration / 16);
+    let current = 0;
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = Math.floor(current) + (target >= 100 ? '+' : (target === 99 ? '%' : '+'));
+      if (current >= target) clearInterval(timer);
+    }, 16);
+  }
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        animateCounter(e.target);
+        counterObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
+
+  /* ── Portfolio Filter ── */
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const filter = this.dataset.filter;
+      document.querySelectorAll('#portfolio-grid [data-category]').forEach(card => {
+        const show = filter === 'all' || card.dataset.category === filter;
+        card.style.transition = 'opacity 0.3s, transform 0.3s';
+        card.style.opacity = show ? '1' : '0.15';
+        card.style.transform = show ? 'scale(1)' : 'scale(0.97)';
+        card.style.pointerEvents = show ? 'auto' : 'none';
       });
     });
+  });
 
-    // ---- TESTIMONIALS AUTO SLIDER ----
-    const testimonials = [
-      { name: "Alice M.", text: "Incredible transformation! Our platform now handles 10x traffic.", stars: 5 },
-      { name: "James K.", text: "Professional, agile, and truly innovative. Highly recommend.", stars: 5 },
-      { name: "Sophia L.", text: "The team delivered ahead of schedule with top quality.", stars: 5 }
-    ];
-    const track = document.getElementById('testimonial-track');
-    let currentTesti = 0;
-    function renderTesti() {
-      track.innerHTML = testimonials.map(t => `
-        <div class="flex-shrink-0 w-full px-4 text-center">
-          <div class="flex justify-center text-[#F59E0B]">${'★'.repeat(t.stars)}</div>
-          <p class="text-lg italic">“${t.text}”</p>
-          <p class="font-semibold mt-2">— ${t.name}</p>
-        </div>
-      `).join('');
-      track.style.transform = `translateX(-${currentTesti * 100}%)`;
+  /* ── Testimonials Slider ── */
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.testimonial-slide');
+  const dots   = document.querySelectorAll('.slide-dot');
+
+  function goToSlide(n) {
+    slides[currentSlide].classList.remove('active');
+    dots[currentSlide].classList.remove('bg-primary');
+    dots[currentSlide].classList.add('bg-slate-300');
+    currentSlide = (n + slides.length) % slides.length;
+    slides[currentSlide].classList.add('active');
+    dots[currentSlide].classList.add('bg-primary');
+    dots[currentSlide].classList.remove('bg-slate-300');
+  }
+
+  document.getElementById('next-slide').addEventListener('click', () => goToSlide(currentSlide + 1));
+  document.getElementById('prev-slide').addEventListener('click', () => goToSlide(currentSlide - 1));
+  dots.forEach((d, i) => d.addEventListener('click', () => goToSlide(i)));
+  setInterval(() => goToSlide(currentSlide + 1), 5000);
+
+  /* ── FAQ Accordion ── */
+  document.querySelectorAll('.faq-trigger').forEach(trigger => {
+    trigger.addEventListener('click', function () {
+      const item   = this.closest('.faq-item');
+      const answer = item.querySelector('.faq-answer');
+      const isOpen = item.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq-item').forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.faq-answer').classList.remove('open');
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        answer.classList.add('open');
+      }
+    });
+  });
+
+  /* ── Form Validation ── */
+  function submitForm() {
+    const fname   = document.getElementById('fname').value.trim();
+    const lname   = document.getElementById('lname').value.trim();
+    const email   = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+    const errEl   = document.getElementById('form-error');
+    const sucEl   = document.getElementById('form-success');
+
+    errEl.classList.add('hidden');
+    sucEl.classList.add('hidden');
+
+    if (!fname || !lname) return showError('Please enter your full name.');
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showError('Please enter a valid email address.');
+    if (!message) return showError('Please write a message.');
+
+    sucEl.classList.remove('hidden');
+    ['fname','lname','email','service','message'].forEach(id => document.getElementById(id).value = '');
+
+    function showError(msg) { errEl.textContent = msg; errEl.classList.remove('hidden'); }
+  }
+
+  /* ── Newsletter ── */
+  function subscribeNewsletter() {
+    const el  = document.getElementById('newsletter-email');
+    const suc = document.getElementById('nl-success');
+    if (!el.value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim())) {
+      el.style.borderColor = '#ef4444';
+      setTimeout(() => el.style.borderColor = '', 2000);
+      return;
     }
-    renderTesti();
-    document.getElementById('next-testi')?.addEventListener('click', ()=>{ currentTesti = (currentTesti+1)%testimonials.length; renderTesti(); });
-    document.getElementById('prev-testi')?.addEventListener('click', ()=>{ currentTesti = (currentTesti-1+testimonials.length)%testimonials.length; renderTesti(); });
-    setInterval(()=>{ currentTesti = (currentTesti+1)%testimonials.length; renderTesti(); }, 4000);
-
-    // ---- FAQ ACCORDION ----
-    const faqData = [
-      { q: "What technologies do you use?", a: "React, Node, Python, AWS, and more." },
-      { q: "Do you offer post-launch support?", a: "Yes, 24/7 maintenance & support plans." }
-    ];
-    const faqContainer = document.getElementById('faq-container');
-    faqContainer.innerHTML = faqData.map((item, idx) => `
-      <div class="border border-gray-200 rounded-xl p-4 cursor-pointer faq-item">
-        <div class="flex justify-between items-center"><h4 class="font-semibold">${item.q}</h4><i class="fas fa-chevron-down text-[#2563EB]"></i></div>
-        <div class="faq-answer text-gray-600">${item.a}</div>
-      </div>
-    `).join('');
-    document.querySelectorAll('.faq-item').forEach((el, idx) => {
-      el.addEventListener('click', function() {
-        const answer = this.querySelector('.faq-answer');
-        const icon = this.querySelector('i');
-        answer.classList.toggle('open');
-        icon.classList.toggle('fa-chevron-down');
-        icon.classList.toggle('fa-chevron-up');
-      });
-    });
-
-    // ---- SCROLL REVEAL ----
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
-    reveals.forEach(el => observer.observe(el));
-
-    // ---- CONTACT FORM VALIDATION ----
-    document.getElementById('contactForm')?.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const email = this.querySelector('input[type="email"]');
-      if(email && !email.value.includes('@')) { alert('Please enter a valid email.'); return; }
-      alert('Thank you! We will get back to you shortly.');
-      this.reset();
-    });
-
-    // ---- SMOOTH SCROLL ----
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        const target = document.querySelector(this.getAttribute('href'));
-        if(target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); mobileMenu.classList.remove('open'); }
-      });
-    });
-  })();
+    el.value = '';
+    suc.classList.remove('hidden');
+    setTimeout(() => suc.classList.add('hidden'), 4000);
+  }
 </script>
-
 </body>
 </html>
