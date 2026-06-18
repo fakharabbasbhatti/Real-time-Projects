@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+  <meta name="description" content="Premium IT Services & Software Development | 15+ years transforming businesses with web, mobile, AI & cloud solutions." />
+  <title>IT Nova | Premium IT Services</title>
+  <!-- Tailwind via CDN + base layer -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    /* custom micro-interactions, glassmorphism, scroll reveal base */
+    body { scroll-behavior: smooth; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    .glass-card { background: rgba(255,255,255,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); }
+    .hover-scale { transition: all 0.25s ease-in-out; }
+    .hover-scale:hover { transform: scale(1.02); box-shadow: 0 20px 30px -10px rgba(0,0,0,0.15); }
+    .service-card { transition: all 0.3s ease; }
+    .service-card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(37,99,235,0.15); }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.3s ease; }
+    .faq-answer.open { max-height: 300px; padding-top: 0.75rem; }
+    .counter { font-variant-numeric: tabular-nums; }
+    /* mobile hamburger */
+    #mobile-menu { transition: transform 0.25s ease, opacity 0.2s ease; transform: scaleY(0); transform-origin: top; opacity: 0; }
+    #mobile-menu.open { transform: scaleY(1); opacity: 1; }
+    /* scroll reveal (simple) */
+    .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.2, 0.9, 0.3, 1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    /* active nav link style */
+    .nav-link.active { color: #2563EB; font-weight: 600; }
+  </style>
+</head>
+<body class="bg-[#F8FAFC] text-[#0F172A] antialiased">
+
+<!-- ===== STICKY HEADER ===== -->
+<header id="header" class="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-200/50 transition-all">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16 md:h-20">
+    <!-- Logo -->
+    <div class="flex items-center gap-2">
+      <i class="fas fa-cubes text-2xl text-[#2563EB]"></i>
+      <span class="font-bold text-xl tracking-tight text-[#0F172A]">IT<span class="text-[#2563EB]">Nova</span></span>
+    </div>
+    <!-- Desktop nav -->
+    <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
+      <a href="#hero" class="nav-link hover:text-[#2563EB] transition">Home</a>
+      <a href="#about" class="nav-link hover:text-[#2563EB] transition">About</a>
+      <a href="#services" class="nav-link hover:text-[#2563EB] transition">Services</a>
+      <a href="#portfolio" class="nav-link hover:text-[#2563EB] transition">Portfolio</a>
+      <a href="#pricing" class="nav-link hover:text-[#2563EB] transition">Pricing</a>
+      <a href="#contact" class="nav-link hover:text-[#2563EB] transition">Contact</a>
+    </nav>
+    <!-- CTA + mobile toggle -->
+    <div class="flex items-center gap-3">
+      <a href="#contact" class="hidden md:inline-block bg-[#2563EB] text-white px-5 py-2 rounded-full text-sm font-semibold shadow-md hover:bg-[#1d4ed8] transition-all hover:shadow-lg">Get Free Consultation</a>
+      <button id="menu-btn" class="md:hidden text-2xl focus:outline-none" aria-label="menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="md:hidden bg-white/95 backdrop-blur-sm border-b border-gray-200 px-4 pb-4 flex flex-col space-y-3 text-base font-medium">
+    <a href="#hero" class="py-1 hover:text-[#2563EB]">Home</a>
+    <a href="#about" class="py-1 hover:text-[#2563EB]">About</a>
+    <a href="#services" class="py-1 hover:text-[#2563EB]">Services</a>
+    <a href="#portfolio" class="py-1 hover:text-[#2563EB]">Portfolio</a>
+    <a href="#pricing" class="py-1 hover:text-[#2563EB]">Pricing</a>
+    <a href="#contact" class="py-1 hover:text-[#2563EB]">Contact</a>
+    <a href="#contact" class="bg-[#2563EB] text-white text-center px-4 py-2 rounded-full font-semibold">Get Free Consultation</a>
+  </div>
+</header>
+
+<main class="pt-16 md:pt-20">
+  <!-- ===== HERO ===== -->
+  <section id="hero" class="relative bg-gradient-to-br from-[#F8FAFC] via-white to-[#eef2ff] py-12 md:py-20 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-10 items-center">
+      <div class="space-y-6 reveal">
+        <span class="inline-block bg-[#2563EB]/10 text-[#2563EB] px-4 py-1.5 rounded-full text-sm font-semibold tracking-wide"><i class="fas fa-bolt mr-2"></i> 15+ years of excellence</span>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight text-[#0F172A]">Transforming Businesses Through <span class="text-[#2563EB]">Technology</span> For Over 15 Years</h1>
+        <p class="text-lg text-gray-600 max-w-lg">Future-ready digital solutions for startups, enterprises, and global brands. Built with precision, powered by innovation.</p>
+        <div class="flex flex-wrap gap-4 pt-2">
+          <a href="#contact" class="bg-[#2563EB] text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:bg-[#1d4ed8] transition-all hover:shadow-xl"><i class="fas fa-rocket mr-2"></i>Get Started</a>
+          <a href="#services" class="bg-white text-[#0F172A] px-8 py-3 rounded-full font-semibold border border-gray-300 shadow-sm hover:bg-gray-50 transition-all"><i class="fas fa-eye mr-2"></i>View Services</a>
+        </div>
+        <!-- stats -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-gray-200/80">
+          <div><span class="counter text-2xl font-bold text-[#2563EB]">15+</span><p class="text-sm text-gray-500">Years Experience</p></div>
+          <div><span class="counter text-2xl font-bold text-[#2563EB]">500+</span><p class="text-sm text-gray-500">Projects</p></div>
+          <div><span class="counter text-2xl font-bold text-[#2563EB]">300+</span><p class="text-sm text-gray-500">Happy Clients</p></div>
+          <div><span class="counter text-2xl font-bold text-[#2563EB]">99%</span><p class="text-sm text-gray-500">Satisfaction</p></div>
+        </div>
+      </div>
+      <div class="relative flex justify-center md:justify-end reveal">
+        <div class="w-full max-w-md aspect-square bg-gradient-to-tr from-[#2563EB]/20 to-[#06B6D4]/20 rounded-3xl flex items-center justify-center glass-card shadow-2xl p-6">
+          <i class="fas fa-code text-8xl text-[#2563EB]/60"></i>
+          <div class="absolute -top-4 -right-4 w-20 h-20 bg-[#06B6D4]/30 rounded-full blur-2xl"></div>
+          <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-[#2563EB]/20 rounded-full blur-3xl"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about" class="py-16 md:py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12 items-center">
+      <div class="order-2 md:order-1 reveal">
+        <span class="text-[#2563EB] font-semibold text-sm tracking-wider"><i class="fas fa-flag mr-2"></i> ABOUT US</span>
+        <h2 class="text-3xl md:text-4xl font-bold mt-2">Driven by innovation, <span class="text-[#2563EB]">trusted for 15+ years</span></h2>
+        <p class="text-gray-600 mt-4 leading-relaxed">IT Nova is a full-cycle software development company with a passion for crafting digital experiences that drive growth. Our mission is to deliver future-ready solutions with agility and transparency.</p>
+        <div class="grid grid-cols-2 gap-4 mt-6">
+          <div><i class="fas fa-check-circle text-[#10B981] mr-2"></i> 500+ successful deliveries</div>
+          <div><i class="fas fa-check-circle text-[#10B981] mr-2"></i> 24/7 dedicated support</div>
+          <div><i class="fas fa-check-circle text-[#10B981] mr-2"></i> Agile & DevOps driven</div>
+          <div><i class="fas fa-check-circle text-[#10B981] mr-2"></i> ISO 27001 compliant</div>
+        </div>
+        <a href="#services" class="inline-block mt-6 text-[#2563EB] font-semibold hover:underline">Explore our story <i class="fas fa-arrow-right ml-1"></i></a>
+      </div>
+      <div class="order-1 md:order-2 flex justify-center reveal">
+        <div class="bg-[#eef2ff] w-full max-w-sm aspect-square rounded-3xl flex items-center justify-center shadow-lg"><i class="fas fa-users text-7xl text-[#2563EB]/40"></i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SERVICES ===== -->
+  <section id="services" class="py-16 md:py-24 bg-[#F8FAFC]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="text-[#2563EB] font-semibold text-sm tracking-wider"><i class="fas fa-cogs mr-2"></i> SERVICES</span>
+      <h2 class="text-3xl md:text-4xl font-bold mt-2">What we deliver</h2>
+      <p class="text-gray-500 max-w-2xl mx-auto mt-3">End-to-end IT solutions tailored to your business needs.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+        <!-- cards generated from array via JS below, but we'll place static fallback + dynamic -->
+        <div id="service-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHY CHOOSE US ===== -->
+  <section class="py-16 md:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="text-[#2563EB] font-semibold text-sm tracking-wider"><i class="fas fa-medal mr-2"></i> WHY US</span>
+      <h2 class="text-3xl md:text-4xl font-bold mt-2">Built to deliver excellence</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mt-10">
+        <div class="bg-[#F8FAFC] p-6 rounded-2xl shadow-sm hover:shadow-md transition-all hover:scale-[1.02]"><i class="fas fa-clock text-3xl text-[#2563EB]"></i><h4 class="font-bold mt-3">15+ Years</h4><p class="text-sm text-gray-500">Proven track record</p></div>
+        <div class="bg-[#F8FAFC] p-6 rounded-2xl shadow-sm hover:shadow-md transition-all hover:scale-[1.02]"><i class="fas fa-users text-3xl text-[#2563EB]"></i><h4 class="font-bold mt-3">Expert Team</h4><p class="text-sm text-gray-500">Top 1% developers</p></div>
+        <div class="bg-[#F8FAFC] p-6 rounded-2xl shadow-sm hover:shadow-md transition-all hover:scale-[1.02]"><i class="fas fa-sync-alt text-3xl text-[#2563EB]"></i><h4 class="font-bold mt-3">Agile Process</h4><p class="text-sm text-gray-500">Iterative & transparent</p></div>
+        <div class="bg-[#F8FAFC] p-6 rounded-2xl shadow-sm hover:shadow-md transition-all hover:scale-[1.02]"><i class="fas fa-tag text-3xl text-[#2563EB]"></i><h4 class="font-bold mt-3">Transparent Pricing</h4><p class="text-sm text-gray-500">No hidden fees</p></div>
+        <div class="bg-[#F8FAFC] p-6 rounded-2xl shadow-sm hover:shadow-md transition-all hover:scale-[1.02]"><i class="fas fa-headset text-3xl text-[#2563EB]"></i><h4 class="font-bold mt-3">24/7 Support</h4><p class="text-sm text-gray-500">Always available</p></div>
+        <div class="bg-[#F8FAFC] p-6 rounded-2xl shadow-sm hover:shadow-md transition-all hover:scale-[1.02]"><i class="fas fa-shield-alt text-3xl text-[#2563EB]"></i><h4 class="font-bold mt-3">Quality Assurance</h4><p class="text-sm text-gray-500">Secure & robust</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PORTFOLIO (filterable) ===== -->
+  <section id="portfolio" class="py-16 md:py-24 bg-[#F8FAFC]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="text-[#2563EB] font-semibold text-sm tracking-wider"><i class="fas fa-folder-open mr-2"></i> PORTFOLIO</span>
+      <h2 class="text-3xl md:text-4xl font-bold mt-2">Recent work</h2>
+      <div class="flex flex-wrap justify-center gap-3 mt-6">
+        <button class="filter-btn px-4 py-1.5 rounded-full bg-[#2563EB] text-white text-sm" data-filter="all">All</button>
+        <button class="filter-btn px-4 py-1.5 rounded-full bg-white border border-gray-300 text-sm hover:bg-gray-100" data-filter="web">Web</button>
+        <button class="filter-btn px-4 py-1.5 rounded-full bg-white border border-gray-300 text-sm hover:bg-gray-100" data-filter="mobile">Mobile</button>
+        <button class="filter-btn px-4 py-1.5 rounded-full bg-white border border-gray-300 text-sm hover:bg-gray-100" data-filter="ai">AI</button>
+      </div>
+      <div id="portfolio-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8"></div>
+    </div>
+  </section>
+
+  <!-- ===== TESTIMONIALS (auto slider) ===== -->
+  <section class="py-16 md:py-20 bg-white">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <span class="text-[#2563EB] font-semibold text-sm tracking-wider"><i class="fas fa-quote-right mr-2"></i> TESTIMONIALS</span>
+      <h2 class="text-3xl md:text-4xl font-bold mt-2">What clients say</h2>
+      <div id="testimonial-slider" class="relative mt-10 overflow-hidden h-48">
+        <div id="testimonial-track" class="flex transition-transform duration-500 ease-in-out"></div>
+      </div>
+      <div class="flex justify-center gap-2 mt-4">
+        <button id="prev-testi" class="w-8 h-8 rounded-full bg-gray-200 hover:bg-[#2563EB] hover:text-white transition"><i class="fas fa-chevron-left"></i></button>
+        <button id="next-testi" class="w-8 h-8 rounded-full bg-gray-200 hover:bg-[#2563EB] hover:text-white transition"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRICING ===== -->
+  <section id="pricing" class="py-16 md:py-24 bg-[#F8FAFC]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="text-[#2563EB] font-semibold text-sm tracking-wider"><i class="fas fa-tags mr-2"></i> PRICING</span>
+      <h2 class="text-3xl md:text-4xl font-bold mt-2">Choose your plan</h2>
+      <div class="grid md:grid-cols-3 gap-6 mt-10">
+        <div class="bg-white p-8 rounded-3xl shadow-md hover:shadow-xl transition-all"><h3 class="text-xl font-bold">Starter</h3><p class="text-3xl font-extrabold mt-2">$29<span class="text-sm font-light text-gray-500">/mo</span></p><ul class="mt-4 space-y-2 text-left"><li><i class="fas fa-check text-[#10B981] mr-2"></i> 5 pages</li><li><i class="fas fa-check text-[#10B981] mr-2"></i> Basic SEO</li><li><i class="fas fa-check text-[#10B981] mr-2"></i> 24/7 support</li></ul><a href="#contact" class="mt-6 inline-block w-full bg-gray-200 py-2 rounded-full font-semibold hover:bg-[#2563EB] hover:text-white transition">Get started</a></div>
+        <div class="bg-white p-8 rounded-3xl shadow-xl border-2 border-[#2563EB] relative"><span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#2563EB] text-white px-4 py-0.5 rounded-full text-xs">Popular</span><h3 class="text-xl font-bold">Professional</h3><p class="text-3xl font-extrabold mt-2">$79<span class="text-sm font-light text-gray-500">/mo</span></p><ul class="mt-4 space-y-2 text-left"><li><i class="fas fa-check text-[#10B981] mr-2"></i> 20 pages</li><li><i class="fas fa-check text-[#10B981] mr-2"></i> Advanced SEO</li><li><i class="fas fa-check text-[#10B981] mr-2"></i> Priority support</li></ul><a href="#contact" class="mt-6 inline-block w-full bg-[#2563EB] text-white py-2 rounded-full font-semibold hover:bg-[#1d4ed8] transition">Start now</a></div>
+        <div class="bg-white p-8 rounded-3xl shadow-md hover:shadow-xl transition-all"><h3 class="text-xl font-bold">Enterprise</h3><p class="text-3xl font-extrabold mt-2">Custom</p><ul class="mt-4 space-y-2 text-left"><li><i class="fas fa-check text-[#10B981] mr-2"></i> Unlimited pages</li><li><i class="fas fa-check text-[#10B981] mr-2"></i> Full customization</li><li><i class="fas fa-check text-[#10B981] mr-2"></i> Dedicated team</li></ul><a href="#contact" class="mt-6 inline-block w-full bg-gray-200 py-2 rounded-full font-semibold hover:bg-[#2563EB] hover:text-white transition">Contact sales</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="py-16 md:py-20 bg-white">
+    <div class="max-w-3xl mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center">Frequently asked questions</h2>
+      <div class="mt-8 space-y-4" id="faq-container"></div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT + MAP ===== -->
+  <section id="contact" class="py-16 md:py-24 bg-[#F8FAFC]">
+    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-10">
+      <div class="bg-white p-8 rounded-3xl shadow-lg"><h3 class="text-2xl font-bold">Let's talk</h3><p class="text-gray-500 mt-1">We respond within 24 hours.</p>
+        <form id="contactForm" class="mt-6 space-y-4"><input type="text" placeholder="Full name" class="w-full border border-gray-300 rounded-xl px-4 py-3" required/><input type="email" placeholder="Email address" class="w-full border border-gray-300 rounded-xl px-4 py-3" required/><textarea rows="3" placeholder="Message" class="w-full border border-gray-300 rounded-xl px-4 py-3"></textarea><button type="submit" class="bg-[#2563EB] text-white px-8 py-3 rounded-full font-semibold hover:bg-[#1d4ed8] transition">Send message <i class="fas fa-arrow-right ml-1"></i></button></form>
+        <div class="mt-4 flex gap-4 text-sm"><i class="fas fa-phone text-[#2563EB]"></i> +1 (800) 555-0199 <i class="fas fa-envelope ml-4 text-[#2563EB]"></i> hello@itnova.com</div>
+      </div>
+      <div class="h-64 md:h-auto bg-gray-200 rounded-3xl overflow-hidden shadow-lg"><iframe class="w-full h-full" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.15830913655!2d-74.11976353808986!3d40.69766374874175!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY!5e0!3m2!1sen!2sus!4v1710000000000" style="border:0;" allowfullscreen loading="lazy"></iframe></div>
+    </div>
+  </section>
+
+  <!-- ===== NEWSLETTER ===== -->
+  <section class="bg-[#0F172A] text-white py-12">
+    <div class="max-w-2xl mx-auto px-4 text-center"><h3 class="text-2xl font-bold">Join our newsletter</h3><p class="text-gray-300 mb-4">Get the latest tech insights</p><form class="flex flex-col sm:flex-row gap-3"><input type="email" placeholder="Your email" class="flex-1 px-4 py-3 rounded-full text-black"/><button class="bg-[#2563EB] px-6 py-3 rounded-full font-semibold hover:bg-[#1d4ed8] transition">Subscribe</button></form></div>
+  </section>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="bg-[#0F172A]/95 text-white/80 border-t border-white/10 py-10">
+  <div class="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 text-sm"><div><span class="font-bold text-white">ITNova</span><p class="mt-2">Premium IT services since 2010</p></div><div><h5 class="text-white font-semibold">Services</h5><ul class="mt-2 space-y-1"><li>Web Dev</li><li>Mobile</li><li>AI</li></ul></div><div><h5 class="text-white font-semibold">Quick Links</h5><ul class="mt-2 space-y-1"><li>About</li><li>Portfolio</li><li>Contact</li></ul></div><div><h5 class="text-white font-semibold">Social</h5><div class="flex gap-3 mt-2 text-xl"><i class="fab fa-linkedin"></i><i class="fab fa-twitter"></i><i class="fab fa-github"></i></div></div></div>
+  <div class="text-center text-xs text-white/50 border-t border-white/10 mt-8 pt-6">© 2026 ITNova. All rights reserved.</div>
+</footer>
+
+<script>
+  (function() {
+    // ---- MOBILE MENU ----
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+
+    // ---- SERVICES DATA ----
+    const services = [
+      "Web Development","Mobile App Development","UI/UX Design","E-Commerce Solutions",
+      "Cloud Solutions","Digital Marketing","SEO Optimization","Custom Software Development",
+      "AI Solutions","Cyber Security"
+    ];
+    const icons = ["fa-globe","fa-mobile-alt","fa-paint-brush","fa-shopping-cart","fa-cloud",
+      "fa-bullhorn","fa-search","fa-code","fa-robot","fa-shield-alt"];
+    const container = document.getElementById('service-container');
+    if(container) {
+      container.innerHTML = services.map((s,i) => `
+        <div class="service-card bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all">
+          <i class="fas ${icons[i] || 'fa-cog'} text-3xl text-[#2563EB]"></i>
+          <h4 class="font-bold text-lg mt-3">${s}</h4>
+          <p class="text-sm text-gray-500">Lorem ipsum dolor sit amet.</p>
+          <a href="#" class="inline-block mt-3 text-[#2563EB] font-medium text-sm hover:underline">Learn More <i class="fas fa-arrow-right ml-1"></i></a>
+        </div>
+      `).join('');
+    }
+
+    // ---- PORTFOLIO (filterable) ----
+    const portfolioItems = [
+      { title: "Fintech Dashboard", category: "web", img: "fa-chart-line" },
+      { title: "Health App", category: "mobile", img: "fa-heartbeat" },
+      { title: "AI chatbot", category: "ai", img: "fa-brain" },
+      { title: "E-commerce platform", category: "web", img: "fa-store" },
+      { title: "Fitness tracker", category: "mobile", img: "fa-running" },
+      { title: "Predictive analytics", category: "ai", img: "fa-chart-pie" }
+    ];
+    const portfolioGrid = document.getElementById('portfolio-grid');
+    function renderPortfolio(filter = 'all') {
+      const filtered = filter === 'all' ? portfolioItems : portfolioItems.filter(p => p.category === filter);
+      portfolioGrid.innerHTML = filtered.map((p, idx) => `
+        <div class="bg-white p-5 rounded-2xl shadow hover:shadow-xl transition-all flex flex-col items-center">
+          <i class="fas ${p.img} text-5xl text-[#2563EB]/70"></i>
+          <h4 class="font-bold mt-3">${p.title}</h4>
+          <span class="text-xs bg-gray-200 px-3 py-0.5 rounded-full mt-1">${p.category}</span>
+          <a href="#" class="mt-2 text-[#2563EB] text-sm">Live preview <i class="fas fa-external-link-alt ml-1"></i></a>
+        </div>
+      `).join('');
+    }
+    renderPortfolio('all');
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('bg-[#2563EB]','text-white'));
+        this.classList.add('bg-[#2563EB]','text-white');
+        renderPortfolio(this.dataset.filter);
+      });
+    });
+
+    // ---- TESTIMONIALS AUTO SLIDER ----
+    const testimonials = [
+      { name: "Alice M.", text: "Incredible transformation! Our platform now handles 10x traffic.", stars: 5 },
+      { name: "James K.", text: "Professional, agile, and truly innovative. Highly recommend.", stars: 5 },
+      { name: "Sophia L.", text: "The team delivered ahead of schedule with top quality.", stars: 5 }
+    ];
+    const track = document.getElementById('testimonial-track');
+    let currentTesti = 0;
+    function renderTesti() {
+      track.innerHTML = testimonials.map(t => `
+        <div class="flex-shrink-0 w-full px-4 text-center">
+          <div class="flex justify-center text-[#F59E0B]">${'★'.repeat(t.stars)}</div>
+          <p class="text-lg italic">“${t.text}”</p>
+          <p class="font-semibold mt-2">— ${t.name}</p>
+        </div>
+      `).join('');
+      track.style.transform = `translateX(-${currentTesti * 100}%)`;
+    }
+    renderTesti();
+    document.getElementById('next-testi')?.addEventListener('click', ()=>{ currentTesti = (currentTesti+1)%testimonials.length; renderTesti(); });
+    document.getElementById('prev-testi')?.addEventListener('click', ()=>{ currentTesti = (currentTesti-1+testimonials.length)%testimonials.length; renderTesti(); });
+    setInterval(()=>{ currentTesti = (currentTesti+1)%testimonials.length; renderTesti(); }, 4000);
+
+    // ---- FAQ ACCORDION ----
+    const faqData = [
+      { q: "What technologies do you use?", a: "React, Node, Python, AWS, and more." },
+      { q: "Do you offer post-launch support?", a: "Yes, 24/7 maintenance & support plans." }
+    ];
+    const faqContainer = document.getElementById('faq-container');
+    faqContainer.innerHTML = faqData.map((item, idx) => `
+      <div class="border border-gray-200 rounded-xl p-4 cursor-pointer faq-item">
+        <div class="flex justify-between items-center"><h4 class="font-semibold">${item.q}</h4><i class="fas fa-chevron-down text-[#2563EB]"></i></div>
+        <div class="faq-answer text-gray-600">${item.a}</div>
+      </div>
+    `).join('');
+    document.querySelectorAll('.faq-item').forEach((el, idx) => {
+      el.addEventListener('click', function() {
+        const answer = this.querySelector('.faq-answer');
+        const icon = this.querySelector('i');
+        answer.classList.toggle('open');
+        icon.classList.toggle('fa-chevron-down');
+        icon.classList.toggle('fa-chevron-up');
+      });
+    });
+
+    // ---- SCROLL REVEAL ----
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    // ---- CONTACT FORM VALIDATION ----
+    document.getElementById('contactForm')?.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = this.querySelector('input[type="email"]');
+      if(email && !email.value.includes('@')) { alert('Please enter a valid email.'); return; }
+      alert('Thank you! We will get back to you shortly.');
+      this.reset();
+    });
+
+    // ---- SMOOTH SCROLL ----
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if(target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); mobileMenu.classList.remove('open'); }
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
