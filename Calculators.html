@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bootstrap Calculator · Font Awesome</title>
+  <!-- Bootstrap 5 + Font Awesome 6 (CDN) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* custom calculator styling */
+    body {
+      background: linear-gradient(145deg, #f5f7fa 0%, #e9edf2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+
+    .calculator-card {
+      max-width: 400px;
+      width: 100%;
+      border: none;
+      border-radius: 2.5rem;
+      background: #ffffff;
+      box-shadow: 0 20px 40px rgba(0, 10, 30, 0.2), 0 8px 20px rgba(0, 0, 0, 0.08);
+      transition: transform 0.2s ease;
+      backdrop-filter: blur(2px);
+    }
+
+    .calculator-card:hover {
+      transform: scale(1.01);
+    }
+
+    .display-box {
+      background: #1e293b;
+      color: #f8fafc;
+      border-radius: 2rem 2rem 1.5rem 1.5rem;
+      padding: 1.5rem 1.8rem;
+      margin-bottom: 1.8rem;
+      box-shadow: inset 0 6px 12px rgba(0, 0, 0, 0.3);
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-end;
+      word-break: break-all;
+    }
+
+    #expression {
+      font-size: 1.2rem;
+      font-weight: 300;
+      color: #94a3b8;
+      min-height: 2rem;
+      line-height: 1.4;
+      width: 100%;
+      text-align: right;
+      letter-spacing: 0.5px;
+    }
+
+    #result {
+      font-size: 3.2rem;
+      font-weight: 600;
+      line-height: 1.2;
+      width: 100%;
+      text-align: right;
+      color: #ffffff;
+      transition: all 0.1s;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .btn-calc {
+      border-radius: 1.8rem;
+      padding: 0.9rem 0.2rem;
+      font-weight: 600;
+      font-size: 1.4rem;
+      border: none;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-calc:active {
+      transform: scale(0.93);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .btn-calc i {
+      font-size: 1.4rem;
+      pointer-events: none;
+    }
+
+    .btn-op {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+
+    .btn-op:hover {
+      background: #e2e8f0;
+    }
+
+    .btn-equals {
+      background: #3b82f6;
+      color: white;
+    }
+
+    .btn-equals:hover {
+      background: #2563eb;
+    }
+
+    .btn-clear {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .btn-clear:hover {
+      background: #fecaca;
+    }
+
+    .btn-fn {
+      background: #e6f0ff;
+      color: #1e3a8a;
+    }
+
+    .btn-fn:hover {
+      background: #d4e4ff;
+    }
+
+    .btn-zero {
+      background: #f8fafc;
+      color: #0f172a;
+    }
+
+    .btn-zero:hover {
+      background: #eef2f6;
+    }
+
+    .grid-gap {
+      gap: 0.7rem;
+    }
+
+    /* responsive fine-tune */
+    @media (max-width: 420px) {
+      .calculator-card {
+        max-width: 96%;
+        margin: 0.5rem;
+      }
+      .display-box {
+        padding: 1.2rem 1.2rem;
+        min-height: 100px;
+      }
+      #result {
+        font-size: 2.8rem;
+      }
+      .btn-calc {
+        font-size: 1.2rem;
+        padding: 0.8rem 0.2rem;
+      }
+    }
+
+    /* footer tiny */
+    .credit {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-top: 1.2rem;
+      text-align: center;
+      letter-spacing: 0.3px;
+    }
+
+    .credit i {
+      color: #3b82f6;
+      margin: 0 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator-card p-4 p-sm-4">
+    <!-- display area -->
+    <div class="display-box">
+      <div id="expression" class="mb-1">0</div>
+      <div id="result">0</div>
+    </div>
+
+    <!-- buttons grid (Bootstrap row + col) -->
+    <div class="container-fluid px-0">
+      <div class="row g-2 g-sm-3 grid-gap">
+        <!-- Row 1: C, ±, %, ÷ -->
+        <div class="col-3"><button class="btn btn-calc btn-clear w-100" data-action="clear"><i class="fas fa-undo-alt me-1"></i> C</button></div>
+        <div class="col-3"><button class="btn btn-calc btn-fn w-100" data-action="negate"><i class="fas fa-plus-minus me-1"></i> ±</button></div>
+        <div class="col-3"><button class="btn btn-calc btn-fn w-100" data-action="percent"><i class="fas fa-percent me-1"></i> %</button></div>
+        <div class="col-3"><button class="btn btn-calc btn-op w-100" data-action="divide"><i class="fas fa-divide me-1"></i> ÷</button></div>
+
+        <!-- Row 2: 7, 8, 9, × -->
+        <div class="col-3"><button class="btn btn-calc btn-zero w-100" data-action="7">7</button></div>
+        <div class="col-3"><button class="btn btn-calc btn-zero w-100" data-action="8">8</button></div>
+        <div class="col-3"><button class="btn btn-calc btn-zero w-100" data-action="9">9</button></div>
+        <div class="col-3"><button class="btn btn-calc btn-op w-100" data-action="multiply"><i class="fas fa-times me-1"></i> ×</button></div>
+
+        <!-- Row 3: 4, 5, 6, − -->
+        <div class="col-3"><button class="btn btn-calc btn-zero w-100" data-action="4">4</button></div>
+        <div class="col-3"><button class="btn btn-calc btn-zero w-100" data-action="5">5</button></div>
+        <div class="col-3"><button class="btn btn-calc btn-zero w-100" data-action="6">6</button></div>
+        <div class="col-3"><button class="btn btn-calc btn-op w-100" data-action="subtract"><i class="fas fa-minus me-1"></i> −</button></div>
+
+        <!-- Row 4: 1, 2, 3, + -->
+        <div class="col-3"><button class="btn btn-calc btn-zero w-100" data-action="1">1</button></div>
+        <div class="col-3"><button class="btn btn-calc btn-zero w-100" data-action="2">2</button></div>
+        <div class="col-3"><button class="btn btn-calc btn-zero w-100" data-action="3">3</button></div>
+        <div class="col-3"><button class="btn btn-calc btn-op w-100" data-action="add"><i class="fas fa-plus me-1"></i> +</button></div>
+
+        <!-- Row 5: 0 (span 2), ., = -->
+        <div class="col-6"><button class="btn btn-calc btn-zero w-100" data-action="0">0</button></div>
+        <div class="col-3"><button class="btn btn-calc btn-zero w-100" data-action="decimal"><i class="fas fa-circle me-1" style="font-size: 0.7rem;"></i> .</button></div>
+        <div class="col-3"><button class="btn btn-calc btn-equals w-100" data-action="equals"><i class="fas fa-equals me-1"></i> =</button></div>
+      </div>
+    </div>
+
+    <!-- small footer with Font Awesome -->
+    <div class="credit">
+      <i class="fas fa-calculator"></i>  Bootstrap · <i class="fab fa-font-awesome-flag"></i>  Font Awesome
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    (function() {
+      "use strict";
+
+      // DOM elements
+      const resultEl = document.getElementById('result');
+      const expressionEl = document.getElementById('expression');
+
+      // state
+      let currentInput = '0';          // what's shown on result
+      let previousInput = '';          // for expression display
+      let operator = null;             // '+', '-', '*', '/'
+      let shouldResetInput = false;
+      let justEvaluated = false;       // flag to handle consecutive equals
+
+      // update display (result & expression)
+      function updateDisplay() {
+        resultEl.textContent = currentInput;
+        // expression: show previous + operator if available
+        if (operator && previousInput) {
+          const opSymbol = getOperatorSymbol(operator);
+          expressionEl.textContent = `${previousInput} ${opSymbol}`;
+        } else if (previousInput && !operator) {
+          expressionEl.textContent = previousInput;
+        } else {
+          expressionEl.textContent = currentInput;
+        }
+        // if result is too long, reduce font-size (optional)
+        if (currentInput.length > 12) {
+          resultEl.style.fontSize = '2.4rem';
+        } else {
+          resultEl.style.fontSize = '3.2rem';
+        }
+      }
+
+      function getOperatorSymbol(op) {
+        switch(op) {
+          case '+': return '+';
+          case '-': return '−';
+          case '*': return '×';
+          case '/': return '÷';
+          default: return op;
+        }
+      }
+
+      // reset everything
+      function clearAll() {
+        currentInput = '0';
+        previousInput = '';
+        operator = null;
+        shouldResetInput = false;
+        justEvaluated = false;
+        updateDisplay();
+      }
+
+      // number input
+      function inputNumber(num) {
+        if (justEvaluated) {
+          // start fresh after equals
+          currentInput = '0';
+          previousInput = '';
+          operator = null;
+          justEvaluated = false;
+        }
+        if (shouldResetInput) {
+          currentInput = '0';
+          shouldResetInput = false;
+        }
+        if (currentInput === '0' && num !== '.') {
+          currentInput = num;
+        } else {
+          // avoid more than 1 decimal point
+          if (num === '.' && currentInput.includes('.')) return;
+          // limit length to avoid overflow
+          if (currentInput.replace('-','').replace('.','').length >= 14) return;
+          currentInput += num;
+        }
+        updateDisplay();
+      }
+
+      // operator (+, -, *, /)
+      function handleOperator(op) {
+        if (justEvaluated) {
+          // after equals, keep current as previous, and start new operation
+          previousInput = currentInput;
+          operator = op;
+          shouldResetInput = true;
+          justEvaluated = false;
+          updateDisplay();
+          return;
+        }
+
+        if (operator && !shouldResetInput) {
+          // chain calculation: evaluate previous before setting new op
+          computeResult(true);
+        }
+
+        // store current as previous
+        previousInput = currentInput;
+        operator = op;
+        shouldResetInput = true;
+        justEvaluated = false;
+        updateDisplay();
+      }
+
+      // compute result
+      function computeResult(isChained = false) {
+        if (!operator || !previousInput) {
+          // if no operator, just return current
+          if (!isChained) {
+            // equals pressed without operator: do nothing (or show same)
+            justEvaluated = true;
+            updateDisplay();
+          }
+          return;
+        }
+
+        const prev = parseFloat(previousInput);
+        const curr = parseFloat(currentInput);
+        if (isNaN(prev) || isNaN(curr)) {
+          // fallback
+          currentInput = 'Error';
+          operator = null;
+          previousInput = '';
+          shouldResetInput = true;
+          updateDisplay();
+          return;
+        }
+
+        let result;
+        switch(operator) {
+          case '+': result = prev + curr; break;
+          case '-': result = prev - curr; break;
+          case '*': result = prev * curr; break;
+          case '/': 
+            if (curr === 0) {
+              currentInput = 'Error';
+              operator = null;
+              previousInput = '';
+              shouldResetInput = true;
+              updateDisplay();
+              return;
+            }
+            result = prev / curr; 
+            break;
+          default: result = curr;
+        }
+
+        // format result: avoid floating point noise, keep 10 decimals max
+        if (Number.isFinite(result)) {
+          if (Number.isInteger(result)) {
+            currentInput = result.toString();
+          } else {
+            // limit to 10 decimal places
+            const rounded = parseFloat(result.toPrecision(12));
+            currentInput = rounded.toString();
+          }
+        } else {
+          currentInput = 'Error';
+        }
+
+        // If it's chained, we keep operator and previous for next chain
+        if (!isChained) {
+          // equals pressed: clear operator, set previous as result for further ops
+          operator = null;
+          previousInput = currentInput;
+          justEvaluated = true;
+          shouldResetInput = true;
+        } else {
+          // chained: we keep operator but update previous to current result
+          previousInput = currentInput;
+          // keep operator, but don't reset input yet? we want next number to start fresh.
+          shouldResetInput = true;
+        }
+        updateDisplay();
+      }
+
+      // percent: divide current by 100
+      function percent() {
+        if (currentInput === '0' || currentInput === 'Error') return;
+        const value = parseFloat(currentInput);
+        if (!isNaN(value)) {
+          currentInput = (value / 100).toString();
+          updateDisplay();
+        }
+      }
+
+      // negate: multiply by -1
+      function negate() {
+        if (currentInput === '0' || currentInput === 'Error') return;
+        if (currentInput.startsWith('-')) {
+          currentInput = currentInput.substring(1);
+        } else {
+          currentInput = '-' + currentInput;
+        }
+        updateDisplay();
+      }
+
+      // decimal: already handled in inputNumber, but for completeness
+      // but we keep a special action for decimal button
+      function inputDecimal() {
+        if (justEvaluated) {
+          // start fresh after equals
+          currentInput = '0';
+          previousInput = '';
+          operator = null;
+          justEvaluated = false;
+        }
+        if (shouldResetInput) {
+          currentInput = '0';
+          shouldResetInput = false;
+        }
+        if (!currentInput.includes('.')) {
+          currentInput += '.';
+        }
+        updateDisplay();
+      }
+
+      // ========== event binding ==========
+      const buttons = document.querySelectorAll('[data-action]');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const action = btn.getAttribute('data-action');
+
+          // handle numeric & decimal
+          if (!isNaN(action) || action === '0' || action === '1' || action === '2' || action === '3' ||
+              action === '4' || action === '5' || action === '6' || action === '7' || action === '8' || action === '9') {
+            inputNumber(action);
+            return;
+          }
+
+          // handle decimal
+          if (action === 'decimal') {
+            inputDecimal();
+            return;
+          }
+
+          // operations
+          switch (action) {
+            case 'clear': clearAll(); break;
+            case 'negate': negate(); break;
+            case 'percent': percent(); break;
+            case 'add': handleOperator('+'); break;
+            case 'subtract': handleOperator('-'); break;
+            case 'multiply': handleOperator('*'); break;
+            case 'divide': handleOperator('/'); break;
+            case 'equals': computeResult(false); break;
+            default: break;
+          }
+        });
+      });
+
+      // keyboard support (nice to have)
+      document.addEventListener('keydown', (e) => {
+        const key = e.key;
+        if (key >= '0' && key <= '9') {
+          e.preventDefault();
+          inputNumber(key);
+          return;
+        }
+        if (key === '.') {
+          e.preventDefault();
+          inputDecimal();
+          return;
+        }
+        switch(key) {
+          case 'Enter':
+          case '=': e.preventDefault(); computeResult(false); break;
+          case '+': e.preventDefault(); handleOperator('+'); break;
+          case '-': e.preventDefault(); handleOperator('-'); break;
+          case '*': e.preventDefault(); handleOperator('*'); break;
+          case '/': e.preventDefault(); handleOperator('/'); break;
+          case '%': e.preventDefault(); percent(); break;
+          case 'Escape': e.preventDefault(); clearAll(); break;
+          default: break;
+        }
+      });
+
+      // initial display
+      updateDisplay();
+    })();
+  </script>
+</body>
+</html>
