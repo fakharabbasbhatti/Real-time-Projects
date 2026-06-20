@@ -3,100 +3,169 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculator</title>
+  <title>calculator · refined</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #f1f5f9;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(145deg, #eef2f7 0%, #d9e0eb 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+      padding: 1rem;
     }
 
     .calc {
-      width: 320px;
-      background: #ffffff;
-      border-radius: 28px;
-      border: 0.5px solid rgba(0,0,0,0.12);
-      overflow: hidden;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+      width: 100%;
+      max-width: 340px;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 40px;
+      box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+      padding: 1.25rem 1.25rem 1.5rem;
+      transition: all 0.2s ease;
     }
 
     .display {
-      background: #0f172a;
-      padding: 1.5rem 1.5rem 1.2rem;
+      background: #0b1424;
+      padding: 1.5rem 1.2rem 1rem;
+      border-radius: 28px;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) inset;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      min-height: 110px;
+      min-height: 120px;
       justify-content: flex-end;
+      transition: min-height 0.2s;
     }
 
     .expr {
-      font-size: 13px;
-      color: #64748b;
-      min-height: 18px;
-      text-align: right;
-      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: #8192b0;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
       letter-spacing: 0.3px;
+      min-height: 22px;
+      text-align: right;
+      width: 100%;
+      word-break: break-all;
+      margin-bottom: 0.2rem;
     }
 
     .result {
       font-size: 2.8rem;
       font-weight: 500;
-      color: #f8fafc;
-      text-align: right;
-      font-family: 'Courier New', monospace;
+      color: #f1f7ff;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
       line-height: 1.1;
-      transition: font-size 0.1s;
+      text-align: right;
+      width: 100%;
       word-break: break-all;
+      transition: font-size 0.15s ease;
+      letter-spacing: -0.5px;
     }
 
     .btn-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: rgba(0,0,0,0.08);
+      gap: 10px;
+      background: transparent;
     }
 
     .btn-grid > div {
-      background: #ffffff;
+      background: transparent;
     }
 
     .cb {
       width: 100%;
-      aspect-ratio: 1;
+      aspect-ratio: 1 / 1;
       border: none;
-      background: transparent;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
       cursor: pointer;
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 500;
-      color: #0f172a;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      transition: background 0.1s, transform 0.1s;
+      color: #0b1a2b;
+      font-family: 'Inter', system-ui, sans-serif;
+      transition: all 0.12s ease;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 4px;
+      padding: 0;
+      line-height: 1;
     }
 
-    .cb:hover { background: #f1f5f9; }
-    .cb:active { transform: scale(0.92); }
+    .cb i {
+      font-size: 1.2rem;
+      color: inherit;
+    }
 
-    .cb.op  { color: #3b82f6; }
-    .cb.fn  { color: #64748b; font-size: 0.95rem; }
-    .cb.cls { color: #ef4444; }
+    .cb:hover {
+      background: rgba(255, 255, 255, 0.85);
+      transform: scale(0.96);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .cb:active {
+      transform: scale(0.92);
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .cb.op {
+      background: #eef4ff;
+      color: #2563eb;
+      font-weight: 600;
+    }
+
+    .cb.op:hover {
+      background: #dce6ff;
+    }
+
+    .cb.fn {
+      background: rgba(235, 240, 250, 0.6);
+      color: #3a4b66;
+      font-size: 1.1rem;
+    }
+
+    .cb.fn:hover {
+      background: rgba(220, 228, 245, 0.9);
+    }
+
+    .cb.cls {
+      background: #fee9e7;
+      color: #c2413a;
+    }
+
+    .cb.cls:hover {
+      background: #ffd9d4;
+    }
 
     .cb.eq {
-      background: #3b82f6;
-      color: #ffffff;
+      background: #2563eb;
+      color: white;
+      box-shadow: 0 8px 16px -6px rgba(37, 99, 235, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+      font-weight: 600;
     }
-    .cb.eq:hover  { background: #2563eb; }
-    .cb.eq:active { transform: scale(0.92); }
+
+    .cb.eq:hover {
+      background: #1d4ed8;
+      transform: scale(0.96);
+      box-shadow: 0 6px 14px -4px rgba(37, 99, 235, 0.5);
+    }
 
     .zero-cell {
       grid-column: span 2;
@@ -104,50 +173,91 @@
 
     .zero-cell .cb {
       aspect-ratio: auto;
-      height: 64px;
+      height: 100%;
+      min-height: 68px;
       justify-content: flex-start;
-      padding-left: 1.4rem;
+      padding-left: 1.8rem;
+      border-radius: 28px;
+    }
+
+    @media (max-width: 400px) {
+      .calc {
+        padding: 1rem;
+      }
+      .result {
+        font-size: 2.3rem;
+      }
+      .cb {
+        font-size: 1.1rem;
+        border-radius: 16px;
+      }
+      .zero-cell .cb {
+        padding-left: 1.4rem;
+        min-height: 60px;
+      }
+      .display {
+        min-height: 100px;
+        padding: 1rem 0.8rem 0.8rem;
+      }
     }
 
     @media (max-width: 360px) {
-      .calc { width: 96vw; }
-      .result { font-size: 2.2rem; }
-      .cb { font-size: 1rem; }
+      .calc {
+        padding: 0.8rem;
+      }
+      .btn-grid {
+        gap: 6px;
+      }
+      .result {
+        font-size: 1.9rem;
+      }
+      .cb {
+        font-size: 1rem;
+        border-radius: 14px;
+      }
+      .zero-cell .cb {
+        padding-left: 1rem;
+        min-height: 54px;
+      }
+    }
+
+    /* tiny extra polish */
+    .cb i.ti {
+      font-size: 1.3rem;
+      margin-right: 2px;
     }
   </style>
 </head>
 <body>
 
 <div class="calc">
-  <!-- Display -->
   <div class="display">
     <div class="expr" id="expr">0</div>
     <div class="result" id="res">0</div>
   </div>
 
-  <!-- Button Grid -->
   <div class="btn-grid">
-    <!-- Row 1 -->
+    <!-- row 1 -->
     <div><button class="cb cls" data-a="clear"><i class="ti ti-refresh"></i> C</button></div>
-    <div><button class="cb fn"  data-a="negate">±</button></div>
-    <div><button class="cb fn"  data-a="percent">%</button></div>
-    <div><button class="cb op"  data-a="divide">÷</button></div>
-    <!-- Row 2 -->
+    <div><button class="cb fn" data-a="negate">±</button></div>
+    <div><button class="cb fn" data-a="percent"><i class="ti ti-percent"></i></button></div>
+    <div><button class="cb op" data-a="divide">÷</button></div>
+    <!-- row 2 -->
     <div><button class="cb" data-a="7">7</button></div>
     <div><button class="cb" data-a="8">8</button></div>
     <div><button class="cb" data-a="9">9</button></div>
     <div><button class="cb op" data-a="multiply">×</button></div>
-    <!-- Row 3 -->
+    <!-- row 3 -->
     <div><button class="cb" data-a="4">4</button></div>
     <div><button class="cb" data-a="5">5</button></div>
     <div><button class="cb" data-a="6">6</button></div>
     <div><button class="cb op" data-a="subtract">−</button></div>
-    <!-- Row 4 -->
+    <!-- row 4 -->
     <div><button class="cb" data-a="1">1</button></div>
     <div><button class="cb" data-a="2">2</button></div>
     <div><button class="cb" data-a="3">3</button></div>
     <div><button class="cb op" data-a="add">+</button></div>
-    <!-- Row 5 -->
+    <!-- row 5 -->
     <div class="zero-cell"><button class="cb" data-a="0">0</button></div>
     <div><button class="cb fn" data-a="decimal">.</button></div>
     <div><button class="cb eq" data-a="equals">=</button></div>
@@ -155,129 +265,285 @@
 </div>
 
 <script>
-(function () {
-  'use strict';
+  (function() {
+    'use strict';
 
-  const resEl  = document.getElementById('res');
-  const exprEl = document.getElementById('expr');
+    const resEl = document.getElementById('res');
+    const exprEl = document.getElementById('expr');
 
-  let cur = '0', prev = '', op = null, reset = false, evaled = false;
+    let cur = '0';
+    let prev = '';
+    let op = null;
+    let reset = false;
+    let evaled = false;
 
-  function sym(o) {
-    return { '+': '+', '-': '−', '*': '×', '/': '÷' }[o] || o;
-  }
-
-  function draw() {
-    resEl.textContent = cur;
-    resEl.style.fontSize =
-      cur.length > 10 ? '1.9rem' :
-      cur.length > 7  ? '2.3rem' : '2.8rem';
-
-    if (op && prev)       exprEl.textContent = prev + ' ' + sym(op);
-    else if (prev && !op) exprEl.textContent = prev;
-    else                  exprEl.textContent = cur;
-  }
-
-  function clear() {
-    cur = '0'; prev = ''; op = null; reset = false; evaled = false;
-    draw();
-  }
-
-  function num(n) {
-    if (evaled) { cur = '0'; prev = ''; op = null; evaled = false; }
-    if (reset)  { cur = '0'; reset = false; }
-    if (cur === '0' && n !== '.') { cur = n; }
-    else {
-      if (n === '.' && cur.includes('.')) return;
-      if (cur.replace('-', '').replace('.', '').length >= 14) return;
-      cur += n;
+    function sym(o) {
+      const map = { '+': '+', '-': '−', '*': '×', '/': '÷' };
+      return map[o] || o;
     }
-    draw();
-  }
 
-  function doOp(o) {
-    if (evaled) { prev = cur; op = o; reset = true; evaled = false; draw(); return; }
-    if (op && !reset) calc(true);
-    prev = cur; op = o; reset = true; evaled = false;
-    draw();
-  }
+    function draw() {
+      resEl.textContent = cur;
 
-  function calc(chain = false) {
-    if (!op || !prev) {
-      if (!chain) { evaled = true; draw(); }
-      return;
-    }
-    const p = parseFloat(prev), c = parseFloat(cur);
-    if (isNaN(p) || isNaN(c)) {
-      cur = 'Error'; op = null; prev = ''; reset = true; draw(); return;
-    }
-    let r;
-    if      (op === '+') r = p + c;
-    else if (op === '-') r = p - c;
-    else if (op === '*') r = p * c;
-    else if (op === '/') {
-      if (c === 0) { cur = 'Error'; op = null; prev = ''; reset = true; draw(); return; }
-      r = p / c;
-    }
-    if (!Number.isFinite(r)) {
-      cur = 'Error'; op = null; prev = ''; reset = true; draw(); return;
-    }
-    cur = Number.isInteger(r) ? r.toString() : parseFloat(r.toPrecision(12)).toString();
-    if (!chain) { op = null; prev = cur; evaled = true; reset = true; }
-    else        { prev = cur; reset = true; }
-    draw();
-  }
+      // dynamic font-size
+      const len = cur.length;
+      if (len > 12) resEl.style.fontSize = '1.6rem';
+      else if (len > 9) resEl.style.fontSize = '2.0rem';
+      else if (len > 7) resEl.style.fontSize = '2.3rem';
+      else resEl.style.fontSize = '2.8rem';
 
-  /* ── Button clicks ── */
-  document.querySelectorAll('[data-a]').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.preventDefault();
-      const a = btn.getAttribute('data-a');
-      if (/^[0-9]$/.test(a)) { num(a); return; }
-      if (a === 'decimal')   { num('.'); return; }
-      switch (a) {
-        case 'clear':    clear(); break;
-        case 'negate':
-          if (cur !== '0' && cur !== 'Error') {
-            cur = cur.startsWith('-') ? cur.slice(1) : '-' + cur;
-            draw();
-          }
-          break;
-        case 'percent':
-          if (cur !== '0' && cur !== 'Error') {
-            cur = (parseFloat(cur) / 100).toString(); draw();
-          }
-          break;
-        case 'add':      doOp('+'); break;
-        case 'subtract': doOp('-'); break;
-        case 'multiply': doOp('*'); break;
-        case 'divide':   doOp('/'); break;
-        case 'equals':   calc(false); break;
+      // expression line
+      if (op && prev) {
+        exprEl.textContent = prev + ' ' + sym(op);
+      } else if (prev && !op) {
+        exprEl.textContent = prev;
+      } else {
+        exprEl.textContent = cur;
       }
-    });
-  });
+    }
 
-  /* ── Keyboard support ── */
-  document.addEventListener('keydown', e => {
-    if (e.key >= '0' && e.key <= '9') { e.preventDefault(); num(e.key); }
-    else if (e.key === '.')           { e.preventDefault(); num('.'); }
-    else if (e.key === 'Enter' || e.key === '=') { e.preventDefault(); calc(false); }
-    else if (e.key === '+')     { e.preventDefault(); doOp('+'); }
-    else if (e.key === '-')     { e.preventDefault(); doOp('-'); }
-    else if (e.key === '*')     { e.preventDefault(); doOp('*'); }
-    else if (e.key === '/')     { e.preventDefault(); doOp('/'); }
-    else if (e.key === '%')     { e.preventDefault(); const v = parseFloat(cur); if (!isNaN(v)) { cur = (v/100).toString(); draw(); } }
-    else if (e.key === 'Escape'){ e.preventDefault(); clear(); }
-    else if (e.key === 'Backspace') {
-      e.preventDefault();
-      if (cur.length > 1) cur = cur.slice(0, -1);
-      else cur = '0';
+    function clearAll() {
+      cur = '0';
+      prev = '';
+      op = null;
+      reset = false;
+      evaled = false;
       draw();
     }
-  });
 
-  draw();
-})();
+    function inputDigit(n) {
+      if (evaled) {
+        cur = '0';
+        prev = '';
+        op = null;
+        evaled = false;
+      }
+      if (reset) {
+        cur = '0';
+        reset = false;
+      }
+      if (cur === '0' && n !== '.') {
+        cur = n;
+      } else {
+        if (n === '.' && cur.includes('.')) return;
+        // limit input length
+        const clean = cur.replace('-', '').replace('.', '');
+        if (clean.length >= 14) return;
+        cur += n;
+      }
+      draw();
+    }
+
+    function handleOp(o) {
+      if (evaled) {
+        prev = cur;
+        op = o;
+        reset = true;
+        evaled = false;
+        draw();
+        return;
+      }
+      if (op && !reset) {
+        calc(true);
+      }
+      prev = cur;
+      op = o;
+      reset = true;
+      evaled = false;
+      draw();
+    }
+
+    function calc(chain = false) {
+      if (!op || !prev) {
+        if (!chain) {
+          evaled = true;
+          draw();
+        }
+        return;
+      }
+
+      const p = parseFloat(prev);
+      const c = parseFloat(cur);
+      if (isNaN(p) || isNaN(c)) {
+        cur = 'Error';
+        op = null;
+        prev = '';
+        reset = true;
+        draw();
+        return;
+      }
+
+      let r;
+      switch (op) {
+        case '+': r = p + c; break;
+        case '-': r = p - c; break;
+        case '*': r = p * c; break;
+        case '/':
+          if (c === 0) {
+            cur = 'Error';
+            op = null;
+            prev = '';
+            reset = true;
+            draw();
+            return;
+          }
+          r = p / c;
+          break;
+        default: r = c;
+      }
+
+      if (!Number.isFinite(r)) {
+        cur = 'Error';
+        op = null;
+        prev = '';
+        reset = true;
+        draw();
+        return;
+      }
+
+      // format output
+      let str = Number.isInteger(r) ? r.toString() : parseFloat(r.toPrecision(12)).toString();
+      // avoid scientific notation for display
+      if (str.includes('e')) {
+        str = r.toString();
+      }
+      cur = str;
+
+      if (!chain) {
+        op = null;
+        prev = cur;
+        evaled = true;
+        reset = true;
+      } else {
+        prev = cur;
+        reset = true;
+      }
+      draw();
+    }
+
+    // ---- click binding ----
+    document.querySelectorAll('[data-a]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const action = btn.getAttribute('data-a');
+
+        if (/^[0-9]$/.test(action)) {
+          inputDigit(action);
+          return;
+        }
+        if (action === 'decimal') {
+          inputDigit('.');
+          return;
+        }
+
+        switch (action) {
+          case 'clear':
+            clearAll();
+            break;
+          case 'negate':
+            if (cur !== '0' && cur !== 'Error') {
+              cur = cur.startsWith('-') ? cur.slice(1) : '-' + cur;
+              draw();
+            }
+            break;
+          case 'percent':
+            if (cur !== '0' && cur !== 'Error') {
+              const val = parseFloat(cur);
+              if (!isNaN(val)) {
+                cur = (val / 100).toString();
+                draw();
+              }
+            }
+            break;
+          case 'add':
+            handleOp('+');
+            break;
+          case 'subtract':
+            handleOp('-');
+            break;
+          case 'multiply':
+            handleOp('*');
+            break;
+          case 'divide':
+            handleOp('/');
+            break;
+          case 'equals':
+            calc(false);
+            break;
+          default:
+            break;
+        }
+      });
+    });
+
+    // ---- keyboard support ----
+    document.addEventListener('keydown', (e) => {
+      const key = e.key;
+      if (key >= '0' && key <= '9') {
+        e.preventDefault();
+        inputDigit(key);
+        return;
+      }
+      if (key === '.') {
+        e.preventDefault();
+        inputDigit('.');
+        return;
+      }
+      if (key === 'Enter' || key === '=') {
+        e.preventDefault();
+        calc(false);
+        return;
+      }
+      if (key === '+') {
+        e.preventDefault();
+        handleOp('+');
+        return;
+      }
+      if (key === '-') {
+        e.preventDefault();
+        handleOp('-');
+        return;
+      }
+      if (key === '*') {
+        e.preventDefault();
+        handleOp('*');
+        return;
+      }
+      if (key === '/') {
+        e.preventDefault();
+        handleOp('/');
+        return;
+      }
+      if (key === '%') {
+        e.preventDefault();
+        if (cur !== '0' && cur !== 'Error') {
+          const val = parseFloat(cur);
+          if (!isNaN(val)) {
+            cur = (val / 100).toString();
+            draw();
+          }
+        }
+        return;
+      }
+      if (key === 'Escape') {
+        e.preventDefault();
+        clearAll();
+        return;
+      }
+      if (key === 'Backspace') {
+        e.preventDefault();
+        if (cur.length > 1) {
+          cur = cur.slice(0, -1);
+        } else {
+          cur = '0';
+        }
+        draw();
+        return;
+      }
+    });
+
+    draw();
+  })();
 </script>
 </body>
 </html>
