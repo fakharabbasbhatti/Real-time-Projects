@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PageCraft — Visual Page Builder</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="h-screen overflow-hidden flex flex-col bg-gray-100 dark:bg-gray-950 text-gray-800 dark:text-gray-200">
+
+<!-- Admin Header / Top Toolbar -->
+<header id="top-bar" class="flex items-center justify-between px-4 h-12 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 shadow-sm z-50 flex-shrink-0">
+  <div class="flex items-center gap-3">
+    <!-- Logo -->
+    <div class="flex items-center gap-2 mr-4">
+      <div class="w-7 h-7 bg-blue-600 rounded flex items-center justify-center">
+        <i class="fa fa-layer-group text-white text-xs"></i>
+      </div>
+      <span class="font-bold text-gray-800 dark:text-white text-sm">PageCraft</span>
+    </div>
+    <!-- History Controls -->
+    <button id="btn-undo" onclick="App.history.undo()" title="Undo (Ctrl+Z)" class="toolbar-btn" disabled>
+      <i class="fa fa-undo"></i>
+    </button>
+    <button id="btn-redo" onclick="App.history.redo()" title="Redo (Ctrl+Y)" class="toolbar-btn" disabled>
+      <i class="fa fa-redo"></i>
+    </button>
+    <div class="w-px h-5 bg-gray-300 dark:bg-gray-600 mx-1"></div>
+    <!-- Viewport Controls -->
+    <button onclick="App.setViewport('desktop')" id="vp-desktop" class="toolbar-btn active" title="Desktop View">
+      <i class="fa fa-desktop"></i>
+    </button>
+    <button onclick="App.setViewport('tablet')" id="vp-tablet" class="toolbar-btn" title="Tablet View">
+      <i class="fa fa-tablet-alt"></i>
+    </button>
+    <button onclick="App.setViewport('mobile')" id="vp-mobile" class="toolbar-btn" title="Mobile View">
+      <i class="fa fa-mobile-alt"></i>
+    </button>
+  </div>
+
+  <!-- Page Title -->
+  <div class="flex items-center gap-2">
+    <span class="text-xs text-gray-500 dark:text-gray-400">Editing:</span>
+    <span id="current-page-title" class="text-sm font-medium text-gray-700 dark:text-gray-200">Home Page</span>
+    <span id="save-indicator" class="text-xs text-green-600 dark:text-green-400 hidden"><i class="fa fa-check-circle mr-1"></i>Saved</span>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <!-- Theme Toggle -->
+    <button onclick="App.toggleTheme()" class="toolbar-btn" title="Toggle Dark Mode">
+      <i class="fa fa-moon" id="theme-icon"></i>
+    </button>
+    <div class="w-px h-5 bg-gray-300 dark:bg-gray-600 mx-1"></div>
+    <button onclick="App.exportJSON()" class="toolbar-btn text-xs px-3" title="Export Page JSON">
+      <i class="fa fa-download mr-1"></i>Export
+    </button>
+    <button onclick="App.importJSON()" class="toolbar-btn text-xs px-3" title="Import Page JSON">
+      <i class="fa fa-upload mr-1"></i>Import
+    </button>
+    <button onclick="App.previewPage()" class="btn-secondary text-xs px-3 py-1.5">
+      <i class="fa fa-eye mr-1"></i>Preview
+    </button>
+    <button onclick="App.savePage()" class="btn-primary text-xs px-3 py-1.5">
+      <i class="fa fa-save mr-1"></i>Save
+    </button>
+    <button onclick="App.publishPage()" class="btn-success text-xs px-3 py-1.5">
+      <i class="fa fa-globe mr-1"></i>Publish
+    </button>
+  </div>
+</header>
+
+<!-- Main Layout -->
+<div class="flex flex-1 overflow-hidden">
+
+  <!-- Left Admin Sidebar (WordPress style) -->
+  <aside id="admin-sidebar" class="w-14 bg-gray-900 dark:bg-gray-950 flex flex-col items-center py-3 gap-1 flex-shrink-0 z-40 border-r border-gray-800">
+    <nav class="flex flex-col gap-1 w-full">
+      <button onclick="App.leftPanel.show('pages')" class="admin-nav-btn active" id="nav-pages" title="Pages">
+        <i class="fa fa-file-alt"></i><span class="admin-nav-label">Pages</span>
+      </button>
+      <button onclick="App.leftPanel.show('posts')" class="admin-nav-btn" id="nav-posts" title="Posts">
+        <i class="fa fa-newspaper"></i><span class="admin-nav-label">Posts</span>
+      </button>
+      <button onclick="App.leftPanel.show('media')" class="admin-nav-btn" id="nav-media" title="Media Library">
+        <i class="fa fa-photo-video"></i><span class="admin-nav-label">Media</span>
+      </button>
+      <button onclick="App.leftPanel.show('widgets')" class="admin-nav-btn" id="nav-widgets" title="Widgets">
+        <i class="fa fa-th-large"></i><span class="admin-nav-label">Widgets</span>
+      </button>
+      <button onclick="App.leftPanel.show('templates')" class="admin-nav-btn" id="nav-templates" title="Templates">
+        <i class="fa fa-clone"></i><span class="admin-nav-label">Templates</span>
+      </button>
+      <button onclick="App.leftPanel.show('appearance')" class="admin-nav-btn" id="nav-appearance" title="Appearance">
+        <i class="fa fa-palette"></i><span class="admin-nav-label">Appear</span>
+      </button>
+      <button onclick="App.leftPanel.show('plugins')" class="admin-nav-btn" id="nav-plugins" title="Plugins">
+        <i class="fa fa-plug"></i><span class="admin-nav-label">Plugins</span>
+      </button>
+      <button onclick="App.leftPanel.show('settings')" class="admin-nav-btn" id="nav-settings" title="Settings">
+        <i class="fa fa-cog"></i><span class="admin-nav-label">Settings</span>
+      </button>
+    </nav>
+  </aside>
+
+  <!-- Left Panel Content (expandable) -->
+  <div id="left-panel" class="w-72 flex-shrink-0 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden z-30">
+
+    <!-- Pages Panel -->
+    <div id="panel-pages" class="panel-content flex flex-col h-full">
+      <div class="panel-header">
+        <span><i class="fa fa-file-alt mr-2 text-blue-500"></i>Pages</span>
+        <button onclick="App.pages.create()" class="btn-icon-sm" title="New Page"><i class="fa fa-plus"></i></button>
+      </div>
+      <div class="p-3">
+        <input type="text" placeholder="Search pages..." class="input-sm w-full mb-2" oninput="App.pages.search(this.value)">
+      </div>
+      <div id="pages-list" class="flex-1 overflow-y-auto px-2 pb-3 space-y-1"></div>
+    </div>
+
+    <!-- Posts Panel -->
+    <div id="panel-posts" class="panel-content hidden flex-col h-full">
+      <div class="panel-header">
+        <span><i class="fa fa-newspaper mr-2 text-green-500"></i>Posts</span>
+        <button onclick="App.posts.create()" class="btn-icon-sm" title="New Post"><i class="fa fa-plus"></i></button>
+      </div>
+      <div class="p-3">
+        <input type="text" placeholder="Search posts..." class="input-sm w-full mb-2">
+      </div>
+      <div id="posts-list" class="flex-1 overflow-y-auto px-2 pb-3 space-y-1"></div>
+    </div>
+
+    <!-- Media Panel -->
+    <div id="panel-media" class="panel-content hidden flex-col h-full">
+      <div class="panel-header">
+        <span><i class="fa fa-photo-video mr-2 text-purple-500"></i>Media Library</span>
+        <button onclick="App.media.upload()" class="btn-icon-sm" title="Upload"><i class="fa fa-upload"></i></button>
+      </div>
+      <div class="p-3 space-y-2">
+        <input type="text" placeholder="Search media..." class="input-sm w-full" oninput="App.media.search(this.value)">
+        <input type="file" id="media-upload-input" accept="image/*,video/*" multiple class="hidden" onchange="App.media.handleUpload(event)">
+        <button onclick="document.getElementById('media-upload-input').click()" class="btn-secondary w-full text-xs py-1.5">
+          <i class="fa fa-cloud-upload-alt mr-1"></i>Upload Files
+        </button>
+      </div>
+      <div id="media-grid" class="flex-1 overflow-y-auto p-2 grid grid-cols-3 gap-1.5 content-start"></div>
+    </div>
+
+    <!-- Widgets Panel -->
+    <div id="panel-widgets" class="panel-content hidden flex-col h-full">
+      <div class="panel-header">
+        <span><i class="fa fa-th-large mr-2 text-orange-500"></i>Widgets</span>
+      </div>
+      <div class="p-3">
+        <input type="text" placeholder="Search widgets..." class="input-sm w-full" oninput="App.widgets.search(this.value)">
+      </div>
+      <div id="widgets-list" class="flex-1 overflow-y-auto px-2 pb-3"></div>
+    </div>
+
+    <!-- Templates Panel -->
+    <div id="panel-templates" class="panel-content hidden flex-col h-full">
+      <div class="panel-header">
+        <span><i class="fa fa-clone mr-2 text-teal-500"></i>Templates</span>
+        <button onclick="App.templates.create()" class="btn-icon-sm" title="Save as Template"><i class="fa fa-plus"></i></button>
+      </div>
+      <div id="templates-list" class="flex-1 overflow-y-auto p-3 space-y-2"></div>
+    </div>
+
+    <!-- Appearance Panel -->
+    <div id="panel-appearance" class="panel-content hidden flex-col h-full">
+      <div class="panel-header"><span><i class="fa fa-palette mr-2 text-pink-500"></i>Appearance</span></div>
+      <div class="flex-1 overflow-y-auto p-4 space-y-4">
+        <div class="panel-section">
+          <h4 class="panel-section-title">Theme Builder</h4>
+          <div class="space-y-1">
+            <button onclick="App.themeBuilder.open('header')" class="panel-menu-item w-full"><i class="fa fa-grip-horizontal mr-2"></i>Header Builder</button>
+            <button onclick="App.themeBuilder.open('footer')" class="panel-menu-item w-full"><i class="fa fa-grip-horizontal mr-2"></i>Footer Builder</button>
+            <button onclick="App.themeBuilder.open('single')" class="panel-menu-item w-full"><i class="fa fa-file mr-2"></i>Single Post</button>
+            <button onclick="App.themeBuilder.open('archive')" class="panel-menu-item w-full"><i class="fa fa-list mr-2"></i>Archive Template</button>
+            <button onclick="App.themeBuilder.open('404')" class="panel-menu-item w-full"><i class="fa fa-exclamation-triangle mr-2"></i>404 Template</button>
+          </div>
+        </div>
+        <div class="panel-section">
+          <h4 class="panel-section-title">Global Colors</h4>
+          <div class="space-y-2" id="global-colors"></div>
+        </div>
+        <div class="panel-section">
+          <h4 class="panel-section-title">Typography</h4>
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <label class="text-xs text-gray-500">Body Font</label>
+              <select class="input-sm w-32" onchange="App.appearance.setBodyFont(this.value)">
+                <option>Inter</option><option>Roboto</option><option>Open Sans</option>
+                <option>Lato</option><option>Poppins</option><option>Montserrat</option>
+              </select>
+            </div>
+            <div class="flex items-center justify-between">
+              <label class="text-xs text-gray-500">Heading Font</label>
+              <select class="input-sm w-32" onchange="App.appearance.setHeadingFont(this.value)">
+                <option>Inter</option><option>Playfair Display</option><option>Merriweather</option>
+                <option>Georgia</option><option>Oswald</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plugins Panel -->
+    <div id="panel-plugins" class="panel-content hidden flex-col h-full">
+      <div class="panel-header"><span><i class="fa fa-plug mr-2 text-yellow-500"></i>Plugins</span></div>
+      <div class="flex-1 overflow-y-auto p-4 space-y-2" id="plugins-list"></div>
+    </div>
+
+    <!-- Settings Panel -->
+    <div id="panel-settings" class="panel-content hidden flex-col h-full">
+      <div class="panel-header"><span><i class="fa fa-cog mr-2 text-gray-500"></i>Settings</span></div>
+      <div class="flex-1 overflow-y-auto p-4 space-y-4">
+        <div class="panel-section">
+          <h4 class="panel-section-title">General</h4>
+          <div class="space-y-3">
+            <div>
+              <label class="label-sm">Site Title</label>
+              <input type="text" class="input-sm w-full" value="My Website" oninput="App.settings.set('siteTitle',this.value)">
+            </div>
+            <div>
+              <label class="label-sm">Tagline</label>
+              <input type="text" class="input-sm w-full" value="Just another website" oninput="App.settings.set('tagline',this.value)">
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <h4 class="panel-section-title">Canvas</h4>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <label class="label-sm">Show Grid</label>
+              <input type="checkbox" onchange="App.settings.toggleGrid(this.checked)" class="w-4 h-4">
+            </div>
+            <div class="flex items-center justify-between">
+              <label class="label-sm">Snap to Grid</label>
+              <input type="checkbox" onchange="App.settings.toggleSnap(this.checked)" class="w-4 h-4">
+            </div>
+            <div>
+              <label class="label-sm">Canvas Background</label>
+              <input type="color" value="#f3f4f6" class="w-full h-8 rounded border border-gray-200 cursor-pointer" onchange="App.settings.setCanvasBg(this.value)">
+            </div>
+          </div>
+        </div>
+        <div class="panel-section">
+          <h4 class="panel-section-title">Export / Import</h4>
+          <div class="space-y-2">
+            <button onclick="App.exportJSON()" class="btn-secondary w-full text-xs py-2"><i class="fa fa-download mr-1"></i>Export Page JSON</button>
+            <button onclick="App.importJSON()" class="btn-secondary w-full text-xs py-2"><i class="fa fa-upload mr-1"></i>Import Page JSON</button>
+            <button onclick="App.clearAll()" class="btn-danger w-full text-xs py-2"><i class="fa fa-trash mr-1"></i>Clear Canvas</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Canvas Area -->
+  <main class="flex-1 flex flex-col overflow-hidden relative bg-gray-200 dark:bg-gray-800">
+    <!-- Canvas Toolbar -->
+    <div class="flex items-center justify-between px-4 py-2 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+      <div class="flex items-center gap-2 text-xs text-gray-500">
+        <span id="canvas-breadcrumb">Canvas</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="App.canvas.addSection()" class="btn-primary text-xs py-1 px-3">
+          <i class="fa fa-plus mr-1"></i>Add Section
+        </button>
+        <button onclick="App.canvas.clearSelection()" class="toolbar-btn text-xs" title="Deselect All">
+          <i class="fa fa-times-circle"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Canvas Viewport -->
+    <div class="flex-1 overflow-auto flex items-start justify-center p-6" id="canvas-scroll-area">
+      <div id="canvas-viewport" class="canvas-viewport desktop transition-all duration-300">
+        <div id="canvas" class="canvas-inner min-h-96 relative">
+          <!-- Empty State -->
+          <div id="canvas-empty" class="flex flex-col items-center justify-center h-80 text-gray-400 dark:text-gray-600">
+            <i class="fa fa-layer-group text-5xl mb-4 opacity-30"></i>
+            <p class="text-lg font-medium mb-2">Start Building</p>
+            <p class="text-sm mb-4">Drag widgets from the panel or add a section</p>
+            <button onclick="App.canvas.addSection()" class="btn-primary text-sm px-4 py-2">
+              <i class="fa fa-plus mr-2"></i>Add First Section
+            </button>
+          </div>
+          <!-- Drop Zone for sections -->
+          <div id="canvas-drop-zone" class="canvas-drop-zone hidden">
+            <i class="fa fa-arrow-down mr-2"></i>Drop here to add widget
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Right Properties Panel -->
+  <aside id="right-panel" class="w-80 flex-shrink-0 bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden z-30">
+    <!-- No Selection State -->
+    <div id="props-empty" class="flex flex-col items-center justify-center h-full text-gray-400 dark:text-gray-600 p-8">
+      <i class="fa fa-mouse-pointer text-4xl mb-4 opacity-30"></i>
+      <p class="text-sm text-center">Select an element on the canvas to edit its properties</p>
+    </div>
+
+    <!-- Properties Editor (shown when element selected) -->
+    <div id="props-editor" class="hidden flex-col h-full">
+      <!-- Element Info -->
+      <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between bg-gray-50 dark:bg-gray-800">
+        <div class="flex items-center gap-2">
+          <i id="props-widget-icon" class="fa fa-cube text-blue-500"></i>
+          <span id="props-widget-name" class="text-sm font-semibold">Widget</span>
+        </div>
+        <div class="flex items-center gap-1">
+          <button onclick="App.selection.duplicate()" class="btn-icon-xs" title="Duplicate"><i class="fa fa-copy"></i></button>
+          <button onclick="App.selection.delete()" class="btn-icon-xs text-red-500" title="Delete"><i class="fa fa-trash"></i></button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+        <button onclick="App.props.showTab('content')" class="props-tab active" id="tab-content">Content</button>
+        <button onclick="App.props.showTab('style')" class="props-tab" id="tab-style">Style</button>
+        <button onclick="App.props.showTab('advanced')" class="props-tab" id="tab-advanced">Advanced</button>
+      </div>
+
+      <!-- Tab Content -->
+      <div class="flex-1 overflow-y-auto">
+        <div id="props-content-tab" class="p-4 space-y-4"></div>
+        <div id="props-style-tab" class="p-4 space-y-4 hidden"></div>
+        <div id="props-advanced-tab" class="p-4 space-y-4 hidden"></div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- Context Menu -->
+<div id="context-menu" class="context-menu hidden">
+  <button onclick="App.contextMenu.action('duplicate')"><i class="fa fa-copy mr-2"></i>Duplicate</button>
+  <button onclick="App.contextMenu.action('copy')"><i class="fa fa-clone mr-2"></i>Copy</button>
+  <button onclick="App.contextMenu.action('paste')"><i class="fa fa-paste mr-2"></i>Paste</button>
+  <button onclick="App.contextMenu.action('moveUp')"><i class="fa fa-arrow-up mr-2"></i>Move Up</button>
+  <button onclick="App.contextMenu.action('moveDown')"><i class="fa fa-arrow-down mr-2"></i>Move Down</button>
+  <div class="context-divider"></div>
+  <button onclick="App.contextMenu.action('editCSS')"><i class="fa fa-code mr-2"></i>Edit CSS</button>
+  <div class="context-divider"></div>
+  <button onclick="App.contextMenu.action('delete')" class="text-red-500"><i class="fa fa-trash mr-2"></i>Delete</button>
+</div>
+
+<!-- Modal Overlay -->
+<div id="modal-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+  <div id="modal-box" class="bg-white dark:bg-gray-900 rounded-xl shadow-2xl w-full max-w-2xl max-h-screen overflow-hidden flex flex-col">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+      <h3 id="modal-title" class="font-semibold text-gray-800 dark:text-white"></h3>
+      <button onclick="App.modal.close()" class="btn-icon-sm"><i class="fa fa-times"></i></button>
+    </div>
+    <div id="modal-body" class="flex-1 overflow-y-auto p-6"></div>
+    <div id="modal-footer" class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-2"></div>
+  </div>
+</div>
+
+<!-- Toast Notifications -->
+<div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2"></div>
+
+<!-- Hidden file input for JSON import -->
+<input type="file" id="json-import-input" accept=".json" class="hidden" onchange="App.handleJSONImport(event)">
+
+<!-- Lightbox -->
+<div id="lightbox" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden flex items-center justify-center" onclick="App.lightbox.close()">
+  <img id="lightbox-img" src="" class="max-w-full max-h-full object-contain rounded-lg" onclick="event.stopPropagation()">
+  <button class="absolute top-4 right-4 text-white text-2xl" onclick="App.lightbox.close()"><i class="fa fa-times"></i></button>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
