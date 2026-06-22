@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WordPress-style Page Builder</title>
+  <!-- Tailwind CSS via CDN + Font Awesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* custom styles */
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #f0f2f5; }
+    .builder-sidebar { background: #1e1e2f; color: #e0e0e0; }
+    .builder-sidebar .menu-item { padding: 0.75rem 1rem; display: flex; align-items: center; gap: 0.75rem; border-radius: 0.5rem; transition: all 0.1s; cursor: pointer; }
+    .builder-sidebar .menu-item:hover { background: #2a2a3e; }
+    .builder-sidebar .menu-item i { width: 1.25rem; text-align: center; }
+    .widget-panel { background: #ffffff; border-radius: 0.75rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .widget-item { padding: 0.5rem 0.75rem; border-radius: 0.5rem; background: #f8fafc; border: 1px solid #e9edf2; cursor: grab; transition: 0.1s; display: flex; align-items: center; gap: 0.5rem; }
+    .widget-item:hover { background: #eef2f7; border-color: #cbd5e1; }
+    .canvas-area { background: #f8fafc; min-height: 600px; border-radius: 1rem; padding: 1.5rem; box-shadow: inset 0 2px 8px rgba(0,0,0,0.02); }
+    .editor-element { position: relative; padding: 0.5rem; border: 1px solid transparent; border-radius: 0.5rem; transition: 0.1s; }
+    .editor-element:hover { border-color: #94a3b8; background: #f1f5f9; }
+    .editor-element.selected { border-color: #3b82f6; background: #eff6ff; box-shadow: 0 0 0 2px #bfdbfe; }
+    .element-toolbar { position: absolute; top: -2.25rem; right: 0; background: #1e293b; color: white; border-radius: 0.5rem; padding: 0.2rem 0.5rem; font-size: 0.7rem; display: none; gap: 0.5rem; }
+    .editor-element:hover .element-toolbar { display: flex; }
+    .props-panel { background: white; border-radius: 0.75rem; box-shadow: 0 4px 12px rgba(0,0,0,0.04); padding: 1rem; }
+    .props-panel .prop-group { border-bottom: 1px solid #e9edf2; padding: 0.75rem 0; }
+    .props-panel .prop-group:last-child { border-bottom: 0; }
+    .btn-toolbar { background: #f1f5f9; border: 1px solid #d1d9e6; border-radius: 0.5rem; padding: 0.4rem 0.8rem; font-size: 0.8rem; transition: 0.1s; display: inline-flex; align-items: center; gap: 0.4rem; }
+    .btn-toolbar:hover { background: #e2e8f0; }
+    .btn-primary { background: #2563eb; color: white; border-radius: 0.5rem; padding: 0.4rem 1rem; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .empty-state { color: #94a3b8; padding: 3rem 0; text-align: center; }
+    /* rich text toolbar */
+    .rich-toolbar { display: flex; flex-wrap: wrap; gap: 0.25rem; background: #f8fafc; padding: 0.4rem; border-radius: 0.5rem; border: 1px solid #e2e8f0; }
+    .rich-toolbar button { background: transparent; border: 0; padding: 0.25rem 0.5rem; border-radius: 0.25rem; cursor: pointer; }
+    .rich-toolbar button:hover { background: #e2e8f0; }
+    .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px,1fr)); gap: 0.75rem; }
+    .media-item { background: #f1f5f9; border-radius: 0.5rem; padding: 0.5rem; text-align: center; }
+    /* dark mode */
+    .dark-mode { background: #0f172a; color: #e2e8f0; }
+    .dark-mode .builder-sidebar { background: #1e293b; }
+    .dark-mode .widget-panel { background: #1e293b; border-color: #334155; }
+    .dark-mode .widget-item { background: #2d3a4f; border-color: #475569; color: #e2e8f0; }
+    .dark-mode .canvas-area { background: #1e293b; }
+    .dark-mode .props-panel { background: #1e293b; color: #e2e8f0; }
+    .dark-mode .btn-toolbar { background: #2d3a4f; border-color: #475569; color: #e2e8f0; }
+  </style>
+</head>
+<body>
+  <div id="app" class="flex h-screen overflow-hidden">
+    <!-- Left Sidebar -->
+    <aside class="builder-sidebar w-64 p-4 flex-shrink-0 overflow-y-auto hidden md:block">
+      <div class="text-2xl font-bold mb-6 flex items-center gap-2"><i class="fas fa-pencil-ruler"></i> Builder</div>
+      <nav class="space-y-1">
+        <div class="menu-item"><i class="fas fa-file-alt"></i> Pages</div>
+        <div class="menu-item"><i class="fas fa-newspaper"></i> Posts</div>
+        <div class="menu-item"><i class="fas fa-images"></i> Media Library</div>
+        <div class="menu-item"><i class="fas fa-layer-group"></i> Templates</div>
+        <div class="menu-item"><i class="fas fa-palette"></i> Appearance</div>
+        <div class="menu-item"><i class="fas fa-plug"></i> Plugins</div>
+        <div class="menu-item"><i class="fas fa-cog"></i> Settings</div>
+      </nav>
+      <hr class="border-gray-700 my-4">
+      <div class="text-sm text-gray-400">Widgets</div>
+      <div id="widgetsPanel" class="mt-2 space-y-1 max-h-96 overflow-y-auto">
+        <!-- populated by JS -->
+      </div>
+    </aside>
+
+    <!-- Main area -->
+    <div class="flex-1 flex flex-col min-w-0">
+      <!-- Top Toolbar -->
+      <header class="bg-white border-b border-gray-200 p-2 flex flex-wrap items-center gap-2 dark:bg-gray-800 dark:border-gray-700">
+        <button class="btn-toolbar"><i class="fas fa-save"></i> Save</button>
+        <button class="btn-toolbar"><i class="fas fa-eye"></i> Preview</button>
+        <button class="btn-primary"><i class="fas fa-globe"></i> Publish</button>
+        <button class="btn-toolbar"><i class="fas fa-undo"></i> Undo</button>
+        <button class="btn-toolbar"><i class="fas fa-redo"></i> Redo</button>
+        <span class="flex-1"></span>
+        <button class="btn-toolbar" data-view="desktop"><i class="fas fa-desktop"></i></button>
+        <button class="btn-toolbar" data-view="tablet"><i class="fas fa-tablet-alt"></i></button>
+        <button class="btn-toolbar" data-view="mobile"><i class="fas fa-mobile-alt"></i></button>
+        <button id="themeToggle" class="btn-toolbar"><i class="fas fa-moon"></i></button>
+      </header>
+
+      <!-- Editor area + Right properties -->
+      <div class="flex flex-1 overflow-hidden">
+        <!-- Canvas -->
+        <div class="flex-1 p-4 overflow-y-auto">
+          <div id="canvas" class="canvas-area max-w-4xl mx-auto">
+            <div class="empty-state"><i class="fas fa-plus-circle text-4xl mb-2"></i><p>Drag widgets here</p></div>
+          </div>
+        </div>
+
+        <!-- Right Properties Panel -->
+        <aside class="w-80 bg-white border-l border-gray-200 p-4 overflow-y-auto hidden lg:block dark:bg-gray-800 dark:border-gray-700 props-panel" id="propertiesPanel">
+          <h3 class="font-bold text-lg mb-2"><i class="fas fa-sliders-h mr-2"></i>Properties</h3>
+          <div id="propertyContent">
+            <p class="text-gray-400 text-sm">Select an element to edit</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function(){
+      // ----- state -----
+      let elements = []; // each: { id, type, content, styles, settings }
+      let selectedId = null;
+      let undoStack = [], redoStack = [];
+      let nextId = 1;
+      let darkMode = false;
+
+      // widget definitions
+      const widgetTypes = [
+        'Heading','Text','Button','Image','Video','Divider','Spacer','Icon','Icon Box',
+        'Gallery','Testimonial','Counter','Progress Bar','Accordion','Tabs','Pricing Table',
+        'Team Member','Contact Form','Google Map Placeholder','HTML Widget','Shortcode Widget',
+        'Social Icons','Navigation Menu','Logo','Hero Section','CTA Section','Blog Posts',
+        'Recent Posts','Categories','Search Widget','Sidebar Widget','Footer Widget'
+      ];
+
+      // ----- DOM refs -----
+      const canvas = document.getElementById('canvas');
+      const widgetsPanel = document.getElementById('widgetsPanel');
+      const propertyContent = document.getElementById('propertyContent');
+      const themeToggle = document.getElementById('themeToggle');
+
+      // ----- helpers -----
+      function generateId() { return nextId++; }
+
+      function saveState() {
+        const data = { elements, nextId };
+        localStorage.setItem('builderData', JSON.stringify(data));
+        // also push to undo
+        undoStack.push(JSON.stringify(elements));
+        if (undoStack.length > 50) undoStack.shift();
+        redoStack = [];
+      }
+
+      function loadState() {
+        const raw = localStorage.getItem('builderData');
+        if (raw) {
+          try {
+            const data = JSON.parse(raw);
+            elements = data.elements || [];
+            nextId = data.nextId || 1;
+          } catch(e) { elements = []; }
+        } else {
+          // demo content
+          elements = [
+            { id: generateId(), type: 'Heading', content: 'Welcome to the Builder', styles: { fontSize: '2rem', fontWeight: 'bold', color: '#1e293b' } },
+            { id: generateId(), type: 'Text', content: 'This is a fully functional page builder. Drag widgets from the left.' }
+          ];
+        }
+        renderCanvas();
+      }
+
+      function renderCanvas() {
+        if (!elements.length) {
+          canvas.innerHTML = `<div class="empty-state"><i class="fas fa-plus-circle text-4xl mb-2"></i><p>Drag widgets here</p></div>`;
+          return;
+        }
+        let html = '';
+        elements.forEach(el => {
+          const selected = el.id === selectedId ? 'selected' : '';
+          const styleStr = el.styles ? Object.entries(el.styles).map(([k,v]) => `${k}:${v}`).join(';') : '';
+          let content = el.content || '';
+          if (el.type === 'Heading') content = `<h2>${content}</h2>`;
+          else if (el.type === 'Text') content = `<p>${content}</p>`;
+          else if (el.type === 'Button') content = `<button class="bg-blue-500 text-white px-4 py-2 rounded">${content || 'Button'}</button>`;
+          else if (el.type === 'Image') content = `<img src="${content || 'https://placehold.co/300x200'}" alt="image" class="max-w-full rounded" />`;
+          else content = `<div>${content || el.type}</div>`;
+          html += `<div class="editor-element ${selected}" data-id="${el.id}" style="${styleStr}">
+            <div class="element-toolbar">
+              <i class="fas fa-copy" data-action="duplicate"></i>
+              <i class="fas fa-trash" data-action="delete"></i>
+              <i class="fas fa-paste" data-action="paste"></i>
+            </div>
+            ${content}
+          </div>`;
+        });
+        canvas.innerHTML = html;
+        // attach click to select
+        document.querySelectorAll('.editor-element').forEach(el => {
+          el.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = parseInt(el.dataset.id);
+            selectElement(id);
+          });
+          // drag events
+          el.setAttribute('draggable', 'true');
+          el.addEventListener('dragstart', handleDragStart);
+          el.addEventListener('dragover', handleDragOver);
+          el.addEventListener('drop', handleDrop);
+        });
+        // toolbar actions
+        document.querySelectorAll('[data-action="duplicate"]').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const el = btn.closest('.editor-element');
+            const id = parseInt(el.dataset.id);
+            duplicateElement(id);
+          });
+        });
+        document.querySelectorAll('[data-action="delete"]').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const el = btn.closest('.editor-element');
+            const id = parseInt(el.dataset.id);
+            deleteElement(id);
+          });
+        });
+        document.querySelectorAll('[data-action="paste"]').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            // simple copy-paste: duplicate after
+            const el = btn.closest('.editor-element');
+            const id = parseInt(el.dataset.id);
+            const idx = elements.findIndex(e => e.id === id);
+            if (idx > -1) {
+              const copy = JSON.parse(JSON.stringify(elements[idx]));
+              copy.id = generateId();
+              elements.splice(idx+1, 0, copy);
+              saveState(); renderCanvas();
+            }
+          });
+        });
+        updateProperties();
+      }
+
+      function selectElement(id) {
+        selectedId = id;
+        renderCanvas();
+      }
+
+      function duplicateElement(id) {
+        const idx = elements.findIndex(e => e.id === id);
+        if (idx === -1) return;
+        const copy = JSON.parse(JSON.stringify(elements[idx]));
+        copy.id = generateId();
+        elements.splice(idx+1, 0, copy);
+        saveState(); renderCanvas();
+      }
+
+      function deleteElement(id) {
+        elements = elements.filter(e => e.id !== id);
+        if (selectedId === id) selectedId = null;
+        saveState(); renderCanvas();
+      }
+
+      // drag and drop from widget panel
+      function handleDragStart(e) {
+        const id = e.target.closest('.editor-element')?.dataset.id;
+        if (id) e.dataTransfer.setData('text/plain', id);
+        else {
+          const widget = e.target.closest('.widget-item');
+          if (widget) e.dataTransfer.setData('text/plain', 'widget:'+widget.dataset.type);
+        }
+      }
+      function handleDragOver(e) { e.preventDefault(); }
+      function handleDrop(e) {
+        e.preventDefault();
+        const data = e.dataTransfer.getData('text/plain');
+        if (!data) return;
+        if (data.startsWith('widget:')) {
+          const type = data.replace('widget:', '');
+          const newEl = { id: generateId(), type, content: type === 'Heading' ? 'New Heading' : type === 'Text' ? 'Lorem ipsum' : '', styles: {} };
+          elements.push(newEl);
+          saveState(); renderCanvas();
+        } else {
+          // reorder: move element
+          const id = parseInt(data);
+          const fromIdx = elements.findIndex(e => e.id === id);
+          if (fromIdx === -1) return;
+          const target = e.target.closest('.editor-element');
+          if (!target) return;
+          const toId = parseInt(target.dataset.id);
+          const toIdx = elements.findIndex(e => e.id === toId);
+          if (toIdx === -1 || fromIdx === toIdx) return;
+          const [moved] = elements.splice(fromIdx, 1);
+          elements.splice(toIdx, 0, moved);
+          saveState(); renderCanvas();
+        }
+      }
+
+      // properties panel
+      function updateProperties() {
+        if (!selectedId) {
+          propertyContent.innerHTML = `<p class="text-gray-400 text-sm">Select an element</p>`;
+          return;
+        }
+        const el = elements.find(e => e.id === selectedId);
+        if (!el) return;
+        let html = `<div class="prop-group"><label class="block text-sm font-medium">Content</label><input id="propContent" value="${el.content || ''}" class="w-full border rounded p-1 text-sm" /></div>`;
+        html += `<div class="prop-group"><label class="block text-sm font-medium">Font Size</label><input id="propFontSize" type="number" value="${el.styles?.fontSize?.replace('px','') || '16'}" class="w-full border rounded p-1 text-sm" /></div>`;
+        html += `<div class="prop-group"><label class="block text-sm font-medium">Color</label><input id="propColor" type="color" value="${el.styles?.color || '#000000'}" class="w-full border rounded p-1" /></div>`;
+        html += `<div class="prop-group"><label class="block text-sm font-medium">Background</label><input id="propBg" type="color" value="${el.styles?.backgroundColor || '#ffffff'}" class="w-full border rounded p-1" /></div>`;
+        propertyContent.innerHTML = html;
+        // bind events
+        document.getElementById('propContent')?.addEventListener('input', function() {
+          const el2 = elements.find(e => e.id === selectedId);
+          if (el2) { el2.content = this.value; saveState(); renderCanvas(); }
+        });
+        document.getElementById('propFontSize')?.addEventListener('input', function() {
+          const el2 = elements.find(e => e.id === selectedId);
+          if (el2) { if (!el2.styles) el2.styles = {}; el2.styles.fontSize = this.value+'px'; saveState(); renderCanvas(); }
+        });
+        document.getElementById('propColor')?.addEventListener('input', function() {
+          const el2 = elements.find(e => e.id === selectedId);
+          if (el2) { if (!el2.styles) el2.styles = {}; el2.styles.color = this.value; saveState(); renderCanvas(); }
+        });
+        document.getElementById('propBg')?.addEventListener('input', function() {
+          const el2 = elements.find(e => e.id === selectedId);
+          if (el2) { if (!el2.styles) el2.styles = {}; el2.styles.backgroundColor = this.value; saveState(); renderCanvas(); }
+        });
+      }
+
+      // widgets panel
+      function buildWidgetsPanel() {
+        widgetsPanel.innerHTML = widgetTypes.map(type => 
+          `<div class="widget-item" draggable="true" data-type="${type}"><i class="fas fa-cube"></i> ${type}</div>`
+        ).join('');
+        document.querySelectorAll('.widget-item').forEach(w => {
+          w.addEventListener('dragstart', handleDragStart);
+        });
+      }
+
+      // theme toggle
+      themeToggle.addEventListener('click', () => {
+        darkMode = !darkMode;
+        document.documentElement.classList.toggle('dark-mode', darkMode);
+        themeToggle.innerHTML = darkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+      });
+
+      // responsive view (demo)
+      document.querySelectorAll('[data-view]').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const view = this.dataset.view;
+          const canvasEl = document.getElementById('canvas');
+          if (view === 'desktop') { canvasEl.style.maxWidth = '100%'; }
+          else if (view === 'tablet') { canvasEl.style.maxWidth = '768px'; }
+          else if (view === 'mobile') { canvasEl.style.maxWidth = '375px'; }
+        });
+      });
+
+      // init
+      buildWidgetsPanel();
+      loadState();
+      // drag from canvas
+      document.addEventListener('dragover', (e) => e.preventDefault());
+      document.addEventListener('drop', (e) => e.preventDefault());
+
+      // click outside to deselect
+      canvas.addEventListener('click', (e) => {
+        if (e.target === canvas) { selectedId = null; renderCanvas(); }
+      });
+
+      // save/undo/redo stubs
+      document.querySelector('.btn-toolbar .fa-save')?.closest('button')?.addEventListener('click', () => { saveState(); alert('Saved!'); });
+      document.querySelector('.btn-toolbar .fa-undo')?.closest('button')?.addEventListener('click', () => {
+        if (undoStack.length > 1) {
+          redoStack.push(undoStack.pop());
+          const prev = undoStack[undoStack.length-1];
+          if (prev) { elements = JSON.parse(prev); renderCanvas(); }
+        }
+      });
+      document.querySelector('.btn-toolbar .fa-redo')?.closest('button')?.addEventListener('click', () => {
+        if (redoStack.length) {
+          const next = redoStack.pop();
+          undoStack.push(next);
+          elements = JSON.parse(next); renderCanvas();
+        }
+      });
+
+      window.addEventListener('beforeunload', saveState);
+    })();
+  </script>
+</body>
+</html>
