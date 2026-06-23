@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zoom Car Wash - Location Finder</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; background: #f0f2f5; }
+
+#zw {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: 1400px;
+  margin: 30px auto;
+  height: 620px;
+  background: #fff;
+  border-radius: 0px;
+  overflow: hidden;
+  border: 1px solid #dde3ea;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+}
+
+/* ===== LEFT PANEL 50% ===== */
+.zl {
+  width: 35%;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #dde3ea;
+  overflow: hidden;
+}
+
+/* Dark navy header */
+.zl-head {
+  background: #1b2b6b;
+  padding: 18px 20px 16px;
+  flex-shrink: 0;
+}
+.zl-head-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 14px;
+  letter-spacing: 0.2px;
+}
+
+/* White search bar inside navy header */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 0px;
+  padding: 0 12px;
+  height: 40px;
+  gap: 8px;
+}
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: #333;
+  background: transparent;
+  font-family: inherit;
+}
+.search-bar input::placeholder { color: #aaa; font-size: 14px; }
+.search-icon {
+  width: 40px;
+  height: 40px;
+  background: #f0a500;
+  border-radius: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: -11.8px;
+}
+.search-icon svg { display: block; }
+
+/* Site count bar */
+.zl-sub {
+  background: #fff;
+  padding: 10px 20px;
+  font-size: 13px;
+  color: #444;
+  border-bottom: 1px solid #e8ecf0;
+  flex-shrink: 0;
+}
+.zl-sub span { color: #1b2b6b; font-weight: 700; }
+
+/* Scrollable list */
+.zl-list {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.zl-list::-webkit-scrollbar { width: 4px; }
+.zl-list::-webkit-scrollbar-thumb { background: #1b2b6b; border-radius: 4px; }
+
+/* Location Card */
+.loc-card {
+  padding: 14px 20px 12px;
+  border-bottom: 1px solid #edf0f4;
+  background: #fff;
+}
+.loc-card.hidden { display: none; }
+
+.card-inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+/* Logo block */
+
+.card-logo {
+    flex-shrink: 0;
+    width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-logo-img {
+    width: 100%;
+    max-width: 110px;
+    height: auto;
+    display: block;
+}
+
+/* Card text info */
+.card-info { flex: 1; min-width: 0; }
+
+.card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1b2b6b;
+  margin-bottom: 5px;
+}
+
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.info-row svg { flex-shrink: 0; margin-top: 1px; }
+.info-text {
+  font-size: 12.5px;
+  color: #555;
+  line-height: 1.5;
+}
+.info-text a { color: #555; text-decoration: none; }
+
+/* Buttons */
+.card-btns {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+/* Buttons */
+.card-btns {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn-dir,
+.btn-view {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px 12px;
+  border-radius: 9999px;
+  border: 1px solid #efd079;
+  background: #efd079;
+  color: #142054;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.4px;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.btn-dir:hover,
+.btn-view:hover {
+  background: #142054;
+  border-color: #142054;
+  color: #ffffff;
+}
+
+/* ===== RIGHT PANEL 50% MAP ===== */
+.zr {
+  width: 65%;
+  position: relative;
+  background: #e5e3df;
+}
+#zmap {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+}
+
+/* Leaflet popup style */
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  #zw { flex-direction: column; height: auto; margin: 10px; border-radius: 8px; }
+  .zl { width: 100%; border-right: none; border-bottom: 1px solid #dde3ea; }
+  .zl-list { max-height: 420px; }
+  .zr { width: 100%; height: 380px; }
+}
+</style>
+</head>
+<body>
+
+<div id="zw">
+
+  <!-- ===== LEFT PANEL ===== -->
+  <div class="zl">
+
+    <!-- Navy Header -->
+    <div class="zl-head">
+      <div class="zl-head-title">Search Location</div>
+      <div class="search-bar">
+        <input type="text" id="sInput" placeholder="Enter a location" oninput="filterLocs()">
+        <div class="search-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Site Count -->
+    <div class="zl-sub">Number of Sites: <span id="siteCount">4</span></div>
+
+    <!-- Cards List -->
+    <div class="zl-list" id="locList">
+
+      <!-- CARD 1 -->
+      <div class="loc-card" data-lat="29.7382" data-lng="-95.5731">
+        <div class="card-inner">
+          
+          <div class="card-info">
+            <div class="card-title">Houston - Westheimer</div>
+             <div class="info-row">
+              <svg width="13" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C4.24 0 2 2.24 2 5c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5c-.83 0-1.5-.67-1.5-1.5S6.17 3.5 7 3.5 8.5 4.17 8.5 5 7.83 6.5 7 6.5z" fill="#efd079"/></svg>
+              <div class="info-text">12455 Westheimer Rd,<br>Houston, TX 77077</div>
+            </div>
+            <div class="info-row">
+              <!-- Phone icon -->
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="#efd079" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+              </svg>
+              <div class="info-text">832-304-0280</div>
+            </div>
+            <div class="card-btns">
+              <button class="btn-dir" onclick="window.open('https://www.google.com/maps?daddr=29.7382,-95.5731','_blank')">
+  DIRECTION
+</button>
+              <button class="btn-view" onclick="flyTo(29.7382,-95.5731,'Houston - Westheimer')">
+                
+                VIEW LOCATION
+              </button>
+            </div>
+          </div>
+<div class="card-logo">
+    <img src="./pic.png" alt="Zoom Car Wash Logo" class="card-logo-img">
+</div>
+</div>
+      </div>
+
+      <!-- CARD 2 -->
+      <div class="loc-card" data-lat="29.6928" data-lng="-95.1192">
+        <div class="card-inner">
+          
+          <div class="card-info">
+            <div class="card-title">Deer Park - La Porte</div>
+            <div class="info-row">
+              <svg width="13" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C4.24 0 2 2.24 2 5c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5c-.83 0-1.5-.67-1.5-1.5S6.17 3.5 7 3.5 8.5 4.17 8.5 5 7.83 6.5 7 6.5z" fill="#efd079"/></svg>
+              <div class="info-text">9222 Spencer Hwy,<br>La Porte, TX 77571</div>
+            </div>
+            <div class="info-row">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="#efd079"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+              <div class="info-text">832-304-0280</div>
+            </div>
+            <div class="card-btns">
+              <button class="btn-dir" onclick="window.open('https://www.google.com/maps?daddr=29.6928,-95.1192','_blank')">
+                
+                DIRECTION
+              </button>
+              <button class="btn-view" onclick="flyTo(29.6928,-95.1192,'Deer Park - La Porte')">
+                
+                VIEW LOCATION
+              </button>
+            </div>
+          </div>
+          <div class="card-logo">
+    <img src="./pic.png" alt="Zoom Car Wash Logo" class="card-logo-img">
+</div>
+        </div>
+      </div>
+
+      <!-- CARD 3 -->
+      <div class="loc-card" data-lat="29.7858" data-lng="-95.8248">
+        <div class="card-inner">
+         
+          <div class="card-info">
+            <div class="card-title">Katy - Grand Parkway</div>
+            <div class="info-row">
+              <svg width="13" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C4.24 0 2 2.24 2 5c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5c-.83 0-1.5-.67-1.5-1.5S6.17 3.5 7 3.5 8.5 4.17 8.5 5 7.83 6.5 7 6.5z" fill="#efd079"/></svg>
+              <div class="info-text">23501 Cinco Ranch Blvd,<br>Katy, TX 77494</div>
+            </div>
+            <div class="info-row">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="#efd079"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+              <div class="info-text">832-304-0280</div>
+            </div>
+            <div class="card-btns">
+              <button class="btn-dir" onclick="window.open('https://www.google.com/maps?daddr=29.7858,-95.8248','_blank')">
+                
+                DIRECTION
+              </button>
+              <button class="btn-view" onclick="flyTo(29.7858,-95.8248,'Katy - Grand Parkway')">
+                
+                VIEW LOCATION
+              </button>
+            </div>
+          </div>
+          <div class="card-logo">
+    <img src="./pic.png" alt="Zoom Car Wash Logo" class="card-logo-img">
+</div>
+        </div>
+      </div>
+
+      <!-- CARD 4 -->
+      <div class="loc-card" data-lat="29.9719" data-lng="-95.6975">
+        <div class="card-inner">
+          
+          <div class="card-info">
+            <div class="card-title">Cypress - Northwest Fwy</div>
+            <div class="info-row">
+              <svg width="13" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C4.24 0 2 2.24 2 5c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5c-.83 0-1.5-.67-1.5-1.5S6.17 3.5 7 3.5 8.5 4.17 8.5 5 7.83 6.5 7 6.5z" fill="#efd079"/></svg>
+              <div class="info-text">12300 Barker Cypress Rd,<br>Cypress, TX 77429</div>
+            </div>
+            <div class="info-row">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="#efd079"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+              <div class="info-text">832-304-0280</div>
+            </div>
+            <div class="card-btns">
+              <button class="btn-dir" onclick="window.open('https://www.google.com/maps?daddr=29.9719,-95.6975','_blank')">
+                
+                DIRECTION
+              </button>
+              <button class="btn-view" onclick="flyTo(29.9719,-95.6975,'Cypress - Northwest Fwy')">
+                
+                VIEW LOCATION
+              </button>
+            </div>
+          </div>
+          <div class="card-logo">
+    <img src="./pic.png" alt="Zoom Car Wash Logo" class="card-logo-img">
+</div>
+        </div>
+        
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== RIGHT PANEL MAP 50% ===== -->
+  <div class="zr">
+    <div id="zmap"></div>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  var map = L.map('zmap', { zoomControl: true }).setView([29.78, -95.45], 10);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  var navyIcon = L.divIcon({
+    html: '<div style="background:#1b2b6b;width:18px;height:18px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.35);"></div>',
+    className: '',
+    iconSize: [24, 24],
+    iconAnchor: [9, 22]
+  });
+
+  var locs = [
+    { lat: 29.7382, lng: -95.5731, title: 'Houston - Westheimer',    addr: '12455 Westheimer Rd, Houston, TX 77077' },
+    { lat: 29.6928, lng: -95.1192, title: 'Deer Park - La Porte',    addr: '9222 Spencer Hwy, La Porte, TX 77571' },
+    { lat: 29.7858, lng: -95.8248, title: 'Katy - Grand Parkway',    addr: '23501 Cinco Ranch Blvd, Katy, TX 77494' },
+    { lat: 29.9719, lng: -95.6975, title: 'Cypress - Northwest Fwy', addr: '12300 Barker Cypress Rd, Cypress, TX 77429' }
+  ];
+
+  var markers = [];
+  locs.forEach(function (d) {
+    var m = L.marker([d.lat, d.lng], { icon: navyIcon }).addTo(map);
+    m.bindPopup(
+      '<b style="color:#1b2b6b;font-size:13px;font-family:sans-serif;">' + d.title + '</b><br>' +
+      '<span style="font-size:12px;color:#555;font-family:sans-serif;">' + d.addr + '</span>'
+    );
+    markers.push({ marker: m, lat: d.lat, lng: d.lng });
+  });
+
+  setTimeout(function () {
+    if (markers.length) markers[0].marker.openPopup();
+    map.invalidateSize();
+  }, 600);
+
+  window.flyTo = function (lat, lng) {
+    map.flyTo([lat, lng], 15, { duration: 1.2 });
+    markers.forEach(function (obj) {
+      if (obj.lat === lat && obj.lng === lng) obj.marker.openPopup();
+      else obj.marker.closePopup();
+    });
+  };
+
+  window.filterLocs = function () {
+    var q = document.getElementById('sInput').value.toLowerCase().trim();
+    var cards = document.querySelectorAll('.loc-card');
+    var vis = 0, first = null;
+    cards.forEach(function (c) {
+      if (c.innerText.toLowerCase().includes(q)) {
+        c.classList.remove('hidden');
+        vis++;
+        if (!first) first = c;
+      } else {
+        c.classList.add('hidden');
+      }
+    });
+    document.getElementById('siteCount').textContent = q ? vis : 4;
+    if (first) {
+      var lat = parseFloat(first.dataset.lat), lng = parseFloat(first.dataset.lng);
+      map.flyTo([lat, lng], 14, { duration: 1 });
+      markers.forEach(function (obj) {
+        if (obj.lat === lat && obj.lng === lng) obj.marker.openPopup();
+        else obj.marker.closePopup();
+      });
+    } else if (!q) {
+      map.flyTo([29.78, -95.45], 10, { duration: 1 });
+    }
+  };
+
+});
+</script>
+</body>
+</html>
