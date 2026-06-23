@@ -3,738 +3,1352 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sparkle Car Wash - Professional Car Wash & Detailing</title>
-
-    <!-- Bootstrap 5 CSS -->
+    <title>SparkleWash — Premium Car Detailing</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <!-- AOS Animation Library -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,600;0,700;0,900;1,900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
-        /* ===== CSS VARIABLES ===== */
+        /* ─── ROOT ─── */
         :root {
-            --primary: #0d6efd;
-            --primary-dark: #0a58ca;
-            --primary-light: #e8f0fe;
-            --secondary: #6c757d;
-            --dark: #1a1a2e;
-            --light: #f8f9fa;
-            --white: #ffffff;
-            --shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-            --shadow-hover: 0 20px 60px rgba(13, 110, 253, 0.15);
-            --border-radius: 16px;
-            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            --glass-bg: rgba(255, 255, 255, 0.85);
-            --glass-border: rgba(255, 255, 255, 0.3);
-            --text-color: #1a1a2e;
-            --bg-color: #ffffff;
+            --red: #E8141C;
+            --red-dark: #B50F15;
+            --red-light: #FEE9EA;
+            --red-glow: rgba(232, 20, 28, 0.25);
+            --yellow: #FFD000;
+            --yellow-dark: #D4AC00;
+            --yellow-light: #FFF8D6;
+            --yellow-glow: rgba(255, 208, 0, 0.2);
+            --dark: #0B0B0B;
+            --dark2: #141414;
+            --dark3: #1E1E1E;
+            --gray: #8A8A8A;
+            --gray-light: #B0B0B0;
+            --light: #F8F8F8;
+            --white: #FFFFFF;
+            --shadow-red: 0 12px 40px rgba(232, 20, 28, 0.2);
+            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.12);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --t: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --font-heading: 'Barlow', sans-serif;
+            --font-body: 'Inter', sans-serif;
         }
 
-        /* Dark Mode Variables */
         [data-bs-theme="dark"] {
-            --primary: #3b82f6;
-            --primary-dark: #2563eb;
-            --primary-light: #1e293b;
-            --dark: #f8f9fa;
-            --light: #1a1a2e;
-            --white: #1e293b;
-            --shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            --shadow-hover: 0 20px 60px rgba(59, 130, 246, 0.2);
-            --glass-bg: rgba(30, 41, 59, 0.85);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --text-color: #f8f9fa;
-            --bg-color: #0f172a;
+            --light: #0F0F0F;
+            --white: #161616;
+            --dark: #EEEEEE;
+            --dark2: #DDDDDD;
+            --gray: #999999;
+            --gray-light: #777777;
+            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.6);
+            --red-light: #2A0608;
+            --yellow-light: #221C00;
+            --red-glow: rgba(232, 20, 28, 0.15);
         }
 
-        /* ===== GLOBAL ===== */
+        /* ─── RESET ─── */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         html {
             scroll-behavior: smooth;
         }
-
         body {
-            font-family: 'Inter', sans-serif;
-            color: var(--text-color);
-            background-color: var(--bg-color);
-            transition: var(--transition);
+            font-family: var(--font-body);
+            background: var(--white);
+            color: var(--dark);
             overflow-x: hidden;
             padding-top: 76px;
+            transition: background .4s, color .4s;
+            -webkit-font-smoothing: antialiased;
         }
-
+        [data-bs-theme="dark"] body {
+            background: #0B0B0B;
+        }
         a {
             text-decoration: none;
             color: inherit;
         }
         img {
             max-width: 100%;
-            height: auto;
+            display: block;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--red);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--yellow);
         }
 
-        .section-padding {
-            padding: 100px 0;
-        }
-        .section-title {
-            font-size: 2.8rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.5px;
-        }
-        .section-title span {
-            color: var(--primary);
-        }
-        .section-subtitle {
-            font-size: 1.1rem;
-            color: var(--secondary);
-            max-width: 600px;
-            margin: 0 auto 3rem auto;
-        }
-        .section-header {
-            text-align: center;
-            margin-bottom: 3.5rem;
-        }
-
-        .btn-primary-custom {
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            padding: 14px 36px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: var(--transition);
-            box-shadow: 0 8px 25px rgba(13, 110, 253, 0.3);
-        }
-        .btn-primary-custom:hover {
-            background: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(13, 110, 253, 0.4);
-            color: #fff;
-        }
-        .btn-outline-custom {
-            background: transparent;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-            padding: 12px 34px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: var(--transition);
-        }
-        .btn-outline-custom:hover {
-            background: var(--primary);
-            color: #fff;
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(13, 110, 253, 0.3);
-        }
-
-        /* ===== LOADING SPINNER ===== */
+        /* ─── LOADER ─── */
         #loader {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-color);
+            inset: 0;
+            background: #0B0B0B;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             z-index: 99999;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
+            transition: opacity .7s, visibility .7s;
         }
         #loader.hidden {
             opacity: 0;
             visibility: hidden;
         }
-        .loader-spinner {
-            width: 60px;
-            height: 60px;
-            border: 5px solid var(--primary-light);
-            border-top: 5px solid var(--primary);
+        .loader-ring {
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            border: 4px solid rgba(255, 208, 0, 0.08);
+            border-top: 4px solid var(--yellow);
+            border-right: 4px solid var(--red);
+            animation: spin 0.9s linear infinite;
+            position: relative;
+        }
+        .loader-ring::after {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top: 3px solid var(--red);
+            border-right: 3px solid var(--yellow);
+            animation: spin 0.6s linear infinite reverse;
         }
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
             100% {
                 transform: rotate(360deg);
             }
         }
 
-        /* ===== NAVBAR ===== */
+        /* ─── SCROLL TOP ─── */
+        #scrollTop {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            color: #fff;
+            border: none;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-red);
+            transition: var(--t);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.9);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #scrollTop.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+        #scrollTop:hover {
+            background: var(--yellow);
+            color: var(--dark);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 40px rgba(255, 208, 0, 0.35);
+        }
+
+        /* ─── NAVBAR ─── */
         .navbar {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
-            box-shadow: 0 2px 30px rgba(0, 0, 0, 0.05);
-            transition: var(--transition);
+            background: rgba(11, 11, 11, 0.92);
+            backdrop-filter: blur(24px) saturate(1.2);
+            border-bottom: 1px solid rgba(255, 208, 0, 0.06);
             padding: 12px 0;
+            transition: var(--t);
+        }
+        [data-bs-theme="dark"] .navbar {
+            background: rgba(8, 8, 8, 0.94);
         }
         .navbar.scrolled {
-            box-shadow: 0 4px 40px rgba(0, 0, 0, 0.08);
-            padding: 8px 0;
+            padding: 6px 0;
+            border-bottom-color: rgba(255, 208, 0, 0.15);
+            background: rgba(11, 11, 11, 0.97);
         }
         .navbar-brand {
-            font-weight: 800;
+            font-family: var(--font-heading);
+            font-weight: 900;
             font-size: 1.6rem;
-            color: var(--text-color);
+            color: #fff !important;
             letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .navbar-brand span {
-            color: var(--primary);
+        .navbar-brand .spark {
+            color: var(--yellow);
         }
         .navbar-brand i {
-            color: var(--primary);
-            margin-right: 8px;
+            color: var(--red);
+            font-size: 1.3rem;
         }
         .nav-link {
+            color: rgba(255, 255, 255, 0.7) !important;
             font-weight: 500;
-            color: var(--text-color) !important;
-            padding: 8px 18px !important;
-            border-radius: 50px;
-            transition: var(--transition);
+            font-size: 0.85rem;
+            padding: 7px 18px !important;
+            border-radius: 8px;
+            transition: var(--t);
+            letter-spacing: 0.2px;
             position: relative;
-        }
-        .nav-link:hover,
-        .nav-link.active {
-            color: var(--primary) !important;
-            background: var(--primary-light);
         }
         .nav-link::after {
             content: '';
             position: absolute;
-            bottom: 4px;
+            bottom: 2px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 2px;
-            background: var(--primary);
-            transition: var(--transition);
+            background: var(--yellow);
+            transition: var(--t);
+            border-radius: 4px;
         }
         .nav-link:hover::after,
         .nav-link.active::after {
             width: 60%;
         }
+        .nav-link:hover,
+        .nav-link.active {
+            color: #fff !important;
+            background: rgba(255, 208, 0, 0.06);
+        }
+        .nav-link.active {
+            color: var(--yellow) !important;
+        }
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--t);
+            margin-left: 6px;
+        }
+        .theme-toggle:hover {
+            background: var(--yellow);
+            color: var(--dark);
+            border-color: var(--yellow);
+            transform: rotate(20deg);
+        }
         .navbar-toggler {
             border: none;
-            padding: 8px 12px;
-            border-radius: 10px;
+            padding: 6px 10px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.3rem;
         }
         .navbar-toggler:focus {
             box-shadow: none;
         }
 
-        /* Theme Toggle */
-        .theme-toggle {
-            background: var(--primary-light);
-            border: none;
-            border-radius: 50%;
-            width: 42px;
-            height: 42px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-color);
-            font-size: 1.2rem;
-            transition: var(--transition);
-            cursor: pointer;
-            margin-left: 8px;
-        }
-        .theme-toggle:hover {
-            background: var(--primary);
+        /* ─── BUTTONS ─── */
+        .btn-red {
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
             color: #fff;
-            transform: rotate(30deg);
+            border: none;
+            padding: 14px 34px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--t);
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-red::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--yellow), var(--yellow-dark));
+            opacity: 0;
+            transition: var(--t);
+            border-radius: 50px;
+        }
+        .btn-red:hover::before {
+            opacity: 1;
+        }
+        .btn-red:hover {
+            color: var(--dark);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-red);
+        }
+        .btn-red span {
+            position: relative;
+            z-index: 1;
+        }
+        .btn-yellow {
+            background: linear-gradient(135deg, var(--yellow), var(--yellow-dark));
+            color: var(--dark);
+            border: none;
+            padding: 14px 34px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: var(--t);
+            letter-spacing: 0.3px;
+        }
+        .btn-yellow:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(255, 208, 0, 0.35);
+            color: var(--dark);
+        }
+        .btn-outline-red {
+            background: transparent;
+            color: var(--red);
+            border: 2px solid var(--red);
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--t);
+        }
+        .btn-outline-red:hover {
+            background: var(--red);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-red);
+        }
+        .btn-outline-light {
+            background: transparent;
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--t);
+        }
+        .btn-outline-light:hover {
+            background: #fff;
+            color: var(--dark);
+            transform: translateY(-2px);
         }
 
-        /* ===== HERO ===== */
+        /* ─── SECTION ─── */
+        .section-pad {
+            padding: 100px 0;
+        }
+        @media(max-width:768px) {
+            .section-pad {
+                padding: 60px 0;
+            }
+        }
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--yellow-light);
+            color: var(--yellow-dark);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            padding: 6px 18px;
+            border-radius: 50px;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 208, 0, 0.15);
+        }
+        [data-bs-theme="dark"] .section-tag {
+            background: rgba(255, 208, 0, 0.08);
+            color: var(--yellow);
+            border-color: rgba(255, 208, 0, 0.1);
+        }
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 4.5vw, 3.2rem);
+            font-weight: 900;
+            line-height: 1.08;
+            margin-bottom: 0.8rem;
+            color: var(--dark);
+        }
+        .section-title .accent {
+            color: var(--red);
+        }
+        .section-title .accent-y {
+            color: var(--yellow-dark);
+        }
+        .section-sub {
+            font-size: 1rem;
+            color: var(--gray);
+            max-width: 580px;
+            margin: 0 auto 2.8rem;
+            line-height: 1.75;
+        }
+        [data-bs-theme="dark"] .section-sub {
+            color: var(--gray-light);
+        }
+
+        /* ─── HERO ─── */
         .hero {
             position: relative;
             min-height: 92vh;
             display: flex;
             align-items: center;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            background: #0B0B0B;
             overflow: hidden;
-            padding: 40px 0;
         }
-        .hero::before {
-            content: '';
+        .hero-bg {
             position: absolute;
             inset: 0;
-            background: url('https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=1600&q=80') center/cover no-repeat;
-            opacity: 0.25;
-            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(232, 20, 28, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 50%, rgba(255, 208, 0, 0.08) 0%, transparent 50%),
+                url('https://images.unsplash.com/photo-1601362840469-51e4d8d58785?w=1800&q=85') center/cover no-repeat;
+            opacity: 0.2;
+        }
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(110deg, rgba(11, 11, 11, 0.92) 0%, rgba(11, 11, 11, 0.6) 50%, rgba(11, 11, 11, 0.2) 100%);
         }
         .hero .container {
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
-        .hero-content h1 {
-            font-size: 4.2rem;
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 208, 0, 0.08);
+            border: 1px solid rgba(255, 208, 0, 0.15);
+            border-radius: 50px;
+            padding: 6px 18px;
+            margin-bottom: 1.8rem;
+            backdrop-filter: blur(4px);
+        }
+        .hero-eyebrow span {
+            color: var(--yellow);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        .hero-eyebrow .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--red);
+            display: inline-block;
+            animation: pulse-dot 1.8s infinite;
+        }
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.3;
+                transform: scale(0.6);
+            }
+        }
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(2.6rem, 7vw, 5.4rem);
             font-weight: 900;
             color: #fff;
-            line-height: 1.1;
-            letter-spacing: -1px;
-            margin-bottom: 1.5rem;
+            line-height: 1.02;
+            letter-spacing: -2px;
+            margin-bottom: 1.2rem;
         }
-        .hero-content h1 span {
-            color: var(--primary);
-            position: relative;
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--yellow), #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-style: italic;
         }
-        .hero-content h1 span::after {
-            content: '';
-            position: absolute;
-            bottom: 4px;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: var(--primary);
-            border-radius: 10px;
-            opacity: 0.3;
+        .hero h1 .red-text {
+            color: var(--red);
         }
-        .hero-content p {
-            font-size: 1.25rem;
-            color: rgba(255, 255, 255, 0.8);
-            max-width: 550px;
-            margin-bottom: 2rem;
+        .hero p {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.65);
+            max-width: 480px;
+            margin-bottom: 2.2rem;
             line-height: 1.8;
         }
-        .hero-buttons .btn {
-            margin-right: 12px;
-            margin-bottom: 10px;
-        }
-        .hero-buttons .btn-primary-custom {
-            background: var(--primary);
-            color: #fff;
-        }
-        .hero-buttons .btn-outline-custom {
-            border-color: rgba(255, 255, 255, 0.5);
-            color: #fff;
-        }
-        .hero-buttons .btn-outline-custom:hover {
-            background: #fff;
-            color: var(--dark);
-            border-color: #fff;
-        }
-
-        .hero-stats {
+        .hero-btns {
             display: flex;
-            gap: 3rem;
-            margin-top: 3rem;
+            gap: 14px;
             flex-wrap: wrap;
         }
-        .hero-stats .stat-item {
-            color: #fff;
-        }
-        .hero-stats .stat-item h3 {
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 0;
-        }
-        .hero-stats .stat-item h3 .counter {
-            display: inline-block;
-        }
-        .hero-stats .stat-item p {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.95rem;
-            margin-bottom: 0;
-        }
-
-        .hero-image-wrapper {
-            position: relative;
+        .hero-stats {
             display: flex;
-            justify-content: center;
-            align-items: center;
+            gap: 3.5rem;
+            margin-top: 3.5rem;
+            flex-wrap: wrap;
         }
-        .hero-image-wrapper img {
-            max-width: 100%;
-            border-radius: 24px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .hero-stats .stat h3 {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 0;
+            letter-spacing: -1px;
         }
-        .hero-floating-card {
+        .hero-stats .stat h3 sup {
+            font-size: 1.2rem;
+            color: var(--yellow);
+            top: -0.6em;
+        }
+        .hero-stats .stat p {
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 0.82rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        .hero-img-wrap {
+            position: relative;
+        }
+        .hero-img-wrap>img {
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+            transition: var(--t);
+        }
+        .hero-img-wrap>img:hover {
+            transform: scale(1.01);
+        }
+        .hero-badge {
             position: absolute;
-            bottom: -20px;
-            left: -20px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            padding: 18px 28px;
-            border-radius: 16px;
-            box-shadow: var(--shadow);
+            bottom: -16px;
+            left: -16px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-radius: 14px;
+            padding: 16px 22px;
             display: flex;
             align-items: center;
             gap: 14px;
-            border: 1px solid var(--glass-border);
+            box-shadow: 0 16px 50px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .hero-floating-card i {
-            font-size: 2rem;
-            color: var(--primary);
+        [data-bs-theme="dark"] .hero-badge {
+            background: rgba(22, 22, 22, 0.95);
+            border-color: rgba(255, 255, 255, 0.06);
         }
-        .hero-floating-card h6 {
-            font-weight: 700;
-            margin-bottom: 0;
-            font-size: 1rem;
-        }
-        .hero-floating-card p {
-            margin-bottom: 0;
-            font-size: 0.85rem;
-            color: var(--secondary);
-        }
-
-        /* ===== ABOUT ===== */
-        .about-section {
-            background: var(--bg-color);
-        }
-        .about-image img {
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-        }
-        .about-content h2 {
-            font-size: 2.8rem;
-            font-weight: 800;
-            margin-bottom: 1.2rem;
-        }
-        .about-content h2 span {
-            color: var(--primary);
-        }
-        .about-content p {
-            color: var(--secondary);
-            line-height: 1.8;
-        }
-        .about-features {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-        .about-features .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .about-features .feature-item i {
-            color: var(--primary);
-            font-size: 1.2rem;
-            width: 36px;
-            height: 36px;
-            background: var(--primary-light);
+        .hero-badge .badge-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--red-light), #FDD5D6);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .about-features .feature-item span {
-            font-weight: 500;
+        .hero-badge .badge-icon i {
+            color: var(--red);
+            font-size: 1.2rem;
+        }
+        .hero-badge h6 {
+            font-weight: 700;
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--dark);
+        }
+        .hero-badge p {
+            margin: 0;
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+        /* floating shapes */
+        .float-shape {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.06;
+        }
+        .float-shape-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--yellow);
+            top: -100px;
+            right: -80px;
+            animation: float 18s infinite alternate ease-in-out;
+        }
+        .float-shape-2 {
+            width: 200px;
+            height: 200px;
+            background: var(--red);
+            bottom: -60px;
+            left: -60px;
+            animation: float 22s infinite alternate-reverse ease-in-out;
+        }
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                transform: translate(40px, 30px) scale(1.1);
+            }
         }
 
-        /* Team Cards */
+        @media(max-width:991px) {
+            .hero {
+                min-height: auto;
+                padding: 60px 0 80px;
+            }
+            .hero h1 {
+                font-size: clamp(2.2rem, 6vw, 3.6rem);
+            }
+            .hero-stats {
+                gap: 2rem;
+            }
+            .hero-badge {
+                display: none;
+            }
+        }
+        @media(max-width:576px) {
+            .hero {
+                padding: 40px 0 60px;
+            }
+            .hero h1 {
+                font-size: 2rem;
+                letter-spacing: -1px;
+            }
+            .hero-stats .stat h3 {
+                font-size: 1.8rem;
+            }
+            .hero-btns .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* ─── ABOUT ─── */
+        .about-section {
+            background: var(--light);
+        }
+        [data-bs-theme="dark"] .about-section {
+            background: #0D0D0D;
+        }
+        .about-img-wrap {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .about-img-wrap img {
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            transition: var(--t);
+        }
+        .about-img-wrap:hover img {
+            transform: scale(1.02);
+        }
+        .about-accent {
+            position: absolute;
+            bottom: -24px;
+            right: -24px;
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, var(--yellow), var(--yellow-dark));
+            border-radius: 50%;
+            opacity: 0.10;
+            pointer-events: none;
+        }
+        .about-accent2 {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            border-radius: 50%;
+            opacity: 0.12;
+            pointer-events: none;
+        }
+        .feature-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 1.5rem;
+        }
+        @media(max-width:480px) {
+            .feature-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        .feature-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--white);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            transition: var(--t);
+            cursor: default;
+        }
+        .feature-pill:hover {
+            border-color: var(--red);
+            box-shadow: 0 4px 16px rgba(232, 20, 28, 0.06);
+            transform: translateX(4px);
+        }
+        .feature-pill i {
+            color: var(--red);
+            width: 22px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        .feature-pill span {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        [data-bs-theme="dark"] .feature-pill {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        /* ─── TEAM ─── */
         .team-card {
             background: var(--white);
-            border-radius: var(--border-radius);
-            padding: 30px 20px;
-            text-align: center;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
             border: 1px solid rgba(0, 0, 0, 0.04);
-            height: 100%;
+            transition: var(--t);
+            text-align: center;
+            position: relative;
         }
         .team-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-hover);
+            transform: translateY(-10px);
+            box-shadow: 0 24px 60px rgba(232, 20, 28, 0.12);
+            border-color: rgba(232, 20, 28, 0.1);
+        }
+        .team-card-top {
+            padding: 30px 20px 18px;
+            position: relative;
+        }
+        .team-card-top::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: linear-gradient(135deg, var(--red) 0%, #FF4D52 100%);
         }
         .team-card img {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             object-fit: cover;
-            margin-bottom: 1rem;
-            border: 4px solid var(--primary-light);
+            border: 4px solid #fff;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+            transition: var(--t);
+        }
+        .team-card:hover img {
+            transform: scale(1.04);
+            border-color: var(--yellow);
         }
         .team-card h5 {
             font-weight: 700;
-            margin-bottom: 0.2rem;
+            margin: 10px 0 2px;
+            font-size: 1.05rem;
         }
         .team-card .role {
-            color: var(--primary);
-            font-size: 0.9rem;
-            font-weight: 500;
+            color: var(--red);
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
         }
-        .team-card .social-links {
-            margin-top: 0.8rem;
+        .team-card .social-row {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
+            padding: 0 20px 22px;
         }
-        .team-card .social-links a {
-            width: 36px;
-            height: 36px;
+        .team-card .social-row a {
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
-            background: var(--primary-light);
+            background: var(--light);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--primary);
-            transition: var(--transition);
+            color: var(--gray);
+            font-size: 0.8rem;
+            transition: var(--t);
         }
-        .team-card .social-links a:hover {
-            background: var(--primary);
+        .team-card .social-row a:hover {
+            background: var(--red);
             color: #fff;
             transform: translateY(-3px);
         }
 
-        /* ===== SERVICES ===== */
+        /* ─── SERVICES ─── */
         .services-section {
-            background: var(--primary-light);
+            background: var(--white);
+        }
+        [data-bs-theme="dark"] .services-section {
+            background: #0B0B0B;
         }
         .service-card {
             background: var(--white);
-            border-radius: var(--border-radius);
+            border-radius: var(--radius);
             overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            height: 100%;
+            box-shadow: var(--shadow-card);
             border: 1px solid rgba(0, 0, 0, 0.04);
-        }
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-hover);
-        }
-        .service-card .service-img {
-            height: 200px;
-            overflow: hidden;
-        }
-        .service-card .service-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-        .service-card:hover .service-img img {
-            transform: scale(1.05);
-        }
-        .service-card .service-body {
-            padding: 24px;
-        }
-        .service-card .service-body h5 {
-            font-weight: 700;
-            font-size: 1.2rem;
-        }
-        .service-card .service-body p {
-            color: var(--secondary);
-            font-size: 0.95rem;
-            margin-bottom: 0.8rem;
-        }
-        .service-card .service-body .price {
-            font-weight: 700;
-            font-size: 1.4rem;
-            color: var(--primary);
-        }
-        .service-card .service-body .btn-sm {
-            border-radius: 50px;
-            padding: 8px 22px;
-            font-weight: 600;
-        }
-
-        /* ===== PRICING ===== */
-        .pricing-section {
-            background: var(--bg-color);
-        }
-        .pricing-card {
-            background: var(--white);
-            border-radius: var(--border-radius);
-            padding: 40px 30px;
-            text-align: center;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            border: 1px solid rgba(0, 0, 0, 0.04);
+            transition: var(--t);
             height: 100%;
             position: relative;
         }
-        .pricing-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-hover);
+        .service-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 24px 60px rgba(232, 20, 28, 0.10);
+            border-color: rgba(232, 20, 28, 0.12);
         }
-        .pricing-card.popular {
-            border: 2px solid var(--primary);
+        .service-card .svc-img {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        .service-card .svc-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--t);
+        }
+        .service-card:hover .svc-img img {
+            transform: scale(1.08);
+        }
+        .service-card .svc-img .price-tag {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: linear-gradient(135deg, var(--yellow), var(--yellow-dark));
+            color: var(--dark);
+            font-family: var(--font-heading);
+            font-weight: 900;
+            font-size: 1.1rem;
+            padding: 4px 16px;
+            border-radius: 50px;
+            box-shadow: 0 4px 16px rgba(255, 208, 0, 0.3);
+        }
+        .service-card .svc-body {
+            padding: 24px;
+        }
+        .service-card .svc-body h5 {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+        }
+        .service-card .svc-body p {
+            color: var(--gray);
+            font-size: 0.85rem;
+            margin-bottom: 14px;
+            line-height: 1.65;
+        }
+        .svc-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--red-light), #FDD5D6);
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
+        }
+        .svc-icon i {
+            color: var(--red);
+            font-size: 1.1rem;
+        }
+        [data-bs-theme="dark"] .svc-icon {
+            background: rgba(232, 20, 28, 0.15);
+        }
+
+        /* ─── WHY US ─── */
+        .why-section {
+            background: var(--dark2);
+            position: relative;
+            overflow: hidden;
+        }
+        [data-bs-theme="dark"] .why-section {
+            background: #080808;
+        }
+        .why-section::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -200px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(232, 20, 28, 0.04), transparent 70%);
+            pointer-events: none;
+        }
+        .why-section .section-title {
+            color: #fff;
+        }
+        .why-section .section-sub {
+            color: rgba(255, 255, 255, 0.45);
+        }
+        .why-section .section-tag {
+            background: rgba(232, 20, 28, 0.12);
+            color: var(--red);
+            border-color: rgba(232, 20, 28, 0.1);
+        }
+        .why-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            padding: 30px 26px;
+            transition: var(--t);
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .why-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 208, 0, 0.04), transparent 60%);
+            opacity: 0;
+            transition: var(--t);
+        }
+        .why-card:hover::before {
+            opacity: 1;
+        }
+        .why-card:hover {
+            background: rgba(255, 208, 0, 0.04);
+            border-color: rgba(255, 208, 0, 0.12);
+            transform: translateY(-6px);
+        }
+        .why-number {
+            font-family: var(--font-heading);
+            font-size: 0.65rem;
+            font-weight: 900;
+            color: rgba(255, 208, 0, 0.15);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .why-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--red) 0%, #FF4D52 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 8px 24px rgba(232, 20, 28, 0.2);
+            transition: var(--t);
+        }
+        .why-card:hover .why-icon {
+            transform: scale(1.05) rotate(-4deg);
+        }
+        .why-card h5 {
+            color: #fff;
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+        .why-card p {
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 0.88rem;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* ─── PRICING ─── */
+        .pricing-section {
+            background: var(--light);
+        }
+        [data-bs-theme="dark"] .pricing-section {
+            background: #0D0D0D;
+        }
+        .price-card {
             background: var(--white);
+            border-radius: var(--radius);
+            padding: 38px 28px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            transition: var(--t);
+            height: 100%;
+            position: relative;
         }
-        .pricing-card .popular-badge {
+        .price-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+        .price-card.popular {
+            border: 2px solid var(--red);
+            background: var(--white);
+            transform: scale(1.02);
+        }
+        .price-card.popular:hover {
+            transform: scale(1.02) translateY(-10px);
+        }
+        .price-card.popular::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--red), var(--yellow));
+            border-radius: var(--radius) var(--radius) 0 0;
+        }
+        .popular-badge {
             position: absolute;
             top: -14px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--primary);
+            background: linear-gradient(90deg, var(--red), var(--yellow-dark));
             color: #fff;
-            padding: 6px 24px;
+            padding: 5px 22px;
             border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        .pricing-card .plan-name {
-            font-size: 1.5rem;
+            font-size: 0.7rem;
             font-weight: 700;
+            white-space: nowrap;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 16px rgba(232, 20, 28, 0.25);
         }
-        .pricing-card .plan-price {
+        .plan-name {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            font-weight: 900;
+            margin-bottom: 0;
+            letter-spacing: 0.5px;
+        }
+        .plan-price {
+            font-family: var(--font-heading);
             font-size: 3.2rem;
             font-weight: 900;
-            color: var(--primary);
+            color: var(--red);
             margin: 0.5rem 0;
+            line-height: 1;
         }
-        .pricing-card .plan-price small {
-            font-size: 1rem;
+        .plan-price small {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
             font-weight: 400;
-            color: var(--secondary);
+            color: var(--gray);
         }
-        .pricing-card .plan-features {
+        .plan-features {
             list-style: none;
             padding: 0;
             margin: 1.5rem 0;
             text-align: left;
         }
-        .pricing-card .plan-features li {
+        .plan-features li {
             padding: 8px 0;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
             display: flex;
             align-items: center;
             gap: 10px;
+            font-size: 0.88rem;
         }
-        .pricing-card .plan-features li i {
-            color: var(--primary);
+        .plan-features li i.fa-check {
+            color: var(--red);
+            font-size: 0.8rem;
             width: 20px;
         }
-        .pricing-card .plan-features li .fa-times {
-            color: #e74c3c;
+        .plan-features li i.fa-times {
+            color: #ccc;
+            font-size: 0.8rem;
+            width: 20px;
+        }
+        [data-bs-theme="dark"] .plan-features li {
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+        @media(max-width:768px) {
+            .price-card.popular {
+                transform: scale(1);
+            }
+            .price-card.popular:hover {
+                transform: translateY(-10px);
+            }
         }
 
-        /* ===== GALLERY ===== */
-        .gallery-section {
-            background: var(--primary-light);
+        /* ─── TESTIMONIALS ─── */
+        .testi-section {
+            background: var(--white);
         }
-        .gallery-filter {
+        [data-bs-theme="dark"] .testi-section {
+            background: #0B0B0B;
+        }
+        .testi-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 32px 28px;
+            box-shadow: var(--shadow-card);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            transition: var(--t);
+            height: 100%;
+            position: relative;
+        }
+        .testi-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(232, 20, 28, 0.08);
+            box-shadow: var(--shadow-lg);
+        }
+        .testi-card .quote-icon {
+            font-size: 2.8rem;
+            line-height: 0.8;
+            color: var(--yellow);
+            font-family: Georgia, serif;
+            margin-bottom: 0.5rem;
+            opacity: 0.6;
+        }
+        .testi-card p {
+            color: var(--gray);
+            font-size: 0.92rem;
+            line-height: 1.8;
+            font-style: italic;
+        }
+        .testi-card .stars {
+            color: var(--yellow);
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+        }
+        .testi-card .client {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-top: 1.2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .testi-card .client img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--yellow-light);
+        }
+        .testi-card .client h6 {
+            font-weight: 700;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        .testi-card .client small {
+            color: var(--gray);
+            font-size: 0.75rem;
+        }
+
+        /* ─── GALLERY ─── */
+        .gallery-section {
+            background: var(--dark2);
+        }
+        [data-bs-theme="dark"] .gallery-section {
+            background: #080808;
+        }
+        .gallery-section .section-title {
+            color: #fff;
+        }
+        .gallery-section .section-sub {
+            color: rgba(255, 255, 255, 0.45);
+        }
+        .gallery-section .section-tag {
+            background: rgba(255, 208, 0, 0.08);
+            color: var(--yellow);
+            border-color: rgba(255, 208, 0, 0.08);
+        }
+        .gal-filter {
             display: flex;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2.2rem;
         }
-        .gallery-filter .filter-btn {
-            padding: 10px 28px;
+        .gal-btn {
+            padding: 8px 24px;
             border-radius: 50px;
-            border: none;
-            background: var(--white);
-            color: var(--text-color);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: transparent;
+            color: rgba(255, 255, 255, 0.5);
             font-weight: 600;
-            transition: var(--transition);
+            font-size: 0.8rem;
             cursor: pointer;
-            box-shadow: var(--shadow);
+            transition: var(--t);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
-        .gallery-filter .filter-btn:hover,
-        .gallery-filter .filter-btn.active {
-            background: var(--primary);
-            color: #fff;
+        .gal-btn:hover,
+        .gal-btn.active {
+            background: linear-gradient(135deg, var(--yellow), var(--yellow-dark));
+            color: var(--dark);
+            border-color: var(--yellow);
             transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 208, 0, 0.15);
         }
-        .gallery-grid {
+        .gal-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
         }
-        .gallery-item {
-            position: relative;
-            border-radius: var(--border-radius);
+        .gal-item {
+            border-radius: var(--radius);
             overflow: hidden;
             cursor: pointer;
-            aspect-ratio: 1/1;
+            aspect-ratio: 1;
+            position: relative;
         }
-        .gallery-item img {
+        .gal-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: var(--transition);
+            transition: var(--t);
         }
-        .gallery-item:hover img {
+        .gal-item:hover img {
             transform: scale(1.08);
         }
-        .gallery-item .gallery-overlay {
+        .gal-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(13, 110, 253, 0.6);
+            background: rgba(232, 20, 28, 0.55);
+            backdrop-filter: blur(4px);
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transition: var(--transition);
-            backdrop-filter: blur(4px);
+            transition: var(--t);
         }
-        .gallery-item:hover .gallery-overlay {
+        .gal-item:hover .gal-overlay {
             opacity: 1;
         }
-        .gallery-item .gallery-overlay i {
-            font-size: 3rem;
+        .gal-overlay i {
+            font-size: 2.4rem;
             color: #fff;
+            transform: scale(0.8);
+            transition: var(--t);
+        }
+        .gal-item:hover .gal-overlay i {
+            transform: scale(1);
         }
 
-        /* ===== BOOKING ===== */
+        /* ─── BOOKING ─── */
         .booking-section {
-            background: var(--bg-color);
+            background: var(--light);
         }
-        .booking-form-wrapper {
+        [data-bs-theme="dark"] .booking-section {
+            background: #0D0D0D;
+        }
+        .form-box {
             background: var(--white);
-            border-radius: var(--border-radius);
-            padding: 40px;
-            box-shadow: var(--shadow);
+            border-radius: var(--radius);
+            padding: 38px;
+            box-shadow: var(--shadow-card);
             border: 1px solid rgba(0, 0, 0, 0.04);
         }
-        .booking-form-wrapper .form-control,
-        .booking-form-wrapper .form-select {
-            border-radius: 12px;
-            padding: 14px 18px;
-            border: 2px solid #e9ecef;
-            transition: var(--transition);
-            background: var(--bg-color);
-            color: var(--text-color);
-        }
-        .booking-form-wrapper .form-control:focus,
-        .booking-form-wrapper .form-select:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
-        }
-        .booking-form-wrapper .form-label {
-            font-weight: 600;
+        .form-box .form-control,
+        .form-box .form-select {
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            border: 1.5px solid #e9ecef;
+            transition: var(--t);
+            background: var(--light);
+            color: var(--dark);
             font-size: 0.9rem;
         }
-
-        /* Booking Summary */
-        .booking-summary {
+        .form-box .form-control:focus,
+        .form-box .form-select:focus {
+            border-color: var(--red);
+            box-shadow: 0 0 0 4px rgba(232, 20, 28, 0.08);
+        }
+        .form-box .form-label {
+            font-weight: 600;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--gray);
+        }
+        .form-box-title {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 1.8rem;
+        }
+        .form-box-title .icon {
+            width: 46px;
+            height: 46px;
+            background: linear-gradient(135deg, var(--red-light), #FDD5D6);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .form-box-title .icon i {
+            color: var(--red);
+            font-size: 1.1rem;
+        }
+        .form-box-title h4 {
+            font-weight: 700;
+            margin: 0;
+            font-size: 1.1rem;
+        }
+        .bk-list {
             background: var(--white);
-            border-radius: var(--border-radius);
-            padding: 30px;
-            box-shadow: var(--shadow);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            box-shadow: var(--shadow-card);
             border: 1px solid rgba(0, 0, 0, 0.04);
         }
-        .booking-summary .table {
-            margin-bottom: 0;
+        .bk-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            padding: 14px 0;
+            gap: 12px;
         }
-        .booking-summary .table th {
-            font-weight: 600;
-            color: var(--secondary);
-            border-bottom: 2px solid var(--primary-light);
+        .bk-item:last-child {
+            border-bottom: none;
         }
-        .booking-summary .table td {
-            vertical-align: middle;
+        .bk-item .bk-info {
+            flex: 1;
+            min-width: 0;
         }
-        .booking-summary .action-btn {
+        .bk-item .bk-info strong {
+            font-size: 0.9rem;
+            display: block;
+        }
+        .bk-item .bk-info small {
+            color: var(--gray);
+            font-size: 0.78rem;
+        }
+        .bk-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .bk-actions button {
             width: 32px;
             height: 32px;
             border-radius: 50%;
@@ -742,439 +1356,601 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: var(--transition);
             cursor: pointer;
+            font-size: 0.75rem;
+            transition: var(--t);
         }
-        .booking-summary .action-btn.edit-btn {
-            background: var(--primary-light);
-            color: var(--primary);
+        .edit-btn {
+            background: var(--yellow-light);
+            color: var(--yellow-dark);
         }
-        .booking-summary .action-btn.edit-btn:hover {
-            background: var(--primary);
+        .edit-btn:hover {
+            background: var(--yellow);
+            color: var(--dark);
+            transform: scale(1.1);
+        }
+        .del-btn {
+            background: var(--red-light);
+            color: var(--red);
+        }
+        .del-btn:hover {
+            background: var(--red);
             color: #fff;
+            transform: scale(1.1);
         }
-        .booking-summary .action-btn.delete-btn {
-            background: #fde8e8;
-            color: #e74c3c;
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.2rem;
         }
-        .booking-summary .action-btn.delete-btn:hover {
-            background: #e74c3c;
-            color: #fff;
+        .search-bar input {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid #e9ecef;
+            background: var(--light);
+            color: var(--dark);
+            font-size: 0.88rem;
+            transition: var(--t);
+        }
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--red);
+            box-shadow: 0 0 0 4px rgba(232, 20, 28, 0.06);
+        }
+        .search-bar .btn {
+            border-radius: var(--radius-sm);
+            padding: 8px 16px;
+        }
+        @media(max-width:576px) {
+            .form-box {
+                padding: 22px;
+            }
+            .bk-list {
+                padding: 18px 14px;
+            }
+            .bk-item {
+                flex-wrap: wrap;
+            }
+            .bk-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
         }
 
-        /* ===== DASHBOARD ===== */
-        .dashboard-section {
-            background: var(--primary-light);
+        /* ─── DASHBOARD ─── */
+        .dash-section {
+            background: var(--white);
         }
-        .dashboard-stats {
+        [data-bs-theme="dark"] .dash-section {
+            background: #0B0B0B;
+        }
+        .stat-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
             margin-bottom: 2rem;
         }
-        .dashboard-stat-card {
+        .stat-card {
             background: var(--white);
-            border-radius: var(--border-radius);
-            padding: 24px;
+            border-radius: var(--radius);
+            padding: 24px 16px;
             text-align: center;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
+            box-shadow: var(--shadow-card);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            transition: var(--t);
         }
-        .dashboard-stat-card:hover {
+        .stat-card:hover {
             transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
         }
-        .dashboard-stat-card h3 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 0;
+        .stat-card h3 {
+            font-family: var(--font-heading);
+            font-size: 2.4rem;
+            font-weight: 900;
+            color: var(--red);
+            margin: 0;
+            line-height: 1;
         }
-        .dashboard-stat-card p {
-            color: var(--secondary);
-            font-size: 0.9rem;
-            margin-bottom: 0;
+        .stat-card.yellow h3 {
+            color: var(--yellow-dark);
         }
-        .dashboard-search {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
+        .stat-card p {
+            color: var(--gray);
+            font-size: 0.78rem;
+            margin: 4px 0 0;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
         }
-        .dashboard-search input {
-            flex: 1;
-            min-width: 200px;
-            padding: 12px 20px;
-            border-radius: 12px;
-            border: 2px solid #e9ecef;
-            transition: var(--transition);
-            background: var(--bg-color);
-            color: var(--text-color);
+        .data-table {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-card);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            overflow: hidden;
         }
-        .dashboard-search input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
-            outline: none;
+        .data-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .data-table thead {
+            background: linear-gradient(135deg, var(--red) 0%, #C01019 100%);
+        }
+        .data-table thead th {
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 14px 16px;
+            white-space: nowrap;
+        }
+        .data-table tbody tr {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            transition: var(--t);
+        }
+        .data-table tbody tr:hover {
+            background: var(--red-light);
+        }
+        .data-table tbody td {
+            padding: 12px 16px;
+            font-size: 0.85rem;
+            vertical-align: middle;
+        }
+        .badge-status {
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+        .badge-pending {
+            background: var(--yellow-light);
+            color: var(--yellow-dark);
+        }
+        .badge-completed {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+        .badge-cancelled {
+            background: var(--red-light);
+            color: var(--red);
+        }
+        [data-bs-theme="dark"] .badge-pending {
+            background: rgba(255, 208, 0, 0.12);
+            color: var(--yellow);
+        }
+        [data-bs-theme="dark"] .badge-completed {
+            background: rgba(22, 163, 74, 0.15);
+            color: #4ade80;
+        }
+        [data-bs-theme="dark"] .badge-cancelled {
+            background: rgba(232, 20, 28, 0.12);
+            color: var(--red);
+        }
+        @media(max-width:768px) {
+            .data-table thead th,
+            .data-table tbody td {
+                padding: 8px 10px;
+                font-size: 0.75rem;
+            }
+            .stat-card h3 {
+                font-size: 1.8rem;
+            }
+            .stat-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media(max-width:480px) {
+            .data-table thead th,
+            .data-table tbody td {
+                padding: 6px 8px;
+                font-size: 0.65rem;
+            }
+            .stat-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .stat-card {
+                padding: 16px 10px;
+            }
+            .stat-card h3 {
+                font-size: 1.4rem;
+            }
         }
 
-        /* ===== CONTACT ===== */
+        /* ─── CONTACT ─── */
         .contact-section {
-            background: var(--bg-color);
+            background: var(--light);
         }
-        .contact-info-card {
+        [data-bs-theme="dark"] .contact-section {
+            background: #0D0D0D;
+        }
+        .info-card {
             background: var(--white);
-            border-radius: var(--border-radius);
-            padding: 30px;
+            border-radius: var(--radius);
+            padding: 28px 20px;
             text-align: center;
-            box-shadow: var(--shadow);
-            height: 100%;
+            box-shadow: var(--shadow-card);
             border: 1px solid rgba(0, 0, 0, 0.04);
-            transition: var(--transition);
+            transition: var(--t);
+            height: 100%;
         }
-        .contact-info-card:hover {
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-hover);
+        .info-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(232, 20, 28, 0.12);
+            box-shadow: var(--shadow-lg);
         }
-        .contact-info-card i {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        .contact-info-card h6 {
-            font-weight: 700;
-        }
-        .contact-info-card p {
-            color: var(--secondary);
-            margin-bottom: 0;
-            font-size: 0.95rem;
-        }
-        .map-placeholder {
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            height: 280px;
-            background: var(--primary-light);
+        .info-card .ic-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--red), #FF4D52);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--secondary);
-            font-size: 1.1rem;
-        }
-        .map-placeholder i {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-right: 12px;
-        }
-
-        /* ===== FOOTER ===== */
-        .footer {
-            background: #0f172a;
-            color: rgba(255, 255, 255, 0.8);
-            padding: 60px 0 30px;
-        }
-        .footer h5 {
+            margin: 0 auto 1rem;
             color: #fff;
+            font-size: 1.3rem;
+            box-shadow: 0 8px 24px rgba(232, 20, 28, 0.2);
+        }
+        .info-card h6 {
             font-weight: 700;
-            margin-bottom: 1.2rem;
+            margin-bottom: 6px;
+            font-size: 0.95rem;
         }
-        .footer a {
-            color: rgba(255, 255, 255, 0.7);
-            transition: var(--transition);
-            display: inline-block;
-            margin-bottom: 8px;
+        .info-card p {
+            color: var(--gray);
+            margin: 0;
+            font-size: 0.88rem;
+            line-height: 1.6;
         }
-        .footer a:hover {
-            color: var(--primary);
-            transform: translateX(4px);
+        .map-box {
+            background: var(--white);
+            border-radius: var(--radius);
+            height: 240px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-card);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            position: relative;
+            overflow: hidden;
         }
-        .footer .social-icons a {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.06);
+        .map-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(232, 20, 28, 0.04), rgba(255, 208, 0, 0.06));
+        }
+        .map-box i {
+            font-size: 2.8rem;
+            color: var(--red);
+            margin-right: 12px;
+            position: relative;
+        }
+        .map-box span {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--gray);
+            position: relative;
+        }
+        .contact-form .form-control {
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            border: 1.5px solid #e9ecef;
+            transition: var(--t);
+            background: var(--white);
+            color: var(--dark);
+        }
+        .contact-form .form-control:focus {
+            border-color: var(--red);
+            box-shadow: 0 0 0 4px rgba(232, 20, 28, 0.06);
+        }
+        .social-links a {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            color: #fff;
-            transition: var(--transition);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--white);
+            color: var(--gray);
+            font-size: 1.1rem;
+            transition: var(--t);
+            border: 1px solid rgba(0, 0, 0, 0.04);
             margin-right: 8px;
         }
-        .footer .social-icons a:hover {
-            background: var(--primary);
-            transform: translateY(-4px);
-        }
-        .footer .footer-bottom {
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-            padding-top: 20px;
-            margin-top: 30px;
-            text-align: center;
-            font-size: 0.9rem;
-        }
-
-        /* ===== SCROLL TO TOP ===== */
-        #scrollTop {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--primary);
+        .social-links a:hover {
+            background: var(--red);
             color: #fff;
-            border: none;
-            font-size: 1.4rem;
-            cursor: pointer;
-            box-shadow: 0 8px 30px rgba(13, 110, 253, 0.3);
-            transition: var(--transition);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
-            z-index: 999;
-        }
-        #scrollTop.visible {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        #scrollTop:hover {
-            background: var(--primary-dark);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(13, 110, 253, 0.4);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-red);
         }
 
-        /* ===== TESTIMONIALS ===== */
-        .testimonial-card {
-            background: var(--white);
-            border-radius: var(--border-radius);
-            padding: 30px;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(0, 0, 0, 0.04);
-            text-align: center;
-            transition: var(--transition);
-            height: 100%;
+        /* ─── FOOTER ─── */
+        .footer {
+            background: #080808;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 64px 0 28px;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
         }
-        .testimonial-card:hover {
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-hover);
-        }
-        .testimonial-card .stars {
-            color: #fbbf24;
-            font-size: 1.1rem;
+        .footer-brand {
+            font-family: var(--font-heading);
+            font-weight: 900;
+            font-size: 1.6rem;
+            color: #fff;
             margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .testimonial-card p {
-            color: var(--secondary);
-            font-style: italic;
+        .footer-brand .y {
+            color: var(--yellow);
+        }
+        .footer-brand i {
+            color: var(--red);
+        }
+        .footer p {
+            font-size: 0.88rem;
             line-height: 1.7;
         }
-        .testimonial-card .client {
+        .footer h6 {
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 1.2rem;
+        }
+        .footer a {
+            color: rgba(255, 255, 255, 0.45);
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.88rem;
+            transition: var(--t);
+        }
+        .footer a:hover {
+            color: var(--yellow);
+            padding-left: 6px;
+        }
+        .footer .soc-links {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 14px;
+            gap: 10px;
             margin-top: 1rem;
         }
-        .testimonial-card .client img {
-            width: 56px;
-            height: 56px;
+        .footer .soc-links a {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            object-fit: cover;
-        }
-        .testimonial-card .client h6 {
-            font-weight: 700;
-            margin-bottom: 0;
-        }
-        .testimonial-card .client small {
-            color: var(--secondary);
-        }
-
-        /* ===== WHY CHOOSE US ===== */
-        .why-card {
-            background: var(--white);
-            border-radius: var(--border-radius);
-            padding: 30px 24px;
-            text-align: center;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            border: 1px solid rgba(0, 0, 0, 0.04);
-            height: 100%;
-        }
-        .why-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-hover);
-        }
-        .why-card .icon {
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            background: var(--primary-light);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 1.2rem;
-            font-size: 2rem;
-            color: var(--primary);
-            transition: var(--transition);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            margin-bottom: 0;
+            transition: var(--t);
         }
-        .why-card:hover .icon {
-            background: var(--primary);
+        .footer .soc-links a:hover {
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            border-color: var(--red);
             color: #fff;
-            transform: scale(1.05);
+            padding-left: 0;
+            transform: translateY(-3px);
         }
-        .why-card h5 {
-            font-weight: 700;
+        .footer-divider {
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding-top: 22px;
+            margin-top: 32px;
+            text-align: center;
+            font-size: 0.8rem;
         }
-        .why-card p {
-            color: var(--secondary);
-            font-size: 0.95rem;
+        .footer-divider .heart {
+            color: var(--red);
+            display: inline-block;
+            animation: heartbeat 1.4s infinite;
+        }
+        @keyframes heartbeat {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.15);
+            }
         }
 
-        /* ===== MODAL ===== */
+        /* ─── MODAL ─── */
         .modal-content {
-            border-radius: var(--border-radius);
+            border-radius: var(--radius);
             border: none;
             background: var(--white);
-            color: var(--text-color);
+            color: var(--dark);
+            box-shadow: var(--shadow-lg);
+        }
+        [data-bs-theme="dark"] .modal-content {
+            background: #1A1A1A;
+            color: #eee;
         }
         .modal-header {
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
+        [data-bs-theme="dark"] .modal-header {
+            border-color: rgba(255, 255, 255, 0.05);
+        }
         .modal-footer {
             border-top: 1px solid rgba(0, 0, 0, 0.05);
         }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 991px) {
-            .hero-content h1 {
-                font-size: 3rem;
-            }
-            .hero-stats {
-                gap: 1.5rem;
-            }
-            .hero-stats .stat-item h3 {
-                font-size: 2rem;
-            }
-            .section-title {
-                font-size: 2.2rem;
-            }
-            .about-features {
-                grid-template-columns: 1fr;
-            }
-            .hero-floating-card {
-                display: none;
-            }
-            .booking-form-wrapper {
-                padding: 24px;
-            }
+        [data-bs-theme="dark"] .modal-footer {
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+        .modal .form-control,
+        .modal .form-select {
+            border-radius: var(--radius-sm);
+            border: 1.5px solid #e9ecef;
+            padding: 11px 14px;
+            background: var(--light);
+            color: var(--dark);
+        }
+        .modal .form-control:focus,
+        .modal .form-select:focus {
+            border-color: var(--red);
+            box-shadow: 0 0 0 4px rgba(232, 20, 28, 0.06);
         }
 
-        @media (max-width: 768px) {
+        /* ─── MISC ─── */
+        .alert-success {
+            background: #dcfce7;
+            border: none;
+            color: #166534;
+            border-radius: var(--radius-sm);
+            padding: 14px 18px;
+        }
+        [data-bs-theme="dark"] .alert-success {
+            background: rgba(22, 163, 74, 0.12);
+            color: #4ade80;
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, var(--red), var(--yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ─── RESPONSIVE FINE-TUNE ─── */
+        @media(max-width:991px) {
             body {
-                padding-top: 66px;
-            }
-            .hero {
-                min-height: auto;
-                padding: 60px 0;
-            }
-            .hero-content h1 {
-                font-size: 2.4rem;
-            }
-            .hero-content p {
-                font-size: 1rem;
-            }
-            .hero-buttons .btn {
-                margin-right: 0;
-                width: 100%;
-                text-align: center;
-            }
-            .section-padding {
-                padding: 60px 0;
-            }
-            .section-title {
-                font-size: 1.8rem;
-            }
-            .pricing-card {
-                padding: 30px 20px;
-            }
-            .gallery-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            }
-            .dashboard-stats {
-                grid-template-columns: 1fr 1fr;
-            }
-            .hero-stats .stat-item h3 {
-                font-size: 1.6rem;
+                padding-top: 68px;
             }
             .navbar-brand {
-                font-size: 1.3rem;
+                font-size: 1.4rem;
             }
-            .booking-summary {
-                padding: 16px;
-                overflow-x: auto;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-content h1 {
-                font-size: 1.8rem;
+            .nav-link {
+                padding: 8px 14px !important;
+                font-size: 0.82rem;
             }
             .section-title {
-                font-size: 1.5rem;
-            }
-            .gallery-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 12px;
-            }
-            .dashboard-stats {
-                grid-template-columns: 1fr;
+                font-size: clamp(1.8rem, 3.5vw, 2.6rem);
             }
         }
-
-        /* Smooth transitions for theme toggle */
-        .navbar,
-        .hero,
-        .about-section,
-        .services-section,
-        .pricing-section,
-        .gallery-section,
-        .booking-section,
-        .dashboard-section,
-        .contact-section,
-        .footer,
-        .service-card,
-        .pricing-card,
-        .team-card,
-        .testimonial-card,
-        .why-card,
-        .booking-form-wrapper,
-        .booking-summary,
-        .contact-info-card,
-        .dashboard-stat-card,
-        .modal-content {
-            transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+        @media(max-width:768px) {
+            body {
+                padding-top: 60px;
+            }
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+            .section-pad {
+                padding: 50px 0;
+            }
+            .section-title {
+                font-size: 1.7rem;
+            }
+            .section-sub {
+                font-size: 0.9rem;
+            }
+            .hero-stats .stat h3 {
+                font-size: 1.8rem;
+            }
+        }
+        @media(max-width:480px) {
+            body {
+                padding-top: 56px;
+            }
+            .navbar-brand {
+                font-size: 1rem;
+            }
+            .navbar-brand i {
+                font-size: 1rem;
+            }
+            .section-title {
+                font-size: 1.4rem;
+            }
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .hero p {
+                font-size: 0.9rem;
+            }
+            .btn-red,
+            .btn-yellow,
+            .btn-outline-red,
+            .btn-outline-light {
+                padding: 11px 22px;
+                font-size: 0.85rem;
+            }
+            .stat-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .stat-card {
+                padding: 16px 10px;
+            }
+            .stat-card h3 {
+                font-size: 1.4rem;
+            }
+            .data-table thead th,
+            .data-table tbody td {
+                padding: 6px 6px;
+                font-size: 0.6rem;
+            }
+            .data-table tbody td .badge-status {
+                font-size: 0.55rem;
+                padding: 2px 8px;
+            }
+            .gal-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 10px;
+            }
+            .form-box {
+                padding: 16px;
+            }
+            .bk-list {
+                padding: 14px 10px;
+            }
+            .map-box {
+                height: 160px;
+            }
+            .map-box i {
+                font-size: 2rem;
+            }
+            .map-box span {
+                font-size: 0.8rem;
+            }
+            .footer {
+                padding: 40px 0 20px;
+            }
+            .footer-brand {
+                font-size: 1.3rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== LOADING SPINNER ===== -->
+    <!-- LOADER -->
     <div id="loader">
-        <div class="loader-spinner"></div>
+        <div class="loader-ring"></div>
     </div>
 
-    <!-- ===== SCROLL TO TOP ===== -->
-    <button id="scrollTop" aria-label="Scroll to top">
-        <i class="fas fa-arrow-up"></i>
-    </button>
+    <!-- SCROLL TOP -->
+    <button id="scrollTop"><i class="fas fa-arrow-up"></i></button>
 
-    <!-- ===== NAVBAR ===== -->
+    <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
         <div class="container">
             <a class="navbar-brand" href="#home">
-                <i class="fas fa-car"></i>Sparkle<span>Wash</span>
+                <i class="fas fa-car-wash"></i>Sparkle<span class="spark">Wash</span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="fas fa-bars" style="font-size:1.4rem;color:var(--text-color);"></i>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <i class="fas fa-bars"></i>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="collapse navbar-collapse" id="navMenu">
                 <ul class="navbar-nav ms-auto align-items-lg-center">
                     <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
@@ -1185,47 +1961,53 @@
                     <li class="nav-item"><a class="nav-link" href="#dashboard">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                     <li class="nav-item">
-                        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                            <i class="fas fa-moon"></i>
-                        </button>
+                        <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- ===== HERO ===== -->
+    <!-- HERO -->
     <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="float-shape float-shape-1"></div>
+        <div class="float-shape float-shape-2"></div>
         <div class="container">
             <div class="row align-items-center g-5">
-                <div class="col-lg-6 hero-content" data-aos="fade-right" data-aos-duration="1000">
-                    <h1>Professional <span>Car Wash</span> &amp; Detailing Services</h1>
-                    <p>We bring back the shine with premium car care services. Book online and experience the Sparkle difference.</p>
-                    <div class="hero-buttons">
-                        <a href="#booking" class="btn btn-primary-custom"><i class="fas fa-calendar-check me-2"></i>Book Now</a>
-                        <a href="#services" class="btn btn-outline-custom"><i class="fas fa-eye me-2"></i>View Services</a>
+                <div class="col-lg-6" data-aos="fade-right" data-aos-duration="900" data-aos-offset="0">
+                    <div class="hero-eyebrow">
+                        <span class="dot"></span>
+                        <span>Premium Auto Detailing</span>
+                    </div>
+                    <h1>Make Your Car <span class="highlight">Shine</span><br>Like <span class="red-text">Brand</span> New</h1>
+                    <p>Professional car wash &amp; detailing services using premium eco‑friendly products. Book online in seconds.</p>
+                    <div class="hero-btns">
+                        <a href="#booking" class="btn btn-yellow"><i class="fas fa-calendar-check me-2"></i>Book Now</a>
+                        <a href="#services" class="btn btn-outline-light"><i class="fas fa-eye me-2"></i>Our Services</a>
                     </div>
                     <div class="hero-stats">
-                        <div class="stat-item">
-                            <h3><span class="counter" data-target="5000">0</span>+</h3>
+                        <div class="stat">
+                            <h3><span class="counter" data-target="5000">0</span><sup>+</sup></h3>
                             <p>Cars Washed</p>
                         </div>
-                        <div class="stat-item">
-                            <h3><span class="counter" data-target="1500">0</span>+</h3>
+                        <div class="stat">
+                            <h3><span class="counter" data-target="1500">0</span><sup>+</sup></h3>
                             <p>Happy Clients</p>
                         </div>
-                        <div class="stat-item">
-                            <h3><span class="counter" data-target="98">0</span>%</h3>
-                            <p>Satisfaction Rate</p>
+                        <div class="stat">
+                            <h3><span class="counter" data-target="98">0</span><sup>%</sup></h3>
+                            <p>Satisfaction</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 hero-image-wrapper" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
-                    <img src="https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=800&q=80" alt="Car Wash" class="img-fluid" />
-                    <div class="hero-floating-card">
-                        <i class="fas fa-star"></i>
+                <div class="col-lg-6 hero-img-wrap" data-aos="fade-left" data-aos-duration="900" data-aos-delay="150" data-aos-offset="0">
+                    <img src="https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=800&q=85" alt="Car Wash" class="img-fluid" loading="lazy" />
+                    <div class="hero-badge">
+                        <div class="badge-icon"><i class="fas fa-star"></i></div>
                         <div>
-                            <h6>5.0 Rating</h6>
+                            <h6>5.0 Star Rating</h6>
                             <p>Trusted by 1500+ clients</p>
                         </div>
                     </div>
@@ -1234,68 +2016,80 @@
         </div>
     </section>
 
-    <!-- ===== ABOUT ===== -->
-    <section class="about-section section-padding" id="about">
+    <!-- ABOUT -->
+    <section class="about-section section-pad" id="about">
         <div class="container">
             <div class="row align-items-center g-5">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <div class="about-image">
-                        <img src="https://images.unsplash.com/photo-1607863680193-6a154ad2c0d1?w=800&q=80" alt="About Sparkle Car Wash" class="img-fluid rounded-4 shadow" />
+                    <div class="about-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1607863680193-6a154ad2c0d1?w=800&q=85" alt="About Us" class="img-fluid" loading="lazy" />
+                        <div class="about-accent"></div>
+                        <div class="about-accent2"></div>
                     </div>
                 </div>
-                <div class="col-lg-6 about-content" data-aos="fade-left">
-                    <h2>About <span>Sparkle Car Wash</span></h2>
-                    <p>We are a team of passionate car enthusiasts dedicated to providing the highest quality car wash and detailing services. With years of experience and state-of-the-art equipment, we ensure your vehicle looks its absolute best.</p>
-                    <p>Our mission is to deliver exceptional service with attention to every detail, making every car shine like new.</p>
-                    <div class="about-features">
-                        <div class="feature-item"><i class="fas fa-check-circle"></i><span>Eco-friendly Products</span></div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i><span>Certified Professionals</span></div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i><span>100% Satisfaction</span></div>
-                        <div class="feature-item"><i class="fas fa-check-circle"></i><span>Affordable Pricing</span></div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <span class="section-tag"><i class="fas fa-sparkles me-1"></i> Our Story</span>
+                    <h2 class="section-title">Passionate About <span class="accent">Perfect</span> Cars</h2>
+                    <p style="color:var(--gray);line-height:1.8;margin-bottom:1rem;">We are a team of passionate car enthusiasts dedicated to providing the highest quality car wash and detailing services. With years of experience and state‑of‑the‑art equipment, we ensure your vehicle looks its absolute best.</p>
+                    <p style="color:var(--gray);line-height:1.8;">Our mission is to deliver exceptional service with attention to every detail, making every car shine like new.</p>
+                    <div class="feature-row">
+                        <div class="feature-pill"><i class="fas fa-leaf"></i><span>Eco‑Friendly Products</span></div>
+                        <div class="feature-pill"><i class="fas fa-user-check"></i><span>Certified Pros</span></div>
+                        <div class="feature-pill"><i class="fas fa-shield-alt"></i><span>100% Satisfaction</span></div>
+                        <div class="feature-pill"><i class="fas fa-tag"></i><span>Affordable Pricing</span></div>
+                        <div class="feature-pill"><i class="fas fa-clock"></i><span>On‑Time Delivery</span></div>
+                        <div class="feature-pill"><i class="fas fa-trophy"></i><span>Award Winning</span></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Team -->
+            <!-- TEAM -->
             <div class="mt-5 pt-4">
-                <div class="section-header" data-aos="fade-up">
-                    <h2 class="section-title">Meet Our <span>Team</span></h2>
-                    <p class="section-subtitle">Our skilled professionals are passionate about making your car shine.</p>
+                <div class="text-center mb-5" data-aos="fade-up">
+                    <span class="section-tag">Our People</span>
+                    <h2 class="section-title">Meet Our <span class="accent">Team</span></h2>
+                    <p class="section-sub">Skilled professionals passionate about making your car shine.</p>
                 </div>
                 <div class="row g-4">
                     <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
                         <div class="team-card">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John Doe" />
-                            <h5>John Doe</h5>
+                            <div class="team-card-top">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&q=80" alt="John Doe" loading="lazy" />
+                            </div>
+                            <h5 class="mt-2">John Doe</h5>
                             <p class="role">Founder &amp; Lead Detailer</p>
-                            <div class="social-links">
+                            <div class="social-row">
                                 <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-twitter"></i></a>
                                 <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
                         <div class="team-card">
-                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Jane Smith" />
-                            <h5>Jane Smith</h5>
+                            <div class="team-card-top">
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&q=80" alt="Jane Smith" loading="lazy" />
+                            </div>
+                            <h5 class="mt-2">Jane Smith</h5>
                             <p class="role">Senior Detailer</p>
-                            <div class="social-links">
+                            <div class="social-row">
                                 <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-twitter"></i></a>
                                 <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
                         <div class="team-card">
-                            <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Mike Johnson" />
-                            <h5>Mike Johnson</h5>
+                            <div class="team-card-top">
+                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&q=80" alt="Mike Johnson" loading="lazy" />
+                            </div>
+                            <h5 class="mt-2">Mike Johnson</h5>
                             <p class="role">Ceramic Coating Specialist</p>
-                            <div class="social-links">
+                            <div class="social-row">
                                 <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-twitter"></i></a>
                                 <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
                             </div>
                         </div>
                     </div>
@@ -1304,95 +2098,96 @@
         </div>
     </section>
 
-    <!-- ===== SERVICES ===== -->
-    <section class="services-section section-padding" id="services">
+    <!-- SERVICES -->
+    <section class="services-section section-pad" id="services">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">Our <span>Services</span></h2>
-                <p class="section-subtitle">Choose from our range of professional car care services tailored to your needs.</p>
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="section-tag">What We Offer</span>
+                <h2 class="section-title">Our Premium <span class="accent">Services</span></h2>
+                <p class="section-sub">Choose from our range of professional car care services tailored to your needs.</p>
             </div>
             <div class="row g-4">
-                <!-- Service 1 -->
                 <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="0">
                     <div class="service-card">
-                        <div class="service-img">
-                            <img src="https://images.unsplash.com/photo-1589647363585-f4a7c4b2e8b8?w=600&q=80" alt="Exterior Wash" />
+                        <div class="svc-img">
+                            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Exterior Wash" loading="lazy" />
+                            <span class="price-tag">$25</span>
                         </div>
-                        <div class="service-body">
+                        <div class="svc-body">
+                            <div class="svc-icon"><i class="fas fa-car"></i></div>
                             <h5>Exterior Wash</h5>
                             <p>Thorough exterior cleaning with premium shampoo, wax, and tire dressing.</p>
-                            <span class="price">$25</span>
-                            <a href="#booking" class="btn btn-primary-custom btn-sm ms-2">Book Service</a>
+                            <a href="#booking" class="btn btn-red btn-sm"><span>Book Service</span></a>
                         </div>
                     </div>
                 </div>
-                <!-- Service 2 -->
-                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="80">
                     <div class="service-card">
-                        <div class="service-img">
-                            <img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&q=80" alt="Interior Cleaning" />
+                        <div class="svc-img">
+                            <img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&q=80" alt="Interior Cleaning" loading="lazy" />
+                            <span class="price-tag">$35</span>
                         </div>
-                        <div class="service-body">
+                        <div class="svc-body">
+                            <div class="svc-icon"><i class="fas fa-couch"></i></div>
                             <h5>Interior Cleaning</h5>
                             <p>Deep cleaning of seats, carpets, dashboard, and all interior surfaces.</p>
-                            <span class="price">$35</span>
-                            <a href="#booking" class="btn btn-primary-custom btn-sm ms-2">Book Service</a>
+                            <a href="#booking" class="btn btn-red btn-sm"><span>Book Service</span></a>
                         </div>
                     </div>
                 </div>
-                <!-- Service 3 -->
-                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="160">
                     <div class="service-card">
-                        <div class="service-img">
-                            <img src="https://images.unsplash.com/photo-1542313355-0fe1b0b7f5c9?w=600&q=80" alt="Full Detailing" />
+                        <div class="svc-img">
+                            <img src="https://images.unsplash.com/photo-1607603750909-408681c9e53d?w=600&q=80" alt="Full Detailing" loading="lazy" />
+                            <span class="price-tag">$99</span>
                         </div>
-                        <div class="service-body">
+                        <div class="svc-body">
+                            <div class="svc-icon"><i class="fas fa-spray-can"></i></div>
                             <h5>Full Detailing</h5>
                             <p>Complete exterior and interior detailing with paint correction and protection.</p>
-                            <span class="price">$99</span>
-                            <a href="#booking" class="btn btn-primary-custom btn-sm ms-2">Book Service</a>
+                            <a href="#booking" class="btn btn-red btn-sm"><span>Book Service</span></a>
                         </div>
                     </div>
                 </div>
-                <!-- Service 4 -->
-                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="240">
                     <div class="service-card">
-                        <div class="service-img">
-                            <img src="https://images.unsplash.com/photo-1601362840469-51e4d8d58785?w=600&q=80" alt="Ceramic Coating" />
+                        <div class="svc-img">
+                            <img src="https://images.unsplash.com/photo-1601362840469-51e4d8d58785?w=600&q=80" alt="Ceramic Coating" loading="lazy" />
+                            <span class="price-tag">$199</span>
                         </div>
-                        <div class="service-body">
+                        <div class="svc-body">
+                            <div class="svc-icon"><i class="fas fa-gem"></i></div>
                             <h5>Ceramic Coating</h5>
-                            <p>Premium nano-ceramic coating for long-lasting shine and paint protection.</p>
-                            <span class="price">$199</span>
-                            <a href="#booking" class="btn btn-primary-custom btn-sm ms-2">Book Service</a>
+                            <p>Premium nano‑ceramic coating for long‑lasting shine and paint protection.</p>
+                            <a href="#booking" class="btn btn-red btn-sm"><span>Book Service</span></a>
                         </div>
                     </div>
                 </div>
-                <!-- Service 5 -->
-                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="400">
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="320">
                     <div class="service-card">
-                        <div class="service-img">
-                            <img src="https://images.unsplash.com/photo-1614200187524-dc4b892acf16?w=600&q=80" alt="Engine Cleaning" />
+                        <div class="svc-img">
+                            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&q=80" alt="Engine Cleaning" loading="lazy" />
+                            <span class="price-tag">$45</span>
                         </div>
-                        <div class="service-body">
+                        <div class="svc-body">
+                            <div class="svc-icon"><i class="fas fa-cogs"></i></div>
                             <h5>Engine Cleaning</h5>
                             <p>Professional engine bay cleaning and degreasing to restore performance.</p>
-                            <span class="price">$45</span>
-                            <a href="#booking" class="btn btn-primary-custom btn-sm ms-2">Book Service</a>
+                            <a href="#booking" class="btn btn-red btn-sm"><span>Book Service</span></a>
                         </div>
                     </div>
                 </div>
-                <!-- Service 6 -->
-                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="500">
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="400">
                     <div class="service-card">
-                        <div class="service-img">
-                            <img src="https://images.unsplash.com/photo-1542313355-0fe1b0b7f5c9?w=600&q=80" alt="Premium Package" />
+                        <div class="svc-img">
+                            <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80" alt="Premium Package" loading="lazy" />
+                            <span class="price-tag">$299</span>
                         </div>
-                        <div class="service-body">
+                        <div class="svc-body">
+                            <div class="svc-icon"><i class="fas fa-crown"></i></div>
                             <h5>Premium Package</h5>
                             <p>Ultimate care: full detail, ceramic coating, interior protection &amp; more.</p>
-                            <span class="price">$299</span>
-                            <a href="#booking" class="btn btn-primary-custom btn-sm ms-2">Book Service</a>
+                            <a href="#booking" class="btn btn-red btn-sm"><span>Book Service</span></a>
                         </div>
                     </div>
                 </div>
@@ -1400,57 +2195,62 @@
         </div>
     </section>
 
-    <!-- ===== WHY CHOOSE US ===== -->
-    <section class="section-padding" style="background:var(--bg-color);">
+    <!-- WHY US -->
+    <section class="why-section section-pad">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">Why Choose <span>Us</span></h2>
-                <p class="section-subtitle">We go the extra mile to ensure your car gets the best care possible.</p>
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="section-tag">Why SparkleWash</span>
+                <h2 class="section-title">Why Choose <span style="color:var(--yellow);">Us</span></h2>
+                <p class="section-sub">We go the extra mile to ensure your car gets the best care possible.</p>
             </div>
             <div class="row g-4">
                 <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="0">
                     <div class="why-card">
-                        <div class="icon"><i class="fas fa-trophy"></i></div>
+                        <p class="why-number">01</p>
+                        <div class="why-icon"><i class="fas fa-trophy"></i></div>
                         <h5>Award Winning</h5>
-                        <p>Recognized for excellence in car care and customer service.</p>
+                        <p>Recognized for excellence in car care and customer service for 5 consecutive years.</p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="80">
                     <div class="why-card">
-                        <div class="icon"><i class="fas fa-leaf"></i></div>
-                        <h5>Eco-Friendly</h5>
-                        <p>We use biodegradable products that are safe for your car and the environment.</p>
+                        <p class="why-number">02</p>
+                        <div class="why-icon"><i class="fas fa-leaf"></i></div>
+                        <h5>Eco‑Friendly</h5>
+                        <p>Biodegradable products safe for your car and the environment, zero harmful runoff.</p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="160">
                     <div class="why-card">
-                        <div class="icon"><i class="fas fa-shield-alt"></i></div>
+                        <p class="why-number">03</p>
+                        <div class="why-icon"><i class="fas fa-shield-alt"></i></div>
                         <h5>100% Guarantee</h5>
-                        <p>We stand behind our work with a satisfaction guarantee on every service.</p>
+                        <p>We stand behind every job. Not satisfied? We'll redo it — completely free.</p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+                <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="240">
                     <div class="why-card">
-                        <div class="icon"><i class="fas fa-clock"></i></div>
-                        <h5>On-Time Delivery</h5>
-                        <p>We respect your time and ensure your car is ready when promised.</p>
+                        <p class="why-number">04</p>
+                        <div class="why-icon"><i class="fas fa-clock"></i></div>
+                        <h5>On‑Time Always</h5>
+                        <p>We respect your schedule and ensure your car is ready exactly when promised.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== PRICING ===== -->
-    <section class="pricing-section section-padding" id="pricing">
+    <!-- PRICING -->
+    <section class="pricing-section section-pad" id="pricing">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">Our <span>Pricing</span></h2>
-                <p class="section-subtitle">Choose a plan that fits your budget and car care needs.</p>
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="section-tag">Transparent Pricing</span>
+                <h2 class="section-title">Simple <span class="accent">Pricing</span> Plans</h2>
+                <p class="section-sub">Choose a plan that fits your budget and car care needs.</p>
             </div>
             <div class="row g-4 align-items-center">
-                <!-- Basic -->
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
-                    <div class="pricing-card">
+                    <div class="price-card">
                         <h5 class="plan-name">Basic</h5>
                         <div class="plan-price">$29 <small>/ visit</small></div>
                         <ul class="plan-features">
@@ -1460,13 +2260,12 @@
                             <li><i class="fas fa-times"></i> Interior Vacuum</li>
                             <li><i class="fas fa-times"></i> Wax Protection</li>
                         </ul>
-                        <a href="#booking" class="btn btn-outline-custom w-100">Choose Plan</a>
+                        <a href="#booking" class="btn btn-outline-red w-100">Choose Plan</a>
                     </div>
                 </div>
-                <!-- Standard (Popular) -->
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="150">
-                    <div class="pricing-card popular">
-                        <span class="popular-badge"><i class="fas fa-star me-1"></i>Popular</span>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="120">
+                    <div class="price-card popular">
+                        <span class="popular-badge"><i class="fas fa-fire me-1"></i>Most Popular</span>
                         <h5 class="plan-name">Standard</h5>
                         <div class="plan-price">$59 <small>/ visit</small></div>
                         <ul class="plan-features">
@@ -1477,12 +2276,11 @@
                             <li><i class="fas fa-check"></i> Wax Protection</li>
                             <li><i class="fas fa-check"></i> Dashboard Polish</li>
                         </ul>
-                        <a href="#booking" class="btn btn-primary-custom w-100">Choose Plan</a>
+                        <a href="#booking" class="btn btn-red w-100"><span>Choose Plan</span></a>
                     </div>
                 </div>
-                <!-- Premium -->
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="pricing-card">
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="240">
+                    <div class="price-card">
                         <h5 class="plan-name">Premium</h5>
                         <div class="plan-price">$99 <small>/ visit</small></div>
                         <ul class="plan-features">
@@ -1493,47 +2291,51 @@
                             <li><i class="fas fa-check"></i> Paint Correction</li>
                             <li><i class="fas fa-check"></i> Odor Removal</li>
                         </ul>
-                        <a href="#booking" class="btn btn-outline-custom w-100">Choose Plan</a>
+                        <a href="#booking" class="btn btn-outline-red w-100">Choose Plan</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== TESTIMONIALS ===== -->
-    <section class="section-padding" style="background:var(--primary-light);">
+    <!-- TESTIMONIALS -->
+    <section class="testi-section section-pad">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">What Our <span>Clients Say</span></h2>
-                <p class="section-subtitle">Real reviews from real customers who trust Sparkle Car Wash.</p>
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="section-tag">Client Reviews</span>
+                <h2 class="section-title">What Our <span class="accent">Clients</span> Say</h2>
+                <p class="section-sub">Real reviews from real customers who trust SparkleWash.</p>
             </div>
             <div class="row g-4">
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
-                    <div class="testimonial-card">
+                    <div class="testi-card">
                         <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                        <p>"Amazing service! My car has never looked this clean. The team was professional and quick. Highly recommend!"</p>
+                        <div class="quote-icon">"</div>
+                        <p>Amazing service! My car has never looked this clean. The team was professional and quick. Highly recommend!</p>
                         <div class="client">
-                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Sarah" />
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&q=80" alt="Sarah" loading="lazy" />
                             <div><h6>Sarah Ahmed</h6><small>2 days ago</small></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="testimonial-card">
+                    <div class="testi-card">
                         <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                        <p>"The ceramic coating is top-notch. My car looks brand new even after weeks. Best car wash in town!"</p>
+                        <div class="quote-icon">"</div>
+                        <p>The ceramic coating is top‑notch. My car looks brand new even after weeks. Best car wash in town!</p>
                         <div class="client">
-                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Ali" />
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&q=80" alt="Ali" loading="lazy" />
                             <div><h6>Ali Raza</h6><small>1 week ago</small></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="testimonial-card">
+                    <div class="testi-card">
                         <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                        <p>"I love the attention to detail. They cleaned every nook and cranny. My car feels like new inside and out."</p>
+                        <div class="quote-icon">"</div>
+                        <p>I love the attention to detail. They cleaned every nook and cranny. My car feels like new inside and out.</p>
                         <div class="client">
-                            <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="Zara" />
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&q=80" alt="Zara" loading="lazy" />
                             <div><h6>Zara Khan</h6><small>3 weeks ago</small></div>
                         </div>
                     </div>
@@ -1542,36 +2344,39 @@
         </div>
     </section>
 
-    <!-- ===== GALLERY ===== -->
-    <section class="gallery-section section-padding" id="gallery">
+    <!-- GALLERY -->
+    <section class="gallery-section section-pad" id="gallery">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">Our <span>Gallery</span></h2>
-                <p class="section-subtitle">Take a look at some of our recent work and transformations.</p>
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="section-tag">Our Work</span>
+                <h2 class="section-title">Gallery of <span style="color:var(--yellow);">Transformations</span></h2>
+                <p class="section-sub">Take a look at some of our recent work and before/after results.</p>
             </div>
-            <div class="gallery-filter" data-aos="fade-up">
-                <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="exterior">Exterior</button>
-                <button class="filter-btn" data-filter="interior">Interior</button>
-                <button class="filter-btn" data-filter="coating">Coating</button>
+            <div class="gal-filter" data-aos="fade-up">
+                <button class="gal-btn active" data-filter="all">All Work</button>
+                <button class="gal-btn" data-filter="exterior">Exterior</button>
+                <button class="gal-btn" data-filter="interior">Interior</button>
+                <button class="gal-btn" data-filter="coating">Coating</button>
             </div>
-            <div class="gallery-grid" id="galleryGrid" data-aos="fade-up">
-                <!-- Items will be injected by JS -->
-            </div>
+            <div class="gal-grid" id="galleryGrid" data-aos="fade-up"></div>
         </div>
     </section>
 
-    <!-- ===== BOOKING ===== -->
-    <section class="booking-section section-padding" id="booking">
+    <!-- BOOKING -->
+    <section class="booking-section section-pad" id="booking">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">Book Your <span>Service</span></h2>
-                <p class="section-subtitle">Fill in the details below and we'll get your car sparkling in no time.</p>
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="section-tag">Easy Online Booking</span>
+                <h2 class="section-title">Book Your <span class="accent">Service</span></h2>
+                <p class="section-sub">Fill in the details below and we'll get your car sparkling in no time.</p>
             </div>
-            <div class="row g-5">
+            <div class="row g-4">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <div class="booking-form-wrapper">
-                        <h4 class="mb-4"><i class="fas fa-calendar-plus me-2" style="color:var(--primary);"></i>New Booking</h4>
+                    <div class="form-box">
+                        <div class="form-box-title">
+                            <div class="icon"><i class="fas fa-calendar-plus"></i></div>
+                            <h4>New Booking</h4>
+                        </div>
                         <form id="bookingForm" novalidate>
                             <div class="row g-3">
                                 <div class="col-md-6">
@@ -1600,51 +2405,54 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Service Type *</label>
+                                    <label class="form-label">Service *</label>
                                     <select class="form-select" id="serviceType" required>
                                         <option value="">Select a service</option>
-                                        <option value="Exterior Wash">Exterior Wash - $25</option>
-                                        <option value="Interior Cleaning">Interior Cleaning - $35</option>
-                                        <option value="Full Detailing">Full Detailing - $99</option>
-                                        <option value="Ceramic Coating">Ceramic Coating - $199</option>
-                                        <option value="Engine Cleaning">Engine Cleaning - $45</option>
-                                        <option value="Premium Package">Premium Package - $299</option>
+                                        <option value="Exterior Wash">Exterior Wash — $25</option>
+                                        <option value="Interior Cleaning">Interior Cleaning — $35</option>
+                                        <option value="Full Detailing">Full Detailing — $99</option>
+                                        <option value="Ceramic Coating">Ceramic Coating — $199</option>
+                                        <option value="Engine Cleaning">Engine Cleaning — $45</option>
+                                        <option value="Premium Package">Premium Package — $299</option>
                                     </select>
                                     <div class="invalid-feedback">Please select a service.</div>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">Date *</label>
                                     <input type="date" class="form-control" id="bookingDate" required />
-                                    <div class="invalid-feedback">Please select a date.</div>
+                                    <div class="invalid-feedback">Select a date.</div>
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">Time *</label>
                                     <input type="time" class="form-control" id="bookingTime" required />
-                                    <div class="invalid-feedback">Please select a time.</div>
+                                    <div class="invalid-feedback">Select a time.</div>
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label">Additional Notes</label>
-                                    <textarea class="form-control" id="bookingNotes" rows="3" placeholder="Any special requests..."></textarea>
+                                    <textarea class="form-control" id="bookingNotes" rows="2" placeholder="Any special requests…"></textarea>
                                 </div>
                                 <div class="col-12">
-                                    <button type="submit" class="btn btn-primary-custom w-100"><i class="fas fa-check me-2"></i>Book Now</button>
+                                    <button type="submit" class="btn btn-red w-100" style="padding:14px;font-size:1rem;"><span><i class="fas fa-check me-2"></i>Confirm Booking</span></button>
                                 </div>
                             </div>
                         </form>
                         <div id="bookingSuccess" class="alert alert-success mt-3 d-none">
-                            <i class="fas fa-check-circle me-2"></i> Your booking has been confirmed! We'll contact you shortly.
+                            <i class="fas fa-check-circle me-2"></i> Booking confirmed! We'll contact you shortly.
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6" data-aos="fade-left">
-                    <div class="booking-summary">
-                        <h4 class="mb-3"><i class="fas fa-list-ul me-2" style="color:var(--primary);"></i>Your Bookings</h4>
-                        <div class="dashboard-search">
-                            <input type="text" id="bookingSearch" placeholder="Search bookings..." class="form-control" />
-                            <button class="btn btn-primary-custom" id="clearSearchBtn"><i class="fas fa-times"></i></button>
+                    <div class="bk-list">
+                        <div class="form-box-title mb-3">
+                            <div class="icon"><i class="fas fa-list-ul"></i></div>
+                            <h4>Your Bookings</h4>
+                        </div>
+                        <div class="search-bar">
+                            <input type="text" id="bookingSearch" placeholder="Search bookings…" />
+                            <button class="btn btn-red" id="clearSearchBtn" style="border-radius:8px;padding:8px 16px;"><i class="fas fa-times"></i></button>
                         </div>
                         <div id="bookingList">
-                            <p class="text-muted text-center py-3">No bookings yet. Book your first service!</p>
+                            <p class="text-center py-3" style="color:var(--gray);font-size:0.9rem;">No bookings yet. Book your first service!</p>
                         </div>
                     </div>
                 </div>
@@ -1652,48 +2460,30 @@
         </div>
     </section>
 
-    <!-- ===== DASHBOARD ===== -->
-    <section class="dashboard-section section-padding" id="dashboard">
+    <!-- DASHBOARD -->
+    <section class="dash-section section-pad" id="dashboard">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">Customer <span>Dashboard</span></h2>
-                <p class="section-subtitle">Manage all your bookings in one place.</p>
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="section-tag">Management</span>
+                <h2 class="section-title">Customer <span class="accent">Dashboard</span></h2>
+                <p class="section-sub">Manage all your bookings in one place.</p>
             </div>
-            <div class="dashboard-stats" data-aos="fade-up">
-                <div class="dashboard-stat-card">
-                    <h3 id="totalBookings">0</h3>
-                    <p>Total Bookings</p>
-                </div>
-                <div class="dashboard-stat-card">
-                    <h3 id="pendingBookings">0</h3>
-                    <p>Pending</p>
-                </div>
-                <div class="dashboard-stat-card">
-                    <h3 id="completedBookings">0</h3>
-                    <p>Completed</p>
-                </div>
-                <div class="dashboard-stat-card">
-                    <h3 id="revenueStats">$0</h3>
-                    <p>Total Revenue</p>
-                </div>
+            <div class="stat-grid" data-aos="fade-up">
+                <div class="stat-card"><h3 id="totalBookings">0</h3><p>Total Bookings</p></div>
+                <div class="stat-card yellow"><h3 id="pendingBookings">0</h3><p>Pending</p></div>
+                <div class="stat-card"><h3 id="completedBookings">0</h3><p>Completed</p></div>
+                <div class="stat-card yellow"><h3 id="revenueStats">$0</h3><p>Revenue</p></div>
             </div>
-            <div class="booking-summary" data-aos="fade-up">
+            <div class="data-table" data-aos="fade-up">
                 <div class="table-responsive">
-                    <table class="table" id="dashboardTable">
+                    <table>
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Customer</th>
-                                <th>Service</th>
-                                <th>Vehicle</th>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Status</th>
-                                <th>Actions</th>
+                                <th>#</th><th>Customer</th><th>Service</th><th>Vehicle</th><th>Date</th><th>Time</th><th>Status</th><th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="dashboardBody">
-                            <tr><td colspan="8" class="text-center text-muted">No bookings found.</td></tr>
+                            <tr><td colspan="8" style="text-align:center;padding:20px;color:var(--gray);">No bookings found.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -1701,76 +2491,75 @@
         </div>
     </section>
 
-    <!-- ===== CONTACT ===== -->
-    <section class="contact-section section-padding" id="contact">
+    <!-- CONTACT -->
+    <section class="contact-section section-pad" id="contact">
         <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <h2 class="section-title">Get In <span>Touch</span></h2>
-                <p class="section-subtitle">We'd love to hear from you. Reach out for any inquiries or feedback.</p>
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="section-tag">Get In Touch</span>
+                <h2 class="section-title">Contact <span class="accent">Us</span></h2>
+                <p class="section-sub">We'd love to hear from you. Reach out for any inquiries or feedback.</p>
             </div>
             <div class="row g-4">
                 <div class="col-lg-4" data-aos="fade-right">
-                    <div class="contact-info-card">
-                        <i class="fas fa-map-marker-alt"></i>
+                    <div class="info-card mb-3">
+                        <div class="ic-icon"><i class="fas fa-map-marker-alt"></i></div>
                         <h6>Visit Us</h6>
                         <p>123 Car Wash Street,<br />Los Angeles, CA 90001</p>
                     </div>
-                    <div class="contact-info-card mt-3">
-                        <i class="fas fa-phone-alt"></i>
+                    <div class="info-card mb-3">
+                        <div class="ic-icon"><i class="fas fa-phone-alt"></i></div>
                         <h6>Call Us</h6>
-                        <p>+1 (800) 123-4567</p>
+                        <p>+1 (800) 123‑4567</p>
                     </div>
-                    <div class="contact-info-card mt-3">
-                        <i class="fas fa-envelope"></i>
+                    <div class="info-card">
+                        <div class="ic-icon"><i class="fas fa-envelope"></i></div>
                         <h6>Email Us</h6>
                         <p>info@sparklewash.com</p>
                     </div>
                 </div>
                 <div class="col-lg-8" data-aos="fade-left">
-                    <div class="map-placeholder mb-4">
-                        <i class="fas fa-map"></i> Google Map — Sparkle Car Wash
+                    <div class="map-box mb-4">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <span>SparkleWash — Los Angeles</span>
                     </div>
-                    <form id="contactForm" novalidate>
+                    <form id="contactForm" class="contact-form" novalidate>
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <input type="text" class="form-control" placeholder="Your Name" id="contactName" required />
-                                <div class="invalid-feedback">Please enter your name.</div>
                             </div>
                             <div class="col-md-6">
                                 <input type="email" class="form-control" placeholder="Your Email" id="contactEmail" required />
-                                <div class="invalid-feedback">Please enter a valid email.</div>
                             </div>
                             <div class="col-12">
                                 <textarea class="form-control" rows="4" placeholder="Your Message" id="contactMessage" required></textarea>
-                                <div class="invalid-feedback">Please enter a message.</div>
                             </div>
                             <div class="col-12">
-                                <button type="submit" class="btn btn-primary-custom"><i class="fas fa-paper-plane me-2"></i>Send Message</button>
+                                <button type="submit" class="btn btn-red"><span><i class="fas fa-paper-plane me-2"></i>Send Message</span></button>
                             </div>
                         </div>
                     </form>
                     <div id="contactSuccess" class="alert alert-success mt-3 d-none">
-                        <i class="fas fa-check-circle me-2"></i> Your message has been sent successfully!
+                        <i class="fas fa-check-circle me-2"></i> Message sent successfully!
                     </div>
-                    <div class="mt-4">
-                        <span class="me-3"><a href="#" class="text-primary"><i class="fab fa-facebook fa-2x"></i></a></span>
-                        <span class="me-3"><a href="#" class="text-primary"><i class="fab fa-twitter fa-2x"></i></a></span>
-                        <span class="me-3"><a href="#" class="text-primary"><i class="fab fa-instagram fa-2x"></i></a></span>
-                        <span class="me-3"><a href="#" class="text-primary"><i class="fab fa-youtube fa-2x"></i></a></span>
+                    <div class="social-links mt-3">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== FOOTER ===== -->
+    <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4">
-                    <h5><i class="fas fa-car me-2" style="color:var(--primary);"></i>Sparkle<span style="color:var(--primary);">Wash</span></h5>
-                    <p>Your trusted partner for professional car wash and detailing services. We bring back the shine.</p>
-                    <div class="social-icons">
+                    <div class="footer-brand"><i class="fas fa-car-wash"></i>Sparkle<span class="y">Wash</span></div>
+                    <p style="font-size:0.9rem;margin-bottom:0.5rem;">Your trusted partner for professional car wash and detailing. We bring back the shine.</p>
+                    <div class="soc-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
@@ -1778,449 +2567,335 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4">
-                    <h5>Quick Links</h5>
-                    <a href="#home">Home</a><br />
-                    <a href="#about">About</a><br />
-                    <a href="#services">Services</a><br />
+                    <h6>Quick Links</h6>
+                    <a href="#home">Home</a>
+                    <a href="#about">About</a>
+                    <a href="#services">Services</a>
                     <a href="#pricing">Pricing</a>
                 </div>
                 <div class="col-lg-2 col-md-4">
-                    <h5>Services</h5>
-                    <a href="#services">Exterior Wash</a><br />
-                    <a href="#services">Interior Cleaning</a><br />
-                    <a href="#services">Full Detailing</a><br />
-                    <a href="#services">Ceramic Coating</a>
+                    <h6>Services</h6>
+                    <a href="#services">Exterior Wash</a>
+                    <a href="#services">Interior Clean</a>
+                    <a href="#services">Full Detailing</a>
+                    <a href="#services">Ceramic Coat</a>
                 </div>
                 <div class="col-lg-4 col-md-4">
-                    <h5>Contact Info</h5>
-                    <p><i class="fas fa-map-marker-alt me-2" style="color:var(--primary);"></i>123 Car Wash Street, LA</p>
-                    <p><i class="fas fa-phone me-2" style="color:var(--primary);"></i>+1 (800) 123-4567</p>
-                    <p><i class="fas fa-envelope me-2" style="color:var(--primary);"></i>info@sparklewash.com</p>
+                    <h6>Contact Info</h6>
+                    <p style="font-size:0.88rem;"><i class="fas fa-map-marker-alt me-2" style="color:var(--red);"></i>123 Car Wash Street, LA</p>
+                    <p style="font-size:0.88rem;"><i class="fas fa-phone me-2" style="color:var(--yellow);"></i>+1 (800) 123‑4567</p>
+                    <p style="font-size:0.88rem;"><i class="fas fa-envelope me-2" style="color:var(--red);"></i>info@sparklewash.com</p>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 Sparkle Car Wash. All Rights Reserved. Designed with <i class="fas fa-heart" style="color:#e74c3c;"></i></p>
+            <div class="footer-divider">
+                <p>&copy; 2026 SparkleWash. All Rights Reserved. Made with <span class="heart">♥</span></p>
             </div>
         </div>
     </footer>
 
-    <!-- ===== BOOKING CONFIRMATION MODAL ===== -->
+    <!-- MODALS -->
     <div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><i class="fas fa-check-circle text-success me-2"></i>Booking Confirmed</h5>
+                    <h5 class="modal-title"><i class="fas fa-check-circle" style="color:#16a34a;margin-right:8px;"></i>Booking Confirmed</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body" id="bookingModalBody">
-                    Your booking has been successfully confirmed!
-                </div>
+                <div class="modal-body" id="bookingModalBody">Your booking has been confirmed!</div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary-custom" data-bs-dismiss="modal">Great!</button>
+                    <button class="btn btn-red" data-bs-dismiss="modal"><span>Great, Thanks!</span></button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ===== EDIT BOOKING MODAL ===== -->
     <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><i class="fas fa-edit me-2" style="color:var(--primary);"></i>Edit Booking</h5>
+                    <h5 class="modal-title"><i class="fas fa-edit me-2" style="color:var(--red);"></i>Edit Booking</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="editForm">
                         <input type="hidden" id="editId" />
-                        <div class="mb-3">
-                            <label class="form-label">Customer Name</label>
-                            <input type="text" class="form-control" id="editName" required />
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" id="editEmail" required />
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Phone</label>
-                            <input type="text" class="form-control" id="editPhone" required />
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Service</label>
+                        <div class="mb-3"><label class="form-label fw-semibold" style="font-size:.78rem;text-transform:uppercase;letter-spacing:.8px;">Customer Name</label><input type="text" class="form-control" id="editName" required /></div>
+                        <div class="mb-3"><label class="form-label fw-semibold" style="font-size:.78rem;text-transform:uppercase;letter-spacing:.8px;">Email</label><input type="email" class="form-control" id="editEmail" /></div>
+                        <div class="mb-3"><label class="form-label fw-semibold" style="font-size:.78rem;text-transform:uppercase;letter-spacing:.8px;">Phone</label><input type="text" class="form-control" id="editPhone" /></div>
+                        <div class="mb-3"><label class="form-label fw-semibold" style="font-size:.78rem;text-transform:uppercase;letter-spacing:.8px;">Service</label>
                             <select class="form-select" id="editService">
-                                <option value="Exterior Wash">Exterior Wash</option>
-                                <option value="Interior Cleaning">Interior Cleaning</option>
-                                <option value="Full Detailing">Full Detailing</option>
-                                <option value="Ceramic Coating">Ceramic Coating</option>
-                                <option value="Engine Cleaning">Engine Cleaning</option>
-                                <option value="Premium Package">Premium Package</option>
+                                <option>Exterior Wash</option><option>Interior Cleaning</option><option>Full Detailing</option><option>Ceramic Coating</option><option>Engine Cleaning</option><option>Premium Package</option>
                             </select>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Vehicle</label>
+                        <div class="mb-3"><label class="form-label fw-semibold" style="font-size:.78rem;text-transform:uppercase;letter-spacing:.8px;">Vehicle</label>
                             <select class="form-select" id="editVehicle">
-                                <option value="Sedan">Sedan</option>
-                                <option value="SUV">SUV</option>
-                                <option value="Truck">Truck</option>
-                                <option value="Van">Van</option>
-                                <option value="Sports Car">Sports Car</option>
+                                <option>Sedan</option><option>SUV</option><option>Truck</option><option>Van</option><option>Sports Car</option>
                             </select>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Date</label>
-                            <input type="date" class="form-control" id="editDate" required />
+                        <div class="row g-2 mb-3">
+                            <div class="col"><label class="form-label fw-semibold" style="font-size:.78rem;text-transform:uppercase;letter-spacing:.8px;">Date</label><input type="date" class="form-control" id="editDate" /></div>
+                            <div class="col"><label class="form-label fw-semibold" style="font-size:.78rem;text-transform:uppercase;letter-spacing:.8px;">Time</label><input type="time" class="form-control" id="editTime" /></div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Time</label>
-                            <input type="time" class="form-control" id="editTime" required />
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
+                        <div class="mb-3"><label class="form-label fw-semibold" style="font-size:.78rem;text-transform:uppercase;letter-spacing:.8px;">Status</label>
                             <select class="form-select" id="editStatus">
-                                <option value="Pending">Pending</option>
-                                <option value="Completed">Completed</option>
-                                <option value="Cancelled">Cancelled</option>
+                                <option>Pending</option><option>Completed</option><option>Cancelled</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary-custom w-100">Update Booking</button>
+                        <button type="submit" class="btn btn-red w-100"><span>Update Booking</span></button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ===== SCRIPTS ===== -->
-    <!-- Bootstrap 5 JS -->
+    <div class="modal fade" id="lightboxModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content" style="background:transparent;border:none;">
+                <div class="modal-body p-0 text-center">
+                    <img id="lightboxImage" src="" alt="" class="img-fluid" style="border-radius:14px;max-height:80vh;box-shadow:0 30px 80px rgba(0,0,0,0.6);" />
+                    <button class="btn btn-red mt-3" data-bs-dismiss="modal" style="border-radius:50px;padding:10px 30px;"><span><i class="fas fa-times me-2"></i>Close</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js">
     </script>
-    <!-- AOS JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js">
     </script>
-
     <script>
-        // ============================================================
-        //  SPARKLE CAR WASH — MAIN JAVASCRIPT
-        // ============================================================
+        // ─── AOS ───
+        AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true, offset: 60 });
 
-        // ---- INIT AOS ----
-        AOS.init({
-            duration: 800,
-            easing: 'ease-out-cubic',
-            once: true,
-            offset: 60,
-        });
-
-        // ---- LOADING SPINNER ----
+        // ─── LOADER ───
         window.addEventListener('load', function() {
-            document.getElementById('loader').classList.add('hidden');
-            setTimeout(() => { document.getElementById('loader').style.display = 'none'; }, 600);
+            const l = document.getElementById('loader');
+            l.classList.add('hidden');
+            setTimeout(() => l.style.display = 'none', 800);
         });
 
-        // ---- SCROLL TO TOP ----
+        // ─── SCROLL TOP & NAV ───
         const scrollBtn = document.getElementById('scrollTop');
         window.addEventListener('scroll', function() {
-            if (window.scrollY > 400) {
-                scrollBtn.classList.add('visible');
-            } else {
-                scrollBtn.classList.remove('visible');
-            }
+            const y = window.scrollY;
+            scrollBtn.classList.toggle('visible', y > 400);
+            document.getElementById('mainNav').classList.toggle('scrolled', y > 60);
+            let cur = '';
+            document.querySelectorAll('section[id]').forEach(s => {
+                if (y >= s.offsetTop - 130) cur = s.id;
+            });
+            document.querySelectorAll('.nav-link').forEach(l => {
+                l.classList.remove('active');
+                if (l.getAttribute('href') === '#' + cur) l.classList.add('active');
+            });
         });
-        scrollBtn.addEventListener('click', function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+        scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-        // ---- NAVBAR SCROLL EFFECT ----
-        const navbar = document.getElementById('mainNav');
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 60) {
-                navbar.classList.add('scrolled');
+        // ─── THEME ───
+        const tt = document.getElementById('themeToggle');
+        let theme = localStorage.getItem('swTheme') || 'light';
+
+        function setTheme(t) {
+            if (t === 'dark') {
+                document.documentElement.setAttribute('data-bs-theme', 'dark');
+                tt.innerHTML = '<i class="fas fa-sun"></i>';
             } else {
-                navbar.classList.remove('scrolled');
+                document.documentElement.removeAttribute('data-bs-theme');
+                tt.innerHTML = '<i class="fas fa-moon"></i>';
             }
-        });
-
-        // ---- DARK/LIGHT MODE ----
-        const themeToggle = document.getElementById('themeToggle');
-        const htmlElement = document.documentElement;
-        let currentTheme = localStorage.getItem('theme') || 'light';
-
-        function setTheme(theme) {
-            if (theme === 'dark') {
-                htmlElement.setAttribute('data-bs-theme', 'dark');
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                htmlElement.removeAttribute('data-bs-theme');
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-                localStorage.setItem('theme', 'light');
-            }
-            currentTheme = theme;
+            localStorage.setItem('swTheme', t);
+            theme = t;
         }
-        setTheme(currentTheme);
-        themeToggle.addEventListener('click', function() {
-            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
-        });
+        setTheme(theme);
+        tt.addEventListener('click', () => setTheme(theme === 'dark' ? 'light' : 'dark'));
 
-        // ---- ANIMATED COUNTERS ----
+        // ─── COUNTERS ───
         function animateCounters() {
-            document.querySelectorAll('.counter').forEach(counter => {
-                const target = parseInt(counter.getAttribute('data-target'));
-                const duration = 2000;
-                const step = Math.max(1, Math.floor(target / 60));
-                let current = 0;
-                const increment = () => {
-                    current += step;
-                    if (current >= target) {
-                        counter.textContent = target;
-                        return;
-                    }
-                    counter.textContent = current;
-                    requestAnimationFrame(increment);
+            document.querySelectorAll('.counter').forEach(c => {
+                const target = parseInt(c.dataset.target);
+                let cur = 0;
+                const step = Math.max(1, Math.floor(target / 80));
+                const go = () => {
+                    cur += step;
+                    if (cur >= target) { c.textContent = target; return; }
+                    c.textContent = cur;
+                    requestAnimationFrame(go);
                 };
-                increment();
+                go();
             });
         }
-        // Trigger counters after a short delay
-        setTimeout(animateCounters, 500);
+        setTimeout(animateCounters, 600);
 
-        // ---- GALLERY DATA ----
+        // ─── SMOOTH NAV ───
+        document.querySelectorAll('.nav-link').forEach(l => {
+            l.addEventListener('click', function(e) {
+                const h = this.getAttribute('href');
+                if (h && h.startsWith('#')) {
+                    e.preventDefault();
+                    const el = document.querySelector(h);
+                    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 74,
+                        behavior: 'smooth' });
+                    const m = document.getElementById('navMenu');
+                    if (m.classList.contains('show')) m.classList.remove('show');
+                }
+            });
+        });
+
+        // ─── GALLERY ───
         const galleryData = [
-            { id: 1, title: 'Exterior Shine', category: 'exterior',
-                src: 'https://images.unsplash.com/photo-1601362840469-51e4d8d58785?w=600&q=80' },
-            { id: 2, title: 'Interior Detail', category: 'interior',
-                src: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&q=80' },
-            { id: 3, title: 'Ceramic Coating', category: 'coating',
-                src: 'https://images.unsplash.com/photo-1607863680193-6a154ad2c0d1?w=600&q=80' },
-            { id: 4, title: 'Exterior Wash', category: 'exterior',
-                src: 'https://images.unsplash.com/photo-1589647363585-f4a7c4b2e8b8?w=600&q=80' },
-            { id: 5, title: 'Interior Shampoo', category: 'interior',
-                src: 'https://images.unsplash.com/photo-1542313355-0fe1b0b7f5c9?w=600&q=80' },
-            { id: 6, title: 'Premium Coating', category: 'coating',
-                src: 'https://images.unsplash.com/photo-1614200187524-dc4b892acf16?w=600&q=80' },
+            { category: 'exterior', src: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',
+            title: 'Exterior Shine' },
+            { category: 'interior', src: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&q=80',
+                title: 'Interior Detail' },
+            { category: 'coating', src: 'https://images.unsplash.com/photo-1607863680193-6a154ad2c0d1?w=600&q=80',
+                title: 'Ceramic Coat' },
+            { category: 'exterior', src: 'https://images.unsplash.com/photo-1601362840469-51e4d8d58785?w=600&q=80',
+                title: 'Exterior Wash' },
+            { category: 'interior', src: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80',
+                title: 'Interior Clean' },
+            { category: 'coating', src: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&q=80',
+                title: 'Premium Coat' },
         ];
 
-        function renderGallery(filter = 'all') {
-            const grid = document.getElementById('galleryGrid');
-            const filtered = filter === 'all' ? galleryData : galleryData.filter(item => item.category === filter);
-            grid.innerHTML = filtered.map(item => `
-                <div class="gallery-item" data-category="${item.category}" data-src="${item.src}">
-                    <img src="${item.src}" alt="${item.title}" loading="lazy" />
-                    <div class="gallery-overlay">
-                        <i class="fas fa-search-plus"></i>
+        function renderGallery(f = 'all') {
+            const items = f === 'all' ? galleryData : galleryData.filter(i => i.category === f);
+            document.getElementById('galleryGrid').innerHTML = items.map(i => `
+                    <div class="gal-item" data-src="${i.src}">
+                        <img src="${i.src}" alt="${i.title}" loading="lazy" />
+                        <div class="gal-overlay"><i class="fas fa-expand-alt"></i></div>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
         }
         renderGallery();
-
-        // Gallery filter buttons
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.gal-btn').forEach(b => {
+            b.addEventListener('click', function() {
+                document.querySelectorAll('.gal-btn').forEach(x => x.classList.remove('active'));
                 this.classList.add('active');
                 renderGallery(this.dataset.filter);
             });
         });
-
-        // Lightbox: click gallery item
         document.addEventListener('click', function(e) {
-            const item = e.target.closest('.gallery-item');
+            const item = e.target.closest('.gal-item');
             if (!item) return;
-            const src = item.dataset.src;
-            if (src) {
-                const modal = new bootstrap.Modal(document.getElementById('lightboxModal'));
-                document.getElementById('lightboxImage').src = src;
-                modal.show();
-            }
+            document.getElementById('lightboxImage').src = item.dataset.src;
+            new bootstrap.Modal(document.getElementById('lightboxModal')).show();
         });
 
-        // ---- LIGHTBOX MODAL (dynamically added) ----
-        const lightboxModal = document.createElement('div');
-        lightboxModal.className = 'modal fade';
-        lightboxModal.id = 'lightboxModal';
-        lightboxModal.setAttribute('tabindex', '-1');
-        lightboxModal.setAttribute('aria-hidden', 'true');
-        lightboxModal.innerHTML = `
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content" style="background:transparent;border:none;box-shadow:none;">
-                    <div class="modal-body p-0 text-center">
-                        <img id="lightboxImage" src="" alt="Gallery" class="img-fluid rounded-4" style="max-height:80vh;width:auto;margin:0 auto;box-shadow:0 20px 60px rgba(0,0,0,0.4);" />
-                        <button type="button" class="btn btn-light mt-3" data-bs-dismiss="modal" style="border-radius:50px;padding:10px 30px;"><i class="fas fa-times me-2"></i>Close</button>
-                    </div>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(lightboxModal);
+        // ─── BOOKING CRUD ───
+        let bookings = JSON.parse(localStorage.getItem('swBookings')) || [];
+        const priceMap = { 'Exterior Wash': 25, 'Interior Cleaning': 35, 'Full Detailing': 99, 'Ceramic Coating': 199,
+            'Engine Cleaning': 45, 'Premium Package': 299 };
 
-        // ---- BOOKING SYSTEM (LocalStorage CRUD) ----
-        let bookings = JSON.parse(localStorage.getItem('sparkleBookings')) || [];
-        let editingId = null;
+        function genId() { return Date.now().toString(36) + Math.random().toString(36).substr(2, 4); }
 
         function saveBookings() {
-            localStorage.setItem('sparkleBookings', JSON.stringify(bookings));
+            localStorage.setItem('swBookings', JSON.stringify(bookings));
             renderBookings();
-            updateDashboard();
-        }
-
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+            updateDash();
         }
 
         function renderBookings() {
-            const list = document.getElementById('bookingList');
-            if (bookings.length === 0) {
-                list.innerHTML = '<p class="text-muted text-center py-3">No bookings yet. Book your first service!</p>';
-                return;
-            }
-            const search = document.getElementById('bookingSearch')?.value?.toLowerCase() || '';
-            const filtered = bookings.filter(b =>
-                b.name.toLowerCase().includes(search) ||
-                b.service.toLowerCase().includes(search) ||
-                b.vehicle.toLowerCase().includes(search)
-            );
-            if (filtered.length === 0) {
-                list.innerHTML = '<p class="text-muted text-center py-3">No bookings match your search.</p>';
-                return;
-            }
-            list.innerHTML = filtered.map((b, idx) => `
-                <div class="d-flex justify-content-between align-items-center border-bottom py-3">
-                    <div>
-                        <strong>${b.name}</strong> — ${b.service}
-                        <br /><small class="text-muted">${b.vehicle} | ${b.date} at ${b.time}</small>
-                        <span class="badge ${b.status === 'Completed' ? 'bg-success' : b.status === 'Cancelled' ? 'bg-danger' : 'bg-warning'} ms-2">${b.status || 'Pending'}</span>
+            const el = document.getElementById('bookingList');
+            if (!bookings.length) { el.innerHTML =
+                    '<p class="text-center py-3" style="color:var(--gray);font-size:.9rem;">No bookings yet. Book your first service!</p>'; return; }
+            const q = (document.getElementById('bookingSearch').value || '').toLowerCase();
+            const f = bookings.filter(b => b.name.toLowerCase().includes(q) || b.service.toLowerCase().includes(q) || b
+                .vehicle.toLowerCase().includes(q));
+            if (!f.length) { el.innerHTML = '<p class="text-center py-3" style="color:var(--gray);">No matches found.</p>'; return; }
+            el.innerHTML = f.map(b => `
+                    <div class="bk-item">
+                        <div class="bk-info">
+                            <strong>${b.name}</strong>
+                            <small>${b.vehicle} · ${b.service} · ${b.date} at ${b.time}</small>
+                            <span class="badge-status ${b.status==='Completed'?'badge-completed':b.status==='Cancelled'?'badge-cancelled':'badge-pending'} ms-1">${b.status||'Pending'}</span>
+                        </div>
+                        <div class="bk-actions">
+                            <button class="edit-btn" data-id="${b.id}" title="Edit"><i class="fas fa-pen"></i></button>
+                            <button class="del-btn" data-id="${b.id}" title="Delete"><i class="fas fa-trash"></i></button>
+                        </div>
                     </div>
-                    <div>
-                        <button class="action-btn edit-btn me-1" data-id="${b.id}" title="Edit"><i class="fas fa-pen"></i></button>
-                        <button class="action-btn delete-btn" data-id="${b.id}" title="Delete"><i class="fas fa-trash"></i></button>
-                    </div>
-                </div>
-            `).join('');
-
-            // Attach edit/delete events
-            list.querySelectorAll('.edit-btn').forEach(btn => {
-                btn.addEventListener('click', function() { openEditModal(this.dataset.id); });
-            });
-            list.querySelectorAll('.delete-btn').forEach(btn => {
-                btn.addEventListener('click', function() { deleteBooking(this.dataset.id); });
-            });
+                `).join('');
+            el.querySelectorAll('.edit-btn').forEach(btn => btn.addEventListener('click', function() { openEdit(this.dataset
+                    .id); }));
+            el.querySelectorAll('.del-btn').forEach(btn => btn.addEventListener('click', function() { deleteB(this.dataset
+                    .id); }));
         }
 
-        function updateDashboard() {
+        function updateDash() {
             const total = bookings.length;
-            const pending = bookings.filter(b => b.status === 'Pending' || !b.status).length;
+            const pending = bookings.filter(b => !b.status || b.status === 'Pending').length;
             const completed = bookings.filter(b => b.status === 'Completed').length;
-            const revenue = bookings.reduce((sum, b) => {
-                const price = parseInt(b.price) || 0;
-                return sum + price;
-            }, 0);
-
+            const rev = bookings.reduce((s, b) => s + (parseInt(b.price) || 0), 0);
             document.getElementById('totalBookings').textContent = total;
             document.getElementById('pendingBookings').textContent = pending;
             document.getElementById('completedBookings').textContent = completed;
-            document.getElementById('revenueStats').textContent = '$' + revenue;
-
-            // Dashboard table
+            document.getElementById('revenueStats').textContent = '$' + rev;
             const tbody = document.getElementById('dashboardBody');
-            if (bookings.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted">No bookings found.</td></tr>';
-                return;
-            }
-            tbody.innerHTML = bookings.map((b, idx) => `
-                <tr>
-                    <td>${idx + 1}</td>
-                    <td>${b.name}</td>
-                    <td>${b.service}</td>
-                    <td>${b.vehicle}</td>
-                    <td>${b.date}</td>
-                    <td>${b.time}</td>
-                    <td><span class="badge ${b.status === 'Completed' ? 'bg-success' : b.status === 'Cancelled' ? 'bg-danger' : 'bg-warning'}">${b.status || 'Pending'}</span></td>
-                    <td>
-                        <button class="action-btn edit-btn me-1" data-id="${b.id}"><i class="fas fa-pen"></i></button>
-                        <button class="action-btn delete-btn" data-id="${b.id}"><i class="fas fa-trash"></i></button>
-                    </td>
-                </tr>
-            `).join('');
-            tbody.querySelectorAll('.edit-btn').forEach(btn => {
-                btn.addEventListener('click', function() { openEditModal(this.dataset.id); });
-            });
-            tbody.querySelectorAll('.delete-btn').forEach(btn => {
-                btn.addEventListener('click', function() { deleteBooking(this.dataset.id); });
-            });
+            if (!bookings.length) { tbody.innerHTML =
+                    '<tr><td colspan="8" style="text-align:center;padding:18px;color:var(--gray);">No bookings found.</td></tr>'; return; }
+            tbody.innerHTML = bookings.map((b, i) => `
+                    <tr>
+                        <td>${i+1}</td>
+                        <td>${b.name}</td>
+                        <td>${b.service}</td>
+                        <td>${b.vehicle}</td>
+                        <td>${b.date}</td>
+                        <td>${b.time}</td>
+                        <td><span class="badge-status ${b.status==='Completed'?'badge-completed':b.status==='Cancelled'?'badge-cancelled':'badge-pending'}">${b.status||'Pending'}</span></td>
+                        <td class="d-flex gap-1">
+                            <button class="edit-btn" data-id="${b.id}"><i class="fas fa-pen"></i></button>
+                            <button class="del-btn" data-id="${b.id}"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
+            tbody.querySelectorAll('.edit-btn').forEach(btn => btn.addEventListener('click', function() { openEdit(this.dataset
+                    .id); }));
+            tbody.querySelectorAll('.del-btn').forEach(btn => btn.addEventListener('click', function() { deleteB(this.dataset
+                    .id); }));
         }
 
-        function addBooking(data) {
-            const priceMap = {
-                'Exterior Wash': 25,
-                'Interior Cleaning': 35,
-                'Full Detailing': 99,
-                'Ceramic Coating': 199,
-                'Engine Cleaning': 45,
-                'Premium Package': 299
-            };
-            const newBooking = {
-                id: generateId(),
-                name: data.name,
-                email: data.email,
-                phone: data.phone,
-                vehicle: data.vehicle,
-                service: data.service,
-                date: data.date,
-                time: data.time,
-                notes: data.notes || '',
-                status: 'Pending',
-                price: priceMap[data.service] || 0,
-                createdAt: new Date().toISOString()
-            };
-            bookings.push(newBooking);
-            saveBookings();
-            return newBooking;
-        }
-
-        function deleteBooking(id) {
-            if (!confirm('Are you sure you want to delete this booking?')) return;
+        function deleteB(id) {
+            if (!confirm('Delete this booking?')) return;
             bookings = bookings.filter(b => b.id !== id);
             saveBookings();
+            showToast('Booking deleted.', 'info');
         }
 
-        function openEditModal(id) {
-            const booking = bookings.find(b => b.id === id);
-            if (!booking) return;
-            editingId = id;
-            document.getElementById('editId').value = id;
-            document.getElementById('editName').value = booking.name;
-            document.getElementById('editEmail').value = booking.email;
-            document.getElementById('editPhone').value = booking.phone;
-            document.getElementById('editService').value = booking.service;
-            document.getElementById('editVehicle').value = booking.vehicle;
-            document.getElementById('editDate').value = booking.date;
-            document.getElementById('editTime').value = booking.time;
-            document.getElementById('editStatus').value = booking.status || 'Pending';
-            const modal = new bootstrap.Modal(document.getElementById('editModal'));
-            modal.show();
+        function openEdit(id) {
+            const b = bookings.find(x => x.id === id);
+            if (!b) return;
+            document.getElementById('editId').value = b.id;
+            document.getElementById('editName').value = b.name;
+            document.getElementById('editEmail').value = b.email || '';
+            document.getElementById('editPhone').value = b.phone || '';
+            document.getElementById('editService').value = b.service;
+            document.getElementById('editVehicle').value = b.vehicle;
+            document.getElementById('editDate').value = b.date;
+            document.getElementById('editTime').value = b.time;
+            document.getElementById('editStatus').value = b.status || 'Pending';
+            new bootstrap.Modal(document.getElementById('editModal')).show();
         }
 
         document.getElementById('editForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const id = document.getElementById('editId').value;
-            const booking = bookings.find(b => b.id === id);
-            if (!booking) return;
-            booking.name = document.getElementById('editName').value.trim();
-            booking.email = document.getElementById('editEmail').value.trim();
-            booking.phone = document.getElementById('editPhone').value.trim();
-            booking.service = document.getElementById('editService').value;
-            booking.vehicle = document.getElementById('editVehicle').value;
-            booking.date = document.getElementById('editDate').value;
-            booking.time = document.getElementById('editTime').value;
-            booking.status = document.getElementById('editStatus').value;
+            const b = bookings.find(x => x.id === id);
+            if (!b) return;
+            b.name = document.getElementById('editName').value.trim();
+            b.email = document.getElementById('editEmail').value.trim();
+            b.phone = document.getElementById('editPhone').value.trim();
+            b.service = document.getElementById('editService').value;
+            b.vehicle = document.getElementById('editVehicle').value;
+            b.date = document.getElementById('editDate').value;
+            b.time = document.getElementById('editTime').value;
+            b.status = document.getElementById('editStatus').value;
             saveBookings();
             bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
-            showToast('Booking updated successfully!', 'success');
+            showToast('Booking updated!', 'success');
         });
 
-        // ---- BOOKING FORM ----
         document.getElementById('bookingForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            // Validate
             const name = document.getElementById('custName').value.trim();
             const email = document.getElementById('custEmail').value.trim();
             const phone = document.getElementById('custPhone').value.trim();
@@ -2229,152 +2904,63 @@
             const time = document.getElementById('bookingTime').value;
             const vehicle = document.getElementById('vehicleType').value;
             const notes = document.getElementById('bookingNotes').value.trim();
-
-            if (!name || !email || !phone || !service || !date || !time) {
-                // Show validation feedback
-                const form = document.getElementById('bookingForm');
-                form.classList.add('was-validated');
-                return;
-            }
-
-            const data = { name, email, phone, vehicle, service, date, time, notes };
-            const newBooking = addBooking(data);
-
-            // Reset form
+            if (!name || !email || !phone || !service || !date || !time) { this.classList.add('was-validated'); return; }
+            const b = { id: genId(), name, email, phone, service, vehicle, date, time, notes, status: 'Pending',
+                price: priceMap[service] || 0, createdAt: new Date().toISOString() };
+            bookings.push(b);
+            saveBookings();
             this.reset();
             this.classList.remove('was-validated');
             document.getElementById('bookingSuccess').classList.remove('d-none');
-            setTimeout(() => {
-                document.getElementById('bookingSuccess').classList.add('d-none');
-            }, 4000);
-
-            // Show confirmation modal
-            document.getElementById('bookingModalBody').innerHTML = `
-                <p><strong>${name}</strong>, your booking for <strong>${service}</strong> on <strong>${date}</strong> at <strong>${time}</strong> has been confirmed!</p>
-                <p class="text-muted">We'll contact you shortly at ${phone} or ${email}.</p>
-            `;
-            const modal = new bootstrap.Modal(document.getElementById('bookingModal'));
-            modal.show();
-
-            renderBookings();
-            updateDashboard();
+            setTimeout(() => document.getElementById('bookingSuccess').classList.add('d-none'), 4000);
+            document.getElementById('bookingModalBody').innerHTML =
+                `<p><strong>${name}</strong>, your <strong>${service}</strong> is confirmed for <strong>${date}</strong> at <strong>${time}</strong>.</p><p style="color:var(--gray);">We'll reach you at ${phone}.</p>`;
+            new bootstrap.Modal(document.getElementById('bookingModal')).show();
         });
 
-        // ---- SEARCH ----
-        document.getElementById('bookingSearch').addEventListener('input', function() {
-            renderBookings();
-        });
-        document.getElementById('clearSearchBtn').addEventListener('click', function() {
+        document.getElementById('bookingSearch').addEventListener('input', renderBookings);
+        document.getElementById('clearSearchBtn').addEventListener('click', () => {
             document.getElementById('bookingSearch').value = '';
             renderBookings();
         });
 
-        // ---- CONTACT FORM ----
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const name = document.getElementById('contactName').value.trim();
-            const email = document.getElementById('contactEmail').value.trim();
-            const message = document.getElementById('contactMessage').value.trim();
-            if (!name || !email || !message) {
-                this.classList.add('was-validated');
-                return;
-            }
+            if (!document.getElementById('contactName').value.trim() || !document.getElementById('contactEmail').value
+                .trim() || !document.getElementById('contactMessage').value.trim()) { this.classList.add(
+                    'was-validated'); return; }
             this.reset();
             this.classList.remove('was-validated');
             document.getElementById('contactSuccess').classList.remove('d-none');
-            setTimeout(() => {
-                document.getElementById('contactSuccess').classList.add('d-none');
-            }, 4000);
-            showToast('Message sent successfully!', 'success');
+            setTimeout(() => document.getElementById('contactSuccess').classList.add('d-none'), 4000);
+            showToast('Message sent!', 'success');
         });
 
-        // ---- TOAST NOTIFICATION ----
-        function showToast(message, type = 'info') {
-            const toast = document.createElement('div');
-            toast.className =
-                `position-fixed bottom-0 end-0 p-3 m-3 rounded-4 shadow-lg text-white ${type === 'success' ? 'bg-success' : 'bg-primary'}`;
-            toast.style.zIndex = '9999';
-            toast.style.minWidth = '260px';
-            toast.innerHTML = `
-                <div class="d-flex align-items-center">
-                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'} me-2 fa-lg"></i>
-                    <span>${message}</span>
-                    <button type="button" class="btn-close btn-close-white ms-3" onclick="this.parentElement.parentElement.remove()"></button>
-                </div>
-            `;
-            document.body.appendChild(toast);
-            setTimeout(() => { toast.remove(); }, 4000);
+        function showToast(msg, type = 'info') {
+            const t = document.createElement('div');
+            t.style.cssText =
+                `position:fixed;bottom:24px;right:24px;z-index:9999;padding:14px 24px;border-radius:12px;color:#fff;font-size:.88rem;font-weight:600;background:${type==='success'?'#16a34a':'var(--red)'};box-shadow:0 12px 40px rgba(0,0,0,0.2);display:flex;align-items:center;gap:10px;backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.06);`;
+            t.innerHTML = `<i class="fas ${type==='success'?'fa-check-circle':'fa-info-circle'}"></i>${msg}`;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 3800);
         }
 
-        // ---- INIT RENDER ----
-        renderBookings();
-        updateDashboard();
+        document.getElementById('bookingDate').setAttribute('min', new Date().toISOString().split('T')[0]);
 
-        // ---- ACTIVE NAV LINK ON SCROLL ----
-        const sections = document.querySelectorAll('section[id]');
-        window.addEventListener('scroll', function() {
-            let current = '';
-            sections.forEach(section => {
-                const top = section.offsetTop - 120;
-                if (window.scrollY >= top) {
-                    current = section.getAttribute('id');
-                }
-            });
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + current) {
-                    link.classList.add('active');
-                }
-            });
-        });
-
-        // ---- SMOOTH SCROLL FOR NAV LINKS ----
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                const target = this.getAttribute('href');
-                if (target && target.startsWith('#')) {
-                    e.preventDefault();
-                    const el = document.querySelector(target);
-                    if (el) {
-                        const offset = 80;
-                        const top = el.getBoundingClientRect().top + window.scrollY - offset;
-                        window.scrollTo({ top, behavior: 'smooth' });
-                    }
-                    // Close mobile menu
-                    const menu = document.getElementById('navbarNav');
-                    if (menu.classList.contains('show')) {
-                        menu.classList.remove('show');
-                    }
-                }
-            });
-        });
-
-        // ---- SET MIN DATE FOR BOOKING ----
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('bookingDate').setAttribute('min', today);
-
-        // ---- ADD SOME DEFAULT BOOKINGS FOR DEMO (if empty) ----
-        if (bookings.length === 0) {
-            const demos = [
-                { name: 'Ahmed Hassan', email: 'ahmed@example.com', phone: '+1 234 567 890', vehicle: 'SUV',
-                    service: 'Full Detailing', date: '2026-06-25', time: '10:00', notes: 'Please call before arrival',
+        // ─── DEMO DATA ───
+        if (!bookings.length) {
+            [
+                { name: 'Ahmed Hassan', email: 'ahmed@ex.com', phone: '+1 234 567 890', vehicle: 'SUV',
+                    service: 'Full Detailing', date: '2026-06-25', time: '10:00', notes: 'Call before arrival',
                     status: 'Pending', price: 99 },
-                { name: 'Sara Khan', email: 'sara@example.com', phone: '+1 234 567 891', vehicle: 'Sedan',
+                { name: 'Sara Khan', email: 'sara@ex.com', phone: '+1 234 567 891', vehicle: 'Sedan',
                     service: 'Ceramic Coating', date: '2026-06-26', time: '14:30', notes: '', status: 'Completed',
                     price: 199 },
-            ];
-            demos.forEach(d => {
-                bookings.push({
-                    id: generateId(),
-                    ...d,
-                    createdAt: new Date().toISOString()
-                });
-            });
+            ].forEach(d => bookings.push({ id: genId(), ...d, createdAt: new Date().toISOString() }));
             saveBookings();
         }
-
-        console.log('🚗 Sparkle Car Wash — Fully Loaded!');
-        console.log('📋 Total Bookings:', bookings.length);
+        renderBookings();
+        updateDash();
     </script>
 </body>
 </html>
