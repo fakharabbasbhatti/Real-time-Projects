@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zoom Car Wash - Location Finder</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+/* ALL STYLES SCOPED TO #zoom-widget TO PREVENT WORDPRESS CONFLICTS */
+
+#zoom-widget *,
+#zoom-widget *::before,
+#zoom-widget *::after {
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#zoom-widget {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif !important;
+  background: #f0f2f5 !important;
+  line-height: 1.4 !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+#zoom-widget .zw-inner {
+  display: flex !important;
+  flex-direction: row !important;
+  width: 100% !important;
+  max-width: 1400px !important;
+  margin: 30px auto !important;
+  height: 620px !important;
+  background: #fff !important;
+  overflow: hidden !important;
+  border: 1px solid #dde3ea !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10) !important;
+}
+
+/* LEFT PANEL */
+#zoom-widget .zl {
+  width: 35% !important;
+  background: #fff !important;
+  display: flex !important;
+  flex-direction: column !important;
+  border-right: 1px solid #dde3ea !important;
+  overflow: hidden !important;
+  min-width: 0 !important;
+}
+
+#zoom-widget .zl-head {
+  background: #1b2b6b !important;
+  padding: 18px 20px 16px !important;
+  flex-shrink: 0 !important;
+}
+
+#zoom-widget .zl-head-title {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  margin-bottom: 14px !important;
+  letter-spacing: 0.2px !important;
+  display: block !important;
+}
+
+#zoom-widget .search-bar {
+  display: flex !important;
+  align-items: center !important;
+  background: #ffffff !important;
+  padding: 0 !important;
+  height: 40px !important;
+  gap: 0 !important;
+  overflow: hidden !important;
+}
+
+#zoom-widget .search-bar input {
+  flex: 1 !important;
+  border: none !important;
+  outline: none !important;
+  font-size: 14px !important;
+  color: #333 !important;
+  background: transparent !important;
+  font-family: inherit !important;
+  padding: 0 12px !important;
+  height: 100% !important;
+  box-shadow: none !important;
+  -webkit-appearance: none !important;
+}
+
+#zoom-widget .search-bar input::placeholder {
+  color: #aaa !important;
+  font-size: 14px !important;
+}
+
+#zoom-widget .search-icon {
+  width: 40px !important;
+  height: 40px !important;
+  background: #f0a500 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  cursor: pointer !important;
+}
+
+#zoom-widget .search-icon svg {
+  display: block !important;
+}
+
+#zoom-widget .zl-sub {
+  background: #fff !important;
+  padding: 10px 20px !important;
+  font-size: 13px !important;
+  color: #444 !important;
+  border-bottom: 1px solid #e8ecf0 !important;
+  flex-shrink: 0 !important;
+}
+
+#zoom-widget .zl-sub span {
+  color: #1b2b6b !important;
+  font-weight: 700 !important;
+}
+
+#zoom-widget .zl-list {
+  flex: 1 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+#zoom-widget .zl-list::-webkit-scrollbar {
+  width: 4px !important;
+}
+
+#zoom-widget .zl-list::-webkit-scrollbar-thumb {
+  background: #1b2b6b !important;
+  border-radius: 4px !important;
+}
+
+#zoom-widget .loc-card {
+  padding: 14px 20px 12px !important;
+  border-bottom: 1px solid #edf0f4 !important;
+  background: #fff !important;
+}
+
+#zoom-widget .loc-card.hidden {
+  display: none !important;
+}
+
+#zoom-widget .card-inner {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+}
+
+#zoom-widget .card-logo {
+  flex-shrink: 0 !important;
+  width: 120px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#zoom-widget .card-logo-img {
+  width: 100% !important;
+  max-width: 110px !important;
+  height: auto !important;
+  display: block !important;
+}
+
+#zoom-widget .card-info {
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+
+#zoom-widget .card-title {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #1b2b6b !important;
+  margin-bottom: 5px !important;
+  display: block !important;
+}
+
+#zoom-widget .info-row {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 6px !important;
+  margin-bottom: 4px !important;
+}
+
+#zoom-widget .info-row svg {
+  flex-shrink: 0 !important;
+  margin-top: 1px !important;
+}
+
+#zoom-widget .info-text {
+  font-size: 12.5px !important;
+  color: #555 !important;
+  line-height: 1.5 !important;
+}
+
+#zoom-widget .info-text a {
+  color: #555 !important;
+  text-decoration: none !important;
+}
+
+#zoom-widget .card-btns {
+  display: flex !important;
+  gap: 8px !important;
+  margin-top: 10px !important;
+  flex-wrap: wrap !important;
+}
+
+#zoom-widget .btn-dir,
+#zoom-widget .btn-view {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  padding: 8px 12px !important;
+  border-radius: 9999px !important;
+  border: 1px solid #efd079 !important;
+  background: #efd079 !important;
+  color: #142054 !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  letter-spacing: 0.4px !important;
+  font-family: inherit !important;
+  transition: all 0.3s ease !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  line-height: 1 !important;
+}
+
+#zoom-widget .btn-dir:hover,
+#zoom-widget .btn-view:hover {
+  background: #142054 !important;
+  border-color: #142054 !important;
+  color: #ffffff !important;
+}
+
+/* RIGHT MAP PANEL */
+#zoom-widget .zr {
+  width: 65% !important;
+  position: relative !important;
+  background: #e5e3df !important;
+  flex-shrink: 0 !important;
+}
+
+#zoom-widget #zmap {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+}
+
+/* Leaflet overrides - these must be global or use !important */
+#zoom-widget .leaflet-popup-content-wrapper {
+  border-radius: 8px !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  font-size: 13px !important;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1200px) {
+  #zoom-widget .zl { width: 40% !important; }
+  #zoom-widget .zr { width: 60% !important; }
+  #zoom-widget .card-logo { width: 100px !important; }
+}
+
+@media (max-width: 991px) {
+  #zoom-widget .zw-inner {
+    flex-direction: column !important;
+    height: auto !important;
+    margin: 15px !important;
+  }
+  #zoom-widget .zl {
+    width: 100% !important;
+    border-right: none !important;
+    border-bottom: 1px solid #dde3ea !important;
+  }
+  #zoom-widget .zl-list { max-height: 500px !important; }
+  #zoom-widget .zr { width: 100% !important; height: 500px !important; position: relative !important; }
+  #zoom-widget #zmap { position: absolute !important; }
+  #zoom-widget .card-logo { width: 100px !important; }
+}
+
+@media (max-width: 767px) {
+  #zoom-widget .zw-inner { margin: 10px !important; }
+  #zoom-widget .zl-head { padding: 15px !important; }
+  #zoom-widget .zl-head-title { font-size: 16px !important; }
+  #zoom-widget .zl-sub { padding: 10px 15px !important; }
+  #zoom-widget .loc-card { padding: 15px !important; }
+  #zoom-widget .card-inner {
+    flex-direction: column-reverse !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+  #zoom-widget .card-logo { width: 120px !important; margin-bottom: 12px !important; }
+  #zoom-widget .card-info { width: 100% !important; }
+  #zoom-widget .card-title { font-size: 16px !important; }
+  #zoom-widget .info-row { justify-content: center !important; }
+  #zoom-widget .card-btns { flex-direction: column !important; width: 100% !important; }
+  #zoom-widget .btn-dir,
+  #zoom-widget .btn-view { width: 100% !important; padding: 12px !important; }
+  #zoom-widget .zr { height: 350px !important; }
+}
+
+@media (max-width: 480px) {
+  #zoom-widget .zw-inner { margin: 5px !important; }
+  #zoom-widget .card-logo { width: 100px !important; }
+  #zoom-widget .card-title { font-size: 15px !important; }
+  #zoom-widget .info-text { font-size: 12px !important; }
+  #zoom-widget .zr { height: 300px !important; }
+  #zoom-widget .search-bar { height: 42px !important; }
+  #zoom-widget .search-icon { width: 42px !important; height: 42px !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- WRAPPER: Unique ID prevents WordPress CSS conflicts -->
+<div id="zoom-widget">
+  <div class="zw-inner">
+
+    <!-- LEFT PANEL -->
+    <div class="zl">
+
+      <div class="zl-head">
+        <div class="zl-head-title">Search Location</div>
+        <div class="search-bar">
+          <input type="text" id="zw-sInput" placeholder="Enter a location" oninput="zwFilterLocs()">
+          <div class="search-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="zl-sub">Number of Sites: <span id="zw-siteCount">4</span></div>
+
+      <div class="zl-list" id="zw-locList">
+
+        <!-- CARD 1 -->
+        <div class="loc-card" data-lat="29.7382" data-lng="-95.5731">
+          <div class="card-inner">
+            <div class="card-info">
+              <div class="card-title">Houston - Westheimer</div>
+              <div class="info-row">
+                <svg width="13" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C4.24 0 2 2.24 2 5c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5c-.83 0-1.5-.67-1.5-1.5S6.17 3.5 7 3.5 8.5 4.17 8.5 5 7.83 6.5 7 6.5z" fill="#efd079"/></svg>
+                <div class="info-text">12455 Westheimer Rd,<br>Houston, TX 77077</div>
+              </div>
+              <div class="info-row">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#efd079"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                <div class="info-text">832-304-0280</div>
+              </div>
+              <div class="card-btns">
+                <button class="btn-dir" onclick="window.open('https://www.google.com/maps?daddr=29.7382,-95.5731','_blank')">DIRECTION</button>
+                <button class="btn-view" onclick="zwFlyTo(29.7382,-95.5731)">VIEW LOCATION</button>
+              </div>
+            </div>
+            <div class="card-logo">
+              <img src="./pic.png" alt="Zoom Car Wash Logo" class="card-logo-img">
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="loc-card" data-lat="29.6928" data-lng="-95.1192">
+          <div class="card-inner">
+            <div class="card-info">
+              <div class="card-title">Deer Park - La Porte</div>
+              <div class="info-row">
+                <svg width="13" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C4.24 0 2 2.24 2 5c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5c-.83 0-1.5-.67-1.5-1.5S6.17 3.5 7 3.5 8.5 4.17 8.5 5 7.83 6.5 7 6.5z" fill="#efd079"/></svg>
+                <div class="info-text">9222 Spencer Hwy,<br>La Porte, TX 77571</div>
+              </div>
+              <div class="info-row">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#efd079"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                <div class="info-text">832-304-0280</div>
+              </div>
+              <div class="card-btns">
+                <button class="btn-dir" onclick="window.open('https://www.google.com/maps?daddr=29.6928,-95.1192','_blank')">DIRECTION</button>
+                <button class="btn-view" onclick="zwFlyTo(29.6928,-95.1192)">VIEW LOCATION</button>
+              </div>
+            </div>
+            <div class="card-logo">
+              <img src="./pic.png" alt="Zoom Car Wash Logo" class="card-logo-img">
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="loc-card" data-lat="29.7858" data-lng="-95.8248">
+          <div class="card-inner">
+            <div class="card-info">
+              <div class="card-title">Katy - Grand Parkway</div>
+              <div class="info-row">
+                <svg width="13" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C4.24 0 2 2.24 2 5c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5c-.83 0-1.5-.67-1.5-1.5S6.17 3.5 7 3.5 8.5 4.17 8.5 5 7.83 6.5 7 6.5z" fill="#efd079"/></svg>
+                <div class="info-text">23501 Cinco Ranch Blvd,<br>Katy, TX 77494</div>
+              </div>
+              <div class="info-row">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#efd079"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                <div class="info-text">832-304-0280</div>
+              </div>
+              <div class="card-btns">
+                <button class="btn-dir" onclick="window.open('https://www.google.com/maps?daddr=29.7858,-95.8248','_blank')">DIRECTION</button>
+                <button class="btn-view" onclick="zwFlyTo(29.7858,-95.8248)">VIEW LOCATION</button>
+              </div>
+            </div>
+            <div class="card-logo">
+              <img src="./pic.png" alt="Zoom Car Wash Logo" class="card-logo-img">
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 4 -->
+        <div class="loc-card" data-lat="29.9719" data-lng="-95.6975">
+          <div class="card-inner">
+            <div class="card-info">
+              <div class="card-title">Cypress - Northwest Fwy</div>
+              <div class="info-row">
+                <svg width="13" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C4.24 0 2 2.24 2 5c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5c-.83 0-1.5-.67-1.5-1.5S6.17 3.5 7 3.5 8.5 4.17 8.5 5 7.83 6.5 7 6.5z" fill="#efd079"/></svg>
+                <div class="info-text">12300 Barker Cypress Rd,<br>Cypress, TX 77429</div>
+              </div>
+              <div class="info-row">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#efd079"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                <div class="info-text">832-304-0280</div>
+              </div>
+              <div class="card-btns">
+                <button class="btn-dir" onclick="window.open('https://www.google.com/maps?daddr=29.9719,-95.6975','_blank')">DIRECTION</button>
+                <button class="btn-view" onclick="zwFlyTo(29.9719,-95.6975)">VIEW LOCATION</button>
+              </div>
+            </div>
+            <div class="card-logo">
+              <img src="./pic.png" alt="Zoom Car Wash Logo" class="card-logo-img">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT MAP PANEL -->
+    <div class="zr">
+      <div id="zmap"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function() {
+  // Wrapped in IIFE so variables don't conflict with WordPress globals
+
+  var zwMap = null;
+  var zwMarkers = [];
+
+  var zwLocs = [
+    { lat: 29.7382, lng: -95.5731, title: 'Houston - Westheimer',    addr: '12455 Westheimer Rd, Houston, TX 77077' },
+    { lat: 29.6928, lng: -95.1192, title: 'Deer Park - La Porte',    addr: '9222 Spencer Hwy, La Porte, TX 77571' },
+    { lat: 29.7858, lng: -95.8248, title: 'Katy - Grand Parkway',    addr: '23501 Cinco Ranch Blvd, Katy, TX 77494' },
+    { lat: 29.9719, lng: -95.6975, title: 'Cypress - Northwest Fwy', addr: '12300 Barker Cypress Rd, Cypress, TX 77429' }
+  ];
+
+  function zwInit() {
+    if (zwMap) return; // Prevent double init
+
+    zwMap = L.map('zmap', { zoomControl: true }).setView([29.78, -95.45], 10);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(zwMap);
+
+    var navyIcon = L.divIcon({
+      html: '<div style="background:#1b2b6b;width:18px;height:18px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.35);"></div>',
+      className: '',
+      iconSize: [24, 24],
+      iconAnchor: [9, 22]
+    });
+
+    zwLocs.forEach(function(d) {
+      var m = L.marker([d.lat, d.lng], { icon: navyIcon }).addTo(zwMap);
+      m.bindPopup(
+        '<b style="color:#1b2b6b;font-size:13px;font-family:sans-serif;">' + d.title + '</b><br>' +
+        '<span style="font-size:12px;color:#555;font-family:sans-serif;">' + d.addr + '</span>'
+      );
+      zwMarkers.push({ marker: m, lat: d.lat, lng: d.lng });
+    });
+
+    setTimeout(function() {
+      if (zwMarkers.length) zwMarkers[0].marker.openPopup();
+      zwMap.invalidateSize();
+    }, 600);
+  }
+
+  // Expose functions globally with unique names to avoid WP conflicts
+  window.zwFlyTo = function(lat, lng) {
+    if (!zwMap) return;
+    zwMap.flyTo([lat, lng], 15, { duration: 1.2 });
+    zwMarkers.forEach(function(obj) {
+      if (obj.lat === lat && obj.lng === lng) obj.marker.openPopup();
+      else obj.marker.closePopup();
+    });
+  };
+
+  window.zwFilterLocs = function() {
+    var q = document.getElementById('zw-sInput').value.toLowerCase().trim();
+    var cards = document.querySelectorAll('#zoom-widget .loc-card');
+    var vis = 0, first = null;
+    cards.forEach(function(c) {
+      if (c.innerText.toLowerCase().includes(q)) {
+        c.classList.remove('hidden');
+        vis++;
+        if (!first) first = c;
+      } else {
+        c.classList.add('hidden');
+      }
+    });
+    document.getElementById('zw-siteCount').textContent = q ? vis : 4;
+    if (!zwMap) return;
+    if (first) {
+      var lat = parseFloat(first.dataset.lat), lng = parseFloat(first.dataset.lng);
+      zwMap.flyTo([lat, lng], 14, { duration: 1 });
+      zwMarkers.forEach(function(obj) {
+        if (obj.lat === lat && obj.lng === lng) obj.marker.openPopup();
+        else obj.marker.closePopup();
+      });
+    } else if (!q) {
+      zwMap.flyTo([29.78, -95.45], 10, { duration: 1 });
+    }
+  };
+
+  // Init when DOM ready - works with WordPress page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', zwInit);
+  } else {
+    // DOM already ready (common in WordPress widgets)
+    setTimeout(zwInit, 100);
+  }
+
+})();
+</script>
+</body>
+</html>
