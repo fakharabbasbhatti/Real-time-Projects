@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wash Club Plans</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@700;800;900&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.wcp-wrap {
+    background: #c8ddf0;
+    padding: 50px 20px 60px;
+    text-align: center;
+    font-family: 'Barlow', 'Arial Black', Arial, sans-serif;
+    min-width: 320px;
+}
+
+.wcp-main-title {
+    font-family: 'Anton', Impact, sans-serif;
+    font-size: clamp(1.6rem, 3vw, 2.6rem);
+    color: #091440;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 40px;
+}
+
+/* GRID */
+.wcp-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: end;
+}
+
+@media (max-width: 900px) {
+    .wcp-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 540px) {
+    .wcp-grid { grid-template-columns: 1fr; }
+}
+
+/* CARD */
+.wcp-card {
+    background: #b8cee8;
+    border-radius: 20px;
+    border: 3.5px solid #091440;
+    position: relative;
+    overflow: visible;
+}
+
+.wcp-card.wcp-featured {
+    margin-top: 0;
+}
+
+/* BEST VALUE BADGE */
+.wcp-best-badge {
+    position: absolute;
+    top: -32px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #f5c842;
+    color: #091440;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    padding: 6px 20px 5px;
+    border-radius: 10px 10px 0 0;
+    border: 3.5px solid #091440;
+    border-bottom: none;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* HEADER */
+.wcp-header {
+    background: #091440;
+    border-radius: 16px 16px 0 0;
+    padding: 14px 14px 12px;
+}
+
+.wcp-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* padding-bottom: 11px; */
+    margin-bottom: 3px;
+    gap: 6px;
+}
+
+.wcp-plan-title {
+    font-family: 'Anton', Impact, sans-serif;
+    font-size: clamp(1rem, 1.8vw, 1.35rem);
+    color: #ffffff;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+    flex: 1;
+}
+
+.wcp-monthly-block {
+    text-align: center;
+    line-height: 2;
+    flex-shrink: 0;
+    background: #213189;
+    height:auto;
+    width:80px;
+    padding:6px;
+    border-radius:10px;
+}
+
+.wcp-monthly-price {
+    font-family: 'Anton', Impact, sans-serif;
+    font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+    color: #f5c842;
+    line-height: 1;
+}
+
+.wcp-monthly-label {
+    display: block;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 800;
+    font-size: 8px;
+    color: #ffffff;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 3px;
+}
+
+/* BOTTOM ROW */
+.wcp-header-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+}
+
+.wcp-single-block {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #203087;
+    width: 100%;
+    border-radius: 12px;
+    height:40px;
+    width:100;
+    padding:12px;
+}
+
+.wcp-single-price {
+    font-family: 'Anton', Impact, sans-serif;
+    font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+    color: #ffffff;
+    line-height: 1;
+}
+
+.wcp-single-label {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 800;
+    font-size: 8px;
+    color: #ffffff;
+    line-height: 1.4;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.wcp-unlimited {
+    margin-top:-2px;
+    background: #f5c842;
+    color: #091440;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 900;
+    font-size: 9px;
+    padding:12px;
+    border-radius-bottom: 12px;
+    /* border: 2.5px solid #091440; */
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.35;
+    
+}
+
+/* CARD BODY */
+.wcp-body {
+    background: #b8cee8;
+    border-radius: 0 0 16px 16px;
+    padding: 18px 14px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.wcp-includes {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 900;
+    font-size: 12px;
+    color: #091440;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+}
+
+.wcp-features {
+    list-style: none;
+    width: 100%;
+    text-align: center;
+    min-height: 145px;
+    margin-bottom: 16px;
+}
+
+.wcp-features li {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 700;
+    font-size: 13.5px;
+    color: #2a4070;
+    margin-bottom: 8px;
+    line-height: 1.25;
+}
+
+/* ICON CIRCLES */
+.wcp-icons-row {
+    display: flex;
+    gap: 7px;
+    margin-bottom: 18px;
+    justify-content: center;
+    flex-wrap: wrap;
+    min-height: 60px;
+    align-items: center;
+}
+
+.wcp-icon-circle {
+    width: 54px;
+    height: 54px;
+    background: #1a337a;
+    border-radius: 50%;
+    border: 2.5px solid #091440;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+}
+
+.wcp-icon-circle svg {
+    width: 20px;
+    height: 20px;
+    fill: #b8cee8;
+}
+
+.wcp-icon-lbl {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 800;
+    font-size: 7px;
+    color: #ffffff;
+    text-align: center;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+/* JOIN BUTTON */
+.wcp-join-btn {
+    display: block;
+    width: 100%;
+    background: #091440;
+    color: #ffffff;
+    text-align: center;
+    padding: 13px 0;
+    border-radius: 12px;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 900;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+.wcp-join-btn:hover { background: #0d1f5c; color: #fff; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="wcp-wrap">
+    <h2 class="wcp-main-title">Our Wash Club Plans</h2>
+
+    <div class="wcp-grid">
+
+        <!-- CARD 1: ULTIMATE -->
+        <div class="wcp-card wcp-featured">
+            <div class="wcp-best-badge">&#9733; Best Value</div>
+            <div class="wcp-header">
+                <div class="wcp-header-top">
+                    <div class="wcp-plan-title">ULTIMATE CLUB</div>
+                    <div class="wcp-monthly-block">
+                        <div class="wcp-monthly-price">$35</div>
+                        <span class="wcp-monthly-label">MONTHLY</span>
+                    </div>
+                </div>
+                <div class="wcp-header-bottom">
+                    <div class="wcp-single-block">
+                        <span class="wcp-single-price">$20</span>
+                        <span class="wcp-single-label">SINGLE<br>WASH</span>
+                    </div>
+                    <div class="wcp-unlimited">UNLIMITED<br>WASHES</div>
+                </div>
+            </div>
+            <div class="wcp-body">
+                <div class="wcp-includes">INCLUDES DELUXE</div>
+                <ul class="wcp-features">
+                    <li>Hot Wax</li>
+                    <li>Bug Prep</li>
+                    <li>Vision Clear</li>
+                    <li>Wheel Cleaner</li>
+                    <li>Turbo Dry</li>
+                </ul>
+                <div class="wcp-icons-row">
+                    <div class="wcp-icon-circle">
+                        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                        <div class="wcp-icon-lbl">Ceramic<br>Shield</div>
+                    </div>
+                    <div class="wcp-icon-circle">
+                        <svg viewBox="0 0 24 24"><path d="M12 2c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 18c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.22 18.67 10.55 19 12 19c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
+                        <div class="wcp-icon-lbl">Rain<br>Repellent</div>
+                    </div>
+                    <div class="wcp-icon-circle">
+                        <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+                        <div class="wcp-icon-lbl">Triple<br>Foam</div>
+                    </div>
+                    <div class="wcp-icon-circle">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
+                        <div class="wcp-icon-lbl">Tire<br>Shine</div>
+                    </div>
+                </div>
+                <a href="#" class="wcp-join-btn">JOIN NOW</a>
+            </div>
+        </div>
+
+        <!-- CARD 2: DELUXE -->
+        <div class="wcp-card">
+            <div class="wcp-header">
+                <div class="wcp-header-top">
+                    <div class="wcp-plan-title">DELUXE CLUB</div>
+                    <div class="wcp-monthly-block">
+                        <div class="wcp-monthly-price">$30</div>
+                        <span class="wcp-monthly-label">MONTHLY</span>
+                    </div>
+                </div>
+                <div class="wcp-header-bottom">
+                    <div class="wcp-single-block">
+                        <span class="wcp-single-price">$15</span>
+                        <span class="wcp-single-label">SINGLE<br>WASH</span>
+                    </div>
+                    <div class="wcp-unlimited">UNLIMITED<br>WASHES</div>
+                </div>
+            </div>
+            <div class="wcp-body">
+                <div class="wcp-includes">INCLUDES SUPER</div>
+                <ul class="wcp-features">
+                    <li>Teflon Protection</li>
+                    <li>Wheel Cleaner</li>
+                    <li>Tire Shine</li>
+                    <li>Triple Foam</li>
+                    <li>Spot Free Rinse</li>
+                </ul>
+                <div class="wcp-icons-row">
+                    <div class="wcp-icon-circle">
+                        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                        <div class="wcp-icon-lbl">Ceramic<br>Shield</div>
+                    </div>
+                    <div class="wcp-icon-circle">
+                        <svg viewBox="0 0 24 24"><path d="M12 2c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 18c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.22 18.67 10.55 19 12 19c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
+                        <div class="wcp-icon-lbl">Rain<br>Repellent</div>
+                    </div>
+                    <div class="wcp-icon-circle">
+                        <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+                        <div class="wcp-icon-lbl">Triple<br>Foam</div>
+                    </div>
+                    <div class="wcp-icon-circle">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
+                        <div class="wcp-icon-lbl">Tire<br>Shine</div>
+                    </div>
+                </div>
+                <a href="#" class="wcp-join-btn">JOIN NOW</a>
+            </div>
+        </div>
+
+        <!-- CARD 3: SUPER -->
+        <div class="wcp-card">
+            <div class="wcp-header">
+                <div class="wcp-header-top">
+                    <div class="wcp-plan-title">SUPER CLUB</div>
+                    <div class="wcp-monthly-block">
+                        <div class="wcp-monthly-price">$25</div>
+                        <span class="wcp-monthly-label">MONTHLY</span>
+                    </div>
+                </div>
+                <div class="wcp-header-bottom">
+                    <div class="wcp-single-block">
+                        <span class="wcp-single-price">$12</span>
+                        <span class="wcp-single-label">SINGLE<br>WASH</span>
+                    </div>
+                    <div class="wcp-unlimited">UNLIMITED<br>WASHES</div>
+                </div>
+            </div>
+            <div class="wcp-body">
+                <div class="wcp-includes">INCLUDES BASIC</div>
+                <ul class="wcp-features">
+                    <li>Presoak</li>
+                    <li>Triple Foam</li>
+                    <li>Tire Foam</li>
+                    <li>Spot Free Rinse</li>
+                    <li>Turbo Dry</li>
+                </ul>
+                <div class="wcp-icons-row">
+                    <div class="wcp-icon-circle">
+                        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                        <div class="wcp-icon-lbl">Ceramic<br>Shield</div>
+                    </div>
+                    <div class="wcp-icon-circle">
+                        <svg viewBox="0 0 24 24"><path d="M12 2c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 18c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.22 18.67 10.55 19 12 19c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
+                        <div class="wcp-icon-lbl">Rain<br>Repellent</div>
+                    </div>
+                    <div class="wcp-icon-circle">
+                        <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+                        <div class="wcp-icon-lbl">Triple<br>Foam</div>
+                    </div>
+                </div>
+                <a href="#" class="wcp-join-btn">JOIN NOW</a>
+            </div>
+        </div>
+
+        <!-- CARD 4: BASIC -->
+        <div class="wcp-card">
+            <div class="wcp-header">
+                <div class="wcp-header-top">
+                    <div class="wcp-plan-title">BASIC CLUB</div>
+                    <div class="wcp-monthly-block">
+                        <div class="wcp-monthly-price">$20</div>
+                        <span class="wcp-monthly-label">MONTHLY</span>
+                    </div>
+                </div>
+                <div class="wcp-header-bottom">
+                    <div class="wcp-single-block">
+                        <span class="wcp-single-price">$10</span>
+                        <span class="wcp-single-label">SINGLE<br>WASH</span>
+                    </div>
+                    <div class="wcp-unlimited">UNLIMITED<br>WASHES</div>
+                </div>
+            </div>
+            <div class="wcp-body">
+                <div class="wcp-includes">INCLUDES</div>
+                <ul class="wcp-features">
+                    <li>Soft Cloth Wash</li>
+                    <li>Spot Free Rinse</li>
+                    <li>Turbo Dry</li>
+                </ul>
+                <div class="wcp-icons-row">
+                    <div class="wcp-icon-circle">
+                        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                        <div class="wcp-icon-lbl">Ceramic<br>Shield</div>
+                    </div>
+                    <div class="wcp-icon-circle">
+                        <svg viewBox="0 0 24 24"><path d="M12 2c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 18c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.22 18.67 10.55 19 12 19c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
+                        <div class="wcp-icon-lbl">Rain<br>Repellent</div>
+                    </div>
+                </div>
+                <a href="#" class="wcp-join-btn">JOIN NOW</a>
+            </div>
+        </div>
+
+    </div><!-- /grid -->
+</div>
+
+</body>
+</html>
