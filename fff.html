@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zoom Car Wash - Location Finder</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+/* ALL STYLES SCOPED TO #zoom-widget TO PREVENT WORDPRESS CONFLICTS */
+
+#zoom-widget *,
+#zoom-widget *::before,
+#zoom-widget *::after {
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#zoom-widget {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif !important;
+  background: #f0f2f5 !important;
+  line-height: 1.4 !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+#zoom-widget .zw-inner {
+  display: flex !important;
+  flex-direction: row !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  height: 620px !important;
+  background: #fff !important;
+  overflow: hidden !important;
+  border: 1px solid #dde3ea !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10) !important;
+}
+
+/* LEFT PANEL */
+#zoom-widget .zl {
+  width: 35% !important;
+  background: #fff !important;
+  display: flex !important;
+  flex-direction: column !important;
+  border-right: 1px solid #dde3ea !important;
+  overflow: hidden !important;
+  min-width: 0 !important;
+}
+
+#zoom-widget .zl-head {
+  background: #1b2b6b !important;
+  padding: 18px 20px 16px !important;
+  flex-shrink: 0 !important;
+}
+
+#zoom-widget .zl-head-title {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  margin-bottom: 14px !important;
+  letter-spacing: 0.2px !important;
+  display: block !important;
+}
+
+#zoom-widget .search-bar {
+  display: flex !important;
+  align-items: center !important;
+  background: #ffffff !important;
+  padding: 0 !important;
+  height: 40px !important;
+  gap: 0 !important;
+  overflow: hidden !important;
+}
+
+#zoom-widget .search-bar input {
+  flex: 1 !important;
+  border: none !important;
+  outline: none !important;
+  font-size: 14px !important;
+  color: #333 !important;
+  background: transparent !important;
+  font-family: inherit !important;
+  padding: 0 12px !important;
+  height: 100% !important;
+  box-shadow: none !important;
+  -webkit-appearance: none !important;
+}
+
+#zoom-widget .search-bar input::placeholder {
+  color: #aaa !important;
+  font-size: 14px !important;
+}
+
+#zoom-widget .search-icon {
+  width: 40px !important;
+  height: 40px !important;
+  background: #f0a500 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  cursor: pointer !important;
+}
+
+#zoom-widget .search-icon svg {
+  display: block !important;
+}
+
+#zoom-widget .zl-sub {
+  background: #D5E9FF !important;
+  padding: 10px 20px !important;
+  font-size: 13px !important;
+  color: #444 !important;
+  border-bottom: 1px solid #e8ecf0 !important;
+  flex-shrink: 0 !important;
+}
+
+#zoom-widget .zl-sub span {
+  color: #1b2b6b !important;
+  font-weight: 700 !important;
+}
+
+#zoom-widget .zl-list {
+  flex: 1 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+#zoom-widget .zl-list::-webkit-scrollbar {
+  width: 4px !important;
+}
+
+#zoom-widget .zl-list::-webkit-scrollbar-thumb {
+  background: #1b2b6b !important;
+  border-radius: 4px !important;
+}
+
+#zoom-widget .loc-card {
+  padding: 14px 20px 12px !important;
+  border-bottom: 1px solid #edf0f4 !important;
+  background: #EFF8FF !important;
+}
+
+#zoom-widget .loc-card.hidden {
+  display: none !important;
+}
+
+#zoom-widget .card-inner {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+}
+
+#zoom-widget .card-logo {
+  flex-shrink: 0 !important;
+  width: 140px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#zoom-widget .card-logo-img {
+  width: 120% !important;
+  max-width: 150px !important;
+  height: auto !important;
+  display: block !important;
+}
+
+#zoom-widget .card-info {
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+
+#zoom-widget .card-title {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #1b2b6b !important;
+  margin-bottom: 5px !important;
+  display: block !important;
+}
+
+#zoom-widget .info-row {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 6px !important;
+  margin-bottom: 4px !important;
+}
+
+#zoom-widget .info-row svg {
+  flex-shrink: 0 !important;
+  margin-top: 1px !important;
+}
+
+#zoom-widget .info-text {
+  font-size: 12.5px !important;
+  color: #555 !important;
+  line-height: 1.5 !important;
+}
+
+#zoom-widget .info-text a {
+  color: #555 !important;
+  text-decoration: none !important;
+}
+
+#zoom-widget .card-btns {
+  display: flex !important;
+  gap: 8px !important;
+  margin-top: 10px !important;
+  flex-wrap: wrap !important;
+}
+
+#zoom-widget .btn-dir,
+#zoom-widget .btn-view {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  padding: 8px 12px !important;
+  border-radius: 9999px !important;
+  border: 1px solid #efd079 !important;
+  background: #efd079 !important;
+  color: #142054 !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  letter-spacing: 0.4px !important;
+  font-family: inherit !important;
+  transition: all 0.3s ease !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  line-height: 1 !important;
+}
+
+#zoom-widget .btn-dir:hover,
+#zoom-widget .btn-view:hover {
+  background: #142054 !important;
+  border-color: #142054 !important;
+  color: #ffffff !important;
+}
+
+/* RIGHT MAP PANEL */
+#zoom-widget .zr {
+  width: 65% !important;
+  position: relative !important;
+  background: #e5e3df !important;
+  flex-shrink: 0 !important;
+}
+
+#zoom-widget #zmap {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+}
+
+/* Leaflet overrides - these must be global or use !important */
+#zoom-widget .leaflet-popup-content-wrapper {
+  border-radius: 8px !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  font-size: 13px !important;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1200px) {
+  #zoom-widget .zl { width: 40% !important; }
+  #zoom-widget .zr { width: 60% !important; }
+  #zoom-widget .card-logo { width: 105px !important; margin-bottom: 0 !important; }
+}
+
+@media (max-width: 991px) {
+  #zoom-widget .zw-inner {
+    flex-direction: column !important;
+    height: auto !important;
+    margin: 0 !important;
+  }
+  #zoom-widget .zl {
+    width: 100% !important;
+    border-right: none !important;
+    border-bottom: 1px solid #dde3ea !important;
+  }
+  #zoom-widget .zl-list { max-height: 500px !important; }
+  #zoom-widget .zr { width: 100% !important; height: 500px !important; position: relative !important; }
+  #zoom-widget #zmap { position: absolute !important; }
+  #zoom-widget .card-logo { width: 105px !important; margin-bottom: 0 !important; }
+}
+
+@media (max-width: 767px) {
+  #zoom-widget .zw-inner { margin: 0 !important; }
+  #zoom-widget .zl-head { padding: 15px !important; }
+  #zoom-widget .zl-head-title { font-size: 16px !important; }
+  #zoom-widget .zl-sub { padding: 10px 15px !important; }
+  #zoom-widget .loc-card { padding: 15px !important; }
+  /* Mobile par card desktop jaisa: info left, logo right */
+  #zoom-widget .card-inner {
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    gap: 10px !important;
+  }
+  #zoom-widget .card-info {
+    width: auto !important;
+    flex: 1 !important;
+  }
+  #zoom-widget .card-logo {
+    width: 125px !important;
+    margin-bottom: 0 !important;
+    flex-shrink: 0 !important;
+  }
+  #zoom-widget .card-logo-img {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  #zoom-widget .card-title { font-size: 16px !important; }
+  #zoom-widget .info-row { justify-content: flex-start !important; }
+  /* FIXED: Both buttons on same line with equal width and small gap */
+  #zoom-widget .card-btns {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+  #zoom-widget .btn-dir,
+  #zoom-widget .btn-view {
+    flex: 1 !important;
+    width: auto !important;
+    padding: 10px 6px !important;
+    font-size: 11px !important;
+  }
+  #zoom-widget .zr { height: 350px !important; }
+}
+
+@media (max-width: 480px) {
+  #zoom-widget .zw-inner { margin: 0 !important; }
+  #zoom-widget .card-logo { width: 105px !important; margin-bottom: 0 !important; }
+  #zoom-widget .card-title { font-size: 15px !important; }
+  #zoom-widget .info-text { font-size: 12px !important; }
+  #zoom-widget .zr { height: 300px !important; }
+  #zoom-widget .search-bar { height: 42px !important; }
+  #zoom-widget .search-icon { width: 42px !important; height: 42px !important; }
+  /* FIXED: Keep buttons on same line on smaller phones too */
+  #zoom-widget .card-btns {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 6px !important;
+  }
+  #zoom-widget .btn-dir,
+  #zoom-widget .btn-view {
+    flex: 1 !important;
+    width: auto !important;
+    padding: 9px 4px !important;
+    font-size: 10.5px !important;
+    letter-spacing: 0.2px !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- WRAPPER: Unique ID prevents WordPress CSS conflicts -->
+<div id="zoom-widget">
+  <div class="zw-inner">
+
+    <!-- LEFT PANEL -->
+    <div class="zl">
+
+      <div class="zl-head">
+        <div class="zl-head-title">Search Location</div>
+        <div class="search-bar">
+          <input type="text" id="zw-sInput" placeholder="Enter a location" onkeydown="if(event.key==='Enter') zwFilterLocs()">
+          <div class="search-icon" onclick="zwFilterLocs()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="zl-sub">Number of Sites: <span id="zw-siteCount">4</span></div>
+
+      <div class="zl-list" id="zw-locList">
+
+        <!-- CARD 1 -->
+        <div class="loc-card" data-lat="29.7382" data-lng="-95.5731">
+          <div class="card-inner">
+            <div class="card-info">
+              <div class="card-title">Houston - Westheimer</div>
+              <div class="info-row">
+                <svg width="13" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C4.24 0 2 2.24 2 5c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5c-.83 0-1.5-.67-1.5-1.5S6.17 3.5 7 3.5 8.5 4.17 8.5 5 7.83 6.5 7 6.5z" fill="#efd079"/></svg>
+                <div class="info-text">12455 Westheimer Rd,<br>Houston, TX 77077</div>
+              </div>
+              <div class="info-row">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#efd079"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                <div class="info-text">832-304-0280</div>
+              </div>
+              <div class="card-btns">
+                <button class="btn-dir" onclick="window.open('https://www.google.com/maps?daddr=29.7382,-95.5731','_blank')">DIRECTION</button>
+                <button class="btn-view" onclick="zwFlyTo(29.7382,-95.5731)">VIEW LOCATION</button>
+              </div>
+            </div>
+            <div class="card-logo">
+              <img src="https://zoomcarwashes.com/wp-content/uploads/pic.png" alt="Zoom Car Wash Logo" class="card-logo-img">
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="loc-card" data-lat="29.6928" data-lng="-95.1192">
+          <div class="card-inner">
+            <div class="card-info">
+              <div class="card-title">Deer Park - La Porte</div>
+              <div class="info-row">
+                <svg width="13" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C4.24 0 2 2.24 2 5c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5c-.83 0-1.5-.67-1.5-1.5S6.17 3.5 7 3.5 8.5 4.17 8.5 5 7.83 6.5 7 6.5z" fill="#efd079"/></svg>
+                <div class="info-text">9222 Spencer Hwy,<br>La Porte, TX 77571</div>
+              </div>
+              <div class="info-row">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#efd079"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                <div class="info-text">832-304-0280</div>
+              </div>
+              <div class="card-btns">
+                <button class="btn-dir" onclick="window.open('https://www.google.com/maps?daddr=29.6928,-95.1192','_blank')">DIRECTION</button>
+                <button class="btn-view" onclick="zwFlyTo(29.6928,-95.1192)">VIEW LOCATION</button>
+              </div>
+            </div>
+            <div class="card-logo">
+              <img src="https://zoomcarwashes.com/wp-content/uploads/pic.png" alt="Zoom Car Wash Logo" class="card-logo-img">
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="loc-card" data-lat="29.7858" data-lng="-95.8248">
+          <div class="card-inner">
+            <div class="card-info">
+              <div class="card-title">Webster</div>
+              <div class="info-row">
+                <svg width="13" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C4.24 0 2 2.24 2 5c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5c-.83 0-1.5-.67-1.5-1.5S6.17 3.5 7 3.5 8.5 4.17 8.5 5 7.83 6.5 7 6.5z" fill="#efd079"/></svg>
+                <div class="info-text">475 W Bay Area Blvd.,<br>Webster, TX 77598</div>
+              </div>
+              <div class="info-row">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#efd079"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                <div class="info-text">832-304-0280</div>
+              </div>
+              <div class="card-btns">
+                <button class="btn-dir" onclick="window.open('https://www.google.com/maps?daddr=29.7858,-95.8248','_blank')">DIRECTION</button>
+                <button class="btn-view" onclick="zwFlyTo(29.7858,-95.8248)">VIEW LOCATION</button>
+              </div>
+            </div>
+            <div class="card-logo">
+              <img src="https://zoomcarwashes.com/wp-content/uploads/pic.png" alt="Zoom Car Wash Logo" class="card-logo-img">
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 4 -->
+        <div class="loc-card" data-lat="29.9719" data-lng="-95.6975">
+          <div class="card-inner">
+            <div class="card-info">
+              <div class="card-title">Houston - Almeda Genoa</div>
+              <div class="info-row">
+                <svg width="13" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C4.24 0 2 2.24 2 5c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5c-.83 0-1.5-.67-1.5-1.5S6.17 3.5 7 3.5 8.5 4.17 8.5 5 7.83 6.5 7 6.5z" fill="#efd079"/></svg>
+                <div class="info-text">9967 Almeda Genoa Rd,<br>Houston, TX 77075</div>
+              </div>
+              <div class="info-row">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#efd079"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                <div class="info-text">832-304-0280</div>
+              </div>
+              <div class="card-btns">
+                <button class="btn-dir" onclick="window.open('https://www.google.com/maps?daddr=29.9719,-95.6975','_blank')">DIRECTION</button>
+                <button class="btn-view" onclick="zwFlyTo(29.9719,-95.6975)">VIEW LOCATION</button>
+              </div>
+            </div>
+            <div class="card-logo">
+              <img src="https://zoomcarwashes.com/wp-content/uploads/pic.png" alt="Zoom Car Wash Logo" class="card-logo-img">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT MAP PANEL -->
+    <div class="zr">
+      <div id="zmap"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function() {
+  // Wrapped in IIFE so variables don't conflict with WordPress globals
+
+  var zwMap = null;
+  var zwMarkers = [];
+
+  var zwLocs = [
+    { lat: 29.7382, lng: -95.5731, title: 'Houston - Westheimer',    addr: '12455 Westheimer Rd, Houston, TX 77077' },
+    { lat: 29.6928, lng: -95.1192, title: 'Deer Park - La Porte',    addr: '9222 Spencer Hwy, La Porte, TX 77571' },
+    { lat: 29.7858, lng: -95.8248, title: 'Katy - Grand Parkway',    addr: '23501 Cinco Ranch Blvd, Katy, TX 77494' },
+    { lat: 29.9719, lng: -95.6975, title: 'Cypress - Northwest Fwy', addr: '12300 Barker Cypress Rd, Cypress, TX 77429' }
+  ];
+
+  function zwInit() {
+    if (zwMap) return; // Prevent double init
+
+    zwMap = L.map('zmap', { zoomControl: true }).setView([29.78, -95.45], 10);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(zwMap);
+
+    var navyIcon = L.divIcon({
+      html: '<div style="background:#1b2b6b;width:18px;height:18px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.35);"></div>',
+      className: '',
+      iconSize: [24, 24],
+      iconAnchor: [9, 22]
+    });
+
+    zwLocs.forEach(function(d) {
+      var m = L.marker([d.lat, d.lng], { icon: navyIcon }).addTo(zwMap);
+      m.bindPopup(
+        '<b style="color:#1b2b6b;font-size:13px;font-family:sans-serif;">' + d.title + '</b><br>' +
+        '<span style="font-size:12px;color:#555;font-family:sans-serif;">' + d.addr + '</span>'
+      );
+      zwMarkers.push({ marker: m, lat: d.lat, lng: d.lng });
+    });
+
+    setTimeout(function() {
+      if (zwMarkers.length) zwMarkers[0].marker.openPopup();
+      zwMap.invalidateSize();
+    }, 600);
+  }
+
+  // Expose functions globally with unique names to avoid WP conflicts
+  window.zwFlyTo = function(lat, lng) {
+    if (!zwMap) return;
+    zwMap.flyTo([lat, lng], 15, { duration: 1.2 });
+    zwMarkers.forEach(function(obj) {
+      if (obj.lat === lat && obj.lng === lng) obj.marker.openPopup();
+      else obj.marker.closePopup();
+    });
+  };
+
+  window.zwFilterLocs = function() {
+    var q = document.getElementById('zw-sInput').value.toLowerCase().trim();
+    var cards = document.querySelectorAll('#zoom-widget .loc-card');
+    var vis = 0, first = null;
+    cards.forEach(function(c) {
+      if (!q || c.innerText.toLowerCase().includes(q)) {
+        c.classList.remove('hidden');
+        vis++;
+        if (!first) first = c;
+      } else {
+        c.classList.add('hidden');
+      }
+    });
+    document.getElementById('zw-siteCount').textContent = vis;
+    if (!zwMap) return;
+    if (first && q) {
+      var lat = parseFloat(first.dataset.lat), lng = parseFloat(first.dataset.lng);
+      zwMap.flyTo([lat, lng], 14, { duration: 1 });
+      zwMarkers.forEach(function(obj) {
+        if (obj.lat === lat && obj.lng === lng) obj.marker.openPopup();
+        else obj.marker.closePopup();
+      });
+    } else if (!q) {
+      zwMap.flyTo([29.78, -95.45], 10, { duration: 1 });
+      zwMarkers.forEach(function(obj) { obj.marker.closePopup(); });
+    }
+  };
+
+  // Init when DOM ready - works with WordPress page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', zwInit);
+  } else {
+    // DOM already ready (common in WordPress widgets)
+    setTimeout(zwInit, 100);
+  }
+
+})();
+</script>
+</body>
+</html>
+
+
+
+
+
+add_shortcode('wash_club_plans', 'wc_plans_shortcode');
+function wc_plans_shortcode() {
+
+    $default_plans = array(
+        1 => array(
+            'title'        => 'ULTIMATE CLUB',
+            'monthly'      => '35',
+            'single'       => '20',
+            'includes_txt' => 'INCLUDES DELUXE',
+            'features'     => "Hot Wax\nBug Prep\nVision Clear\nWheel Cleaner\nTurbo Dry"
+        ),
+        2 => array(
+            'title'        => 'DELUXE CLUB',
+            'monthly'      => '30',
+            'single'       => '15',
+            'includes_txt' => 'INCLUDES SUPER',
+            'features'     => "Teflon Protection\nWheel Cleaner\nTire Shine\nTriple Foam\nSpot Free Rinse"
+        ),
+        3 => array(
+            'title'        => 'SUPER CLUB',
+            'monthly'      => '25',
+            'single'       => '12',
+            'includes_txt' => 'INCLUDES BASIC',
+            'features'     => "Presoak\nTriple Foam\nTire Foam\nSpot Free Rinse\nTurbo Dry"
+        ),
+        4 => array(
+            'title'        => 'BASIC CLUB',
+            'monthly'      => '20',
+            'single'       => '10',
+            'includes_txt' => 'INCLUDES',
+            'features'     => "Soft Cloth Wash\nSpot Free Rinse\nTurbo Dry"
+        ),
+    );
+
+    $plans = get_option('wc_club_plans_data', $default_plans);
+
+    ob_start();
+    ?>
+
+    <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Ubuntu:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+
+        .wcp-wrap {
+            text-align: center;
+            font-family: 'Boogaloo', cursive;
+        }
+        .wcp-wrap * {
+            box-sizing: border-box;
+            margin: 0; padding: 0;
+        }
+
+        .elementor-kit-5 h2 {
+            font-size: 56px;
+            font-family: 'Boogaloo', sans-serif;
+        }
+
+        /* ── Title ── */
+        .wcp-title {
+            color: #091d70;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+
+        /* ── Grid ── */
+        .wcp-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            max-width: 1230px;
+            margin: 0 auto;
+            align-items: start;
+            padding-top: 44px;
+        }
+
+        /* ── Card ── */
+        .wcp-card {
+            background: #c1daf3;
+            border: 2px solid #2b4394;
+            border-radius: 22px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 590px;
+            overflow: visible;
+            margin-top: 0;
+            z-index: 1;
+        }
+
+        .wcp-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url('https://zoomcarwashes.com/wp-content/uploads/Union.png') center center / cover no-repeat;
+            opacity: 0.05;
+            z-index: -1;
+            pointer-events: none;
+            border-radius: 22px;
+        }
+
+        /* ── Best Value Badge ── */
+        .wcp-best {
+            position: absolute;
+            top: -36px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #e7c95c;
+            padding: 6px 22px 5px;
+            border-radius: 25px 25px 0px 0px;
+            font-family: 'Ubuntu', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            color: #0b1b69;
+            white-space: nowrap;
+            letter-spacing: .5px;
+            z-index: 10;
+        }
+
+        /* ── Card Header ── */
+       
+	.wcp-top {
+    background-color: #081458;
+    background-image: url('https://zoomcarwashes.com/wp-content/uploads/star-3.png');
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 50px auto;
+
+    color: #fff;
+    border-radius: 25px;
+    display: flex;
+    justify-content: space-between;
+    margin: -2px -2px 0 -2px;
+    overflow: hidden;
+    position: relative;
+}
+        .wcp-top-left {
+            padding: 20px 14px;
+        }
+        .wcp-plan {
+    font-size: 25px;
+    font-family: 'Boogaloo', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+@media screen and (max-width: 768px) {
+    .wcp-plan {
+        text-align: left !important;
+        font-size: 30px !important;
+    }
+}
+        .wcp-single-wrap {
+            display: flex;
+            background-color: #253696;
+            padding: 15px 10px 15px 10px;
+            border-radius: 15px;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .wcp-dollar {
+            font-size: 35px;
+            font-family: 'Ubuntu', sans-serif;
+            font-weight: 700;
+            line-height: 1;
+        }
+        .wcp-single-lbl {
+            font-size: 19px;
+            font-family: 'Ubuntu', sans-serif;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        /* ── Price Box ── */
+        .wcp-price-box {
+            width: 100px;
+            background: linear-gradient(
+                to bottom,
+                #243594 0%,
+                #1B2976 50%,
+                #EFD079 50%,
+                #EFD079 100%
+            );
+            color: #0b1b69;
+            border-radius: 14px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin: 16px 12px 16px 0;
+            padding: 8px 4px;
+            flex-shrink: 0;
+        }
+        .wcp-price-box .price {
+            font-size: 25px;
+            color: #EFD079;
+            font-family: 'Ubuntu', sans-serif;
+            font-weight: 700;
+            line-height: 1;
+        }
+        .wcp-price-box .monthly {
+    font-size: 15px;
+    line-height: 1;
+    color: #fff;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+@media screen and (max-width: 768px) {
+    .wcp-price-box .monthly {
+        margin-bottom: 5px !important;
+    }
+}
+        .wcp-price-box .divline {
+            height: 1px;
+            margin: 6px 10px;
+        }
+       .wcp-price-box .unlimited {
+    font-size: 15px;
+    color: #081458;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+@media screen and (max-width: 768px) {
+    .wcp-price-box .unlimited {
+        font-size: 13px !important;
+    }
+}
+
+        /* ── Card Body ── */
+        .wcp-body {
+            padding: 20px 16px 16px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .wcp-body h3 {
+            text-align: center;
+            font-size: 20px;
+            color: #081458;
+            font-family: 'Ubuntu', sans-serif;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        /* ── Features List ── */
+        .wcp-features-list {
+            list-style: none;
+            text-align: center;
+            flex-grow: 1;
+            margin-bottom: -20px;
+        }
+        .wcp-features-list li {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #22386a;
+            font-family: 'Ubuntu', sans-serif;
+        }
+
+        /* ── Icon Circles ── */
+        .wcp-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: nowrap;
+            margin-bottom: 18px;
+            min-height: 70px;
+        }
+        .wcp-icons .i {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            width: 52px;
+        }
+        .wcp-icons .circle {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+
+    /* Background image */
+    background-image: url('https://zoomcarwashes.com/wp-content/uploads/card.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+        .wcp-icons .circle svg {
+            width: 27px;
+            height: 27px;
+            fill: #fff;
+        }
+ .wcp-icons .lbl {
+    margin-top: -15px;
+    font-size: 17px;
+    line-height: 1.1;
+    color: #fff;
+    font-family: 'Boogaloo', sans-serif;
+    text-align: center;
+
+    text-shadow:
+        -2px -2px 0 #202F86,
+         2px -2px 0 #202F86,
+        -2px  2px 0 #202F86,
+         2px  2px 0 #202F86,
+        -3px  0   0 #202F86,
+         3px  0   0 #202F86,
+         0   -3px 0 #202F86,
+         0    3px 0 #202F86;
+}
+
+/* ONLY MOBILE */
+@media screen and (max-width: 768px) {
+    .wcp-icons .lbl {
+        text-shadow:
+            -2px -2px 0 #202F86,
+             2px -2px 0 #202F86,
+            -2px  2px 0 #202F86,
+             2px  2px 0 #202F86,
+            -3px  0   0 #202F86,
+             3px  0   0 #202F86,
+             0   -3px 0 #202F86,
+             0    3px 0 #202F86 !important;
+
+        -webkit-text-fill-color: #fff;
+    }
+}
+
+        /* ── Join Button ── */
+        .wcp-join-btn {
+            display: block;
+            text-align: center;
+            background: #0a1f6e;
+            color: #fff;
+            text-decoration: none;
+            padding: 11px;
+            border-radius: 40px;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Ubuntu', sans-serif;
+            margin-top: auto;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+        }
+
+        .wcp-join-btn:hover {
+            background: #1a337a;
+            color: #fff;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 1024px) {
+            .wcp-grid {
+                grid-template-columns: repeat(2, 1fr);
+                padding-top: 44px;
+            }
+        }
+        @media (max-width: 600px) {
+            .wcp-wrap {
+                padding: 0 6px;
+            }
+            .wcp-grid {
+                grid-template-columns: 1fr;
+                padding-top: 44px;
+                gap: 14px;
+                max-width: 100%;
+            }
+            .wcp-title {
+                font-size: 36px !important;
+                margin-bottom: 15px;
+            }
+            .wcp-card {
+                min-height: unset;
+                width: 100%;
+            }
+            .wcp-plan {
+                font-size: 20px;
+            }
+            .wcp-dollar {
+                font-size: 28px;
+            }
+            .wcp-single-wrap {
+                width: 100%;
+            }
+            .wcp-features-list {
+                margin-bottom: 20px;
+            }
+            .wcp-icons {
+                gap: 14px;
+                margin-bottom: 18px;
+                min-height: unset;
+                flex-wrap: wrap;
+                margin-top: 0;
+            }
+            .wcp-icons .i {
+                width: 60px;
+            }
+            .wcp-icons .circle {
+                width: 50px;
+                height: 50px;
+            }
+            .wcp-icons .lbl {
+                font-size: 13px;
+                margin-top: 5px;
+                color: #22386a;
+            }
+            .wcp-join-btn {
+                font-size: 20px !important;
+            }
+        
+/* MOBILE: price box ke saath gap bilkul kam */
+.wcp-top {
+    justify-content: flex-start !important;
+    gap: 0 !important;
+}
+
+.wcp-top-left {
+    width: auto !important;
+    flex: 1 !important;
+    padding: 14px 14px 14px 14px !important;
+}
+
+.wcp-single-wrap {
+    width: 100% !important;
+    padding: 10px 8px !important;
+    margin-top: 6px !important;
+}
+
+.wcp-price-box {
+    width: 85px !important;
+    margin: 10px 2px 10px 0 !important;
+}
+        }
+
+    </style>
+
+    <!-- SVG Icon Definitions -->
+    <svg width="0" height="0" style="position:absolute">
+        <symbol id="ic-shield" viewBox="0 0 24 24">
+            <path d="M12 2 4 5v6c0 5 3.4 8.5 8 11 4.6-2.5 8-6 8-11V5l-8-3zm0 2.2 6 2.2v4.6c0 3.9-2.5 6.7-6 8.7-3.5-2-6-4.8-6-8.7V6.4l6-2.2zm-1.2 5.3-2.6 2.6 1.1 1.1 1.5-1.5 3.4 3.4 1.1-1.1-4.5-4.5z"/>
+        </symbol>
+        <symbol id="ic-rain" viewBox="0 0 24 24">
+            <path d="M12 2c-4.4 0-8 2.7-8.6 6.3l8.1-1.4-.9-2.4 1.5-.5.9 2.4 7.6-1.3C19.7 3.4 16.2 2 12 2zM4 10.2 12 13l8-2.8-.5 2-7 2.4-.2.6 3 8.1-1.6.6-2.9-7.9-2.8 7.9-1.6-.6 3-8.1-.2-.6L4.5 12l-.5-1.8z"/>
+        </symbol>
+        <symbol id="ic-foam" viewBox="0 0 24 24">
+            <path d="M7 14a4 4 0 1 1 .2-7.99A5 5 0 0 1 17 6.5a3.5 3.5 0 0 1 0 7H7zm0 2h10a1.2 1.2 0 0 1 0 2.4H7A1.2 1.2 0 0 1 7 16zm1 3.6h8a1.1 1.1 0 0 1 0 2.2H8a1.1 1.1 0 0 1 0-2.2z"/>
+        </symbol>
+        <symbol id="ic-tire" viewBox="0 0 24 24">
+            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 2a8 8 0 0 1 7.7 5.9l-4.8 1.6a3.4 3.4 0 0 0-1.8-1.3l.1-5.1A8 8 0 0 1 12 4zm-1.8.4.1 5.1a3.4 3.4 0 0 0-1.8 1.3L3.8 9.2A8 8 0 0 1 10.2 4.4zM12 9.4a2.6 2.6 0 1 1 0 5.2 2.6 2.6 0 0 1 0-5.2zm-8.4 1.7 4.8 1.6a3.4 3.4 0 0 0 .7 2.1l-3.1 4A8 8 0 0 1 3.6 11.1zm16.8 0a8 8 0 0 1-2.4 7.7l-3.1-4a3.4 3.4 0 0 0 .7-2.1l4.8-1.6zM9.4 15.9a3.4 3.4 0 0 0 5.2 0l3 3.9A8 8 0 0 1 6.4 19.8l3-3.9z"/>
+        </symbol>
+    </svg>
+
+    <div class="wcp-wrap">
+        <h2 class="wcp-title">OUR WASH CLUB PLANS</h2>
+
+        <div class="wcp-grid">
+
+            <?php for ( $i = 1; $i <= 4; $i++ ) :
+                $feats     = array_filter( explode("\n", str_replace("\r", "", $plans[$i]['features'])) );
+                $show_foam = ( $i <= 3 );
+                $show_tire = ( $i <= 2 );
+            ?>
+
+            <div class="wcp-card">
+
+                <?php if ( $i === 1 ) : ?>
+                    <div class="wcp-best">&#9733; BEST VALUE</div>
+                <?php endif; ?>
+
+                <!-- Header -->
+                <div class="wcp-top">
+                    <div class="wcp-top-left">
+                        <div class="wcp-plan"><?php echo esc_html( $plans[$i]['title'] ); ?></div>
+                        <div class="wcp-single-wrap">
+                            <span class="wcp-dollar">$<?php echo esc_html( $plans[$i]['single'] ); ?></span>
+                            <span class="wcp-single-lbl">SINGLE<br>WASH</span>
+                        </div>
+                    </div>
+                    <div class="wcp-price-box">
+                        <div class="price">$<?php echo esc_html( $plans[$i]['monthly'] ); ?></div>
+                        <div class="monthly">MONTHLY</div>
+                        <div class="divline"></div>
+                        <div class="unlimited">UNLIMITED<br>WASHES</div>
+                    </div>
+                </div>
+                <!-- /Header -->
+
+                <!-- Body -->
+                <div class="wcp-body">
+
+                    <h3><?php echo esc_html( $plans[$i]['includes_txt'] ); ?></h3>
+
+                    <ul class="wcp-features-list">
+                        <?php foreach ( $feats as $f ) : ?>
+                            <li><?php echo esc_html( trim($f) ); ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+
+                    <!-- Icons -->
+                    <div class="wcp-icons">
+                        <div class="i">
+                            <div class="circle"><svg><use href="#ic-shield"/></svg></div>
+                            <div class="lbl">Ceramic<br>Shield</div>
+                        </div>
+                        <div class="i">
+                            <div class="circle"><svg><use href="#ic-rain"/></svg></div>
+                            <div class="lbl">Rain<br>Repellent</div>
+                        </div>
+                        <?php if ( $show_foam ) : ?>
+                        <div class="i">
+                            <div class="circle"><svg><use href="#ic-foam"/></svg></div>
+                            <div class="lbl">Triple<br>Foam</div>
+                        </div>
+                        <?php endif; ?>
+                        <?php if ( $show_tire ) : ?>
+                        <div class="i">
+                            <div class="circle"><svg><use href="#ic-tire"/></svg></div>
+                            <div class="lbl">Tire<br>Shine</div>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                    <!-- /Icons -->
+
+                    <a href="#" class="wcp-join-btn">JOIN NOW</a>
+
+                </div>
+                <!-- /Body -->
+
+            </div><!-- /card -->
+
+            <?php endfor; ?>
+
+        </div><!-- /grid -->
+
+    </div>
+
+    <?php
+    return ob_get_clean();
+}
+
+add_shortcode('wash_club_plans', 'wc_plans_shortcode');
+function wc_plans_shortcode() {
+
+    $default_plans = array(
+        1 => array(
+            'title'        => 'ULTIMATE CLUB',
+            'monthly'      => '35',
+            'single'       => '20',
+            'includes_txt' => 'INCLUDES DELUXE',
+            'features'     => "Hot Wax\nBug Prep\nVision Clear\nWheel Cleaner\nTurbo Dry"
+        ),
+        2 => array(
+            'title'        => 'DELUXE CLUB',
+            'monthly'      => '30',
+            'single'       => '15',
+            'includes_txt' => 'INCLUDES SUPER',
+            'features'     => "Teflon Protection\nWheel Cleaner\nTire Shine\nTriple Foam\nSpot Free Rinse"
+        ),
+        3 => array(
+            'title'        => 'SUPER CLUB',
+            'monthly'      => '25',
+            'single'       => '12',
+            'includes_txt' => 'INCLUDES BASIC',
+            'features'     => "Presoak\nTriple Foam\nTire Foam\nSpot Free Rinse\nTurbo Dry"
+        ),
+        4 => array(
+            'title'        => 'BASIC CLUB',
+            'monthly'      => '20',
+            'single'       => '10',
+            'includes_txt' => 'INCLUDES',
+            'features'     => "Soft Cloth Wash\nSpot Free Rinse\nTurbo Dry"
+        ),
+    );
+
+    $plans = get_option('wc_club_plans_data', $default_plans);
+
+    ob_start();
+    ?>
+
+    <link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Ubuntu:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+
+        .wcp-wrap {
+            text-align: center;
+            font-family: 'Boogaloo', cursive;
+        }
+        .wcp-wrap * {
+            box-sizing: border-box;
+            margin: 0; padding: 0;
+        }
+
+        .elementor-kit-5 h2 {
+            font-size: 56px;
+            font-family: 'Boogaloo', sans-serif;
+        }
+
+        /* ── Title ── */
+        .wcp-title {
+            color: #091d70;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+
+        /* ── Grid ── */
+        .wcp-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            max-width: 1230px;
+            margin: 0 auto;
+            align-items: start;
+            padding-top: 44px;
+        }
+
+        /* ── Card ── */
+        .wcp-card {
+            background: #c1daf3;
+            border: 2px solid #2b4394;
+            border-radius: 22px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 590px;
+            overflow: visible;
+            margin-top: 0;
+            z-index: 1;
+        }
+
+        .wcp-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url('https://zoomcarwashes.com/wp-content/uploads/Union.png') center center / cover no-repeat;
+            opacity: 0.05;
+            z-index: -1;
+            pointer-events: none;
+            border-radius: 22px;
+        }
+
+        /* ── Best Value Badge ── */
+        .wcp-best {
+            position: absolute;
+            top: -36px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #e7c95c;
+            padding: 6px 22px 5px;
+            border-radius: 25px 25px 0px 0px;
+            font-family: 'Ubuntu', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            color: #0b1b69;
+            white-space: nowrap;
+            letter-spacing: .5px;
+            z-index: 10;
+        }
+
+        /* ── Card Header ── */
+       
+	.wcp-top {
+    background-color: #081458;
+    background-image: url('https://zoomcarwashes.com/wp-content/uploads/star-3.png');
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 50px auto;
+
+    color: #fff;
+    border-radius: 25px;
+    display: flex;
+    justify-content: space-between;
+    margin: -2px -2px 0 -2px;
+    overflow: hidden;
+    position: relative;
+}
+        .wcp-top-left {
+            padding: 20px 14px;
+        }
+        .wcp-plan {
+    font-size: 25px;
+    font-family: 'Boogaloo', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+@media screen and (max-width: 768px) {
+    .wcp-plan {
+        text-align: left !important;
+        font-size: 30px !important;
+    }
+}
+        .wcp-single-wrap {
+            display: flex;
+            background-color: #253696;
+            padding: 15px 10px 15px 10px;
+            border-radius: 15px;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .wcp-dollar {
+            font-size: 35px;
+            font-family: 'Ubuntu', sans-serif;
+            font-weight: 700;
+            line-height: 1;
+        }
+        .wcp-single-lbl {
+            font-size: 19px;
+            font-family: 'Ubuntu', sans-serif;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        /* ── Price Box ── */
+        .wcp-price-box {
+            width: 100px;
+            background: linear-gradient(
+                to bottom,
+                #243594 0%,
+                #1B2976 50%,
+                #EFD079 50%,
+                #EFD079 100%
+            );
+            color: #0b1b69;
+            border-radius: 14px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin: 16px 12px 16px 0;
+            padding: 8px 4px;
+            flex-shrink: 0;
+        }
+        .wcp-price-box .price {
+            font-size: 25px;
+            color: #EFD079;
+            font-family: 'Ubuntu', sans-serif;
+            font-weight: 700;
+            line-height: 1;
+        }
+        .wcp-price-box .monthly {
+    font-size: 15px;
+    line-height: 1;
+    color: #fff;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+@media screen and (max-width: 768px) {
+    .wcp-price-box .monthly {
+        margin-bottom: 5px !important;
+    }
+}
+        .wcp-price-box .divline {
+            height: 1px;
+            margin: 6px 10px;
+        }
+       .wcp-price-box .unlimited {
+    font-size: 15px;
+    color: #081458;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+@media screen and (max-width: 768px) {
+    .wcp-price-box .unlimited {
+        font-size: 13px !important;
+    }
+}
+
+        /* ── Card Body ── */
+        .wcp-body {
+            padding: 20px 16px 16px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .wcp-body h3 {
+            text-align: center;
+            font-size: 20px;
+            color: #081458;
+            font-family: 'Ubuntu', sans-serif;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        /* ── Features List ── */
+        .wcp-features-list {
+            list-style: none;
+            text-align: center;
+            flex-grow: 1;
+            margin-bottom: -20px;
+        }
+        .wcp-features-list li {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #22386a;
+            font-family: 'Ubuntu', sans-serif;
+        }
+
+        /* ── Icon Circles ── */
+        .wcp-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: nowrap;
+            margin-bottom: 18px;
+            min-height: 70px;
+        }
+        .wcp-icons .i {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            width: 52px;
+        }
+        .wcp-icons .circle {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+
+    /* Background image */
+    background-image: url('https://zoomcarwashes.com/wp-content/uploads/card.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+        .wcp-icons .circle svg {
+            width: 27px;
+            height: 27px;
+            fill: #fff;
+        }
+ .wcp-icons .lbl {
+    margin-top: -15px;
+    font-size: 17px;
+    line-height: 1.1;
+    color: #fff;
+    font-family: 'Boogaloo', sans-serif;
+    text-align: center;
+
+    text-shadow:
+        -2px -2px 0 #202F86,
+         2px -2px 0 #202F86,
+        -2px  2px 0 #202F86,
+         2px  2px 0 #202F86,
+        -3px  0   0 #202F86,
+         3px  0   0 #202F86,
+         0   -3px 0 #202F86,
+         0    3px 0 #202F86;
+}
+
+/* ONLY MOBILE */
+@media screen and (max-width: 768px) {
+    .wcp-icons .lbl {
+        text-shadow:
+            -2px -2px 0 #202F86,
+             2px -2px 0 #202F86,
+            -2px  2px 0 #202F86,
+             2px  2px 0 #202F86,
+            -3px  0   0 #202F86,
+             3px  0   0 #202F86,
+             0   -3px 0 #202F86,
+             0    3px 0 #202F86 !important;
+
+        -webkit-text-fill-color: #fff;
+    }
+}
+
+        /* ── Join Button ── */
+        .wcp-join-btn {
+            display: block;
+            text-align: center;
+            background: #0a1f6e;
+            color: #fff;
+            text-decoration: none;
+            padding: 11px;
+            border-radius: 40px;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Ubuntu', sans-serif;
+            margin-top: auto;
+            width: 100%;
+            border: none;
+            cursor: pointer;
+        }
+
+        .wcp-join-btn:hover {
+            background: #1a337a;
+            color: #fff;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 1024px) {
+            .wcp-grid {
+                grid-template-columns: repeat(2, 1fr);
+                padding-top: 44px;
+            }
+        }
+        @media (max-width: 600px) {
+            .wcp-wrap {
+                padding: 0 6px;
+            }
+            .wcp-grid {
+                grid-template-columns: 1fr;
+                padding-top: 44px;
+                gap: 14px;
+                max-width: 100%;
+            }
+            .wcp-title {
+                font-size: 36px !important;
+                margin-bottom: 15px;
+            }
+            .wcp-card {
+                min-height: unset;
+                width: 100%;
+            }
+            .wcp-plan {
+                font-size: 20px;
+            }
+            .wcp-dollar {
+                font-size: 28px;
+            }
+            .wcp-single-wrap {
+                width: 100%;
+            }
+            .wcp-features-list {
+                margin-bottom: 20px;
+            }
+            .wcp-icons {
+                gap: 14px;
+                margin-bottom: 18px;
+                min-height: unset;
+                flex-wrap: wrap;
+                margin-top: 0;
+            }
+            .wcp-icons .i {
+                width: 60px;
+            }
+            .wcp-icons .circle {
+                width: 50px;
+                height: 50px;
+            }
+            .wcp-icons .lbl {
+                font-size: 13px;
+                margin-top: 5px;
+                color: #22386a;
+            }
+            .wcp-join-btn {
+                font-size: 20px !important;
+            }
+        
+/* MOBILE: price box ke saath gap bilkul kam */
+.wcp-top {
+    justify-content: flex-start !important;
+    gap: 0 !important;
+}
+
+.wcp-top-left {
+    width: auto !important;
+    flex: 1 !important;
+    padding: 14px 14px 14px 14px !important;
+}
+
+.wcp-single-wrap {
+    width: 100% !important;
+    padding: 10px 8px !important;
+    margin-top: 6px !important;
+}
+
+.wcp-price-box {
+    width: 85px !important;
+    margin: 10px 2px 10px 0 !important;
+}
+        }
+
+    </style>
+
+    <!-- SVG Icon Definitions -->
+    <svg width="0" height="0" style="position:absolute">
+        <symbol id="ic-shield" viewBox="0 0 24 24">
+            <path d="M12 2 4 5v6c0 5 3.4 8.5 8 11 4.6-2.5 8-6 8-11V5l-8-3zm0 2.2 6 2.2v4.6c0 3.9-2.5 6.7-6 8.7-3.5-2-6-4.8-6-8.7V6.4l6-2.2zm-1.2 5.3-2.6 2.6 1.1 1.1 1.5-1.5 3.4 3.4 1.1-1.1-4.5-4.5z"/>
+        </symbol>
+        <symbol id="ic-rain" viewBox="0 0 24 24">
+            <path d="M12 2c-4.4 0-8 2.7-8.6 6.3l8.1-1.4-.9-2.4 1.5-.5.9 2.4 7.6-1.3C19.7 3.4 16.2 2 12 2zM4 10.2 12 13l8-2.8-.5 2-7 2.4-.2.6 3 8.1-1.6.6-2.9-7.9-2.8 7.9-1.6-.6 3-8.1-.2-.6L4.5 12l-.5-1.8z"/>
+        </symbol>
+        <symbol id="ic-foam" viewBox="0 0 24 24">
+            <path d="M7 14a4 4 0 1 1 .2-7.99A5 5 0 0 1 17 6.5a3.5 3.5 0 0 1 0 7H7zm0 2h10a1.2 1.2 0 0 1 0 2.4H7A1.2 1.2 0 0 1 7 16zm1 3.6h8a1.1 1.1 0 0 1 0 2.2H8a1.1 1.1 0 0 1 0-2.2z"/>
+        </symbol>
+        <symbol id="ic-tire" viewBox="0 0 24 24">
+            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 2a8 8 0 0 1 7.7 5.9l-4.8 1.6a3.4 3.4 0 0 0-1.8-1.3l.1-5.1A8 8 0 0 1 12 4zm-1.8.4.1 5.1a3.4 3.4 0 0 0-1.8 1.3L3.8 9.2A8 8 0 0 1 10.2 4.4zM12 9.4a2.6 2.6 0 1 1 0 5.2 2.6 2.6 0 0 1 0-5.2zm-8.4 1.7 4.8 1.6a3.4 3.4 0 0 0 .7 2.1l-3.1 4A8 8 0 0 1 3.6 11.1zm16.8 0a8 8 0 0 1-2.4 7.7l-3.1-4a3.4 3.4 0 0 0 .7-2.1l4.8-1.6zM9.4 15.9a3.4 3.4 0 0 0 5.2 0l3 3.9A8 8 0 0 1 6.4 19.8l3-3.9z"/>
+        </symbol>
+    </svg>
+
+    <div class="wcp-wrap">
+        <h2 class="wcp-title">OUR WASH CLUB PLANS</h2>
+
+        <div class="wcp-grid">
+
+            <?php for ( $i = 1; $i <= 4; $i++ ) :
+                $feats     = array_filter( explode("\n", str_replace("\r", "", $plans[$i]['features'])) );
+                $show_foam = ( $i <= 3 );
+                $show_tire = ( $i <= 2 );
+            ?>
+
+            <div class="wcp-card">
+
+                <?php if ( $i === 1 ) : ?>
+                    <div class="wcp-best">&#9733; BEST VALUE</div>
+                <?php endif; ?>
+
+                <!-- Header -->
+                <div class="wcp-top">
+                    <div class="wcp-top-left">
+                        <div class="wcp-plan"><?php echo esc_html( $plans[$i]['title'] ); ?></div>
+                        <div class="wcp-single-wrap">
+                            <span class="wcp-dollar">$<?php echo esc_html( $plans[$i]['single'] ); ?></span>
+                            <span class="wcp-single-lbl">SINGLE<br>WASH</span>
+                        </div>
+                    </div>
+                    <div class="wcp-price-box">
+                        <div class="price">$<?php echo esc_html( $plans[$i]['monthly'] ); ?></div>
+                        <div class="monthly">MONTHLY</div>
+                        <div class="divline"></div>
+                        <div class="unlimited">UNLIMITED<br>WASHES</div>
+                    </div>
+                </div>
+                <!-- /Header -->
+
+                <!-- Body -->
+                <div class="wcp-body">
+
+                    <h3><?php echo esc_html( $plans[$i]['includes_txt'] ); ?></h3>
+
+                    <ul class="wcp-features-list">
+                        <?php foreach ( $feats as $f ) : ?>
+                            <li><?php echo esc_html( trim($f) ); ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+
+                    <!-- Icons -->
+                    <div class="wcp-icons">
+                        <div class="i">
+                            <div class="circle"><svg><use href="#ic-shield"/></svg></div>
+                            <div class="lbl">Ceramic<br>Shield</div>
+                        </div>
+                        <div class="i">
+                            <div class="circle"><svg><use href="#ic-rain"/></svg></div>
+                            <div class="lbl">Rain<br>Repellent</div>
+                        </div>
+                        <?php if ( $show_foam ) : ?>
+                        <div class="i">
+                            <div class="circle"><svg><use href="#ic-foam"/></svg></div>
+                            <div class="lbl">Triple<br>Foam</div>
+                        </div>
+                        <?php endif; ?>
+                        <?php if ( $show_tire ) : ?>
+                        <div class="i">
+                            <div class="circle"><svg><use href="#ic-tire"/></svg></div>
+                            <div class="lbl">Tire<br>Shine</div>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                    <!-- /Icons -->
+
+                    <a href="#" class="wcp-join-btn">JOIN NOW</a>
+
+                </div>
+                <!-- /Body -->
+
+            </div><!-- /card -->
+
+            <?php endfor; ?>
+
+        </div><!-- /grid -->
+
+    </div>
+
+    <?php
+    return ob_get_clean();
+}
