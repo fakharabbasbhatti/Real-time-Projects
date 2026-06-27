@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D Woman Model · Real Texture</title>
+  <title>3D Woman Model · Three.js + Bootstrap</title>
   <!-- Bootstrap 5 + Font Awesome 6 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -11,7 +11,7 @@
     body {
       margin: 0;
       overflow: hidden;
-      background: #1a1a2e;
+      background: #1e1e2f;
       font-family: 'Segoe UI', system-ui, sans-serif;
     }
     #canvas-container {
@@ -19,7 +19,7 @@
       height: 100vh;
       display: block;
     }
-    /* Glass UI */
+    /* Glass-morphism UI overlay */
     .ui-overlay {
       position: absolute;
       top: 20px;
@@ -29,13 +29,13 @@
     }
     .ui-overlay .card {
       pointer-events: auto;
-      background: rgba(10, 10, 25, 0.65);
+      background: rgba(20, 20, 35, 0.7);
       backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow: 0 20px 40px rgba(0,0,0,0.6);
       color: #f0f0f5;
       min-width: 190px;
-      border-radius: 24px;
+      border-radius: 20px;
     }
     .ui-overlay .card-header {
       background: transparent;
@@ -103,9 +103,10 @@
 </head>
 <body>
 
+  <!-- 3D container -->
   <div id="canvas-container"></div>
 
-  <!-- UI -->
+  <!-- UI Overlay Top-Left -->
   <div class="ui-overlay">
     <div class="card">
       <div class="card-header">
@@ -128,14 +129,15 @@
     </div>
   </div>
 
+  <!-- Bottom info -->
   <div class="info-panel">
-    <span><i class="fas fa-female"></i> Real texture</span>
+    <span><i class="fas fa-female"></i> Feminine form</span>
     <span><i class="fas fa-circle" style="color: #f472b6;"></i> 3D</span>
     <span><i class="fas fa-rotate fa-rotate"></i> rotating</span>
     <span><i class="fas fa-code"></i> Three.js</span>
   </div>
 
-  <!-- Three.js -->
+  <!-- Three.js import map -->
   <script type="importmap">
     {
       "imports": {
@@ -149,15 +151,17 @@
     import * as THREE from 'three';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-    // --- setup ---
+    // --- setup scene ---
     const container = document.getElementById('canvas-container');
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x1a1a2e);
+    scene.background = new THREE.Color(0x1e1e2f);
 
+    // camera
     const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(3.2, 2.5, 5.5);
+    camera.position.set(3.5, 2.8, 6);
     camera.lookAt(0, 0.8, 0);
 
+    // renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
@@ -170,7 +174,7 @@
     controls.enableDamping = true;
     controls.dampingFactor = 0.06;
     controls.autoRotate = true;
-    controls.autoRotateSpeed = 2.6;
+    controls.autoRotateSpeed = 2.8;
     controls.target.set(0, 0.8, 0);
     controls.update();
 
@@ -198,58 +202,22 @@
     const hemi = new THREE.HemisphereLight(0x9f7aea, 0x2a1e3c, 0.6);
     scene.add(hemi);
 
-    // --- Load the provided image as a texture ---
-    const textureLoader = new THREE.TextureLoader();
-    // The image you provided (base64) – we create a data URL from it
-    const imageBase64 = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxISEhIQEhISExUVFRUXGBgVEBYYFxUVFRYWGBcYGBMYHCggGB0lGxcTITEhJSkrMC4uGB8zODMsNygtLisBCgoKDg0OGhAQGy0iHyAtLystLTUvLTU1LSstLS0tLS0tLS0tLS0tLS0tLS0tLSs1Ky0tLS0tLS0tLS0tLS0rLf/AABEIARMAtwMBIgACEQEDEQH/xAAcAAEAAgIDAQAAAAAAAAAAAAAABgcDBQIECAH/xABCEAACAQIDBAgCBQkIAwAAAAAAAQIDEQQSMQUGE0FRImFxgZGhscEHFDLw0eEjJEJSgpKys/AlM1Nig6LC4RY1Y//EABkBAQADAQEAAAAAAAAAAAAAAAABAgMEBf/EACERAQEAAgICAgMBAAAAAAAAAAABAhEDITEyEkETIlEE/9oADAMBAAIRAxEAPwC8QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAx1K8YyUpRjfheSV/K/Ei2/+9EsJTVKjZ16ibTeqpwXGbXPnbyfdZ1jszYmKxzlXc3dt/lKnanK3cnwX3dxnlyTG6a4cVym19gqHo82tiMJjZYDESm4Teik75JvWLi/1Za8NPVa28WxymU6UywuN1QAFlQAAAAAAAAAAAAAAAAAAAAADBot99q/RsFXqr62XJHwlUeVP0u36EW6m0ybulSbaxlXH4mvOMZSzSUUo2bjh4NpWu0rysua4vuJlu1jXGMozpOEacU12HGWXucNdfFNp+HAiu6+JeHhUqWUm1Tb8Iyvq7ck3JsldHHdmq61O94Nu9lmjFXa6uWvDzOKX7ehMepGq2/VVXaOGqU1JN0W7uEou0bi71rxLZi7q5TUuopY9Qw8Uo9QnaOkY55X0itFfKnoXHRd4xfgvuNeDLeWTn/0TUjmADpcwAAAAAAAAAAAAAAAAAAAAAFcdN+Ny4WhRT7VSsnb/LCMrvyvKJPMTtCENOL8OT7m+RU2+ew8Tj67nUqQpaZUk5TcaeukHZK71u7cynJv4r8fs1m7GMi1Sqa5VTlCfkpdl+mpJ9p7QwtLCzqr8ooRlNReqi0nqk9E9Wr+Jy3e3fjhqapZU7+tlyv6L4mPebBRdF06iap1GoSetlB+PI451Hd8kG3FxUqkq+Nqu861SMIrlGMb6Lw1ft4nofDQtCMe6KXsjz5s/ZVWn+RwsXWVHM01ZZk7rM22k3dr2L/wNVOEVdOSjG+t7OyubcHeWWTn5+pjHYAB0uYAAAAAAAAAAAAAAAAAAAw4yrlpzkuKi2vO2hmOntd/kan2WBEs8st07uzum+PivFP39mu5SkpqM0tbJ+OqvY62Fs1Z24X462OlhZ5Krppy7Dtx/W7a05q0oouhJKTT1R9dNWs0mu5nVvfVHCN7u8m1ZK3Lz+72Oe8P8rec39jmqMI3cYxS8Ele1zFgKkoKCu8z7UnfnLXU7EddDUQxf51Wpyf1XBRXhKEX66/1xNscZjNMsrcrtN8NVzRT/q5lNfsmpo16mwIqAAAAAAAAAAAAAAAAAAABp97sP1mGr0u+El68vnYj1+W4cfo/uONt0o5KM3wk8r84vj7XIXgZ6rzLz2g9ky6aV51zcxWuwdiYSslUjBS1ad9bO+n9aGWhua5ytTg5vujC/wAmSCGES5Fb2nvaH9wRq/jbVF7nc7tPYtGnHSMpPum7+6WiJu8GhqlHl2VyIIFtdgUKa7FGMfK35l7sKqUPTXvSswAqgAAAAAAAAAAAAAAAAAAAAAB1sYr05+TsUNR3UxM3lVSMG3pmaXuuZfVVXTT71YrbbqzRlK/EhJ4w8f9m2xdmyi1mlmstbO6+Z2qGz40kmrX7629rHfVNJGObvgjzUnM2lQisRUXJ6mskrtt6vyNztN9pmhquzZ0ssrVHnZcO7hxurtoWj6ABVAAAAAAAAAAAAAAAAAAAAAAAADT7wYxKpSpJ2m05Pwhw+OvyOevVzSrPv2PZRjCVv9T/F/2OjiqHa+00l3RS+s3z91fuVMpF+tSJszrMshxVhJz4pPkv7L7zsU9sYjLFvErVavsU4NWv5eP5EGh6NwFdQpxUcIoRSsm6kEpa65r3ej1a+XneFJbWqSvbF8r/trg5W76dr2eZF/Wr/AOywk/4qT/OnZtPm7rr4nDLqrMZHa2rjarcn1mu7rOOV8FdKT5W4/iedp4upLDPDSnN0s3WKEn2c2l7R1Tf2r68T00qqOGPpSTTpVFZeKkmhccrvvTr+9lPxPTWOWWClx4d+1ktq9Le1l43No9dObVdN7rznOUo5py4ScpSzlqdmq9j7Z2uk1RdW0lxjOorTi+aetmme1L9z0PVqJauPka/FbNw89XShd8HGNmSggGxthVcPVlWhCnTjKMYpRknpGTle0YqPE7u14/sPly1JysDCV6GJ0eWjwbXzi/g7Ad0AFUAAAAAAAAAAAAAAAAAAAABrNo4mNOU5z0UKbcmu7NoxQozhOo5P7TUu+i4KOro1Fb6zazqU02uK+zbrcR+T48uZndupjMNiKcp3jF1FxiuTpqKcmtE1mS9ETL6DCCckoxTeunJ2XN25JJLuWpyhd+zx6CqQpoTTs1dNc0+aZzrUpweujfFpjJp2x1bso4eNm1Uu2n2p3lZ+nfl3GxStojHnRRQpQxcZQjKpWc7JL+97dkl92W2nLkkr2t3nVlspc6k/SSX3K5OFs/8AWTaX7fFNdR/3b+y0SzO/etK/emzDPBQlFxlKdmrO0rP0t3mLZ8KtFZFnkr6Kbg7eHEjLa9HJxTcVw9Hb2d/ieyS5M1KKi1/ktPqNeMfTso9U9L/C1j5Ww9OVs0ITa4ZlGy9GdsoL+7p/wDDF/ckRjPH6dnx5fr/AGqTa+ycBCUsNOjGMp2dOcVbto7Qw8pZKq7PVlwR5W0tmnKtKtWd5OSTdNStZcNUypN8sBGhKjBKT1q03Kck37t8i+F7c/LhcK3mCxUKsVOlOM4vjKLuv8Ay+Z3CMdG+FpQpcBfvOeZhJSUozlGbfa4vfll91j6EoduvWEADVAAAAAAAAAAAAAAAAAAAABC+lWH5nz+1S19JSsRFSS1f+U6ceOnPz26ek6mOVSVOnSbnGm1Nwi1eK5fta20s0uPHSxkYk7tVb9lGlFyWid7O7Tunp7mzw+AnCPaq1pvtJ9tRjaWXjFRjofcDSs3z1+ZH5z9Qz79s2Ip9ZGeaUuLpGMnnjwvyin8WfcO7QS77X91dGTFpt1GrfWp294lFwzySjfW0k7JejTuh00t9sEsKpcY5vFW+RhjGdNZobSxFOPZhGz4a52/E5w27TzWlWUtF2cstX6p2+BwqY6jL9KL++K/ub/CAjW2q3/wAfL1qW9Y5jv5Y1tSdapO856TqqKSduzHPdKz4TfPmeh4aLwPPMX9aP70f5kexL6He5/I158fSZoy+Pb7Vp29OUorXbPSNbHlc1r12N4Rj9jVsKcZP7U09OK7DSXJLS+hvwARhLJ3WuWcyskk7AA0UAAAAAAAAAAAAAAAAAAAAAceK9Sm8ft+pXWSpJKMKhSUYqyV3olwT5fEk/TLtV4fBKnF2liKinLxo01mcf3pOMH+69SjdnRzUozXGbg79zy25+kpItP8sfKzf2WJsrEzqQzVIqEu6MskuH2E3JJeXBc9DdRSXYjG2Tuwb2j7K15v8DlTjOTUb2u0nOV8qTdrvT06XhGIl/pL+T9d/gKaxlWzng1jpsVh8TjKd2rJaa207WmvvZLdxtqSxOEWaTlKlOUG3nksuunV2cXH7n4G5p05RysixT1rHdpsFh1u7h18MlOdWrKUm0o5ZKXFVHa6aWllJX46lV5l4ZfV32JlLAqO+bwyywdVUnllPPbhBdipFvS/Zvla773eDcWPNR3uFq4cc5zqbyrqWWPO6ulwUuPI3s9ydnzu44dK93e/ll29bGHF/Uqfcufh5mY7+Me/duPNZMZ1pZ/R3g4YfD06VGCjCMbaO+Z95vQdPBccjKMvzNSbTzoqUpxoxUZJpZdU07O97rnx9DtAw9cWnbWsZ2ZOWVOXOzxV5J3T7Wj7uejVjcnTRSKSlylJk4R3VQU7N1JP1S/BG9UYx4RS8kaU8dJ5PZy+rYqnbODveUmlxVr6d6NrCWZNrha6vzzJq3odPZVGVOjThJxk1Fdpc/Hu4nZktGksuO7LZJoABg0AAAAAAAAAAAAAAAAAAAACFdL2C6/ZtSUU3LD5a8bcbRyKfumeP5IWT0PjKampRkrqSadnuFPDQpL8nBBC4bdv+jS7S2zSlToZMVhXe1Wq6tKcIaeKhNNvs3fFcOLTOzT2PhY6ww2FjJ8H1dGL9Hwevhc9D5goNPrl6VrPU11BUaUpXjGd5ZvSpK7WnOfxNVtGMKjTVOnTk/1acU9eGmh22u7NHya7OGL4+1JYGHaVk0nZq683yROqPBcLWNBSiwm3ILhCU7crZW/eDqE1OGKlLraUoP9GVjYDTrZi0WV3bN2otIyzxl7jjz4sstJhSlLE06OqTqRUfW6IvHHTxyPG1PEPD1qVa/93NSd+bX1l7OzIrsrB2pUYvTVr2sawr06coybaTF4/bHlSxPKxKyu6kO3nv4ivbK5SlFO1T6Z7tTk3pG1oxT07+PBHdMmzeNeSZvQcKc5RlaOkdOL106f8nFlLnhZv1ePzeO1w7Gp2pJ9/yNwYDjgho9c+es3I4gGjMAAAAAAAAAAAAAAAAAAAABqtt7PjUhpGMpxvknK6cHwzXTs3bj3o3QIFLbZ2FVpVpQjRrVW3ZZFOUYduyvKSnKMVwcnuTujs6nTdO/ed7Y229r1YU4zVJp1IxhKMcO5Xk7XaeRwvc9G18pCufDlpXwaehIqFWNrL5CT2ZMdB8otPlY+LCSbjl4S4N6ad+h0gqS/VYqhbZdcxj+4mLdn5cyqU4xSfDnbRdnVVYc41ZrRzhPz1f4o3kab59xTavx1dK22DUNjQo0/Pj7H1YODvdN5lZtN3bfNs7hMy3fP1N0r2xNXylpJ9nTg22knpbgzuh8fqw9r8LIX2tmcAAWUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOHxupxaLR0diEr8f+Xx+TCL6dM59bJNcPBu3pu3xS9vYrtPxXgfsztYzDwTUFNJvjDVOUdbWfqbrEYStCV4VKmW/B3Sfhna9gNXtq1oJ8pJ+9mSfBLlz9TWzUedrwbj4Tb4Ptd/mcto5pQUG3pa/O9teJzw1GdOylyd0+KarRnPdXbxC3r8GNV7Rf/PgZxRFFV6zO1rBbprIrsxOHjP6yuvnqKrtJ8/fmNW0+c03SMd15dT+tH+ZHoNHn/AAmFcZq/p8vvPRN8p3Th+RnwY36ZRw1jmu7k1pa1uLAfWqON0ne17a9xK8m6+Oio9f9sSdvLgFzE+/7iFp1d5+vt50n4ooKt2qr/ANT0snofcNhs/zK3dL8Di6UqdXm4z4eD1/wC/NAmZqj2HxMrLgK+XV7RsXNk7OwuPw2HpRs4ZPvfE+Ogk3liuLt5NnChtxTdo0nJ8le/3Jmf2/8AQPJtoHm23V2vKcOthG0Wr+/uRslWnJtu1m17JoLft+7LGx+7sIYT63lccraaTTbfeyB1cfK3ZgnHlLteXFe1q1o6S5S0PuFxtpO76p66vuo67mPGQajFRfCV9eZqXiIqalOMnZcI28LfEjKTXTbj2zYqU6kG5U3nrPsm+XjKTa8UecsvWJx3Nl/Ci1YOvONKpDghdNTzuTzKTS4LwUuP7zOHX5rSgtLtJcL2WpI9m7CUVJ1LtWV42aaTUr3StxeS/qcdq4aFGpmhrK8lUVuKqrM5eXFuWzqOj5Llj2j22aTmpOLb1btLy1vvbJwfMLUy1Jpn5J6J2RXN7L+xxU+7UQ9v6Y0tkaV1h38Fe7T4PZxMzyRqql5XeQr9iSKe2RtCV3pwaC5Ol2lN2sv2Wu5anocASAAAAAAAAAAAAAAAAAAA42IijSt5P1Pj2jTX2fhE6sk/0JfC39ALz2CtVSrWTleL5wbjK/saLaWGkqjruSkrpO2W/gkkuJm2JtRyoRaTbXZjZafVjf39vI1uHx1WrUaf1pNXcdY+1jot+xT8mTePj15Z8ROVJSjO8pJN3zO0dU9DUn0M2g//2Q==";
-
-    // Create a texture from the base64 image
-    const texture = textureLoader.load(imageBase64);
-
-    // We'll apply this texture to a humanoid figure built from primitives.
-    // For a "real woman" look, we use the texture as a face/body map on a stylized mesh.
-    // Since the image is a portrait, we'll map it onto a sphere (head) and reuse parts.
-    // For a more realistic effect, we create a group with textured head and body.
-
+    // --- build a stylized female human form using primitives ---
     const womanGroup = new THREE.Group();
 
-    // --- Materials with texture ---
-    // Main material using the provided image
-    const faceMat = new THREE.MeshStandardMaterial({
-      map: texture,
-      roughness: 0.4,
+    // Materials
+    const skinMat = new THREE.MeshStandardMaterial({
+      color: 0xf5d0c6,
+      roughness: 0.5,
       metalness: 0.05,
-      emissive: new THREE.Color(0x1a1a2e),
+      emissive: new THREE.Color(0x2a1a1a),
       emissiveIntensity: 0.05
     });
-
-    // For body, we create a similar material but tinted slightly
-    const bodyMat = new THREE.MeshStandardMaterial({
-      color: 0xf5d0c6,
+    const skinMatDark = new THREE.MeshStandardMaterial({
+      color: 0xe8b8a8,
       roughness: 0.5,
       metalness: 0.05
     });
-
-    // --- Head (with texture) ---
-    const head = new THREE.Mesh(new THREE.SphereGeometry(0.55, 32, 32), faceMat);
-    head.position.set(0, 1.9, 0);
-    head.scale.set(1, 1.05, 0.9);
-    head.castShadow = true;
-    womanGroup.add(head);
-
-    // --- Neck (simple) ---
-    const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.35, 0.25, 8), bodyMat);
-    neck.position.set(0, 1.6, 0);
-    neck.castShadow = true;
-    womanGroup.add(neck);
-
-    // --- Torso ---
-    const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.9, 1.2, 12), bodyMat);
-    torso.position.set(0, 0.9, 0);
-    torso.castShadow = true;
-    womanGroup.add(torso);
-
-    // --- Dress (skirt) ---
     const dressMat = new THREE.MeshStandardMaterial({
       color: 0x9f7aea,
       roughness: 0.3,
@@ -257,21 +225,126 @@
       emissive: new THREE.Color(0x2a1a4a),
       emissiveIntensity: 0.1
     });
+    const dressMat2 = new THREE.MeshStandardMaterial({
+      color: 0x7c3aed,
+      roughness: 0.3,
+      metalness: 0.1,
+      emissive: new THREE.Color(0x1a0a2a),
+      emissiveIntensity: 0.1
+    });
+    const hairMat = new THREE.MeshStandardMaterial({
+      color: 0x3d1f1a,
+      roughness: 0.8,
+      metalness: 0.05
+    });
+    const eyeMat = new THREE.MeshStandardMaterial({
+      color: 0x1a1a2a,
+      roughness: 0.1,
+      metalness: 0.1
+    });
+    const eyeWhiteMat = new THREE.MeshStandardMaterial({
+      color: 0xf0f0ff,
+      roughness: 0.2
+    });
+    const lipMat = new THREE.MeshStandardMaterial({
+      color: 0xd45a6a,
+      roughness: 0.3
+    });
+    const accMat = new THREE.MeshStandardMaterial({
+      color: 0xfbbf24,
+      roughness: 0.2,
+      metalness: 0.6,
+      emissive: new THREE.Color(0x331a00),
+      emissiveIntensity: 0.1
+    });
+
+    // ---- Torso (upper body) ----
+    const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.9, 1.2, 12), skinMat);
+    torso.position.set(0, 0.9, 0);
+    torso.castShadow = true;
+    womanGroup.add(torso);
+
+    // ---- Neck ----
+    const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.35, 0.25, 8), skinMat);
+    neck.position.set(0, 1.6, 0);
+    neck.castShadow = true;
+    womanGroup.add(neck);
+
+    // ---- Head ----
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.5, 24, 24), skinMat);
+    head.position.set(0, 1.95, 0);
+    head.scale.set(1, 1.05, 0.9);
+    head.castShadow = true;
+    womanGroup.add(head);
+
+    // ---- Hair (simple bob) ----
+    const hair = new THREE.Mesh(new THREE.SphereGeometry(0.55, 16, 16), hairMat);
+    hair.position.set(0, 2.05, -0.08);
+    hair.scale.set(1.05, 0.55, 0.9);
+    hair.castShadow = true;
+    womanGroup.add(hair);
+
+    // hair back
+    const hairBack = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), hairMat);
+    hairBack.position.set(0, 1.9, -0.35);
+    hairBack.scale.set(1.05, 0.5, 0.4);
+    hairBack.castShadow = true;
+    womanGroup.add(hairBack);
+
+    // ---- Eyes ----
+    const eyeGeo = new THREE.SphereGeometry(0.1, 12, 12);
+    // left eye white
+    const eyeL = new THREE.Mesh(new THREE.SphereGeometry(0.12, 12, 12), eyeWhiteMat);
+    eyeL.position.set(-0.2, 2.05, 0.42);
+    womanGroup.add(eyeL);
+    // right eye white
+    const eyeR = new THREE.Mesh(new THREE.SphereGeometry(0.12, 12, 12), eyeWhiteMat);
+    eyeR.position.set(0.2, 2.05, 0.42);
+    womanGroup.add(eyeR);
+    // pupils
+    const pupilL = new THREE.Mesh(new THREE.SphereGeometry(0.06, 10, 10), eyeMat);
+    pupilL.position.set(-0.2, 2.03, 0.50);
+    womanGroup.add(pupilL);
+    const pupilR = new THREE.Mesh(new THREE.SphereGeometry(0.06, 10, 10), eyeMat);
+    pupilR.position.set(0.2, 2.03, 0.50);
+    womanGroup.add(pupilR);
+
+    // ---- Lips (simple) ----
+    const lip = new THREE.Mesh(new THREE.TorusGeometry(0.13, 0.04, 8, 12), lipMat);
+    lip.position.set(0, 1.88, 0.44);
+    lip.rotation.x = 0.1;
+    lip.rotation.z = 0.1;
+    lip.scale.set(1, 0.7, 0.4);
+    womanGroup.add(lip);
+    const lipLower = new THREE.Mesh(new THREE.TorusGeometry(0.1, 0.03, 8, 12), lipMat);
+    lipLower.position.set(0, 1.82, 0.44);
+    lipLower.rotation.x = -0.1;
+    lipLower.scale.set(0.9, 0.6, 0.4);
+    womanGroup.add(lipLower);
+
+    // ---- Dress (skirt + top) ----
+    // skirt (cone)
     const skirt = new THREE.Mesh(new THREE.ConeGeometry(1.2, 0.9, 12), dressMat);
     skirt.position.set(0, 0.4, 0);
     skirt.scale.set(1, 0.9, 1);
     skirt.castShadow = true;
     womanGroup.add(skirt);
+    // top part of dress (over torso)
+    const dressTop = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.75, 0.4, 12), dressMat2);
+    dressTop.position.set(0, 0.75, 0);
+    dressTop.castShadow = true;
+    womanGroup.add(dressTop);
 
-    // --- Arms ---
-    const armMat = new THREE.MeshStandardMaterial({ color: 0xe8b8a8, roughness: 0.5 });
+    // ---- Arms (simple cylinders) ----
+    const armMat = skinMatDark;
+    // left arm
     const armL = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.18, 0.8, 8), armMat);
     armL.position.set(-0.9, 1.2, 0);
     armL.rotation.z = 0.3;
     armL.rotation.x = -0.2;
     armL.castShadow = true;
     womanGroup.add(armL);
-
+    // right arm
     const armR = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.18, 0.8, 8), armMat);
     armR.position.set(0.9, 1.2, 0);
     armR.rotation.z = -0.3;
@@ -279,19 +352,20 @@
     armR.castShadow = true;
     womanGroup.add(armR);
 
-    // --- Legs ---
+    // ---- Legs ----
     const legMat = new THREE.MeshStandardMaterial({ color: 0xdbb0a0, roughness: 0.6 });
+    // left leg
     const legL = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.2, 0.7, 8), legMat);
     legL.position.set(-0.35, -0.1, 0);
     legL.castShadow = true;
     womanGroup.add(legL);
-
+    // right leg
     const legR = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.2, 0.7, 8), legMat);
     legR.position.set(0.35, -0.1, 0);
     legR.castShadow = true;
     womanGroup.add(legR);
 
-    // --- Shoes ---
+    // ---- Shoes (tiny) ----
     const shoeMat = new THREE.MeshStandardMaterial({ color: 0x2d1b3d, roughness: 0.4, metalness: 0.2 });
     const shoeL = new THREE.Mesh(new THREE.SphereGeometry(0.15, 8, 8), shoeMat);
     shoeL.position.set(-0.35, -0.45, 0.08);
@@ -302,31 +376,21 @@
     shoeR.scale.set(1, 0.4, 1.3);
     womanGroup.add(shoeR);
 
-    // --- Hair (simple bob to frame face) ---
-    const hairMat = new THREE.MeshStandardMaterial({ color: 0x3d1f1a, roughness: 0.8 });
-    const hair = new THREE.Mesh(new THREE.SphereGeometry(0.58, 16, 16), hairMat);
-    hair.position.set(0, 2.05, -0.08);
-    hair.scale.set(1.05, 0.5, 0.9);
-    hair.castShadow = true;
-    womanGroup.add(hair);
-
-    const hairBack = new THREE.Mesh(new THREE.SphereGeometry(0.52, 16, 16), hairMat);
-    hairBack.position.set(0, 1.9, -0.35);
-    hairBack.scale.set(1.05, 0.5, 0.4);
-    hairBack.castShadow = true;
-    womanGroup.add(hairBack);
-
-    // --- Accessory: pendant ---
-    const accMat = new THREE.MeshStandardMaterial({ color: 0xfbbf24, roughness: 0.2, metalness: 0.6 });
+    // ---- Accessory: a small necklace / pendant ----
     const pendant = new THREE.Mesh(new THREE.SphereGeometry(0.08, 8, 8), accMat);
     pendant.position.set(0, 1.3, 0.45);
     womanGroup.add(pendant);
+    const chain = new THREE.Mesh(new THREE.TorusGeometry(0.18, 0.02, 8, 12), accMat);
+    chain.position.set(0, 1.4, 0.4);
+    chain.rotation.x = Math.PI/2;
+    chain.scale.set(1, 1, 0.4);
+    womanGroup.add(chain);
 
-    // Position the whole group
-    womanGroup.position.y = 0.2;
+    // ---- add group to scene ----
+    womanGroup.position.y = 0.2; // lift a bit
     scene.add(womanGroup);
 
-    // --- Ground (shadow catcher) ---
+    // ---- Ground plane (invisible but for shadow) ----
     const planeMat = new THREE.ShadowMaterial({ opacity: 0.4 });
     const plane = new THREE.Mesh(new THREE.PlaneGeometry(6, 6), planeMat);
     plane.rotation.x = -Math.PI / 2;
@@ -334,12 +398,12 @@
     plane.receiveShadow = true;
     scene.add(plane);
 
-    // --- Particles for ambiance ---
-    const particleCount = 150;
+    // ---- decorative particles (floating) ----
+    const particleCount = 180;
     const particleGeo = new THREE.BufferGeometry();
     const pos = new Float32Array(particleCount * 3);
     for (let i = 0; i < particleCount * 3; i += 3) {
-      const r = 2.0 + Math.random() * 3.0;
+      const r = 2.2 + Math.random() * 2.8;
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos((Math.random() * 2) - 1);
       pos[i] = r * Math.sin(phi) * Math.cos(theta);
@@ -357,9 +421,29 @@
     const particles = new THREE.Points(particleGeo, particleMat);
     scene.add(particles);
 
-    // --- UI controls ---
+    // subtle ring
+    const ringGeo = new THREE.TorusGeometry(1.8, 0.02, 16, 60);
+    const ringMat2 = new THREE.MeshStandardMaterial({
+      color: 0x7c3aed,
+      emissive: new THREE.Color(0x2a1a4a),
+      transparent: true,
+      opacity: 0.2
+    });
+    const ring = new THREE.Mesh(ringGeo, ringMat2);
+    ring.position.y = 0.8;
+    ring.rotation.x = Math.PI / 2;
+    scene.add(ring);
+    const ring2 = new THREE.Mesh(ringGeo, ringMat2);
+    ring2.position.y = 0.8;
+    ring2.rotation.z = 0.6;
+    ring2.rotation.x = 0.8;
+    ring2.material = ringMat2.clone();
+    ring2.material.opacity = 0.15;
+    scene.add(ring2);
+
+    // --- UI listeners ---
     document.getElementById('resetViewBtn').addEventListener('click', () => {
-      camera.position.set(3.2, 2.5, 5.5);
+      camera.position.set(3.5, 2.8, 6);
       controls.target.set(0, 0.8, 0);
       controls.update();
     });
@@ -374,29 +458,33 @@
       toggleBtn.innerHTML = `<i class="fas ${isAutoRotate ? 'fa-pause' : 'fa-play'} me-1"></i> ${rotateLabel.textContent}`;
     });
 
-    // --- Resize ---
+    // --- resize ---
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     });
 
-    // --- Animation ---
+    // --- animation ---
     function animate() {
       requestAnimationFrame(animate);
       
-      // subtle floating
+      // subtle floating motion for the woman group
       womanGroup.position.y = 0.2 + Math.sin(Date.now() * 0.001) * 0.03;
+      // rotate particles
       particles.rotation.y += 0.0005;
+      ring.rotation.z += 0.002;
+      ring2.rotation.x += 0.001;
       
       controls.update();
       renderer.render(scene, camera);
     }
     animate();
 
-    console.log('3D Woman with real image texture loaded.');
+    console.log('3D Woman model loaded with Bootstrap + Font Awesome');
   </script>
 
+  <!-- Bootstrap JS (optional) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
