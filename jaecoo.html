@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jaecoo J7 - 3D Car Configurator</title>
+    <title>Jaecoo J7 - 3D Configurator with Steering & Horn</title>
 
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -113,6 +113,8 @@
             gap: 24px;
             pointer-events: auto;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            flex-wrap: wrap;
+            justify-content: center;
         }
         .controls-panel .btn-control {
             background: rgba(255, 255, 255, 0.06);
@@ -181,6 +183,31 @@
             color: #fff;
             font-weight: 700;
             text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Steering & Horn */
+        .steer-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .steer-group .btn-control {
+            width: 40px;
+            height: 40px;
+            font-size: 0.9rem;
+        }
+        .steer-group .steer-indicator {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.3);
+            min-width: 30px;
+            text-align: center;
+        }
+        .horn-btn {
+            background: rgba(255, 50, 50, 0.15) !important;
+            color: #ff6b6b !important;
+        }
+        .horn-btn:hover {
+            background: rgba(255, 50, 50, 0.3) !important;
         }
 
         /* ── Info Badge ── */
@@ -276,8 +303,6 @@
                 gap: 12px;
                 bottom: 16px;
                 border-radius: 16px;
-                flex-wrap: wrap;
-                justify-content: center;
             }
             .controls-panel .btn-control {
                 width: 38px;
@@ -303,6 +328,15 @@
             }
             .info-badge .sub {
                 font-size: 0.6rem;
+            }
+            .steer-group .btn-control {
+                width: 34px;
+                height: 34px;
+                font-size: 0.8rem;
+            }
+            .steer-group .steer-indicator {
+                font-size: 0.6rem;
+                min-width: 20px;
             }
         }
         @media (max-width: 480px) {
@@ -360,7 +394,7 @@
         <h2>
             Jaecoo J7 <small>2026</small>
         </h2>
-        <div class="sub">Drag to rotate · Scroll to zoom</div>
+        <div class="sub">Drag to rotate · Scroll to zoom · ← → Steer · H Horn</div>
     </div>
 
     <!-- ─── BOTTOM CONTROLS ─── -->
@@ -387,6 +421,22 @@
             <div class="color-option" style="background:#1a3a3a;" data-color="#1a3a3a" title="Forest Green"></div>
             <div class="color-option" style="background:#c9a84c;" data-color="#c9a84c" title="Champagne Gold"></div>
         </div>
+
+        <div class="divider"></div>
+
+        <!-- Steering -->
+        <div class="steer-group">
+            <button class="btn-control" id="steerLeft" title="Steer Left"><i class="fas fa-arrow-left"></i></button>
+            <span class="steer-indicator" id="steerAngle">0°</span>
+            <button class="btn-control" id="steerRight" title="Steer Right"><i class="fas fa-arrow-right"></i></button>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Horn -->
+        <button class="btn-control horn-btn" id="hornBtn" title="Honk the horn!">
+            <i class="fas fa-bullhorn"></i>
+        </button>
 
         <div class="divider"></div>
 
@@ -421,7 +471,6 @@
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         import * as THREE from 'three';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         //  SCENE SETUP
@@ -431,12 +480,10 @@
         scene.background = new THREE.Color(0x0b0d12);
         scene.fog = new THREE.Fog(0x0b0d12, 18, 30);
 
-        // ── Camera ──
         const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 50);
         camera.position.set(6, 4, 8);
         camera.lookAt(0, 0, 0);
 
-        // ── Renderer ──
         const renderer = new THREE.WebGLRenderer({
             antialias: true,
             alpha: false,
@@ -450,7 +497,6 @@
         renderer.toneMappingExposure = 1.2;
         container.appendChild(renderer.domElement);
 
-        // ── Controls ──
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.08;
@@ -497,7 +543,6 @@
         backLight.position.set(0, 1, -8);
         scene.add(backLight);
 
-        // Soft fill from below
         const bottomLight = new THREE.DirectionalLight(0x4466aa, 0.15);
         bottomLight.position.set(0, -3, 0);
         scene.add(bottomLight);
@@ -517,7 +562,6 @@
         ground.receiveShadow = true;
         scene.add(ground);
 
-        // ── Reflection ring (subtle) ──
         const ringGeo = new THREE.RingGeometry(1.2, 1.8, 64);
         const ringMat = new THREE.MeshBasicMaterial({
             color: 0x00d4ff,
@@ -535,8 +579,9 @@
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         const carGroup = new THREE.Group();
         let carBodyColor = '#e8e8e8';
+        // References for front wheels (to apply steering)
+        let frontWheels = [];
 
-        // Helper: create a rounded box using multiple geometries or just a box
         function createBox(w, h, d, color, roughness = 0.4, metalness = 0.3) {
             const geo = new THREE.BoxGeometry(w, h, d);
             const mat = new THREE.MeshStandardMaterial({
@@ -579,7 +624,6 @@
             return mesh;
         }
 
-        // ── Main Body ──
         function buildCar(colorHex) {
             // Clear previous
             while (carGroup.children.length) {
@@ -588,6 +632,7 @@
                 if (child.material) child.material.dispose();
                 carGroup.remove(child);
             }
+            frontWheels = [];
 
             const c = colorHex;
 
@@ -596,37 +641,30 @@
             body.position.y = 0.45;
             carGroup.add(body);
 
-            // ── Body lower cladding (darker) ──
             const cladding = createBox(4.0, 0.2, 1.95, '#1a1a1a', 0.8, 0.1);
             cladding.position.y = 0.05;
             carGroup.add(cladding);
 
-            // ── Front bumper ──
             const bumper = createBox(0.25, 0.35, 1.85, '#1a1a1a', 0.7, 0.1);
             bumper.position.set(2.2, 0.15, 0);
             carGroup.add(bumper);
 
-            // ── Rear bumper ──
             const bumperRear = createBox(0.25, 0.35, 1.85, '#1a1a1a', 0.7, 0.1);
             bumperRear.position.set(-2.2, 0.15, 0);
             carGroup.add(bumperRear);
 
-            // ── Hood bulge ──
             const hood = createBox(1.2, 0.08, 1.2, c, 0.3, 0.2);
             hood.position.set(1.2, 0.96, 0);
             carGroup.add(hood);
 
-            // ── Trunk ──
             const trunk = createBox(1.0, 0.08, 1.4, c, 0.3, 0.2);
             trunk.position.set(-1.3, 0.96, 0);
             carGroup.add(trunk);
 
-            // ── Cabin ──
             const cabin = createBox(2.4, 0.65, 1.6, '#0a0a12', 0.2, 0.1);
             cabin.position.set(-0.1, 1.22, 0);
             carGroup.add(cabin);
 
-            // ── Cabin glass (translucent) ──
             const glassMat = new THREE.MeshStandardMaterial({
                 color: 0x88ccff,
                 transparent: true,
@@ -641,7 +679,6 @@
             glass.castShadow = true;
             carGroup.add(glass);
 
-            // ── Windshield (front) ──
             const wsMat = new THREE.MeshStandardMaterial({
                 color: 0x88ddff,
                 transparent: true,
@@ -657,14 +694,12 @@
             ws.rotation.x = 0.12;
             carGroup.add(ws);
 
-            // ── Rear windshield ──
             const rs = new THREE.Mesh(wsGeo.clone(), wsMat);
             rs.position.set(-1.4, 1.22, 0);
             rs.rotation.y = -0.1;
             rs.rotation.x = -0.12;
             carGroup.add(rs);
 
-            // ── Side windows ──
             const sideMat = new THREE.MeshStandardMaterial({
                 color: 0x88ccff,
                 transparent: true,
@@ -678,23 +713,20 @@
             sw1.position.set(0.3, 1.22, 0.81);
             sw1.rotation.y = 0.15;
             carGroup.add(sw1);
-
             const sw2 = new THREE.Mesh(swGeo.clone(), sideMat);
             sw2.position.set(-0.5, 1.22, 0.81);
             sw2.rotation.y = -0.15;
             carGroup.add(sw2);
-
             const sw3 = new THREE.Mesh(swGeo.clone(), sideMat);
             sw3.position.set(0.3, 1.22, -0.81);
             sw3.rotation.y = -0.15;
             carGroup.add(sw3);
-
             const sw4 = new THREE.Mesh(swGeo.clone(), sideMat);
             sw4.position.set(-0.5, 1.22, -0.81);
             sw4.rotation.y = 0.15;
             carGroup.add(sw4);
 
-            // ── Headlights ──
+            // Headlights
             const hlMat = new THREE.MeshStandardMaterial({
                 color: 0xffffff,
                 emissive: 0x4488ff,
@@ -711,7 +743,6 @@
             hl2.position.set(2.25, 0.5, -0.55);
             carGroup.add(hl2);
 
-            // ── Headlight housings ──
             const hlhMat = new THREE.MeshStandardMaterial({
                 color: 0x222222,
                 roughness: 0.6,
@@ -725,7 +756,6 @@
             hlh2.position.set(2.28, 0.5, -0.55);
             carGroup.add(hlh2);
 
-            // ── DRL (Daytime Running Lights) ──
             const drlMat = new THREE.MeshStandardMaterial({
                 color: 0x00ddff,
                 emissive: 0x00ddff,
@@ -741,7 +771,6 @@
             drl2.position.set(2.2, 0.62, -0.7);
             carGroup.add(drl2);
 
-            // ── Taillights ──
             const tlMat = new THREE.MeshStandardMaterial({
                 color: 0xff0000,
                 emissive: 0xff0000,
@@ -758,7 +787,6 @@
             tl2.position.set(-2.25, 0.5, -0.55);
             carGroup.add(tl2);
 
-            // ── Grille ──
             const grilleMat = new THREE.MeshStandardMaterial({
                 color: 0x111111,
                 roughness: 0.6,
@@ -769,7 +797,6 @@
             grille.position.set(2.28, 0.45, 0);
             carGroup.add(grille);
 
-            // ── Grille details (horizontal bars) ──
             const barMat = new THREE.MeshStandardMaterial({
                 color: 0x333333,
                 roughness: 0.4,
@@ -784,7 +811,6 @@
                 carGroup.add(bar);
             }
 
-            // ── Jaecoo badge (front) ──
             const badgeMat = new THREE.MeshStandardMaterial({
                 color: 0xcccccc,
                 roughness: 0.2,
@@ -801,28 +827,25 @@
 
             // ── Wheels ──
             const wheelPositions = [
-                { x: 1.4, z: 0.9 },
-                { x: 1.4, z: -0.9 },
-                { x: -1.4, z: 0.9 },
-                { x: -1.4, z: -0.9 },
+                { x: 1.4, z: 0.9, front: true },
+                { x: 1.4, z: -0.9, front: true },
+                { x: -1.4, z: 0.9, front: false },
+                { x: -1.4, z: -0.9, front: false },
             ];
 
             wheelPositions.forEach((pos) => {
                 const wheelGroup = new THREE.Group();
 
-                // Tire
                 const tire = createCylinder(0.34, 0.34, 0.2, '#1a1a1a', 0.9, 0.05);
                 tire.rotation.x = Math.PI / 2;
                 tire.position.y = 0;
                 wheelGroup.add(tire);
 
-                // Rim
                 const rim = createCylinder(0.22, 0.22, 0.22, '#cccccc', 0.2, 0.8);
                 rim.rotation.x = Math.PI / 2;
                 rim.position.y = 0;
                 wheelGroup.add(rim);
 
-                // Rim spokes (decorative)
                 for (let i = 0; i < 5; i++) {
                     const angle = (i / 5) * Math.PI * 2;
                     const spoke = new THREE.Mesh(
@@ -834,12 +857,10 @@
                     wheelGroup.add(spoke);
                 }
 
-                // Hub cap
                 const hub = createSphere(0.04, '#888888', 0.1, 0.9);
                 hub.position.set(0, 0, 0);
                 wheelGroup.add(hub);
 
-                // Tire tread detail (subtle ring)
                 const tread = new THREE.Mesh(
                     new THREE.TorusGeometry(0.34, 0.02, 8, 24),
                     new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 1, metalness: 0 })
@@ -850,6 +871,11 @@
 
                 wheelGroup.position.set(pos.x, 0.16, pos.z);
                 carGroup.add(wheelGroup);
+
+                // Store front wheels
+                if (pos.front) {
+                    frontWheels.push(wheelGroup);
+                }
             });
 
             // ── Side mirrors ──
@@ -866,21 +892,18 @@
 
             [-1, 1].forEach((side) => {
                 const mirrorGroup = new THREE.Group();
-
                 const arm = new THREE.Mesh(
                     new THREE.BoxGeometry(0.08, 0.08, 0.2),
                     mirrorBaseMat
                 );
                 arm.position.set(0, 0, side * 0.1);
                 mirrorGroup.add(arm);
-
                 const housing = new THREE.Mesh(
                     new THREE.BoxGeometry(0.12, 0.15, 0.2),
                     mirrorMat
                 );
                 housing.position.set(0.7, 0.75, side * 0.1);
                 mirrorGroup.add(housing);
-
                 const glassMirror = new THREE.Mesh(
                     new THREE.PlaneGeometry(0.08, 0.1),
                     new THREE.MeshStandardMaterial({
@@ -893,7 +916,6 @@
                 glassMirror.position.set(0.76, 0.75, side * 0.1);
                 glassMirror.rotation.y = side * 0.2;
                 mirrorGroup.add(glassMirror);
-
                 mirrorGroup.position.set(1.5, 0.6, side * 0.9);
                 carGroup.add(mirrorGroup);
             });
@@ -911,7 +933,6 @@
                 );
                 rail.position.set(-0.1, 1.55, side * 0.75);
                 carGroup.add(rail);
-                // rail supports
                 for (let i = -0.7; i <= 0.7; i += 0.7) {
                     const sup = new THREE.Mesh(
                         new THREE.BoxGeometry(0.02, 0.06, 0.02),
@@ -922,7 +943,6 @@
                 }
             });
 
-            // ── Antenna (shark fin) ──
             const finMat = new THREE.MeshStandardMaterial({
                 color: 0x222222,
                 roughness: 0.4,
@@ -936,7 +956,6 @@
             fin.rotation.x = 0.1;
             carGroup.add(fin);
 
-            // ── Exhaust tips ──
             const exhaustMat = new THREE.MeshStandardMaterial({
                 color: 0x444444,
                 roughness: 0.3,
@@ -952,7 +971,6 @@
                 carGroup.add(tip);
             });
 
-            // ── Undercarriage glow (subtle) ──
             const glowMat = new THREE.MeshStandardMaterial({
                 color: 0x00d4ff,
                 emissive: 0x00d4ff,
@@ -968,7 +986,6 @@
             glow.position.set(0, -0.4, 0);
             carGroup.add(glow);
 
-            // ── Final position ──
             carGroup.position.y = 0;
         }
 
@@ -977,20 +994,78 @@
         scene.add(carGroup);
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  STEERING LOGIC
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        let currentSteerAngle = 0; // degrees
+        const MAX_STEER_ANGLE = 45;
+
+        function updateSteering(angleDeg) {
+            currentSteerAngle = Math.min(MAX_STEER_ANGLE, Math.max(-MAX_STEER_ANGLE, angleDeg));
+            const rad = THREE.MathUtils.degToRad(currentSteerAngle);
+            frontWheels.forEach(wheel => {
+                wheel.rotation.y = rad;
+            });
+            document.getElementById('steerAngle').textContent = Math.round(currentSteerAngle) + '°';
+        }
+
+        // ── Steer controls ──
+        document.getElementById('steerLeft').addEventListener('click', () => {
+            updateSteering(currentSteerAngle - 5);
+        });
+        document.getElementById('steerRight').addEventListener('click', () => {
+            updateSteering(currentSteerAngle + 5);
+        });
+
+        // Keyboard: Left/Right arrows
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                updateSteering(currentSteerAngle - 5);
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                updateSteering(currentSteerAngle + 5);
+            } else if (e.key === 'h' || e.key === 'H') {
+                e.preventDefault();
+                playHorn();
+            }
+        });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  HORN (Web Audio)
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        let audioCtx = null;
+
+        function playHorn() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            // Short beep
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(280, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.2);
+        }
+
+        document.getElementById('hornBtn').addEventListener('click', playHorn);
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         //  COLOR CHANGE
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         function setCarColor(colorHex) {
             carBodyColor = colorHex;
-            // Rebuild car with new color
             buildCar(colorHex);
-            // Re-add to scene
             scene.add(carGroup);
+            // Re-apply steering angle after rebuild
+            updateSteering(currentSteerAngle);
         }
 
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        //  UI BINDING
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // ── Color options ──
         document.querySelectorAll('.color-option').forEach((el) => {
             el.addEventListener('click', () => {
                 document.querySelectorAll('.color-option').forEach((e) => e.classList.remove('active'));
@@ -1000,7 +1075,9 @@
             });
         });
 
-        // ── Auto rotate ──
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  CAMERA VIEWS (same as before)
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         const btnRotate = document.getElementById('btnRotate');
         let autoRotateEnabled = true;
         btnRotate.addEventListener('click', () => {
@@ -1012,20 +1089,17 @@
                 '<i class="fas fa-pause"></i>';
         });
 
-        // ── Reset view ──
         document.getElementById('btnReset').addEventListener('click', () => {
             camera.position.set(6, 4, 8);
             controls.target.set(0, 0.4, 0);
             controls.update();
         });
 
-        // ── View angles ──
         function setView(pos, target) {
             controls.autoRotate = false;
             autoRotateEnabled = false;
             btnRotate.classList.remove('active');
             btnRotate.innerHTML = '<i class="fas fa-pause"></i>';
-            // Animate camera
             const startPos = camera.position.clone();
             const endPos = new THREE.Vector3(pos.x, pos.y, pos.z);
             const startTarget = controls.target.clone();
@@ -1036,7 +1110,6 @@
             function animateView() {
                 const elapsed = Date.now() - startTime;
                 const t = Math.min(elapsed / duration, 1);
-                // Smooth ease in-out cubic
                 const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
                 camera.position.lerpVectors(startPos, endPos, ease);
                 controls.target.lerpVectors(startTarget, endTarget, ease);
@@ -1075,15 +1148,13 @@
             requestAnimationFrame(animate);
             controls.update();
 
-            // Subtle float on car
             const time = Date.now() * 0.001;
             carGroup.position.y = Math.sin(time * 0.6) * 0.03;
 
-            // Slight wheel rotation when auto-rotating
+            // Wheel rotation when auto-rotate is on (rear wheels too)
             if (controls.autoRotate) {
                 carGroup.children.forEach((child) => {
                     if (child.isGroup && child.children.length > 0) {
-                        // Check if it's a wheel group (has tire)
                         let isWheel = false;
                         child.children.forEach((sub) => {
                             if (sub.geometry && sub.geometry.type === 'CylinderGeometry' &&
@@ -1111,24 +1182,10 @@
         }, 800);
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        //  KEYBOARD SHORTCUTS
+        //  KEYBOARD SHORTCUTS (already added)
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'r' || e.key === 'R') {
-                btnRotate.click();
-            }
-            if (e.key === '1') document.getElementById('viewFront').click();
-            if (e.key === '2') document.getElementById('viewSide').click();
-            if (e.key === '3') document.getElementById('viewRear').click();
-            if (e.key === '4') document.getElementById('viewTop').click();
-            if (e.key === ' ') {
-                e.preventDefault();
-                document.getElementById('btnReset').click();
-            }
-        });
-
-        console.log('🚗 Jaecoo J7 3D Configurator loaded!');
-        console.log('🎮 Controls: R=Rotate | 1-4=Views | Space=Reset');
+        console.log('🚗 Jaecoo J7 with Steering & Horn loaded!');
+        console.log('🎮 Controls: ← → Steer | H Horn | R Rotate | 1-4 Views | Space Reset');
     </script>
 
 </body>
