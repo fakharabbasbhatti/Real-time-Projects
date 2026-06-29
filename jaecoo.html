@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jaecoo J7 - 3D Car Configurator</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ── Reset & Base ── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0b0d12;
+            overflow: hidden;
+            height: 100vh;
+            color: #fff;
+            user-select: none;
+        }
+
+        /* ── 3D Canvas ── */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+        }
+
+        /* ── Overlay UI ── */
+        .ui-overlay {
+            position: fixed;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .ui-overlay>* {
+            pointer-events: auto;
+        }
+
+        /* ── Top Nav ── */
+        .navbar-custom {
+            background: rgba(11, 13, 18, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 12px 0;
+            width: 100%;
+            top: 0;
+            left: 0;
+            position: fixed;
+            z-index: 20;
+        }
+        .navbar-custom .brand {
+            font-weight: 800;
+            font-size: 1.6rem;
+            letter-spacing: -0.5px;
+            color: #fff;
+            text-decoration: none;
+        }
+        .navbar-custom .brand span {
+            background: linear-gradient(135deg, #00d4ff, #7b2ffc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .navbar-custom .brand i {
+            color: #00d4ff;
+            margin-right: 8px;
+            -webkit-text-fill-color: #00d4ff;
+        }
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+            margin-left: 28px;
+        }
+        .nav-links a:hover {
+            color: #fff;
+        }
+        .nav-links a i {
+            margin-right: 6px;
+            font-size: 0.85rem;
+        }
+
+        /* ── Bottom Controls ── */
+        .controls-panel {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            background: rgba(11, 13, 18, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            pointer-events: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+        }
+        .controls-panel .btn-control {
+            background: rgba(255, 255, 255, 0.06);
+            border: none;
+            color: rgba(255, 255, 255, 0.8);
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .controls-panel .btn-control:hover {
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+            transform: scale(1.05);
+        }
+        .controls-panel .btn-control.active {
+            background: rgba(0, 212, 255, 0.25);
+            color: #00d4ff;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
+        }
+        .controls-panel .divider {
+            width: 1px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .controls-panel .color-picker-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .controls-panel .color-picker-wrap label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .controls-panel .color-option {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .controls-panel .color-option:hover {
+            transform: scale(1.15);
+        }
+        .controls-panel .color-option.active {
+            border-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+        .controls-panel .color-option.active::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+            color: #fff;
+            font-weight: 700;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+        }
+
+        /* ── Info Badge ── */
+        .info-badge {
+            position: fixed;
+            bottom: 110px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 15;
+            background: rgba(11, 13, 18, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 12px 28px;
+            text-align: center;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+        .info-badge h2 {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin: 0;
+            letter-spacing: -0.3px;
+        }
+        .info-badge h2 small {
+            font-weight: 400;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-left: 10px;
+        }
+        .info-badge .sub {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.35);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        /* ── Loader ── */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background: #0b0d12;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s, visibility 0.8s;
+        }
+        #loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        #loader .spinner {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.06);
+            border-top-color: #00d4ff;
+            animation: spin 1s linear infinite;
+        }
+        #loader p {
+            margin-top: 20px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .navbar-custom .brand {
+                font-size: 1.2rem;
+            }
+            .nav-links a {
+                font-size: 0.75rem;
+                margin-left: 14px;
+            }
+            .nav-links a span {
+                display: none;
+            }
+            .controls-panel {
+                padding: 10px 16px;
+                gap: 12px;
+                bottom: 16px;
+                border-radius: 16px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .controls-panel .btn-control {
+                width: 38px;
+                height: 38px;
+                font-size: 0.95rem;
+            }
+            .controls-panel .divider {
+                display: none;
+            }
+            .controls-panel .color-picker-wrap label {
+                font-size: 0.6rem;
+            }
+            .controls-panel .color-option {
+                width: 22px;
+                height: 22px;
+            }
+            .info-badge {
+                bottom: 85px;
+                padding: 8px 18px;
+            }
+            .info-badge h2 {
+                font-size: 0.95rem;
+            }
+            .info-badge .sub {
+                font-size: 0.6rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .controls-panel .color-picker-wrap label {
+                display: none;
+            }
+            .controls-panel {
+                gap: 8px;
+                padding: 8px 12px;
+            }
+            .controls-panel .btn-control {
+                width: 34px;
+                height: 34px;
+                font-size: 0.8rem;
+            }
+            .controls-panel .color-option {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── LOADER ─── -->
+    <div id="loader">
+        <div class="spinner"></div>
+        <p>Loading Jaecoo J7 …</p>
+    </div>
+
+    <!-- ─── 3D CANVAS ─── -->
+    <div id="canvas-container"></div>
+
+    <!-- ─── TOP NAV ─── -->
+    <nav class="navbar-custom">
+        <div class="container-fluid px-4 d-flex align-items-center justify-content-between">
+            <a href="#" class="brand">
+                <i class="fas fa-car"></i> <span>Jaecoo</span> J7
+            </a>
+            <div class="nav-links d-none d-md-flex">
+                <a href="#"><i class="fas fa-cube"></i> <span>3D View</span></a>
+                <a href="#"><i class="fas fa-palette"></i> <span>Colors</span></a>
+                <a href="#"><i class="fas fa-info-circle"></i> <span>Specs</span></a>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <a href="#" class="text-white-50 text-decoration-none" style="font-size:0.85rem;">
+                    <i class="fas fa-share-alt"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ─── INFO BADGE ─── -->
+    <div class="info-badge" id="infoBadge">
+        <h2>
+            Jaecoo J7 <small>2026</small>
+        </h2>
+        <div class="sub">Drag to rotate · Scroll to zoom</div>
+    </div>
+
+    <!-- ─── BOTTOM CONTROLS ─── -->
+    <div class="controls-panel" id="controlsPanel">
+        <!-- Auto Rotate -->
+        <button class="btn-control active" id="btnRotate" title="Auto Rotate">
+            <i class="fas fa-rotate-right"></i>
+        </button>
+
+        <!-- Reset View -->
+        <button class="btn-control" id="btnReset" title="Reset View">
+            <i class="fas fa-expand"></i>
+        </button>
+
+        <div class="divider"></div>
+
+        <!-- Color Picker -->
+        <div class="color-picker-wrap">
+            <label>Color</label>
+            <div class="color-option active" style="background:#e8e8e8;" data-color="#e8e8e8" title="Pearl White"></div>
+            <div class="color-option" style="background:#1a1a2e;" data-color="#1a1a2e" title="Midnight Blue"></div>
+            <div class="color-option" style="background:#8b1a1a;" data-color="#8b1a1a" title="Ruby Red"></div>
+            <div class="color-option" style="background:#2d2d2d;" data-color="#2d2d2d" title="Graphite Grey"></div>
+            <div class="color-option" style="background:#1a3a3a;" data-color="#1a3a3a" title="Forest Green"></div>
+            <div class="color-option" style="background:#c9a84c;" data-color="#c9a84c" title="Champagne Gold"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- View Angles -->
+        <button class="btn-control" id="viewFront" title="Front View">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        <button class="btn-control" id="viewSide" title="Side View">
+            <i class="fas fa-arrow-right"></i>
+        </button>
+        <button class="btn-control" id="viewRear" title="Rear View">
+            <i class="fas fa-arrow-down"></i>
+        </button>
+        <button class="btn-control" id="viewTop" title="Top View">
+            <i class="fas fa-arrow-up" style="transform:rotate(90deg);"></i>
+        </button>
+    </div>
+
+    <!-- ─── THREE.JS ─── -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  IMPORTS
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  SCENE SETUP
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0b0d12);
+        scene.fog = new THREE.Fog(0x0b0d12, 18, 30);
+
+        // ── Camera ──
+        const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 50);
+        camera.position.set(6, 4, 8);
+        camera.lookAt(0, 0, 0);
+
+        // ── Renderer ──
+        const renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: false,
+            powerPreference: "high-performance"
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.2;
+        container.appendChild(renderer.domElement);
+
+        // ── Controls ──
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.08;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 1.8;
+        controls.minDistance = 3.5;
+        controls.maxDistance = 18;
+        controls.target.set(0, 0.4, 0);
+        controls.update();
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  LIGHTING
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        const ambientLight = new THREE.AmbientLight(0x404060, 0.4);
+        scene.add(ambientLight);
+
+        const hemiLight = new THREE.HemisphereLight(0x87ceeb, 0x362d1e, 0.6);
+        scene.add(hemiLight);
+
+        const keyLight = new THREE.DirectionalLight(0xffeedd, 2.2);
+        keyLight.position.set(5, 8, 6);
+        keyLight.castShadow = true;
+        keyLight.shadow.mapSize.width = 1024;
+        keyLight.shadow.mapSize.height = 1024;
+        keyLight.shadow.radius = 4;
+        const d = 10;
+        keyLight.shadow.camera.left = -d;
+        keyLight.shadow.camera.right = d;
+        keyLight.shadow.camera.top = d;
+        keyLight.shadow.camera.bottom = -d;
+        keyLight.shadow.camera.near = 0.5;
+        keyLight.shadow.camera.far = 20;
+        scene.add(keyLight);
+
+        const fillLight = new THREE.DirectionalLight(0x4488ff, 0.6);
+        fillLight.position.set(-4, 3, -5);
+        scene.add(fillLight);
+
+        const rimLight = new THREE.DirectionalLight(0x00d4ff, 0.8);
+        rimLight.position.set(-3, 1, 6);
+        scene.add(rimLight);
+
+        const backLight = new THREE.DirectionalLight(0x7b2ffc, 0.3);
+        backLight.position.set(0, 1, -8);
+        scene.add(backLight);
+
+        // Soft fill from below
+        const bottomLight = new THREE.DirectionalLight(0x4466aa, 0.15);
+        bottomLight.position.set(0, -3, 0);
+        scene.add(bottomLight);
+
+        // ── Ground ──
+        const groundGeo = new THREE.PlaneGeometry(20, 20);
+        const groundMat = new THREE.MeshStandardMaterial({
+            color: 0x0b0d12,
+            roughness: 0.8,
+            metalness: 0.1,
+            transparent: true,
+            opacity: 0.8,
+        });
+        const ground = new THREE.Mesh(groundGeo, groundMat);
+        ground.rotation.x = -Math.PI / 2;
+        ground.position.y = -0.55;
+        ground.receiveShadow = true;
+        scene.add(ground);
+
+        // ── Reflection ring (subtle) ──
+        const ringGeo = new THREE.RingGeometry(1.2, 1.8, 64);
+        const ringMat = new THREE.MeshBasicMaterial({
+            color: 0x00d4ff,
+            transparent: true,
+            opacity: 0.04,
+            side: THREE.DoubleSide,
+        });
+        const ring = new THREE.Mesh(ringGeo, ringMat);
+        ring.rotation.x = -Math.PI / 2;
+        ring.position.y = -0.5;
+        scene.add(ring);
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  CAR CONSTRUCTION
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        const carGroup = new THREE.Group();
+        let carBodyColor = '#e8e8e8';
+
+        // Helper: create a rounded box using multiple geometries or just a box
+        function createBox(w, h, d, color, roughness = 0.4, metalness = 0.3) {
+            const geo = new THREE.BoxGeometry(w, h, d);
+            const mat = new THREE.MeshStandardMaterial({
+                color,
+                roughness,
+                metalness,
+                envMapIntensity: 1.0,
+            });
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            return mesh;
+        }
+
+        function createCylinder(radiusTop, radiusBottom, height, color, roughness = 0.6, metalness = 0.1) {
+            const geo = new THREE.CylinderGeometry(radiusTop, radiusBottom, height, 32);
+            const mat = new THREE.MeshStandardMaterial({
+                color,
+                roughness,
+                metalness,
+                envMapIntensity: 0.8,
+            });
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            return mesh;
+        }
+
+        function createSphere(radius, color, roughness = 0.3, metalness = 0.2) {
+            const geo = new THREE.SphereGeometry(radius, 24, 24);
+            const mat = new THREE.MeshStandardMaterial({
+                color,
+                roughness,
+                metalness,
+                envMapIntensity: 0.6,
+            });
+            const mesh = new THREE.Mesh(geo, mat);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            return mesh;
+        }
+
+        // ── Main Body ──
+        function buildCar(colorHex) {
+            // Clear previous
+            while (carGroup.children.length) {
+                const child = carGroup.children[0];
+                if (child.geometry) child.geometry.dispose();
+                if (child.material) child.material.dispose();
+                carGroup.remove(child);
+            }
+
+            const c = colorHex;
+
+            // ── Body shell ──
+            const body = createBox(4.2, 0.9, 1.9, c, 0.35, 0.25);
+            body.position.y = 0.45;
+            carGroup.add(body);
+
+            // ── Body lower cladding (darker) ──
+            const cladding = createBox(4.0, 0.2, 1.95, '#1a1a1a', 0.8, 0.1);
+            cladding.position.y = 0.05;
+            carGroup.add(cladding);
+
+            // ── Front bumper ──
+            const bumper = createBox(0.25, 0.35, 1.85, '#1a1a1a', 0.7, 0.1);
+            bumper.position.set(2.2, 0.15, 0);
+            carGroup.add(bumper);
+
+            // ── Rear bumper ──
+            const bumperRear = createBox(0.25, 0.35, 1.85, '#1a1a1a', 0.7, 0.1);
+            bumperRear.position.set(-2.2, 0.15, 0);
+            carGroup.add(bumperRear);
+
+            // ── Hood bulge ──
+            const hood = createBox(1.2, 0.08, 1.2, c, 0.3, 0.2);
+            hood.position.set(1.2, 0.96, 0);
+            carGroup.add(hood);
+
+            // ── Trunk ──
+            const trunk = createBox(1.0, 0.08, 1.4, c, 0.3, 0.2);
+            trunk.position.set(-1.3, 0.96, 0);
+            carGroup.add(trunk);
+
+            // ── Cabin ──
+            const cabin = createBox(2.4, 0.65, 1.6, '#0a0a12', 0.2, 0.1);
+            cabin.position.set(-0.1, 1.22, 0);
+            carGroup.add(cabin);
+
+            // ── Cabin glass (translucent) ──
+            const glassMat = new THREE.MeshStandardMaterial({
+                color: 0x88ccff,
+                transparent: true,
+                opacity: 0.25,
+                roughness: 0.05,
+                metalness: 0.1,
+                envMapIntensity: 1.5,
+            });
+            const glassGeo = new THREE.BoxGeometry(2.2, 0.5, 1.4);
+            const glass = new THREE.Mesh(glassGeo, glassMat);
+            glass.position.set(-0.1, 1.22, 0);
+            glass.castShadow = true;
+            carGroup.add(glass);
+
+            // ── Windshield (front) ──
+            const wsMat = new THREE.MeshStandardMaterial({
+                color: 0x88ddff,
+                transparent: true,
+                opacity: 0.35,
+                roughness: 0.02,
+                metalness: 0.05,
+                envMapIntensity: 1.8,
+            });
+            const wsGeo = new THREE.PlaneGeometry(1.5, 0.55);
+            const ws = new THREE.Mesh(wsGeo, wsMat);
+            ws.position.set(1.2, 1.22, 0);
+            ws.rotation.y = 0.1;
+            ws.rotation.x = 0.12;
+            carGroup.add(ws);
+
+            // ── Rear windshield ──
+            const rs = new THREE.Mesh(wsGeo.clone(), wsMat);
+            rs.position.set(-1.4, 1.22, 0);
+            rs.rotation.y = -0.1;
+            rs.rotation.x = -0.12;
+            carGroup.add(rs);
+
+            // ── Side windows ──
+            const sideMat = new THREE.MeshStandardMaterial({
+                color: 0x88ccff,
+                transparent: true,
+                opacity: 0.2,
+                roughness: 0.02,
+                metalness: 0.05,
+                envMapIntensity: 1.5,
+            });
+            const swGeo = new THREE.PlaneGeometry(0.9, 0.4);
+            const sw1 = new THREE.Mesh(swGeo, sideMat);
+            sw1.position.set(0.3, 1.22, 0.81);
+            sw1.rotation.y = 0.15;
+            carGroup.add(sw1);
+
+            const sw2 = new THREE.Mesh(swGeo.clone(), sideMat);
+            sw2.position.set(-0.5, 1.22, 0.81);
+            sw2.rotation.y = -0.15;
+            carGroup.add(sw2);
+
+            const sw3 = new THREE.Mesh(swGeo.clone(), sideMat);
+            sw3.position.set(0.3, 1.22, -0.81);
+            sw3.rotation.y = -0.15;
+            carGroup.add(sw3);
+
+            const sw4 = new THREE.Mesh(swGeo.clone(), sideMat);
+            sw4.position.set(-0.5, 1.22, -0.81);
+            sw4.rotation.y = 0.15;
+            carGroup.add(sw4);
+
+            // ── Headlights ──
+            const hlMat = new THREE.MeshStandardMaterial({
+                color: 0xffffff,
+                emissive: 0x4488ff,
+                emissiveIntensity: 0.3,
+                roughness: 0.05,
+                metalness: 0.8,
+                envMapIntensity: 2.0,
+            });
+            const hlGeo = new THREE.BoxGeometry(0.35, 0.15, 0.08);
+            const hl1 = new THREE.Mesh(hlGeo, hlMat);
+            hl1.position.set(2.25, 0.5, 0.55);
+            carGroup.add(hl1);
+            const hl2 = new THREE.Mesh(hlGeo.clone(), hlMat);
+            hl2.position.set(2.25, 0.5, -0.55);
+            carGroup.add(hl2);
+
+            // ── Headlight housings ──
+            const hlhMat = new THREE.MeshStandardMaterial({
+                color: 0x222222,
+                roughness: 0.6,
+                metalness: 0.3,
+            });
+            const hlhGeo = new THREE.BoxGeometry(0.08, 0.12, 0.2);
+            const hlh1 = new THREE.Mesh(hlhGeo, hlhMat);
+            hlh1.position.set(2.28, 0.5, 0.55);
+            carGroup.add(hlh1);
+            const hlh2 = new THREE.Mesh(hlhGeo.clone(), hlhMat);
+            hlh2.position.set(2.28, 0.5, -0.55);
+            carGroup.add(hlh2);
+
+            // ── DRL (Daytime Running Lights) ──
+            const drlMat = new THREE.MeshStandardMaterial({
+                color: 0x00ddff,
+                emissive: 0x00ddff,
+                emissiveIntensity: 0.5,
+                roughness: 0.1,
+                metalness: 0.3,
+            });
+            const drlGeo = new THREE.BoxGeometry(0.5, 0.04, 0.04);
+            const drl1 = new THREE.Mesh(drlGeo, drlMat);
+            drl1.position.set(2.2, 0.62, 0.7);
+            carGroup.add(drl1);
+            const drl2 = new THREE.Mesh(drlGeo.clone(), drlMat);
+            drl2.position.set(2.2, 0.62, -0.7);
+            carGroup.add(drl2);
+
+            // ── Taillights ──
+            const tlMat = new THREE.MeshStandardMaterial({
+                color: 0xff0000,
+                emissive: 0xff0000,
+                emissiveIntensity: 0.2,
+                roughness: 0.2,
+                metalness: 0.5,
+                envMapIntensity: 1.0,
+            });
+            const tlGeo = new THREE.BoxGeometry(0.25, 0.15, 0.06);
+            const tl1 = new THREE.Mesh(tlGeo, tlMat);
+            tl1.position.set(-2.25, 0.5, 0.55);
+            carGroup.add(tl1);
+            const tl2 = new THREE.Mesh(tlGeo.clone(), tlMat);
+            tl2.position.set(-2.25, 0.5, -0.55);
+            carGroup.add(tl2);
+
+            // ── Grille ──
+            const grilleMat = new THREE.MeshStandardMaterial({
+                color: 0x111111,
+                roughness: 0.6,
+                metalness: 0.4,
+            });
+            const grilleGeo = new THREE.BoxGeometry(0.06, 0.5, 1.0);
+            const grille = new THREE.Mesh(grilleGeo, grilleMat);
+            grille.position.set(2.28, 0.45, 0);
+            carGroup.add(grille);
+
+            // ── Grille details (horizontal bars) ──
+            const barMat = new THREE.MeshStandardMaterial({
+                color: 0x333333,
+                roughness: 0.4,
+                metalness: 0.6,
+            });
+            for (let i = -0.3; i <= 0.3; i += 0.2) {
+                const bar = new THREE.Mesh(
+                    new THREE.BoxGeometry(0.04, 0.02, 0.8),
+                    barMat
+                );
+                bar.position.set(2.28, 0.45 + i, 0);
+                carGroup.add(bar);
+            }
+
+            // ── Jaecoo badge (front) ──
+            const badgeMat = new THREE.MeshStandardMaterial({
+                color: 0xcccccc,
+                roughness: 0.2,
+                metalness: 0.8,
+                emissive: 0x00d4ff,
+                emissiveIntensity: 0.05,
+            });
+            const badge = new THREE.Mesh(
+                new THREE.BoxGeometry(0.15, 0.06, 0.02),
+                badgeMat
+            );
+            badge.position.set(2.3, 0.7, 0);
+            carGroup.add(badge);
+
+            // ── Wheels ──
+            const wheelPositions = [
+                { x: 1.4, z: 0.9 },
+                { x: 1.4, z: -0.9 },
+                { x: -1.4, z: 0.9 },
+                { x: -1.4, z: -0.9 },
+            ];
+
+            wheelPositions.forEach((pos) => {
+                const wheelGroup = new THREE.Group();
+
+                // Tire
+                const tire = createCylinder(0.34, 0.34, 0.2, '#1a1a1a', 0.9, 0.05);
+                tire.rotation.x = Math.PI / 2;
+                tire.position.y = 0;
+                wheelGroup.add(tire);
+
+                // Rim
+                const rim = createCylinder(0.22, 0.22, 0.22, '#cccccc', 0.2, 0.8);
+                rim.rotation.x = Math.PI / 2;
+                rim.position.y = 0;
+                wheelGroup.add(rim);
+
+                // Rim spokes (decorative)
+                for (let i = 0; i < 5; i++) {
+                    const angle = (i / 5) * Math.PI * 2;
+                    const spoke = new THREE.Mesh(
+                        new THREE.BoxGeometry(0.02, 0.18, 0.04),
+                        new THREE.MeshStandardMaterial({ color: 0xaaaaaa, roughness: 0.2, metalness: 0.9 })
+                    );
+                    spoke.position.set(Math.sin(angle) * 0.14, Math.cos(angle) * 0.14, 0);
+                    spoke.rotation.z = angle;
+                    wheelGroup.add(spoke);
+                }
+
+                // Hub cap
+                const hub = createSphere(0.04, '#888888', 0.1, 0.9);
+                hub.position.set(0, 0, 0);
+                wheelGroup.add(hub);
+
+                // Tire tread detail (subtle ring)
+                const tread = new THREE.Mesh(
+                    new THREE.TorusGeometry(0.34, 0.02, 8, 24),
+                    new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 1, metalness: 0 })
+                );
+                tread.rotation.x = Math.PI / 2;
+                tread.position.y = 0;
+                wheelGroup.add(tread);
+
+                wheelGroup.position.set(pos.x, 0.16, pos.z);
+                carGroup.add(wheelGroup);
+            });
+
+            // ── Side mirrors ──
+            const mirrorMat = new THREE.MeshStandardMaterial({
+                color: c,
+                roughness: 0.3,
+                metalness: 0.2,
+            });
+            const mirrorBaseMat = new THREE.MeshStandardMaterial({
+                color: 0x1a1a1a,
+                roughness: 0.5,
+                metalness: 0.1,
+            });
+
+            [-1, 1].forEach((side) => {
+                const mirrorGroup = new THREE.Group();
+
+                const arm = new THREE.Mesh(
+                    new THREE.BoxGeometry(0.08, 0.08, 0.2),
+                    mirrorBaseMat
+                );
+                arm.position.set(0, 0, side * 0.1);
+                mirrorGroup.add(arm);
+
+                const housing = new THREE.Mesh(
+                    new THREE.BoxGeometry(0.12, 0.15, 0.2),
+                    mirrorMat
+                );
+                housing.position.set(0.7, 0.75, side * 0.1);
+                mirrorGroup.add(housing);
+
+                const glassMirror = new THREE.Mesh(
+                    new THREE.PlaneGeometry(0.08, 0.1),
+                    new THREE.MeshStandardMaterial({
+                        color: 0x88ccff,
+                        roughness: 0.02,
+                        metalness: 0.9,
+                        envMapIntensity: 2.0,
+                    })
+                );
+                glassMirror.position.set(0.76, 0.75, side * 0.1);
+                glassMirror.rotation.y = side * 0.2;
+                mirrorGroup.add(glassMirror);
+
+                mirrorGroup.position.set(1.5, 0.6, side * 0.9);
+                carGroup.add(mirrorGroup);
+            });
+
+            // ── Roof rails ──
+            const railMat = new THREE.MeshStandardMaterial({
+                color: 0x444444,
+                roughness: 0.4,
+                metalness: 0.6,
+            });
+            [-1, 1].forEach((side) => {
+                const rail = new THREE.Mesh(
+                    new THREE.BoxGeometry(1.8, 0.04, 0.04),
+                    railMat
+                );
+                rail.position.set(-0.1, 1.55, side * 0.75);
+                carGroup.add(rail);
+                // rail supports
+                for (let i = -0.7; i <= 0.7; i += 0.7) {
+                    const sup = new THREE.Mesh(
+                        new THREE.BoxGeometry(0.02, 0.06, 0.02),
+                        railMat
+                    );
+                    sup.position.set(i, 1.52, side * 0.75);
+                    carGroup.add(sup);
+                }
+            });
+
+            // ── Antenna (shark fin) ──
+            const finMat = new THREE.MeshStandardMaterial({
+                color: 0x222222,
+                roughness: 0.4,
+                metalness: 0.2,
+            });
+            const fin = new THREE.Mesh(
+                new THREE.ConeGeometry(0.06, 0.12, 6),
+                finMat
+            );
+            fin.position.set(-0.6, 1.6, 0);
+            fin.rotation.x = 0.1;
+            carGroup.add(fin);
+
+            // ── Exhaust tips ──
+            const exhaustMat = new THREE.MeshStandardMaterial({
+                color: 0x444444,
+                roughness: 0.3,
+                metalness: 0.8,
+            });
+            [-0.3, 0.3].forEach((side) => {
+                const tip = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.04, 0.05, 0.08, 12),
+                    exhaustMat
+                );
+                tip.rotation.x = Math.PI / 2;
+                tip.position.set(-2.35, 0.08, side);
+                carGroup.add(tip);
+            });
+
+            // ── Undercarriage glow (subtle) ──
+            const glowMat = new THREE.MeshStandardMaterial({
+                color: 0x00d4ff,
+                emissive: 0x00d4ff,
+                emissiveIntensity: 0.06,
+                transparent: true,
+                opacity: 0.15,
+            });
+            const glow = new THREE.Mesh(
+                new THREE.PlaneGeometry(3.0, 1.2),
+                glowMat
+            );
+            glow.rotation.x = -Math.PI / 2;
+            glow.position.set(0, -0.4, 0);
+            carGroup.add(glow);
+
+            // ── Final position ──
+            carGroup.position.y = 0;
+        }
+
+        // ── Build initial car ──
+        buildCar(carBodyColor);
+        scene.add(carGroup);
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  COLOR CHANGE
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function setCarColor(colorHex) {
+            carBodyColor = colorHex;
+            // Rebuild car with new color
+            buildCar(colorHex);
+            // Re-add to scene
+            scene.add(carGroup);
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  UI BINDING
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // ── Color options ──
+        document.querySelectorAll('.color-option').forEach((el) => {
+            el.addEventListener('click', () => {
+                document.querySelectorAll('.color-option').forEach((e) => e.classList.remove('active'));
+                el.classList.add('active');
+                const color = el.dataset.color;
+                setCarColor(color);
+            });
+        });
+
+        // ── Auto rotate ──
+        const btnRotate = document.getElementById('btnRotate');
+        let autoRotateEnabled = true;
+        btnRotate.addEventListener('click', () => {
+            autoRotateEnabled = !autoRotateEnabled;
+            controls.autoRotate = autoRotateEnabled;
+            btnRotate.classList.toggle('active');
+            btnRotate.innerHTML = autoRotateEnabled ?
+                '<i class="fas fa-rotate-right"></i>' :
+                '<i class="fas fa-pause"></i>';
+        });
+
+        // ── Reset view ──
+        document.getElementById('btnReset').addEventListener('click', () => {
+            camera.position.set(6, 4, 8);
+            controls.target.set(0, 0.4, 0);
+            controls.update();
+        });
+
+        // ── View angles ──
+        function setView(pos, target) {
+            controls.autoRotate = false;
+            autoRotateEnabled = false;
+            btnRotate.classList.remove('active');
+            btnRotate.innerHTML = '<i class="fas fa-pause"></i>';
+            // Animate camera
+            const startPos = camera.position.clone();
+            const endPos = new THREE.Vector3(pos.x, pos.y, pos.z);
+            const startTarget = controls.target.clone();
+            const endTarget = new THREE.Vector3(target.x, target.y, target.z);
+            const duration = 600;
+            const startTime = Date.now();
+
+            function animateView() {
+                const elapsed = Date.now() - startTime;
+                const t = Math.min(elapsed / duration, 1);
+                // Smooth ease in-out cubic
+                const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+                camera.position.lerpVectors(startPos, endPos, ease);
+                controls.target.lerpVectors(startTarget, endTarget, ease);
+                controls.update();
+                if (t < 1) requestAnimationFrame(animateView);
+            }
+            animateView();
+        }
+
+        document.getElementById('viewFront').addEventListener('click', () => {
+            setView({ x: 0, y: 1.5, z: 7 }, { x: 0, y: 0.4, z: 0 });
+        });
+        document.getElementById('viewSide').addEventListener('click', () => {
+            setView({ x: 7, y: 1.5, z: 0 }, { x: 0, y: 0.4, z: 0 });
+        });
+        document.getElementById('viewRear').addEventListener('click', () => {
+            setView({ x: 0, y: 1.5, z: -7 }, { x: 0, y: 0.4, z: 0 });
+        });
+        document.getElementById('viewTop').addEventListener('click', () => {
+            setView({ x: 0, y: 7, z: 0.01 }, { x: 0, y: 0.4, z: 0 });
+        });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  RESIZE
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  ANIMATION LOOP
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+
+            // Subtle float on car
+            const time = Date.now() * 0.001;
+            carGroup.position.y = Math.sin(time * 0.6) * 0.03;
+
+            // Slight wheel rotation when auto-rotating
+            if (controls.autoRotate) {
+                carGroup.children.forEach((child) => {
+                    if (child.isGroup && child.children.length > 0) {
+                        // Check if it's a wheel group (has tire)
+                        let isWheel = false;
+                        child.children.forEach((sub) => {
+                            if (sub.geometry && sub.geometry.type === 'CylinderGeometry' &&
+                                sub.position.y === 0) {
+                                isWheel = true;
+                            }
+                        });
+                        if (isWheel) {
+                            child.rotation.x += 0.008;
+                        }
+                    }
+                });
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  HIDE LOADER
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        setTimeout(() => {
+            document.getElementById('loader').classList.add('hidden');
+        }, 800);
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  KEYBOARD SHORTCUTS
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'r' || e.key === 'R') {
+                btnRotate.click();
+            }
+            if (e.key === '1') document.getElementById('viewFront').click();
+            if (e.key === '2') document.getElementById('viewSide').click();
+            if (e.key === '3') document.getElementById('viewRear').click();
+            if (e.key === '4') document.getElementById('viewTop').click();
+            if (e.key === ' ') {
+                e.preventDefault();
+                document.getElementById('btnReset').click();
+            }
+        });
+
+        console.log('🚗 Jaecoo J7 3D Configurator loaded!');
+        console.log('🎮 Controls: R=Rotate | 1-4=Views | Space=Reset');
+    </script>
+
+</body>
+</html>
