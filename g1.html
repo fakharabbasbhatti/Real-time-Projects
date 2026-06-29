@@ -1,0 +1,471 @@
+Zoom Car Wash Checkout Form – WordPress HTML Widget
+<style>
+    /* ----- Reset & Base ----- */
+    .zw-checkout *,
+    .zw-checkout *::before,
+    .zw-checkout *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    .zw-checkout {
+        font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 32px 28px 28px;
+        background: #ffffff;
+        border-radius: 24px;
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.03);
+        color: #1a1a2e;
+        line-height: 1.5;
+    }
+
+    /* ----- Heading ----- */
+    .zw-checkout .zw-heading {
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        color: #1a1a2e;
+        margin: 0 0 26px 0;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f0f2f6;
+        text-transform: uppercase;
+        font-family: 'Poppins', 'Inter', sans-serif;
+    }
+
+    /* ----- Form Grid ----- */
+    .zw-checkout .zw-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px 20px;
+        margin-bottom: 14px;
+    }
+
+    .zw-checkout .zw-row.zw-single {
+        grid-template-columns: 1fr;
+    }
+
+    .zw-checkout .zw-row.zw-three {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    /* ----- Field Groups ----- */
+    .zw-checkout .zw-field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        position: relative;
+    }
+
+    .zw-checkout .zw-field label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #2d3748;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+        font-family: 'Poppins', 'Inter', sans-serif;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .zw-checkout .zw-field label .zw-icon {
+        font-size: 15px;
+        color: #4a6cf7;
+        width: 18px;
+        text-align: center;
+        flex-shrink: 0;
+    }
+
+    /* ----- Inputs & Select ----- */
+    .zw-checkout .zw-field input,
+    .zw-checkout .zw-field select {
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 15px;
+        font-family: 'Poppins', 'Inter', sans-serif;
+        color: #1a1a2e;
+        background: #f8fafc;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 14px;
+        outline: none;
+        transition: border-color 0.25s ease, box-shadow 0.25s ease;
+        appearance: none;
+        -webkit-appearance: none;
+    }
+
+    .zw-checkout .zw-field input:focus,
+    .zw-checkout .zw-field select:focus {
+        border-color: #4a6cf7;
+        box-shadow: 0 0 0 4px rgba(74, 108, 247, 0.10);
+        background: #ffffff;
+    }
+
+    .zw-checkout .zw-field input::placeholder {
+        color: #a0aec0;
+        font-weight: 400;
+        font-size: 14px;
+        letter-spacing: 0.2px;
+    }
+
+    /* Card Number – special dashed placeholder style */
+    .zw-checkout .zw-field input.zw-card-input {
+        letter-spacing: 2px;
+        font-weight: 500;
+        font-size: 16px;
+    }
+
+    .zw-checkout .zw-field input.zw-card-input::placeholder {
+        letter-spacing: 3px;
+        font-weight: 400;
+        color: #b0b8c8;
+    }
+
+    /* Select arrow */
+    .zw-checkout .zw-field select {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234a6cf7' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        padding-right: 40px;
+        cursor: pointer;
+    }
+
+    /* ----- Inline helper for card row spacing ----- */
+    .zw-checkout .zw-field.zw-small {
+        flex: 1;
+    }
+
+    /* ----- Checkboxes ----- */
+    .zw-checkout .zw-checkbox-group {
+        margin-top: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding-top: 4px;
+    }
+
+    .zw-checkout .zw-checkbox-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        font-size: 14px;
+        color: #2d3748;
+        font-family: 'Poppins', 'Inter', sans-serif;
+        line-height: 1.5;
+        padding: 2px 0;
+    }
+
+    .zw-checkout .zw-checkbox-item input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        min-width: 18px;
+        margin-top: 1px;
+        accent-color: #4a6cf7;
+        border-radius: 5px;
+        border: 1.5px solid #cbd5e1;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+        appearance: none;
+        -webkit-appearance: none;
+        background: #f8fafc;
+        display: grid;
+        place-content: center;
+    }
+
+    .zw-checkout .zw-checkbox-item input[type="checkbox"]:checked {
+        background: #4a6cf7;
+        border-color: #4a6cf7;
+    }
+
+    .zw-checkout .zw-checkbox-item input[type="checkbox"]:checked::before {
+        content: "✓";
+        color: white;
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        transform: scale(1);
+    }
+
+    .zw-checkout .zw-checkbox-item input[type="checkbox"]:focus {
+        box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.20);
+    }
+
+    .zw-checkout .zw-checkbox-item .zw-check-label {
+        font-size: 13.5px;
+        line-height: 1.5;
+        color: #1e293b;
+    }
+
+    .zw-checkout .zw-checkbox-item .zw-check-label a {
+        color: #4a6cf7;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        font-weight: 500;
+    }
+
+    .zw-checkout .zw-checkbox-item .zw-check-label a:hover {
+        color: #2b4cd4;
+    }
+
+    /* ----- Checkout Button ----- */
+    .zw-checkout .zw-btn-wrap {
+        margin-top: 26px;
+        margin-bottom: 14px;
+    }
+
+    .zw-checkout .zw-btn-checkout {
+        display: block;
+        width: 100%;
+        padding: 16px 24px;
+        font-size: 18px;
+        font-weight: 600;
+        font-family: 'Poppins', 'Inter', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        color: #ffffff;
+        background: #4a6cf7;
+        border: none;
+        border-radius: 16px;
+        cursor: pointer;
+        transition: background 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
+        box-shadow: 0 4px 16px rgba(74, 108, 247, 0.25);
+        text-align: center;
+    }
+
+    .zw-checkout .zw-btn-checkout:hover {
+        background: #3b5de7;
+        box-shadow: 0 6px 24px rgba(74, 108, 247, 0.35);
+        transform: translateY(-1px);
+    }
+
+    .zw-checkout .zw-btn-checkout:active {
+        transform: translateY(0px);
+        box-shadow: 0 2px 8px rgba(74, 108, 247, 0.20);
+    }
+
+    .zw-checkout .zw-btn-checkout:focus-visible {
+        outline: 3px solid #4a6cf7;
+        outline-offset: 3px;
+    }
+
+    /* ----- Gift Card Note ----- */
+    .zw-checkout .zw-gift-note {
+        font-size: 12.5px;
+        color: #64748b;
+        text-align: center;
+        margin-top: 10px;
+        font-family: 'Poppins', 'Inter', sans-serif;
+        letter-spacing: 0.2px;
+        padding: 8px 0 2px;
+        border-top: 1px solid #f1f4f9;
+        padding-top: 16px;
+    }
+
+    .zw-checkout .zw-gift-note i {
+        font-style: normal;
+        font-weight: 400;
+    }
+
+    /* ----- Responsive ----- */
+    @media (max-width: 600px) {
+        .zw-checkout {
+            padding: 20px 16px 20px;
+            border-radius: 18px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .zw-checkout .zw-heading {
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+        }
+
+        .zw-checkout .zw-row {
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .zw-checkout .zw-row.zw-three {
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .zw-checkout .zw-field input,
+        .zw-checkout .zw-field select {
+            padding: 11px 12px;
+            font-size: 14px;
+            border-radius: 12px;
+        }
+
+        .zw-checkout .zw-checkbox-item {
+            font-size: 13px;
+            gap: 10px;
+        }
+
+        .zw-checkout .zw-checkbox-item .zw-check-label {
+            font-size: 12.5px;
+        }
+
+        .zw-checkout .zw-btn-checkout {
+            font-size: 16px;
+            padding: 14px 20px;
+            border-radius: 14px;
+        }
+
+        .zw-checkout .zw-gift-note {
+            font-size: 11.5px;
+            padding-top: 14px;
+        }
+    }
+
+    @media (max-width: 420px) {
+        .zw-checkout .zw-row.zw-three {
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .zw-checkout .zw-heading {
+            font-size: 16px;
+        }
+
+        .zw-checkout .zw-field label {
+            font-size: 12px;
+        }
+
+        .zw-checkout .zw-field label .zw-icon {
+            font-size: 13px;
+            width: 16px;
+        }
+    }
+</style>
+
+<!-- ====== FORM HTML ====== -->
+<div class="zw-checkout">
+
+    <!-- Heading -->
+    <h2 class="zw-heading">USE THE FORM BELOW TO CHECKOUT</h2>
+
+    <!-- Row: First Name + Last Name -->
+    <div class="zw-row">
+        <div class="zw-field">
+            <label for="zw-firstname">
+                <span class="zw-icon">👤</span> FIRST NAME
+            </label>
+            <input type="text" id="zw-firstname" placeholder="John" value="">
+        </div>
+        <div class="zw-field">
+            <label for="zw-lastname">
+                <span class="zw-icon">👤</span> LAST NAME
+            </label>
+            <input type="text" id="zw-lastname" placeholder="Doe" value="">
+        </div>
+    </div>
+
+    <!-- Row: Email + Phone -->
+    <div class="zw-row">
+        <div class="zw-field">
+            <label for="zw-email">
+                <span class="zw-icon">✉</span> EMAIL
+            </label>
+            <input type="email" id="zw-email" placeholder="you@example.com" value="">
+        </div>
+        <div class="zw-field">
+            <label for="zw-phone">
+                <span class="zw-icon">📞</span> PHONE
+            </label>
+            <input type="tel" id="zw-phone" placeholder="(555) 000-0000" value="">
+        </div>
+    </div>
+
+    <!-- Row: Location (single, select) -->
+    <div class="zw-row zw-single">
+        <div class="zw-field">
+            <label for="zw-location">
+                <span class="zw-icon">📍</span> LOCATION
+            </label>
+            <select id="zw-location">
+                <option value="" disabled selected>Select a primary location...</option>
+                <option value="downtown">Downtown Car Wash</option>
+                <option value="uptown">Uptown Auto Spa</option>
+                <option value="westside">Westside Express</option>
+                <option value="eastside">Eastside Shine</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Row: Card Number (single) -->
+    <div class="zw-row zw-single">
+        <div class="zw-field">
+            <label for="zw-card">
+                <span class="zw-icon">💳</span> CARD NUMBER
+            </label>
+            <input type="text" id="zw-card" class="zw-card-input" placeholder="**************" value="">
+        </div>
+    </div>
+
+    <!-- Row: Expiration + Security Code + Billing Zip -->
+    <div class="zw-row zw-three">
+        <div class="zw-field">
+            <label for="zw-exp">
+                <span class="zw-icon">📅</span> EXPIRATION DATE
+            </label>
+            <input type="text" id="zw-exp" placeholder="MM / YY" value="">
+        </div>
+        <div class="zw-field">
+            <label for="zw-cvc">
+                <span class="zw-icon">🔒</span> SECURITY CODE
+            </label>
+            <input type="text" id="zw-cvc" placeholder="CVC" value="">
+        </div>
+        <div class="zw-field">
+            <label for="zw-zip">
+                <span class="zw-icon">🏠</span> BILLING ZIP CODE
+            </label>
+            <input type="text" id="zw-zip" placeholder="12345" value="">
+        </div>
+    </div>
+
+    <!-- ===== Checkboxes ===== -->
+    <div class="zw-checkbox-group">
+
+        <!-- 1. Terms of service -->
+        <label class="zw-checkbox-item">
+            <input type="checkbox">
+            <span class="zw-check-label">
+                I agree to the <a href="#">terms of service</a> (click to read).
+            </span>
+        </label>
+
+        <!-- 2. Account notifications & SMS -->
+        <label class="zw-checkbox-item">
+            <input type="checkbox">
+            <span class="zw-check-label">
+                By checking this box, you consent to receive account notifications and customer care SMS messages from Zoom Car Wash. Message frequency may vary. Data rates may apply. Reply HELP for help. Reply STOP to opt out.
+            </span>
+        </label>
+
+        <!-- 3. Promotional text alerts -->
+        <label class="zw-checkbox-item">
+            <input type="checkbox">
+            <span class="zw-check-label">
+                I agree to receive ongoing text message alerts regarding promotions and value-added incentives. Consent is not required for purchase. Message frequency varies. Reply STOP to cancel. Reply HELP for help. Message and data rates may apply. Message frequency may vary. Data rates may apply. For more information, please refer to our <a href="#">privacy policy</a>.
+            </span>
+        </label>
+
+    </div>
+
+    <!-- ===== Checkout Button ===== -->
+    <div class="zw-btn-wrap">
+        <button class="zw-btn-checkout" type="button">CHECKOUT</button>
+    </div>
+
+    <!-- ===== Gift Card Note ===== -->
+    <div class="zw-gift-note">
+        <i>Gift Cards cannot be used to purchase Wash Club Memberships or Wash Books.</i>
+    </div>
+
+</div>
