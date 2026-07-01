@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Listings</title>
+<style>
+  .jl-wrapper, .jl-wrapper * {
+    box-sizing: border-box;
+  }
+
+  .jl-wrapper {
+    font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 0 16px;
+  }
+
+  .jl-card {
+    background: #E7F3FD;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(10, 30, 80, 0.10), 0 2px 8px rgba(10, 30, 80, 0.06);
+    border: 1px solid #e9eef7;
+  }
+
+  .jl-header-row {
+    display: grid;
+    grid-template-columns: 2.2fr 2fr 1fr;
+    background: #10184c;
+    padding: 15px 20px;
+    line-height: 33px;
+    margin-bottom: 15px;
+  }
+  .jl-header-row div {
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 18px;
+    line-height: 33px;
+    letter-spacing: 0;
+    text-transform: uppercase;
+color:#ffffff;
+  }
+
+  .jl-row {
+    display: grid;
+    grid-template-columns: 2.2fr 2fr 1fr;
+    align-items: center;
+    padding: 18px 28px;
+    border-top: 1px solid #998D8D;
+    cursor: pointer;
+    transition: background 0.18s ease;
+    
+  }
+  /* .jl-row:hover {
+    background: #f7f9fd;
+  } */
+  /* .jl-row.jl-expanded {
+    background: #f2f6fc;
+  } */
+  .jl-row .jl-title {
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+    line-height: 33px;
+    letter-spacing: 0;
+    color: #081458;
+  }
+  .jl-row .jl-city {
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+    line-height: 33px;
+    letter-spacing: 0;
+    color: #081458;
+  }
+
+  .jl-apply-link {
+    Font-family: 'Ubuntu', sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 16px;
+    line-height: 33px;
+    letter-spacing: 0;
+    color: #273587;
+    transition: color 0.18s ease;
+        text-decoration: underline;
+         text-decoration-color: #998D8D;
+
+  }
+  .jl-row:hover .jl-apply-link {
+    color: #10184c;
+  }
+
+  .jl-chevron {
+     background-color: #efd079 !important;
+    font-size: 15px !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+  }
+  .jl-chevron svg {
+    width: 10px;
+    height: 10px;
+    display: block;
+  }
+  .jl-row.jl-expanded .jl-chevron {
+    transform: rotate(180deg);
+  }
+
+  .jl-details-panel {
+    max-height: 0;
+    overflow: hidden;
+    background: #f2f6fc;
+    transition: max-height 0.35s ease;
+  }
+  .jl-details-panel.jl-open {
+    max-height: 1100px;
+  }
+
+  .jl-details-inner {
+    padding: 0 28px 28px;
+    background-color:#E7F3FD;
+  }
+
+  .jl-details-title {
+    background: #273587;
+    padding: 10px 20px;
+  }
+  .jl-details-title span {
+     font-family: 'Ubuntu', sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 20px;
+    line-height: 33px;
+    letter-spacing: 0;
+    color: #EFD079;
+  }
+
+  .jl-details-body {
+    background: #E0ECF6;
+    padding: 20px 20px 22px;
+    border: 1px solid #998D8D;
+
+  }
+  .jl-details-body h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #10184c;
+    margin: 0 0 8px;
+    letter-spacing: 0.2px;
+  }
+  .jl-details-body ul {
+    margin: 0 0 16px;
+    padding-left: 18px;
+    list-style: disc;
+  }
+  .jl-details-body li {
+    font-size: 13.5px;
+    color: #081458;
+    line-height: 1.9;
+  }
+
+  .jl-apply-btn {
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #081458;
+
+    width: 120px;
+    height: 40px;
+
+    background-color: #EFD079;
+    border-radius: 30px;
+    border: none;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    opacity: 1;
+}
+  /* .jl-apply-btn:hover {
+    background: #ffd94f;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(249, 198, 45, 0.45);
+  }
+  .jl-apply-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(249, 198, 45, 0.35);
+  } */
+</style>
+</head>
+<body>
+
+<div class="jl-wrapper">
+  <div class="jl-card" id="jlTable">
+    <div class="jl-header-row">
+      <div>Position title</div>
+      <div>City</div>
+      <div>Apply</div>
+    </div>
+
+    <!-- Store Manager -->
+    <div class="jl-row" data-target="jl-store-manager">
+      <div class="jl-title">Store Manager</div>
+      <div class="jl-city">Webster and Houston</div>
+      <div class="jl-apply-link">Job details
+        <span class="jl-chevron"><svg viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+    </div>
+    <div class="jl-details-panel" id="jl-store-manager">
+      <div class="jl-details-inner">
+        <div class="jl-details-title"><span>Store Manager</span></div>
+        <div class="jl-details-body">
+          <h4>Car wash operation:</h4>
+          <ul>
+            <li>Opening/closing of car wash.</li>
+            <li>Coordinate and oversee daily car wash operations.</li>
+            <li>Hiring, retaining, and discipline of employees.</li>
+            <li>Demonstrated leadership in staff development with a strong commitment to outstanding customer service.</li>
+            <li>Able to work in a team environment.</li>
+            <li>Follow and implement routine maintenance schedules of grounds and equipment.</li>
+            <li>Able to show willingness to learn to maintain, operate, repair equipment.</li>
+          </ul>
+          <h4>Customer care:</h4>
+          <ul>
+            <li>Providing exceptional customer service.</li>
+            <li>Help customers with car wash transactions and membership sales.</li>
+            <li>Comfortable working in an outdoor environment.</li>
+            <li>Bilingual skills are an advantage.</li>
+          </ul>
+          <button type="button" class="jl-apply-btn">Apply now</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Greeter -->
+    <div class="jl-row" data-target="jl-greeter">
+      <div class="jl-title">Greeter</div>
+      <div class="jl-city">Webster and Houston- Westheimer</div>
+      <div class="jl-apply-link">Job details
+        <span class="jl-chevron"><svg viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+    </div>
+    <div class="jl-details-panel" id="jl-greeter">
+      <div class="jl-details-inner">
+        <div class="jl-details-title"><span>Greeter</span></div>
+        <div class="jl-details-body">
+          <h4>Responsibilities</h4>
+          <ul>
+            <li>Warmly greet customers as they arrive.</li>
+            <li>Direct traffic flow through the car wash entrance.</li>
+            <li>Assist customers with membership questions.</li>
+          </ul>
+          <button type="button" class="jl-apply-btn">Apply now</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team Member -->
+    <div class="jl-row" data-target="jl-team-member">
+      <div class="jl-title">Team Member</div>
+      <div class="jl-city">Webster</div>
+      <div class="jl-apply-link">Job details
+        <span class="jl-chevron"><svg viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+    </div>
+    <div class="jl-details-panel" id="jl-team-member">
+      <div class="jl-details-inner">
+        <div class="jl-details-title"><span>Team Member</span></div>
+        <div class="jl-details-body">
+          <h4>Responsibilities</h4>
+          <ul>
+            <li>Support daily car wash operations.</li>
+            <li>Provide excellent customer service.</li>
+            <li>Maintain cleanliness of the facility.</li>
+          </ul>
+          <button type="button" class="jl-apply-btn">Apply now</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team Lead -->
+    <div class="jl-row" data-target="jl-team-lead">
+      <div class="jl-title">Team Lead</div>
+      <div class="jl-city">Webster</div>
+      <div class="jl-apply-link">Job details
+        <span class="jl-chevron"><svg viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+    </div>
+    <div class="jl-details-panel" id="jl-team-lead">
+      <div class="jl-details-inner">
+        <div class="jl-details-title"><span>Team Lead</span></div>
+        <div class="jl-details-body">
+          <h4>Responsibilities</h4>
+          <ul>
+            <li>Oversee team members during shifts.</li>
+            <li>Coordinate scheduling and daily tasks.</li>
+            <li>Support store manager in daily operations.</li>
+          </ul>
+          <button type="button" class="jl-apply-btn">Apply now</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Site Supervisor -->
+    <div class="jl-row" data-target="jl-site-supervisor">
+      <div class="jl-title">Site Supervisor</div>
+      <div class="jl-city">All Locations</div>
+      <div class="jl-apply-link">Job details
+        <span class="jl-chevron"><svg viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+    </div>
+    <div class="jl-details-panel" id="jl-site-supervisor">
+      <div class="jl-details-inner">
+        <div class="jl-details-title"><span>Site Supervisor</span></div>
+        <div class="jl-details-body">
+          <h4>Responsibilities</h4>
+          <ul>
+            <li>Oversee operations across multiple locations.</li>
+            <li>Ensure compliance with safety standards.</li>
+            <li>Train and support site managers.</li>
+          </ul>
+          <button type="button" class="jl-apply-btn">Apply now</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  (function () {
+    var table = document.getElementById('jlTable');
+    if (!table) return;
+
+    table.querySelectorAll('.jl-row').forEach(function (row) {
+      row.addEventListener('click', function () {
+        var targetId = row.getAttribute('data-target');
+        var panel = document.getElementById(targetId);
+        if (!panel) return;
+
+        var isOpen = panel.classList.contains('jl-open');
+        panel.classList.toggle('jl-open', !isOpen);
+        row.classList.toggle('jl-expanded', !isOpen);
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
