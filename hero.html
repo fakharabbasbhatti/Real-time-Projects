@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liquid WebGL Effect</title>
+
+<style>
+
+html,body{
+margin:0;
+height:100%;
+overflow:hidden;
+background:#050816;
+}
+
+canvas{
+display:block;
+}
+
+h1{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-family:Arial,Helvetica,sans-serif;
+font-size:70px;
+color:white;
+pointer-events:none;
+letter-spacing:4px;
+mix-blend-mode:screen;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>LIQUID</h1>
+
+<script type="module">
+
+import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
+
+const scene = new THREE.Scene();
+
+const camera = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+
+const renderer = new THREE.WebGLRenderer({
+antialias:true
+});
+
+renderer.setSize(window.innerWidth,window.innerHeight);
+
+document.body.appendChild(renderer.domElement);
+
+const uniforms={
+
+uTime:{value:0},
+
+uMouse:{value:new THREE.Vector2(0.5,0.5)},
+
+uResolution:{
+value:new THREE.Vector2(window.innerWidth,window.innerHeight)
+}
+
+};
+
+const material=new THREE.ShaderMaterial({
+
+uniforms,
+
+vertexShader:`
+
+void main(){
+
+gl_Position=vec4(position,1.0);
+
+}
+
+`,
+
+fragmentShader:`
+
+precision highp float;
+
+uniform vec2 uResolution;
+uniform vec2 uMouse;
+uniform float uTime;
+
+float circle(vec2 uv,vec2 p,float r){
+
+return smoothstep(r,r-0.01,length(uv-p));
+
+}
+
+void main(){
+
+vec2 uv=gl_FragCoord.xy/uResolution;
+
+vec2 m=uMouse;
+
+float d=distance(uv,m);
+
+float ripple=sin(d*45.0-uTime*5.0);
+
+ripple*=exp(-d*8.0);
+
+uv+=normalize(uv-m)*ripple*0.03;
+
+vec3 c1=vec3(0.1,0.3,0.9);
+
+vec3 c2=vec3(0.0,0.8,1.0);
+
+vec3 c3=vec3(0.9,0.2,1.0);
+
+vec3 color=mix(c1,c2,uv.y);
+
+color+=c3*ripple*0.6;
+
+color+=circle(uv,m,0.08)*0.25;
+
+gl_FragColor=vec4(color,1.0);
+
+}
+
+`
+
+});
+
+const mesh=new THREE.Mesh(
+
+new THREE.PlaneGeometry(2,2),
+
+material
+
+);
+
+scene.add(mesh);
+
+window.addEventListener("mousemove",e=>{
+
+uniforms.uMouse.value.x=e.clientX/window.innerWidth;
+
+uniforms.uMouse.value.y=1-e.clientY/window.innerHeight;
+
+});
+
+window.addEventListener("resize",()=>{
+
+renderer.setSize(window.innerWidth,window.innerHeight);
+
+uniforms.uResolution.value.set(
+
+window.innerWidth,
+
+window.innerHeight
+
+);
+
+});
+
+function animate(t){
+
+uniforms.uTime.value=t*0.001;
+
+renderer.render(scene,camera);
+
+requestAnimationFrame(animate);
+
+}
+
+animate();
+
+</script>
+
+</body>
+</html>
